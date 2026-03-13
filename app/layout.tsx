@@ -73,7 +73,6 @@ export const metadata: Metadata = {
     ],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
-  manifest: "/site.webmanifest",
   category: "health",
 };
 
@@ -84,7 +83,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-off-white min-h-screen flex flex-col">
+      <body className="bg-off-white min-h-screen flex flex-col" suppressHydrationWarning>
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
