@@ -15,6 +15,7 @@ const REASONS = [
     "Life Transitions",
     "Relationship Issues",
     "Burnout",
+    "Others",
 ];
 
 const PLANS = [
