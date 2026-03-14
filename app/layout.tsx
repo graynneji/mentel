@@ -343,13 +343,14 @@ export default function RootLayout({
     e.parentNode.insertBefore(n,e)
   };
 
-  ttq.load('D6QIQ5BC77U1CBCKKNS0');
+
+  ttq.load('D6M6Q5JC77U5049K12MG');
   ttq.page();
 }(window, document, 'ttq');
 `}
           {/* 99544c37f1353c900f98b4723bbf6ef54d324dd1 */}
 
-
+          {/* ttq.load('D6QIQ5BC77U1CBCKKNS0'); */}
 
 
         </Script>
