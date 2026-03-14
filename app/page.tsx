@@ -252,7 +252,7 @@ export default function HomePage() {
               </h1>
 
               <p
-                className="text-sm sm:text-base leading-relaxed mb-8 font-light"
+                className=" sm:text-base leading-relaxed mb-8 font-light"
                 style={{ color: "var(--text-muted)", maxWidth: "420px" }}
               >
                 Mentel connects you with licensed therapists who genuinely listen.
@@ -267,7 +267,7 @@ export default function HomePage() {
                       className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{ background: "rgba(123,169,139,0.14)" }}
                     >
-                      <Icon size={14} style={{ color: "var(--sage-dark)" }} />
+                      <Icon size={16} style={{ color: "var(--sage-dark)" }} />
                     </div>
                     <span className="text-sm" style={{ color: "var(--text-muted)" }}>{text}</span>
                   </div>
@@ -327,7 +327,7 @@ export default function HomePage() {
             <h2 className="font-cormorant text-3xl sm:text-4xl font-light mb-3" style={{ color: "var(--deep)" }}>
               How We Can Help
             </h2>
-            <p className="text-sm max-w-xs sm:max-w-sm mx-auto" style={{ color: "var(--text-muted)" }}>
+            <p className="text-sm sm:text-base max-w-xs sm:max-w-sm mx-auto" style={{ color: "var(--text-muted)" }}>
               Professional therapy services tailored to your specific needs.
             </p>
           </div>
@@ -343,12 +343,12 @@ export default function HomePage() {
                   className="w-9 h-9 rounded-full flex items-center justify-center mb-4"
                   style={{ background: "rgba(123,169,139,0.12)" }}
                 >
-                  <Icon size={16} style={{ color: "var(--sage-dark)" }} />
+                  <Icon size={18} style={{ color: "var(--sage-dark)" }} />
                 </div>
                 <h3 className="font-cormorant text-xl font-semibold mb-2" style={{ color: "var(--deep)" }}>
                   {title}
                 </h3>
-                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{desc}</p>
+                <p className="text-sm sm:text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -377,7 +377,7 @@ export default function HomePage() {
             Ready to take the<br />
             <em className="italic" style={{ color: "var(--sage-dark)" }}>first step</em>?
           </h2>
-          <p className="text-sm mb-8 max-w-xs mx-auto" style={{ color: "var(--text-muted)" }}>
+          <p className="text-sm sm:text-base mb-8 max-w-xs mx-auto" style={{ color: "var(--text-muted)" }}>
             Your first consultation is the hardest part. We make it easy, safe, and judgment-free.
           </p>
           <Link

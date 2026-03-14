@@ -97,6 +97,14 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Script from "next/script";
+import { Nunito } from "next/font/google";
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  variable: "--font-dm",   // keep same variable name so nothing else breaks
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -266,7 +274,11 @@ const medicalBusinessSchema = {
     "clinical psychology",
     "counseling psychology",
     "counsellor",
-    "therapist"
+    "therapist",
+    "therapy",
+    "marriage counselor",
+    "healing",
+    "mental care"
   ],
   availableService: [
     { "@type": "MedicalTherapy", name: "Individual Therapy" },
@@ -283,7 +295,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${nunito.variable}`}>
       <head>
         <script
           type="application/ld+json"

@@ -30,7 +30,7 @@ function TikTokIcon() {
 
 const contactInfo = [
     { icon: Mail, label: "Email", value: "hello@trymentel.com", href: "mailto:hello@trymentel.com" },
-    { icon: Phone, label: "Phone", value: "+254 734 527 573", href: "tel:+254 734 527 573" },
+    { icon: Phone, label: "Phone - WhatsApp only", value: "+254 734 527 573", href: "tel:+254 734 527 573" },
     { icon: MapPin, label: "Location", value: "Lagos, Nigeria", href: "#" },
 ];
 
