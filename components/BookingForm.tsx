@@ -43,6 +43,10 @@ declare global {
         PaystackPop: {
             setup: (config: Record<string, unknown>) => { openIframe: () => void };
         };
+        ttq?: {
+            track: (event: string, data?: Record<string, unknown>) => void;
+            page?: () => void;
+        };
     }
 }
 
@@ -110,6 +114,9 @@ export default function BookingForm() {
                 callback: () => {
                     setLoading(false);
                     setSuccess(true);
+                    if (window.ttq) {
+                        window.ttq.track('Schedule');
+                    }
                 },
             });
             handler.openIframe();
