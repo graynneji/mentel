@@ -214,7 +214,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-2 mb-1">
                   <Leaf size={15} style={{ color: "var(--sage)" }} />
                   <h2 className="font-cormorant text-xl sm:text-2xl font-semibold" style={{ color: "var(--deep)" }}>
-                    Book Your Consultation
+                    Book Your Session
                   </h2>
                 </div>
                 <p className="text-xs mb-5" style={{ color: "var(--text-muted)" }}>
@@ -385,7 +385,7 @@ export default function HomePage() {
             className="inline-flex items-center gap-2 text-sm font-medium text-white px-7 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200"
             style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
           >
-            Book a Free Consultation
+            Book Your Session
             <ArrowRight size={15} />
           </Link>
         </div>
