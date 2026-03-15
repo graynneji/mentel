@@ -117,6 +117,7 @@ export default function BookingForm() {
                     if (window.ttq) {
                         window.ttq.track('Schedule');
                         window.ttq.track('Add Payment Info');
+                        window.ttq.track('Complete Registration');
                     }
                 },
             });
