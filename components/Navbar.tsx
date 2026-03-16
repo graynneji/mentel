@@ -170,7 +170,7 @@ function getTimeLeft() {
     const diff = DEADLINE.getTime() - Date.now();
     if (diff <= 0) return null;
     return {
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        // days: Math.floor(diff / (1000 * 60 * 60 * 24)),
         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
         mins: Math.floor((diff / (1000 * 60)) % 60),
         secs: Math.floor((diff / 1000) % 60),
@@ -274,7 +274,7 @@ export default function Navbar() {
                             </div>
                             <div className="flex items-center gap-1 flex-shrink-0 text-white text-xs tabular-nums opacity-80">
                                 <Clock size={10} className="opacity-60" />
-                                <span>{pad(timeLeft!.days)}d {pad(timeLeft!.hours)}h {pad(timeLeft!.mins)}m</span>
+                                <span>{pad(timeLeft!.hours)}h {pad(timeLeft!.mins)}m</span>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0">
                                 <Link
@@ -305,12 +305,12 @@ export default function Navbar() {
                                 <Clock size={13} className="opacity-60" />
                                 <span className="opacity-70 text-xs">Offer ends in</span>
                                 <div className="flex items-center gap-1">
-                                    {timeLeft!.days > 0 && (
+                                    {/* {timeLeft!.days > 0 && (
                                         <>
                                             <span className="font-cormorant text-lg font-semibold tabular-nums" style={{ letterSpacing: "-0.02em" }}>{pad(timeLeft!.days)}</span>
                                             <span className="text-xs opacity-60 mr-1">d</span>
                                         </>
-                                    )}
+                                    )} */}
                                     <span className="font-cormorant text-lg font-semibold tabular-nums">{pad(timeLeft!.hours)}</span>
                                     <span className="text-xs opacity-60 mr-1">h</span>
                                     <span className="font-cormorant text-lg font-semibold tabular-nums">{pad(timeLeft!.mins)}</span>

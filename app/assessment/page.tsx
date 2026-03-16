@@ -188,9 +188,16 @@ export default function AssessmentPage() {
         //   method: "POST",
         //   body: JSON.stringify({ name, email, score: totalScore, band: result.band, answers }),
         // });
+        const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, score: totalScore, band: result.band, answers }),
+        });
         // ─────────────────────────────────────────────────────────────────────────
 
-        await new Promise((r) => setTimeout(r, 900)); // simulate network
+        // await new Promise((r) => setTimeout(r, 900)); // simulate network
         setSubmitting(false);
         setStep("result");
     }
@@ -245,7 +252,7 @@ export default function AssessmentPage() {
 
                         <button
                             onClick={() => setStep("quiz")}
-                            className="inline-flex items-center gap-2 text-sm font-medium text-white px-8 py-4 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200"
+                            className="inline-flex items-center gap-2 text-sm font-medium text-white px-8 py-4 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200 cursor-pointer"
                             style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                         >
                             Start Free Assessment
@@ -316,7 +323,7 @@ export default function AssessmentPage() {
                                     <button
                                         key={opt.value}
                                         onClick={() => handleAnswer(opt.value)}
-                                        className="w-full text-left px-5 py-4 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+                                        className="w-full text-left px-5 py-4 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm cursor-pointer"
                                         style={{
                                             background: isSelected ? "rgba(123,169,139,0.12)" : "white",
                                             borderColor: isSelected ? "var(--sage)" : "var(--border)",
@@ -406,7 +413,7 @@ export default function AssessmentPage() {
                                 <button
                                     type="submit"
                                     disabled={submitting}
-                                    className="w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-white px-6 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+                                    className="cursor-pointer w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-white px-6 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
                                     style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                                 >
                                     {submitting ? "Saving your results…" : "See My Results"}
