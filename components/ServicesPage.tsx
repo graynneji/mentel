@@ -1,6 +1,6 @@
 import BgBlobs from "@/components/BgBlobs";
 import Link from "next/link";
-import { Brain, Heart, Users, Flame, Sun, Anchor, ArrowRight, Leaf } from "lucide-react";
+import { Brain, Heart, Users, Flame, Sun, Anchor, ArrowRight, Leaf, ClipboardCheck } from "lucide-react";
 
 const services = [
     {
@@ -39,6 +39,7 @@ const services = [
         desc: "Build a healthier relationship with yourself, challenge inner criticism, and grow into your full potential.",
         tags: ["Schema Therapy", "ACT", "Compassion Work"],
     },
+    { icon: ClipboardCheck, title: "Free Assessment", desc: "Not sure where to start? Take our 2-minute mental health check.", tags: ["Free Mental Health Assessment", "Depression Assessment", "Check Anxiety"], }
 ];
 
 export default function ServicesPage() {
