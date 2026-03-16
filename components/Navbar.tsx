@@ -274,7 +274,7 @@ export default function Navbar() {
                             </div>
                             <div className="flex items-center gap-1 flex-shrink-0 text-white text-xs tabular-nums opacity-80">
                                 <Clock size={10} className="opacity-60" />
-                                <span>{pad(timeLeft!.hours)}h {pad(timeLeft!.mins)}m</span>
+                                <span>{pad(timeLeft!.hours)}h {pad(timeLeft!.mins)}m {pad(timeLeft!.secs)}s </span>
                             </div>
                             <div className="flex items-center gap-2 flex-shrink-0">
                                 <Link
