@@ -921,6 +921,37 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
+
+              {/* add this after the trustItems map, still inside the left column */}
+              <div
+                className="mt-8 pt-6 border-t"
+                style={{ borderColor: "var(--border)" }}
+              >
+                <p className="text-xs uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
+                  Trusted by clients across Nigeria
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-2">
+                    {["A", "E", "F", "K", "T"].map((initial) => (
+                      <div
+                        key={initial}
+                        className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-semibold text-white"
+                        style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))", borderColor: "var(--white)" }}
+                      >
+                        {initial}
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <div className="flex gap-0.5 mb-0.5">
+                      {[1, 2, 3, 4, 5].map(i => (
+                        <Star key={i} size={11} fill="var(--sage)" style={{ color: "var(--sage)" }} />
+                      ))}
+                    </div>
+                    <p className="text-xs" style={{ color: "var(--text-muted)" }}>500+ sessions · 98% satisfaction</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
