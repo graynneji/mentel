@@ -772,9 +772,9 @@ const services = [
 ];
 
 const stats = [
-  { stat: "500+", label: "Sessions completed" },
-  { stat: "98%", label: "Client satisfaction rate" },
-  { stat: "24hrs", label: "Average first response" },
+  { stat: "500+", label: "Sessions completed", icon: Users },
+  { stat: "98%", label: "Client satisfaction", icon: Star },
+  { stat: "24hrs", label: "Average first response", icon: Clock },
 ];
 
 const testimonials = [
@@ -959,7 +959,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats Strip ── */}
-      <section className="relative z-10 py-10 sm:py-14">
+      {/* <section className="relative z-10 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className="rounded-2xl sm:rounded-3xl p-6 sm:p-10 relative overflow-hidden border"
@@ -979,6 +979,71 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+      </section> */}
+
+      {/* /////////////////////////////////// */}
+      {/* ── Stats Strip ── */}
+      {/* ── Stats Strip ── */}
+      <section className="relative z-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          <div className="h-px w-full" style={{ background: "var(--border)" }} />
+
+          <div className="grid grid-cols-1 sm:grid-cols-3">
+            {stats.map(({ stat, label, icon: Icon }, i) => (
+              <div
+                key={label}
+                className="flex flex-col items-center justify-center py-6 sm:py-8 px-4 text-center relative"
+              >
+                {/* Vertical divider — desktop only, between columns */}
+                {i < stats.length - 1 && (
+                  <div
+                    className="hidden sm:block absolute right-0 top-1/4 h-1/2 w-px"
+                    style={{ background: "var(--border)" }}
+                  />
+                )}
+
+                {/* Horizontal divider — mobile only, between rows */}
+                {i < stats.length - 1 && (
+                  <div
+                    className="sm:hidden absolute bottom-0 left-8 right-8 h-px"
+                    style={{ background: "var(--border)" }}
+                  />
+                )}
+
+                <div
+                  // w and h was w-7 h-7
+                  // icon size was 13
+                  className="w-10 h-10 rounded-full flex items-center justify-center mb-3"
+                  style={{ background: "rgba(123,169,139,0.12)" }}
+                >
+                  <Icon size={20} style={{ color: "var(--sage-dark)" }} />
+                </div>
+
+                <p
+                  className="font-cormorant font-semibold leading-none mb-1.5"
+                  style={{
+                    color: "var(--deep)",
+                    fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)",
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  {stat}
+                </p>
+
+                <p
+                  className="text-xs uppercase tracking-widest leading-snug"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="h-px w-full" style={{ background: "var(--border)" }} />
+
         </div>
       </section>
 
