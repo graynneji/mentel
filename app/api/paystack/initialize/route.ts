@@ -105,6 +105,7 @@ export async function POST(req: Request) {
       success: true,
       accessCode: paystackData.data.access_code,
       reference: paystackData.data.reference,
+      amount: plan.amountKobo,
     });
   } catch (error) {
     console.error("Payment initialize error:", error);
