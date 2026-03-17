@@ -716,7 +716,6 @@ function buildAdminEmail(
       <tr>
         <td width="120" style="padding:10px 12px;border-bottom:1px solid #e8eeea;font-size:13px;color:#4a5e52;font-weight:600;vertical-align:middle;">${questionLabels[qId] ?? s(qId)}</td>
         <td style="padding:10px 12px;border-bottom:1px solid #e8eeea;vertical-align:middle;">${scoreBar(val)}</td>
-        <td width="40" style="padding:10px 12px;border-bottom:1px solid #e8eeea;text-align:right;font-size:13px;color:#6b7c72;vertical-align:middle;">${val}/3</td>
       </tr>`,
     )
     .join("");
@@ -817,7 +816,6 @@ function buildAdminEmail(
               <tr style="background:#f7faf8;">
                 <th width="120" style="padding:10px 12px;text-align:left;font-size:11px;color:#8da898;text-transform:uppercase;letter-spacing:1px;font-weight:500;">Category</th>
                 <th style="padding:10px 12px;text-align:left;font-size:11px;color:#8da898;text-transform:uppercase;letter-spacing:1px;font-weight:500;">Score</th>
-                <th width="40" style="padding:10px 12px;text-align:right;font-size:11px;color:#8da898;text-transform:uppercase;letter-spacing:1px;font-weight:500;">Val</th>
               </tr>
               ${answerRows}
             </table>
