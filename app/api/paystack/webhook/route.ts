@@ -22,7 +22,7 @@ import { Resend } from "resend";
 const resend = new Resend(process.env.RESEND_API_KEY);
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!; // sk_live_...
 const ADMIN_EMAIL = "graynneji405@gmail.com";
-const FROM_EMAIL = "Mentel <onboarding@resend.dev>";
+const FROM_EMAIL = "Mentel <hello@trymentel.com>";
 const BOOKING_URL = "https://trymentel.com/#book";
 
 // ── HTML sanitizer ─────────────────────────────────────────────────────────────
