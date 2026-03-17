@@ -7,7 +7,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://trymentel.com";
 
 // ── Amounts defined server-side only — client never sees or sends a price ─────
 const PLANS: Record<string, { label: string; amountKobo: number }> = {
-  once: { label: "Single Session", amountKobo: 50 * 100 },
+  once: { label: "Single Session", amountKobo: 100 * 100 },
   monthly: { label: "Monthly Plan", amountKobo: 35_000 * 100 },
 };
 
