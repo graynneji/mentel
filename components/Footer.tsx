@@ -92,7 +92,7 @@ export default function Footer() {
                         </h4>
                         <div className="flex gap-3 mb-6">
                             <a
-                                href="https://wa.me/2340000000000"
+                                href="https://wa.me/254734527573"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="WhatsApp"
@@ -102,7 +102,7 @@ export default function Footer() {
                                 <WhatsAppIcon />
                             </a>
                             <a
-                                href="https://instagram.com/mentel"
+                                href="https://instagram.com/mentel_ltd"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Instagram"
@@ -112,7 +112,7 @@ export default function Footer() {
                                 <InstagramIcon />
                             </a>
                             <a
-                                href="https://tiktok.com/@mentel"
+                                href="https://tiktok.com/@mentelltd"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="TikTok"
