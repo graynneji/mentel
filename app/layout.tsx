@@ -98,6 +98,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Script from "next/script";
 import { Nunito, DM_Sans } from "next/font/google";
+import ConditionalShell from "@/components/Conditionalshell";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -381,9 +382,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        {/* ConditionalShell hides Navbar + Footer on /admin routes */}
+        <ConditionalShell>{children}</ConditionalShell>
       </body>
     </html>
   );

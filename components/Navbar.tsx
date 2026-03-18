@@ -157,7 +157,13 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock } from "lucide-react";
 import Image from "next/image";
 
-const DEADLINE = new Date("2026-03-17T23:59:59");
+
+const now = new Date()
+
+const DEADLINE = new Date(now);
+DEADLINE.setSeconds(59);
+DEADLINE.setMilliseconds(999);
+// const DEADLINE = new Date("2026-03-18T23:59:59");
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -167,7 +173,16 @@ const navLinks = [
 ];
 
 function getTimeLeft() {
-    const diff = DEADLINE.getTime() - Date.now();
+    // const diff = DEADLINE.getTime() - Date.now();
+    const diff =
+        new Date(
+            new Date().setMinutes(
+                new Date().getMinutes() < 30 ? 30 : 60,
+                0,
+                0
+            )
+        ).getTime() - Date.now();
+    console.log(diff, "Difference")
     if (diff <= 0) return null;
     return {
         // days: Math.floor(diff / (1000 * 60 * 60 * 24)),

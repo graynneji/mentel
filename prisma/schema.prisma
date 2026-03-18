@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  name     String
+  email    String
+  phone    String?
+  score    Int
+  band     String
+  severity String
+  answers  Json
+
+  status String  @default("new")
+  notes  String? @default("")
+
+  seq1SentAt DateTime? @map("seq1_sent_at")
+  seq2SentAt DateTime? @map("seq2_sent_at")
+  seq3SentAt DateTime? @map("seq3_sent_at")
+
+  messages Message[]
+
+  @@index([email])
+  @@index([status])
+  @@index([band])
+  @@map("leads")
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  leadId String @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  subject String
+  body    String  @default("")
+  type    String
+  sentBy  String  @default("admin") @map("sent_by")
+
+  @@index([leadId])
+  @@map("messages")
+}
