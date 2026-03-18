@@ -739,7 +739,6 @@ const avatarColors: string[] = [
     "#5a8a7a",
 ];
 
-// Each badge has its own distinct color — not all the same sage
 const trustBadges: TrustBadge[] = [
     { icon: Lock, label: "Confidential", iconColor: "#3d8b8b", iconFill: "#6fb8b8" },
     { icon: Clock, label: "2 Minutes", iconColor: "#7b6fa9", iconFill: "#b8a8d4" },
@@ -756,6 +755,7 @@ const checklistItems: string[] = [
 
 const nextSteps: string[] = [
     "We'll email your full results summary shortly",
+    "Check your spam or junk folder if you don't see it",
     "A therapist will reach out within 24 hours",
     "Your first consultation is free and judgment-free",
 ];
@@ -963,7 +963,7 @@ export default function AssessmentPage() {
                             right now — so we can match you with the right support.
                         </p>
 
-                        {/* Trust badges — each icon has its own distinct color */}
+                        {/* Trust badges */}
                         <div className="flex flex-wrap gap-2 mb-8">
                             {trustBadges.map(({ icon: Icon, label, iconColor, iconFill }) => (
                                 <span
@@ -1515,6 +1515,24 @@ export default function AssessmentPage() {
                             View our services
                         </Link>
                     </div>
+
+                    {/* Spam notice + crisis line */}
+                    <p className="text-center text-xs mt-5" style={{ color: "var(--text-muted)" }}>
+                        Didn&apos;t receive your email?{" "}
+                        <span style={{ color: "var(--sage-dark)", fontWeight: 500 }}>
+                            Check your spam or junk folder
+                        </span>
+                        {" "}— it may have landed there.
+                        {" "}If you&apos;re in crisis, please contact{" "}
+                        <a
+                            href="tel:112"
+                            className="underline underline-offset-2"
+                            style={{ color: "var(--sage-dark)" }}
+                        >
+                            emergency services
+                        </a>
+                        .
+                    </p>
 
                 </div>
             </section>
