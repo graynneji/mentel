@@ -37,7 +37,7 @@ function buildSeq1(
     <p style="margin:0 0 28px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">Your first session is one conversation. That's it.</p>
     <table cellpadding="0" cellspacing="0"><tr><td>
       <a href="${BOOKING_URL}" style="display:inline-block;background:linear-gradient(135deg,#4e7a5e,#3d8b8b);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:13px 32px;border-radius:99px;font-family:Georgia,serif;">
-        Book a session &mdash; &rarr;
+        Book a session &rarr;
       </a>
     </td></tr></table>
     <p style="margin:24px 0 0;font-size:13px;color:#8da898;font-family:Georgia,serif;">Questions? Just reply to this email.</p>
@@ -82,7 +82,7 @@ function buildSeq2(name: string): { subject: string; html: string } {
     <p style="margin:0 0 28px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">Whenever you're ready, we're here.</p>
     <table cellpadding="0" cellspacing="0"><tr><td>
       <a href="${BOOKING_URL}" style="display:inline-block;background:linear-gradient(135deg,#4e7a5e,#3d8b8b);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:13px 32px;border-radius:99px;font-family:Georgia,serif;">
-        Book a session &mdash; &rarr;
+        Book a session &rarr;
       </a>
     </td></tr></table>
   </td></tr>
@@ -122,7 +122,7 @@ function buildSeq3(name: string): { subject: string; html: string } {
     </p>
     <table cellpadding="0" cellspacing="0"><tr><td>
       <a href="${BOOKING_URL}" style="display:inline-block;background:linear-gradient(135deg,#4e7a5e,#3d8b8b);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:13px 32px;border-radius:99px;font-family:Georgia,serif;">
-        Book now &mdash;
+        Book now &rarr;
       </a>
     </td></tr></table>
     <p style="margin:20px 0 0;font-size:13px;color:#8da898;font-family:Georgia,serif;">Take care of yourself, ${name}. That's all we want.</p>
