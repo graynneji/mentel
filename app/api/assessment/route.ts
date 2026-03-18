@@ -1276,7 +1276,7 @@ function getBand(score: number): BandConfig {
         "Schedule one <strong>meaningful conversation</strong> this week — not small talk, but a real one. People who thrive long-term do so partly by being intentional about deep connection.",
       ],
       showUrgentResources: false,
-      cta: "Book a session — ₦10,000",
+      cta: "Book a session &rarr",
     };
   }
 
@@ -1302,7 +1302,7 @@ function getBand(score: number): BandConfig {
         "Write down <strong>3 things that are actually going well</strong> each evening for a week. This is not toxic positivity — it is actively retraining your brain's negativity bias, which tends to amplify problems when you're under stress.",
       ],
       showUrgentResources: false,
-      cta: "Book a session — ₦10,000",
+      cta: "Book a session &rarr",
     };
   }
 
@@ -1328,7 +1328,7 @@ function getBand(score: number): BandConfig {
         "Try a <strong>brain dump</strong> — set a timer for 10 minutes and write everything on your mind without editing or filtering. Don't read it back. Just externalising your thoughts onto paper reduces the psychological weight of carrying them internally.",
       ],
       showUrgentResources: false,
-      cta: "Book a session — ₦10,000",
+      cta: "Book a session &rarr",
     };
   }
 
@@ -1353,7 +1353,7 @@ function getBand(score: number): BandConfig {
       "Drink water, eat something small, step outside for 5 minutes — not because it solves the deeper issue, but because <strong>your nervous system needs basic inputs to function</strong>. When we're struggling deeply, we often stop doing the simplest things first. Start there.",
     ],
     showUrgentResources: true,
-    cta: "Book a session — ₦10,000",
+    cta: "Book a session &rarr",
   };
 }
 
@@ -1569,14 +1569,7 @@ function buildUserEmail(
                     You get a real conversation with someone who will actually listen, help you make sense of what you're carrying,
                     and give you a clear direction forward. One session can shift more than you expect.
                   </p>
-                  <!-- Price line -->
-                  <table cellpadding="0" cellspacing="0" style="margin-bottom:18px;"><tr>
-                    <td style="background:rgba(255,255,255,0.8);border-radius:10px;padding:10px 16px;border:1px solid ${band.accentColor}40;">
-                      <span style="font-size:13px;color:#8da898;text-decoration:line-through;font-family:Georgia,serif;">₦35,000</span>
-                      <span style="font-size:18px;font-weight:700;color:${band.color};margin-left:8px;font-family:Georgia,serif;">₦10,000</span>
-                      <span style="font-size:12px;color:#8da898;margin-left:6px;font-family:Georgia,serif;">· Limited offer · No recurring charge</span>
-                    </td>
-                  </tr></table>
+                 
                   <table cellpadding="0" cellspacing="0"><tr>
                     <td>
                       <a href="${BOOKING_URL}"
