@@ -1033,7 +1033,7 @@ export default function AssessmentPage() {
                         {/* CTA */}
                         <button
                             type="button"
-                            onClick={() => setStep("quiz")}
+                            onClick={() => { setStep("quiz"); window.ttq?.track("Start trial") }}
                             className="w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
                             style={{
                                 padding: "16px 32px",
