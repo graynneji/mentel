@@ -871,7 +871,7 @@ export default function AssessmentPage() {
         e.preventDefault();
         if (!validate()) return;
         setSubmitting(true);
-        await fetch("/api/assessment", {
+        const res = await fetch("/api/assessment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -883,7 +883,16 @@ export default function AssessmentPage() {
                 answers,
             }),
         });
-        setSubmitting(false);
+
+        if (res.ok) {
+            // ✅ TikTok Complete Registration event
+            window.ttq?.track("CompleteRegistration", {
+                content_name: "Mental Health Assessment",
+                description: "User submitted assessment email",
+            });
+
+            setSubmitting(false);
+        }
         setStep("result");
     }
 

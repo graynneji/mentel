@@ -445,9 +445,10 @@ export default function BookingForm() {
                 callback: () => {
                     setLoading(false);
                     setSuccess(true);
-                    window.ttq?.track("CompletePayment");
-                    window.ttq?.track("Schedule");
-                    window.ttq?.track("CompleteRegistration");
+                    window.ttq?.track("Place an Order", {
+                        value: data.amount,      // order amount
+                        currency: "NGN",   // order currency
+                    });
                 },
                 onClose: () => {
                     setLoading(false);
