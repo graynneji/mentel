@@ -9,7 +9,7 @@ import type { NextRequest } from "next/server";
 const SESSION_COOKIE = "mentel_admin_session";
 const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET!;
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Always allow the login page and the auth API route through
