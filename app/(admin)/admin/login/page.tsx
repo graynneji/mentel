@@ -43,18 +43,9 @@ export default function AdminLoginPage() {
     }
 
     return (
-        <div style={{
-            minHeight: "100vh",
-            background: "#f2f6f3",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "24px 16px",
-            fontFamily: "DM Sans, sans-serif",
-        }}>
+        <div className="min-h-screen bg-[#f2f6f3] flex items-center justify-center px-4 py-6 font-[DM_Sans,sans-serif]">
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
-                * { box-sizing: border-box; margin: 0; padding: 0; }
                 @keyframes fadeUp {
                     from { opacity: 0; transform: translateY(20px); }
                     to   { opacity: 1; transform: translateY(0); }
@@ -74,84 +65,46 @@ export default function AdminLoginPage() {
                 }
             `}</style>
 
-            <div className="card" style={{ width: "100%", maxWidth: 400 }}>
+            <div className="card w-full max-w-[400px]">
 
                 {/* Logo */}
-                <div style={{ textAlign: "center", marginBottom: 32 }}>
-                    <div style={{
-                        display: "inline-flex", alignItems: "center",
-                        gap: 10, marginBottom: 8,
-                    }}>
-                        <div style={{
-                            width: 36, height: 36, borderRadius: 10,
-                            background: "linear-gradient(135deg, #4e7a5e, #3d8b8b)",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center gap-2.5 mb-2">
+                        <div className="w-9 h-9 rounded-[10px] flex items-center justify-center" style={{ background: "linear-gradient(135deg, #4e7a5e, #3d8b8b)" }}>
                             <Lock size={16} color="white" strokeWidth={2} />
                         </div>
-                        <span style={{
-                            fontFamily: "Cormorant Garamond, serif",
-                            fontSize: 24, fontWeight: 400,
-                            color: "#1c3a3a", letterSpacing: "-0.02em",
-                        }}>
+                        <span className="font-[Cormorant_Garamond,serif] text-2xl font-normal text-[#1c3a3a] tracking-[-0.02em]">
                             Mentel
                         </span>
                     </div>
-                    <p style={{ fontSize: 13, color: "#7a8a7e", fontWeight: 300 }}>
+                    <p className="text-[13px] text-[#7a8a7e] font-light">
                         Admin access only
                     </p>
                 </div>
 
                 {/* Card */}
                 <div
-                    className={shake ? "shake" : ""}
-                    style={{
-                        background: "white",
-                        borderRadius: 20,
-                        border: "1px solid #c8ddd2",
-                        boxShadow: "0 4px 24px rgba(28,58,58,0.07)",
-                        overflow: "hidden",
-                        position: "relative",
-                    }}
+                    className={`${shake ? "shake" : ""} bg-white rounded-[20px] border border-[#c8ddd2] shadow-[0_4px_24px_rgba(28,58,58,0.07)] overflow-hidden relative`}
                 >
                     {/* Top accent */}
-                    <div style={{
-                        height: 2,
-                        background: "linear-gradient(90deg, #4e7a5e, #3d8b8b, #7ba98b)",
-                    }} />
+                    <div className="h-[2px]" style={{ background: "linear-gradient(90deg, #4e7a5e, #3d8b8b, #7ba98b)" }} />
 
-                    <div style={{ padding: "32px 32px 28px" }}>
-                        <h1 style={{
-                            fontFamily: "Cormorant Garamond, serif",
-                            fontSize: 26, fontWeight: 400,
-                            color: "#1c3a3a", marginBottom: 6,
-                            letterSpacing: "-0.01em",
-                        }}>
+                    <div className="px-8 pt-8 pb-7">
+                        <h1 className="font-[Cormorant_Garamond,serif] text-[26px] font-normal text-[#1c3a3a] mb-1.5 tracking-[-0.01em]">
                             Welcome back
                         </h1>
-                        <p style={{
-                            fontSize: 13, color: "#7a8a7e",
-                            fontWeight: 300, marginBottom: 28,
-                            lineHeight: 1.6,
-                        }}>
+                        <p className="text-[13px] text-[#7a8a7e] font-light mb-7 leading-[1.6]">
                             Enter your admin password to access the dashboard.
                         </p>
 
                         <form onSubmit={handleSubmit}>
 
                             {/* Password field */}
-                            <div style={{ marginBottom: 20 }}>
-                                <label style={{
-                                    display: "block",
-                                    fontSize: 11, fontWeight: 600,
-                                    color: "#4e7a5e",
-                                    textTransform: "uppercase",
-                                    letterSpacing: "0.08em",
-                                    marginBottom: 8,
-                                }}>
+                            <div className="mb-5">
+                                <label className="block text-[11px] font-semibold text-[#4e7a5e] uppercase tracking-[0.08em] mb-2">
                                     Password
                                 </label>
-                                <div style={{ position: "relative" }}>
+                                <div className="relative">
                                     <input
                                         type={showPass ? "text" : "password"}
                                         value={password}
@@ -162,17 +115,9 @@ export default function AdminLoginPage() {
                                         placeholder="Enter admin password"
                                         autoFocus
                                         required
+                                        className="w-full py-[13px] pl-4 pr-11 rounded-xl text-base text-[#2c3e35] bg-[#f7faf8] outline-none font-[DM_Sans,sans-serif] transition-[border-color,background] duration-150"
                                         style={{
-                                            width: "100%",
-                                            padding: "13px 44px 13px 16px",
                                             border: `1.5px solid ${error ? "#c0555a" : "#c8ddd2"}`,
-                                            borderRadius: 12,
-                                            fontSize: 14,
-                                            color: "#2c3e35",
-                                            background: "#f7faf8",
-                                            outline: "none",
-                                            fontFamily: "DM Sans, sans-serif",
-                                            transition: "border-color 0.15s, background 0.15s",
                                         }}
                                         onFocus={(e) => {
                                             e.target.style.borderColor = "#4e7a5e";
@@ -186,14 +131,7 @@ export default function AdminLoginPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowPass((p) => !p)}
-                                        style={{
-                                            position: "absolute", right: 12,
-                                            top: "50%", transform: "translateY(-50%)",
-                                            background: "none", border: "none",
-                                            cursor: "pointer", color: "#7a8a7e",
-                                            padding: 4, display: "flex",
-                                            alignItems: "center",
-                                        }}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent border-none cursor-pointer text-[#7a8a7e] p-1 flex items-center"
                                         tabIndex={-1}
                                     >
                                         {showPass
@@ -205,14 +143,8 @@ export default function AdminLoginPage() {
 
                                 {/* Error message */}
                                 {error && (
-                                    <div style={{
-                                        display: "flex", alignItems: "center", gap: 6,
-                                        marginTop: 8, fontSize: 12, color: "#c0555a",
-                                    }}>
-                                        <div style={{
-                                            width: 5, height: 5, borderRadius: "50%",
-                                            background: "#c0555a", flexShrink: 0,
-                                        }} />
+                                    <div className="flex items-center gap-1.5 mt-2 text-xs text-[#c0555a]">
+                                        <div className="w-[5px] h-[5px] rounded-full bg-[#c0555a] shrink-0" />
                                         {error}
                                     </div>
                                 )}
@@ -222,24 +154,12 @@ export default function AdminLoginPage() {
                             <button
                                 type="submit"
                                 disabled={loading || !password.trim()}
+                                className="w-full py-[14px] px-6 rounded-full border-none text-sm font-semibold font-[DM_Sans,sans-serif] transition-all duration-200 flex items-center justify-center gap-2"
                                 style={{
-                                    width: "100%",
-                                    padding: "14px 24px",
-                                    borderRadius: 99,
-                                    border: "none",
-                                    background: loading || !password.trim()
-                                        ? "#c8ddd2"
-                                        : "linear-gradient(135deg, #4e7a5e, #3d8b8b)",
+                                    background: loading || !password.trim() ? "#c8ddd2" : "linear-gradient(135deg, #4e7a5e, #3d8b8b)",
                                     color: loading || !password.trim() ? "#7a8a7e" : "white",
-                                    fontSize: 14, fontWeight: 600,
                                     cursor: loading || !password.trim() ? "not-allowed" : "pointer",
-                                    fontFamily: "DM Sans, sans-serif",
-                                    transition: "all 0.2s",
-                                    boxShadow: loading || !password.trim()
-                                        ? "none"
-                                        : "0 4px 16px rgba(61,139,139,0.28)",
-                                    display: "flex", alignItems: "center",
-                                    justifyContent: "center", gap: 8,
+                                    boxShadow: loading || !password.trim() ? "none" : "0 4px 16px rgba(61,139,139,0.28)",
                                 }}
                             >
                                 {loading ? (
@@ -268,13 +188,9 @@ export default function AdminLoginPage() {
                 </div>
 
                 {/* Footer note */}
-                <div style={{
-                    textAlign: "center", marginTop: 20,
-                    display: "flex", alignItems: "center",
-                    justifyContent: "center", gap: 5,
-                }}>
+                <div className="text-center mt-5 flex items-center justify-center gap-[5px]">
                     <Shield size={12} style={{ color: "#a8c4b0" }} />
-                    <span style={{ fontSize: 11, color: "#a8c4b0" }}>
+                    <span className="text-[11px] text-[#a8c4b0]">
                         Secured · Mentel Internal Dashboard
                     </span>
                 </div>

@@ -5,7 +5,7 @@ import Contact from "@/components/ContactPage";
 export const metadata: Metadata = {
     title: "Contact Us",
     description:
-        "Get in touch with the Mentel team. We respond within one business day — reach us by email, phone, or send a message directly.",
+        "Get in touch with the Mentel team. We respond within one business day, reach us by email, phone, or send a message directly.",
     alternates: {
         canonical: "/contact",
     },
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
                 url: "/og-image.png",
                 width: 1200,
                 height: 630,
-                alt: "Contact Mentel — Mental Health & Therapy Services",
+                alt: "Contact Mentel | Mental Health & Therapy Services",
             },
         ],
     },

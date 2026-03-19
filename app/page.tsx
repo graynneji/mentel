@@ -904,7 +904,7 @@ export default function HomePage() {
                 style={{ color: "var(--text-muted)", maxWidth: "420px" }}
               >
                 Mentel connects you with licensed therapists who genuinely listen.
-                Our evidence-based approach blends compassion with proven methods — helping
+                Our evidence-based approach blends compassion with proven methods, helping
                 you navigate life&apos;s challenges with confidence and care.
               </p>
 
@@ -1077,7 +1077,7 @@ export default function HomePage() {
                   <em className="italic" style={{ color: "var(--sage-dark)" }}>Take the free assessment.</em>
                 </h2>
                 <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)", maxWidth: "520px" }}>
-                  Answer 8 simple questions and get a personalised mental health snapshot — matched to the right support for you.
+                  Answer 8 simple questions and get a personalised mental health snapshot, matched to the right support for you.
                 </p>
               </div>
               <div

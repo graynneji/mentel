@@ -31,7 +31,7 @@ function buildSeq1(
     </p>
     <p style="margin:0 0 16px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">
       We know life is busy. And we know that "I'll deal with it later" can stretch into weeks without you even noticing.
-      But here's what we've seen — the people who act early, even when things feel manageable,
+      But here's what we've seen, the people who act early, even when things feel manageable,
       are the ones who look back and say it was the best decision they made.
     </p>
     <p style="margin:0 0 28px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">Your first session is one conversation. That's it.</p>
@@ -67,7 +67,7 @@ function buildSeq2(name: string): { subject: string; html: string } {
   <tr><td style="background:#fff;border-radius:20px;padding:40px 36px;border:1px solid #ddeae2;">
     <h2 style="margin:0 0 20px;font-family:Georgia,serif;font-size:26px;font-weight:400;color:#1c3a3a;">How have you been, ${name}?</h2>
     <p style="margin:0 0 16px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">
-      It's been a few days since your wellness check-in. We just wanted to reach out — not to push anything,
+      It's been a few days since your wellness check-in. We just wanted to reach out, not to push anything,
       but because we genuinely care about what happens next for you.
     </p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px;border-radius:14px;background:#edf7f1;border-left:3px solid #7ba98b;">
@@ -112,7 +112,7 @@ function buildSeq3(name: string): { subject: string; html: string } {
     <h2 style="margin:0 0 20px;font-family:Georgia,serif;font-size:26px;font-weight:400;color:#1c3a3a;">${name}, this is our last nudge.</h2>
     <p style="margin:0 0 16px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">
       We've sent a couple of emails now. We don't want to be that brand that never stops.
-      So this is the last one — unless you reach out to us.
+      So this is the last one, unless you reach out to us.
     </p>
     <p style="margin:0 0 16px;font-size:15px;line-height:1.8;color:#4a5e52;font-family:Georgia,serif;">
       The &#8358;10,000 introductory rate is a limited offer. It will go back to &#8358;35,000.

@@ -76,7 +76,7 @@ const sections = [
     {
         title: "Intellectual Property",
         content: [
-            "All content on the Mentel platform — including text, design, logos, and software — is owned by Mentel or its licensors. You may not reproduce, distribute, or create derivative works without our express written permission.",
+            "All content on the Mentel platform, including text, design, logos, and software, is owned by Mentel or its licensors. You may not reproduce, distribute, or create derivative works without our express written permission.",
         ],
     },
     {

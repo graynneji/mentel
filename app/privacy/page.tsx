@@ -27,7 +27,7 @@ const sections = [
     {
         title: "Information We Collect",
         content: [
-            "When you use Mentel, we may collect personal information you provide directly — such as your name, email address, phone number, and any details you share when booking a session or filling out intake forms.",
+            "When you use Mentel, we may collect personal information you provide directly, such as your name, email address, phone number, and any details you share when booking a session or filling out intake forms.",
             "We also collect limited technical data such as your IP address, browser type, and pages visited to help us improve our service. We do not sell or rent this data to third parties.",
         ],
     },
@@ -42,7 +42,7 @@ const sections = [
         title: "Confidentiality & Therapy Sessions",
         content: [
             "Everything shared in therapy sessions is strictly confidential. Our therapists are bound by professional and ethical obligations to protect what you share. Session notes are never shared with third parties without your explicit written consent.",
-            "Exceptions to confidentiality apply only as required by law — for example, if there is a risk of harm to yourself or others, or where a court order compels disclosure.",
+            "Exceptions to confidentiality apply only as required by law, for example, if there is a risk of harm to yourself or others, or where a court order compels disclosure.",
         ],
     },
     {

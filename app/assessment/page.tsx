@@ -749,7 +749,7 @@ const trustBadges: TrustBadge[] = [
 const checklistItems: string[] = [
     "8 simple questions about how you've been feeling",
     "Your personalised result in under 2 minutes",
-    "No account needed — completely confidential",
+    "No account needed, completely confidential",
     "Matched to the right therapist for your needs",
 ];
 
@@ -769,7 +769,7 @@ function getResult(score: number): Result {
             gradient: "linear-gradient(135deg, #7ba98b, #a8c4b0)",
             headline: "You're in a good place",
             summary:
-                "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions — therapy can be valuable even when you're not in crisis.",
+                "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions, therapy can be valuable even when you're not in crisis.",
             cta: "Explore proactive therapy",
         };
     }
@@ -789,14 +789,14 @@ function getResult(score: number): Result {
             gradient: "linear-gradient(135deg, #4e7a5e, #3d8b8b)",
             headline: "You deserve real support",
             summary:
-                "Your responses suggest you're going through a genuinely difficult time. You're not alone — what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
+                "Your responses suggest you're going through a genuinely difficult time. You're not alone, what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
             cta: "Book your first session",
         };
     }
     return {
         band: "High Concern",
         gradient: "linear-gradient(135deg, #c0555a, #e07a7f)",
-        headline: "Please reach out — you matter",
+        headline: "Please reach out, you matter",
         summary:
             "Your responses suggest you're struggling significantly. We strongly encourage you to speak with a professional as soon as possible. Our therapists are here for you, without judgment.",
         cta: "Get urgent support",
@@ -960,7 +960,7 @@ export default function AssessmentPage() {
                             style={{ fontSize: 16, color: "var(--text-muted)", maxWidth: 420 }}
                         >
                             This short, confidential check-in helps us understand where you are
-                            right now — so we can match you with the right support.
+                            right now, so we can match you with the right support.
                         </p>
 
                         {/* Trust badges */}
@@ -1522,7 +1522,7 @@ export default function AssessmentPage() {
                         <span style={{ color: "var(--sage-dark)", fontWeight: 500 }}>
                             Check your spam or junk folder
                         </span>
-                        {" "}— it may have landed there.
+                        {" "} it may have landed there.
                         {" "}If you&apos;re in crisis, please contact{" "}
                         <a
                             href="tel:112"

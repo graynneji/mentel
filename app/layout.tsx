@@ -116,7 +116,7 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mentel — Mental Health & Therapy Services",
+    default: "Mentel | Mental Health & Therapy Services",
     template: "%s | Mentel",
   },
   description:
@@ -145,7 +145,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://trymentel.com",
     siteName: "Mentel",
-    title: "Mentel — Mental Health & Therapy Services",
+    title: "Mentel | Mental Health & Therapy Services",
     description:
       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
     images: [
@@ -153,13 +153,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Mentel — Mental Health & Therapy Services",
+        alt: "Mentel | Mental Health & Therapy Services",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mentel — Mental Health & Therapy Services",
+    title: "Mentel | Mental Health & Therapy Services",
     description:
       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
     images: ["/og-image.png"],
@@ -226,7 +226,7 @@ const websiteSchema = {
 const siteLinksSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "Mentel — Mental Health & Therapy Services",
+  name: "Mentel | Mental Health & Therapy Services",
   url: "https://trymentel.com",
   description:
     "Mentel connects you with licensed therapists who genuinely listen.",
