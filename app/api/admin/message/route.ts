@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import type { Lead } from "@/generated/prisma/client";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const FROM_EMAIL = "Mentel <hello@trymentel.com>";
+const FROM_EMAIL = "Mentel <hello@mail.trymentel.com>";
 const BOOKING_URL = "https://trymentel.com/#book";
 
 // ── Email builders ─────────────────────────────────────────────────────────────

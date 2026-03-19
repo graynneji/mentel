@@ -8,8 +8,8 @@ export async function POST(req: Request) {
     const { name, email, message } = await req.json();
 
     await resend.emails.send({
-      from: "Mentel Contact <hello@trymentel.com>",
-      to: ["graynneji405@gmail.com"], // your email
+      from: "Mentel Contact <hello@mail.trymentel.com>",
+      to: ["hello@mail.trymentel.com"], // your email
       //   to: ["hello@trymentel.com"], // your email
       subject: "New Contact Form Message",
       html: `

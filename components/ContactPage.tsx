@@ -29,7 +29,7 @@ function TikTokIcon() {
 }
 
 const contactInfo = [
-    { icon: Mail, label: "Email", value: "hello@trymentel.com", href: "mailto:hello@trymentel.com" },
+    { icon: Mail, label: "Email", value: "hello@mail.trymentel.com", href: "mailto:hello@mail.trymentel.com" },
     { icon: Phone, label: "Phone - WhatsApp only", value: "+254 734 527 573", href: "tel:+254 734 527 573" },
     { icon: MapPin, label: "Location", value: "Lagos, Nigeria", href: "#" },
 ];
@@ -240,7 +240,7 @@ export default function ContactPage() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full py-3.5 rounded-2xl text-white text-sm font-medium flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-70 disabled:transform-none duration-200"
+                                        className="w-full py-3.5 rounded-2xl text-white text-sm font-medium flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5 disabled:opacity-70 disabled:transform-none duration-200 cursor-pointer"
                                         style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                                     >
                                         {loading ? <Loader2 size={16} className="animate-spin" /> : <Send size={15} />}

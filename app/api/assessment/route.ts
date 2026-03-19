@@ -1898,8 +1898,8 @@ import { db } from "@/lib/db";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const ADMIN_EMAIL = "graynneji405@gmail.com";
-const FROM_EMAIL = "Mentel <hello@trymentel.com>";
+const ADMIN_EMAIL = "hello@mail.trymentel.com";
+const FROM_EMAIL = "Mentel <hello@mail.trymentel.com>";
 const BOOKING_URL = "https://trymentel.com/#book";
 const TOTAL_QUESTIONS = 8;
 

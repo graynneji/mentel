@@ -21,8 +21,8 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!; // sk_live_...
-const ADMIN_EMAIL = "graynneji405@gmail.com";
-const FROM_EMAIL = "Mentel <hello@trymentel.com>";
+const ADMIN_EMAIL = "hello@mail.trymentel.com";
+const FROM_EMAIL = "Mentel <hello@mail.trymentel.com>";
 const BOOKING_URL = "https://trymentel.com/#book";
 
 // ── HTML sanitizer ─────────────────────────────────────────────────────────────
@@ -226,7 +226,7 @@ function buildClientEmail(data: {
                   <p style="margin:0 0 4px;font-size:12px;font-weight:600;color:#4e7a5e;font-family:Georgia,serif;">Need help?</p>
                   <p style="margin:0;font-size:13px;color:#5a7264;line-height:1.5;font-family:Georgia,serif;">
                     Reply to this email or reach us at
-                    <a href="mailto:hello@trymentel.com" style="color:#3d8b8b;text-decoration:none;font-weight:600;">hello@trymentel.com</a>.
+                    <a href="mailto:hello@mail.trymentel.com" style="color:#3d8b8b;text-decoration:none;font-weight:600;">hello@mail.trymentel.com</a>.
                     We typically respond within a few hours.
                   </p>
                 </td>
