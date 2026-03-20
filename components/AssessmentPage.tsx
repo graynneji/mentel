@@ -580,7 +580,7 @@
 //         </div>
 //     );
 // }
-
+////////////////////////////////////////////////////////////////////////////////////
 "use client";
 
 import { useState } from "react";
@@ -741,13 +741,13 @@ const avatarColors: string[] = [
 
 const trustBadges: TrustBadge[] = [
     { icon: Lock, label: "Confidential", iconColor: "#3d8b8b", iconFill: "#6fb8b8" },
-    { icon: Clock, label: "2 Minutes", iconColor: "#7b6fa9", iconFill: "#b8a8d4" },
+    // { icon: Clock, label: "2 Minutes", iconColor: "#7b6fa9", iconFill: "#b8a8d4" },
     { icon: Sparkles, label: "Free", iconColor: "#a97b3d", iconFill: "#d4b87b" },
     { icon: UserCheck, label: "No Sign Up", iconColor: "#4e7a5e", iconFill: "#7ba98b" },
 ];
 
 const checklistItems: string[] = [
-    "8 simple questions about how you've been feeling",
+    // "8 simple questions about how you've been feeling",
     "Your personalised result in under 2 minutes",
     "No account needed, completely confidential",
     "Matched to the right therapist for your needs",
@@ -755,9 +755,9 @@ const checklistItems: string[] = [
 
 const nextSteps: string[] = [
     "We'll email your full results summary shortly",
-    "Check your spam or junk folder if you don't see it",
+    "Check your spam folder if you don't see it",
     "A therapist will reach out within 24 hours",
-    "Your first consultation is free and judgment-free",
+    // "Your first consultation is free and judgment-free",
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -770,7 +770,8 @@ function getResult(score: number): Result {
             headline: "You're in a good place",
             summary:
                 "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions, therapy can be valuable even when you're not in crisis.",
-            cta: "Explore proactive therapy",
+            cta: "Chat with us on WhatsApp",
+            // cta: "Explore proactive therapy",
         };
     }
     if (score <= 12) {
@@ -780,7 +781,8 @@ function getResult(score: number): Result {
             headline: "Some areas could use support",
             summary:
                 "Your responses suggest you're experiencing some difficulties worth exploring. A therapist can help you build practical tools and understand patterns before they become harder to manage.",
-            cta: "Book a free consultation",
+            // cta: "Book a free consultation",
+            cta: "Chat with us on WhatsApp",
         };
     }
     if (score <= 18) {
@@ -790,7 +792,8 @@ function getResult(score: number): Result {
             headline: "You deserve real support",
             summary:
                 "Your responses suggest you're going through a genuinely difficult time. You're not alone, what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
-            cta: "Book your first session",
+            cta: "Chat with us on WhatsApp",
+            // cta: "Book your first session",
         };
     }
     return {
@@ -799,7 +802,8 @@ function getResult(score: number): Result {
         headline: "Please reach out, you matter",
         summary:
             "Your responses suggest you're struggling significantly. We strongly encourage you to speak with a professional as soon as possible. Our therapists are here for you, without judgment.",
-        cta: "Get urgent support",
+        cta: "Chat with us on WhatsApp",
+        // cta: "Get urgent support",
     };
 }
 
@@ -896,6 +900,31 @@ export default function AssessmentPage() {
         setStep("result");
     }
 
+    // -- Send whatsapp message 
+
+    // This function bridges your assessment result to the WhatsApp URL
+    const handleWhatsAppBooking = (score: number) => {
+        const result = getResult(score); // This gets your "Thriving", "Moderate", etc.
+        const phoneNumber = "254734527573"; // Your Mentel Business Number
+
+        // Customizing the message based on the severity for better "Positioning"
+        let personalizedNote = "";
+        if (result.band === "High Concern") {
+            personalizedNote = "I need urgent support and would like to speak with a professional as soon as possible.";
+        } else if (result.band === "Thriving") {
+            personalizedNote = "I'm interested in proactive therapy and building resilience.";
+        } else {
+            personalizedNote = "I'd like to discuss these results and see how therapy can help me.";
+        }
+
+        const message = `Hello Mentel, I just completed my Private Wellness Assessment. 
+Result: *${result.band}*
+${personalizedNote}`;
+
+        return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    };
+
+    const whatsappUrl = handleWhatsAppBooking(totalScore);
     // ── INTRO ──────────────────────────────────────────────────────────────────
 
     if (step === "intro") {
@@ -907,7 +936,8 @@ export default function AssessmentPage() {
 
                         {/* Social proof */}
                         <div
-                            className="inline-flex items-center gap-3 mb-8 rounded-full border"
+                            className="inline-flex items-center gap-3 mb-6 rounded-full border"
+                            // className="inline-flex items-center gap-3 mb-8 rounded-full border"
                             style={{
                                 padding: "7px 16px 7px 7px",
                                 background: "white",
@@ -938,7 +968,10 @@ export default function AssessmentPage() {
                             </div>
                             <div style={{ lineHeight: 1.4 }}>
                                 <span className="block text-xs font-medium" style={{ color: "var(--deep)" }}>
-                                    2,400+ people have taken this check-in
+                                    {/* 2,400+ people have taken this */}
+                                    {/* 2,400+ people already checked their status */}
+                                    2,400+ people checked their status.
+                                    {/* 2,400+ people have taken this check-in */}
                                 </span>
                                 <span className="block text-xs" style={{ color: "var(--text-muted)" }}>
                                     Trusted · Confidential · Free
@@ -948,7 +981,7 @@ export default function AssessmentPage() {
 
                         {/* Headline */}
                         <h1
-                            className="font-cormorant mb-5"
+                            className="font-cormorant mb-3"
                             style={{
                                 fontSize: "clamp(38px, 6vw, 54px)",
                                 fontWeight: 300,
@@ -965,7 +998,7 @@ export default function AssessmentPage() {
                         </h1>
 
                         <p
-                            className="mb-8 font-light leading-relaxed"
+                            className="mb-5 font-light leading-relaxed"
                             style={{ fontSize: 16, color: "var(--text-muted)", maxWidth: 420 }}
                         >
                             This short, confidential check-in helps us understand where you are
@@ -973,7 +1006,7 @@ export default function AssessmentPage() {
                         </p>
 
                         {/* Trust badges */}
-                        <div className="flex flex-wrap gap-2 mb-8">
+                        <div className="flex flex-wrap gap-2 mb-5">
                             {trustBadges.map(({ icon: Icon, label, iconColor, iconFill }) => (
                                 <span
                                     key={label}
@@ -1048,6 +1081,7 @@ export default function AssessmentPage() {
                     </div>
                 </section>
             </div>
+
         );
     }
 
@@ -1500,13 +1534,15 @@ export default function AssessmentPage() {
                     {/* CTAs */}
                     <div className="flex flex-col sm:flex-row gap-3">
                         <Link
-                            href="/#book"
+                            href={whatsappUrl}
+                            // href="/#book"
                             className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
                             style={{
                                 padding: "15px 24px",
                                 background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
                                 boxShadow: "0 4px 18px rgba(61,139,139,0.25)",
                             }}
+                            target="_blank"
                         >
                             {result.cta}
                             <ArrowRight size={15} strokeWidth={2} />
