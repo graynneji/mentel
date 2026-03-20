@@ -1000,7 +1000,7 @@ export default function AssessmentPage() {
                             }}
                         >
                             This short, confidential check-in helps us understand where you
-                            are right now, so we can get support.
+                            are right now, so you can get support.
                         </p>
 
                         {/* Trust badges */}
