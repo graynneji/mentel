@@ -1099,7 +1099,7 @@ export default function AssessmentPage() {
             <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
                 <BgBlobs />
                 <section
-                    className="relative z-10 pt-12 sm:pt-20 pb-24 px-4 sm:px-6"
+                    className="relative z-10 pt-20 pb-24 px-4 sm:px-6"
                     aria-labelledby={questionId}
                 >
                     <div className="max-w-lg mx-auto animate-fade-up">
@@ -1280,7 +1280,7 @@ export default function AssessmentPage() {
             <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
                 <BgBlobs />
                 <section
-                    className="relative z-10 pt-12 sm:pt-20 pb-24 px-4 sm:px-6"
+                    className="relative z-10 pt-20 pb-24 px-4 sm:px-6"
                     aria-labelledby="email-heading"
                 >
                     <div className="max-w-md mx-auto animate-fade-up">
@@ -1494,7 +1494,7 @@ export default function AssessmentPage() {
         <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
             <BgBlobs />
             <section
-                className="relative z-10 pt-12 sm:pt-20 pb-24 px-4 sm:px-6"
+                className="relative z-10 pt-20 pb-24 px-4 sm:px-6"
                 aria-labelledby="result-heading"
             >
                 <div className="max-w-lg mx-auto animate-fade-up">
