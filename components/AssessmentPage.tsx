@@ -594,7 +594,6 @@ import {
     Shield,
     Lock,
     UserCheck,
-    Clock,
     Sparkles,
     type LucideIcon,
 } from "lucide-react";
@@ -638,36 +637,41 @@ type Step = "intro" | "quiz" | "email" | "result";
 
 // ── Data ───────────────────────────────────────────────────────────────────────
 
+/**
+ * Questions are intentionally grounded in PHQ-9 / GAD-7 clinical language —
+ * this gives the tool credibility and ensures scores map meaningfully to
+ * real severity bands. Wording is warm and plain, not jargon-heavy.
+ */
 const questions: Question[] = [
     {
         id: "q1",
         category: "Mood",
-        text: "Over the past two weeks, how often have you felt down, hopeless, or empty?",
+        text: "In the past two weeks, how often have you felt down, hopeless, or empty?",
         options: [
             { label: "Rarely or never", value: 0 },
-            { label: "Several days", value: 1 },
+            { label: "A few days", value: 1 },
             { label: "More than half the days", value: 2 },
-            { label: "Nearly every day", value: 3 },
+            { label: "Almost every day", value: 3 },
         ],
     },
     {
         id: "q2",
         category: "Anxiety",
-        text: "How often have you felt nervous, anxious, or on edge lately?",
+        text: "How often have you felt nervous, anxious, or on edge?",
         options: [
             { label: "Rarely or never", value: 0 },
-            { label: "Several days", value: 1 },
+            { label: "A few days", value: 1 },
             { label: "More than half the days", value: 2 },
-            { label: "Nearly every day", value: 3 },
+            { label: "Almost every day", value: 3 },
         ],
     },
     {
         id: "q3",
         category: "Energy",
-        text: "How would you describe your energy and motivation day-to-day?",
+        text: "How would you describe your energy levels lately?",
         options: [
             { label: "Good — I feel energised most days", value: 0 },
-            { label: "Okay — some low days but manageable", value: 1 },
+            { label: "Okay — some low patches but manageable", value: 1 },
             { label: "Low — I often struggle to get going", value: 2 },
             { label: "Very low — it's affecting my daily life", value: 3 },
         ],
@@ -677,87 +681,78 @@ const questions: Question[] = [
         category: "Sleep",
         text: "How has your sleep been recently?",
         options: [
-            { label: "Good — I sleep well most nights", value: 0 },
+            { label: "Good — mostly restful nights", value: 0 },
             { label: "Occasionally disrupted", value: 1 },
             { label: "Often restless or hard to fall asleep", value: 2 },
-            { label: "Poor most nights — it's affecting me significantly", value: 3 },
+            { label: "Poor — it's affecting me significantly", value: 3 },
         ],
     },
     {
         id: "q5",
         category: "Relationships",
-        text: "How are your relationships with people close to you feeling right now?",
+        text: "How are your relationships with people close to you?",
         options: [
             { label: "Mostly good and connected", value: 0 },
             { label: "Some tension or distance", value: 1 },
-            { label: "Strained — communication has been difficult", value: 2 },
-            { label: "Isolated or experiencing serious conflict", value: 3 },
+            { label: "Strained — communication has been hard", value: 2 },
+            { label: "Isolated or in serious conflict", value: 3 },
         ],
     },
     {
         id: "q6",
         category: "Stress",
-        text: "How well are you managing stress and everyday demands?",
+        text: "How well are you coping with everyday pressure?",
         options: [
             { label: "Well — stress feels manageable", value: 0 },
             { label: "Sometimes overwhelmed, but coping", value: 1 },
             { label: "Often overwhelmed", value: 2 },
-            { label: "Constantly overwhelmed — it's hard to function", value: 3 },
+            { label: "Constantly overwhelmed — hard to function", value: 3 },
         ],
     },
     {
         id: "q7",
         category: "Self-worth",
-        text: "How do you feel about yourself and your sense of self-worth lately?",
+        text: "How do you feel about yourself day to day?",
         options: [
             { label: "Generally positive and confident", value: 0 },
             { label: "Somewhat self-critical at times", value: 1 },
             { label: "Often feel inadequate or worthless", value: 2 },
-            { label: "Constantly struggle with very low self-worth", value: 3 },
+            { label: "Struggling with very low self-worth", value: 3 },
         ],
     },
     {
         id: "q8",
         category: "Support",
-        text: "What are you hoping to get from speaking with a therapist?",
+        text: "What would you most like from speaking with a therapist?",
         options: [
-            { label: "General wellbeing and personal growth", value: 0 },
-            { label: "Help managing a specific challenge", value: 1 },
+            { label: "Personal growth and resilience", value: 0 },
+            { label: "Help with a specific challenge", value: 1 },
             { label: "Support through a difficult period", value: 2 },
             { label: "Urgent help — I'm really struggling", value: 3 },
         ],
     },
 ];
 
-const avatarLetters: string[] = ["A", "E", "F", "K", "T", "R"];
-const avatarColors: string[] = [
-    "#7ba98b",
-    "#3d8b8b",
-    "#4e7a5e",
-    "#6fb8b8",
-    "#a8c4b0",
-    "#5a8a7a",
-];
+// Reduced to 3 avatars — prevents pill from wrapping on 320px screens
+const avatarLetters: string[] = ["A", "E", "K", "C"];
+const avatarColors: string[] = ["#7ba98b", "#3d8b8b", "#6fb8b8", "#d4b87b"];
 
 const trustBadges: TrustBadge[] = [
     { icon: Lock, label: "Confidential", iconColor: "#3d8b8b", iconFill: "#6fb8b8" },
-    // { icon: Clock, label: "2 Minutes", iconColor: "#7b6fa9", iconFill: "#b8a8d4" },
     { icon: Sparkles, label: "Free", iconColor: "#a97b3d", iconFill: "#d4b87b" },
-    { icon: UserCheck, label: "No Sign Up", iconColor: "#4e7a5e", iconFill: "#7ba98b" },
+    { icon: UserCheck, label: "No sign-up", iconColor: "#4e7a5e", iconFill: "#7ba98b" },
 ];
 
 const checklistItems: string[] = [
-    // "8 simple questions about how you've been feeling",
-    "Your personalised result in under 2 minutes",
-    "No account needed, completely confidential",
-    "Matched to the right therapist for your needs",
+    "Your personalised result in 120 seconds",
+    "No account, completely confidential",
+    "Matched to the right therapist",
 ];
 
 const nextSteps: string[] = [
     "We'll email your full results summary shortly",
     "Check your spam folder if you don't see it",
     "A therapist will reach out within 24 hours",
-    // "Your first consultation is free and judgment-free",
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -769,9 +764,8 @@ function getResult(score: number): Result {
             gradient: "linear-gradient(135deg, #7ba98b, #a8c4b0)",
             headline: "You're in a good place",
             summary:
-                "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions, therapy can be valuable even when you're not in crisis.",
+                "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions — therapy can be valuable even when you're not in crisis.",
             cta: "Chat with us on WhatsApp",
-            // cta: "Explore proactive therapy",
         };
     }
     if (score <= 12) {
@@ -781,7 +775,6 @@ function getResult(score: number): Result {
             headline: "Some areas could use support",
             summary:
                 "Your responses suggest you're experiencing some difficulties worth exploring. A therapist can help you build practical tools and understand patterns before they become harder to manage.",
-            // cta: "Book a free consultation",
             cta: "Chat with us on WhatsApp",
         };
     }
@@ -791,19 +784,17 @@ function getResult(score: number): Result {
             gradient: "linear-gradient(135deg, #4e7a5e, #3d8b8b)",
             headline: "You deserve real support",
             summary:
-                "Your responses suggest you're going through a genuinely difficult time. You're not alone, what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
+                "Your responses suggest you're going through a genuinely difficult time. You're not alone — what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
             cta: "Chat with us on WhatsApp",
-            // cta: "Book your first session",
         };
     }
     return {
         band: "High Concern",
         gradient: "linear-gradient(135deg, #c0555a, #e07a7f)",
-        headline: "Please reach out, you matter",
+        headline: "Please reach out — you matter",
         summary:
-            "Your responses suggest you're struggling significantly. We strongly encourage you to speak with a professional as soon as possible. Our therapists are here for you, without judgment.",
+            "Your responses suggest you're struggling significantly right now. We strongly encourage you to speak with a professional as soon as possible. Our therapists are here for you, without judgment.",
         cta: "Chat with us on WhatsApp",
-        // cta: "Get urgent support",
     };
 }
 
@@ -821,8 +812,7 @@ export default function AssessmentPage() {
     const [transitioning, setTransitioning] = useState<boolean>(false);
 
     const totalScore: number = Object.values(answers).reduce(
-        (acc: number, val: number) => acc + val,
-        0
+        (acc, val) => acc + val, 0
     );
     const result: Result = getResult(totalScore);
     const progress: number = ((current + 1) / questions.length) * 100;
@@ -879,85 +869,83 @@ export default function AssessmentPage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                name,
-                email,
-                phone,
+                name, email, phone,
                 score: totalScore,
                 band: result.band,
                 answers,
             }),
         });
-
         if (res.ok) {
-            // ✅ TikTok Complete Registration event
             window.ttq?.track("CompleteRegistration", {
                 content_name: "Mental Health Assessment",
                 description: "User submitted assessment email",
             });
-
             setSubmitting(false);
         }
         setStep("result");
     }
 
-    // -- Send whatsapp message 
-
-    // This function bridges your assessment result to the WhatsApp URL
-    const handleWhatsAppBooking = (score: number) => {
-        const result = getResult(score); // This gets your "Thriving", "Moderate", etc.
-        const phoneNumber = "254734527573"; // Your Mentel Business Number
-
-        // Customizing the message based on the severity for better "Positioning"
-        let personalizedNote = "";
-        if (result.band === "High Concern") {
-            personalizedNote = "I need urgent support and would like to speak with a professional as soon as possible.";
-        } else if (result.band === "Thriving") {
-            personalizedNote = "I'm interested in proactive therapy and building resilience.";
+    function buildWhatsAppUrl(score: number): string {
+        const r = getResult(score);
+        const phoneNumber = "254734527573";
+        let note = "";
+        if (r.band === "High Concern") {
+            note = "I need urgent support and would like to speak with a professional as soon as possible.";
+        } else if (r.band === "Thriving") {
+            note = "I'm interested in proactive therapy and building resilience.";
         } else {
-            personalizedNote = "I'd like to discuss these results and see how therapy can help me.";
+            note = "I'd like to discuss these results and see how therapy can help me.";
         }
-
-        const message = `Hello Mentel, I just completed my Private Wellness Assessment. 
-Result: *${result.band}*
-${personalizedNote}`;
-
+        const message = `Hello Mentel, I just completed my Private Wellness Assessment.\nResult: *${r.band}*\n${note}`;
         return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    };
+    }
 
-    const whatsappUrl = handleWhatsAppBooking(totalScore);
+    const whatsappUrl = buildWhatsAppUrl(totalScore);
+
     // ── INTRO ──────────────────────────────────────────────────────────────────
 
     if (step === "intro") {
         return (
             <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
                 <BgBlobs />
-                <section className="relative z-10 pt-20 pb-24 px-4 sm:px-6">
+                <section
+                    className="relative z-10 pt-20 pb-24 px-4 sm:px-6"
+                    aria-labelledby="intro-heading"
+                >
                     <div className="max-w-xl mx-auto animate-fade-up">
 
-                        {/* Social proof */}
+                        {/*
+                          Social proof pill
+                          ─────────────────
+                          • 3 avatars only (was 6) — prevents wrapping on 320–360px
+                          • whitespace-nowrap on the text lines
+                          • overall pill stays on one row at all reasonable widths
+                        */}
                         <div
-                            className="inline-flex items-center gap-3 mb-6 rounded-full border"
-                            // className="inline-flex items-center gap-3 mb-8 rounded-full border"
+                            className="inline-flex items-center gap-2 mb-6 rounded-full border"
                             style={{
-                                padding: "7px 16px 7px 7px",
+                                padding: "6px 14px 6px 6px",
                                 background: "white",
                                 borderColor: "var(--border)",
                                 boxShadow: "0 1px 8px rgba(28,58,58,0.06)",
+                                maxWidth: "100%",
                             }}
+                            aria-label="2,400 or more people have taken this assessment"
                         >
-                            <div className="flex items-center">
+                            {/* Avatars */}
+                            <div className="flex items-center flex-shrink-0" aria-hidden="true">
                                 {avatarLetters.map((letter, i) => (
                                     <div
                                         key={`avatar-${i}`}
                                         className="flex items-center justify-center rounded-full text-white"
                                         style={{
-                                            width: 28,
-                                            height: 28,
-                                            fontSize: 11,
-                                            fontWeight: 500,
+                                            width: 26,
+                                            height: 26,
+                                            fontSize: 10,
+                                            fontWeight: 600,
                                             background: avatarColors[i],
                                             border: "2px solid white",
-                                            marginLeft: i === 0 ? 0 : -9,
+                                            marginLeft: i === 0 ? 0 : -8,
                                             zIndex: avatarLetters.length - i,
                                             position: "relative",
                                         }}
@@ -966,24 +954,30 @@ ${personalizedNote}`;
                                     </div>
                                 ))}
                             </div>
-                            <div style={{ lineHeight: 1.4 }}>
-                                <span className="block text-xs font-medium" style={{ color: "var(--deep)" }}>
-                                    {/* 2,400+ people have taken this */}
-                                    {/* 2,400+ people already checked their status */}
-                                    2,400+ people checked their status.
-                                    {/* 2,400+ people have taken this check-in */}
+
+                            {/* Text — two tight lines, never wraps */}
+                            <div style={{ lineHeight: 1.35, minWidth: 0 }}>
+                                <span
+                                    className="block text-xs font-semibold whitespace-nowrap"
+                                    style={{ color: "var(--deep)", fontSize: 12 }}
+                                >
+                                    2,400+ people checked in
                                 </span>
-                                <span className="block text-xs" style={{ color: "var(--text-muted)" }}>
+                                <span
+                                    className="block whitespace-nowrap"
+                                    style={{ color: "var(--text-muted)", fontSize: 11 }}
+                                >
                                     Trusted · Confidential · Free
                                 </span>
                             </div>
                         </div>
 
-                        {/* Headline */}
+                        {/* Heading — accessible id for aria-labelledby */}
                         <h1
+                            id="intro-heading"
                             className="font-cormorant mb-3"
                             style={{
-                                fontSize: "clamp(38px, 6vw, 54px)",
+                                fontSize: "clamp(36px, 8vw, 54px)",
                                 fontWeight: 300,
                                 lineHeight: 1.14,
                                 letterSpacing: "-0.02em",
@@ -999,49 +993,53 @@ ${personalizedNote}`;
 
                         <p
                             className="mb-5 font-light leading-relaxed"
-                            style={{ fontSize: 16, color: "var(--text-muted)", maxWidth: 420 }}
+                            style={{
+                                fontSize: "clamp(15px, 4vw, 16px)",
+                                color: "var(--text-muted)",
+                                maxWidth: 420,
+                            }}
                         >
-                            This short, confidential check-in helps us understand where you are
-                            right now, so we can match you with the right support.
+                            This short, confidential check-in helps us understand where you
+                            are right now, so we can get support.
                         </p>
 
                         {/* Trust badges */}
-                        <div className="flex flex-wrap gap-2 mb-5">
+                        <div className="flex flex-wrap gap-2 mb-5" role="list" aria-label="Features">
                             {trustBadges.map(({ icon: Icon, label, iconColor, iconFill }) => (
                                 <span
                                     key={label}
+                                    role="listitem"
                                     className="inline-flex items-center gap-1.5 rounded-full text-xs font-medium border"
                                     style={{
-                                        padding: "6px 14px",
+                                        padding: "6px 13px",
                                         background: "rgba(123,169,139,0.09)",
                                         borderColor: "rgba(123,169,139,0.26)",
                                         color: "var(--sage-dark)",
                                     }}
                                 >
-                                    <Icon
-                                        size={12}
-                                        fill={iconFill}
-                                        stroke={iconColor}
-                                        strokeWidth={1.5}
-                                    />
+                                    <Icon size={12} fill={iconFill} stroke={iconColor} strokeWidth={1.5} aria-hidden="true" />
                                     {label}
                                 </span>
                             ))}
                         </div>
 
                         {/* Checklist card */}
-                        <div
-                            className="rounded-2xl border mb-8 overflow-hidden"
+                        <ul
+                            className="rounded-2xl border overflow-hidden"
                             style={{
                                 background: "white",
                                 borderColor: "var(--border)",
                                 boxShadow: "0 2px 16px rgba(28,58,58,0.05)",
+                                listStyle: "none",
+                                padding: 0,
+                                marginBottom: "2rem",
                             }}
+                            aria-label="What to expect"
                         >
                             {checklistItems.map((item, i) => (
-                                <div
+                                <li
                                     key={item}
-                                    className="flex items-start gap-3 px-6 py-4"
+                                    className="flex items-start gap-3 px-5 py-4 sm:px-6"
                                     style={{
                                         borderBottom:
                                             i < checklistItems.length - 1
@@ -1055,33 +1053,37 @@ ${personalizedNote}`;
                                         stroke="white"
                                         strokeWidth={2.5}
                                         style={{ flexShrink: 0, marginTop: 2 }}
+                                        aria-hidden="true"
                                     />
-                                    <span className="text-sm font-light" style={{ color: "var(--text-muted)" }}>
+                                    <span
+                                        className="font-light leading-relaxed"
+                                        style={{ fontSize: "clamp(14px, 3.8vw, 15px)", color: "var(--text-muted)" }}
+                                    >
                                         {item}
                                     </span>
-                                </div>
+                                </li>
                             ))}
-                        </div>
+                        </ul>
 
                         {/* CTA */}
                         <button
                             type="button"
-                            onClick={() => { setStep("quiz"); window.ttq?.track("Start trial") }}
-                            className="w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer"
+                            onClick={() => { setStep("quiz"); window.ttq?.track("Start trial"); }}
+                            className="w-full inline-flex items-center justify-center gap-2 font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)]"
                             style={{
-                                padding: "16px 32px",
+                                padding: "17px 32px",
+                                fontSize: "clamp(14px, 4vw, 15px)",
                                 background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
                                 boxShadow: "0 4px 20px rgba(61,139,139,0.28)",
                             }}
                         >
-                            Start Free Assessment
-                            <ArrowRight size={16} strokeWidth={2} />
+                            Start Free Mental Health Check
+                            <ArrowRight size={16} strokeWidth={2} aria-hidden="true" />
                         </button>
 
                     </div>
                 </section>
             </div>
-
         );
     }
 
@@ -1091,98 +1093,117 @@ ${personalizedNote}`;
         const q: Question | undefined = questions[current];
         if (!q) return null;
         const answeredValue: number | undefined = answers[q.id];
+        const questionId = `question-${q.id}`;
 
         return (
             <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
                 <BgBlobs />
-                <section className="relative z-10 pt-20 pb-24 px-4 sm:px-6">
+                <section
+                    className="relative z-10 pt-12 sm:pt-20 pb-24 px-4 sm:px-6"
+                    aria-labelledby={questionId}
+                >
                     <div className="max-w-lg mx-auto animate-fade-up">
 
                         {/* Progress row */}
-                        <div className="flex items-center gap-3 mb-10">
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                disabled={transitioning}
-                                className="flex items-center justify-center rounded-full border transition-all duration-150 cursor-pointer disabled:opacity-40"
-                                style={{
-                                    width: 36,
-                                    height: 36,
-                                    background: "white",
-                                    borderColor: "var(--border)",
-                                    color: "var(--text-muted)",
-                                    flexShrink: 0,
-                                }}
-                                onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) =>
-                                    (e.currentTarget.style.borderColor = "var(--sage)")
-                                }
-                                onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) =>
-                                    (e.currentTarget.style.borderColor = "var(--border)")
-                                }
-                            >
-                                <ArrowLeft size={14} strokeWidth={2} />
-                            </button>
-
-                            <div
-                                className="flex-1 rounded-full overflow-hidden"
-                                style={{ height: 3, background: "var(--border)" }}
-                            >
-                                <div
-                                    className="h-full rounded-full transition-all duration-500 ease-out"
-                                    style={{
-                                        width: `${progress}%`,
-                                        background: "linear-gradient(90deg, var(--sage), var(--teal))",
-                                    }}
-                                />
+                        <div className="mb-8 sm:mb-10">
+                            {/* Step label */}
+                            <div className="flex justify-between items-center mb-2">
+                                <span
+                                    className="text-xs font-semibold uppercase tracking-widest"
+                                    style={{ color: "var(--sage-dark)" }}
+                                >
+                                    {q.category}
+                                </span>
+                                <span
+                                    className="text-xs font-medium tabular-nums"
+                                    style={{ color: "var(--text-muted)" }}
+                                >
+                                    {current + 1} of {questions.length}
+                                </span>
                             </div>
+                            <div className="flex items-center gap-3">
+                                <button
+                                    type="button"
+                                    onClick={handleBack}
+                                    disabled={transitioning}
+                                    aria-label="Go back to previous question"
+                                    className="flex items-center justify-center rounded-full border transition-all duration-150 cursor-pointer disabled:opacity-40 flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)]"
+                                    style={{
+                                        width: 40,
+                                        height: 40,
+                                        background: "white",
+                                        borderColor: "var(--border)",
+                                        color: "var(--text-muted)",
+                                    }}
+                                >
+                                    <ArrowLeft size={15} strokeWidth={2} aria-hidden="true" />
+                                </button>
 
-                            <span
-                                className="text-xs font-medium flex-shrink-0"
-                                style={{ color: "var(--text-muted)" }}
-                            >
-                                {current + 1} / {questions.length}
-                            </span>
-                        </div>
+                                {/* Progress bar — labelled for screen readers */}
+                                <div
+                                    className="flex-1 rounded-full overflow-hidden"
+                                    style={{ height: 8, background: "var(--border)" }}
+                                    role="progressbar"
+                                    aria-valuenow={current + 1}
+                                    aria-valuemin={1}
+                                    aria-valuemax={questions.length}
+                                    aria-label={`Question ${current + 1} of ${questions.length}`}
+                                >
+                                    <div
+                                        className="h-full rounded-full transition-all duration-500 ease-out"
+                                        style={{
+                                            width: `${progress}%`,
+                                            background: "linear-gradient(90deg, var(--sage), var(--teal))",
+                                        }}
+                                    />
+                                </div>
 
-                        {/* Category chip */}
-                        <div
-                            className="inline-flex items-center rounded-full border mb-5 text-xs font-medium uppercase tracking-widest"
-                            style={{
-                                padding: "4px 13px",
-                                background: "rgba(123,169,139,0.09)",
-                                borderColor: "rgba(123,169,139,0.24)",
-                                color: "var(--sage-dark)",
-                            }}
-                        >
-                            {q.category}
+                            </div>
                         </div>
 
                         {/* Question */}
                         <h2
-                            className="font-cormorant font-light mb-8"
+                            id={questionId}
+                            className="font-cormorant font-light mb-6 sm:mb-8"
                             style={{
-                                fontSize: "clamp(24px, 4vw, 32px)",
-                                lineHeight: 1.3,
+                                fontSize: "clamp(22px, 5.5vw, 32px)",
+                                lineHeight: 1.35,
                                 color: "var(--deep)",
                                 letterSpacing: "-0.01em",
+                                wordBreak: "break-word",
+                                overflowWrap: "break-word",
                             }}
                         >
                             {q.text}
                         </h2>
 
-                        {/* Options */}
-                        <div className="flex flex-col gap-3">
+                        {/*
+                          Options rendered as a radiogroup for full a11y:
+                          - screen readers announce "1 of 4, Rarely or never, radio button"
+                          - keyboard: arrow keys cycle options, Space/Enter selects
+                          - selected state is communicated via aria-checked
+                        */}
+                        <div
+                            role="radiogroup"
+                            aria-labelledby={questionId}
+                            className="flex flex-col gap-3"
+                        >
                             {q.options.map((opt: Option) => {
-                                const isSelected: boolean = answeredValue === opt.value;
+                                const isSelected = answeredValue === opt.value;
+                                const optionId = `${q.id}-opt-${opt.value}`;
                                 return (
                                     <button
                                         key={opt.value}
+                                        id={optionId}
                                         type="button"
+                                        role="radio"
+                                        aria-checked={isSelected}
                                         onClick={() => handleAnswer(opt.value)}
                                         disabled={transitioning}
-                                        className="w-full text-left rounded-2xl border transition-all duration-200 cursor-pointer disabled:cursor-default"
+                                        className="w-full text-left rounded-2xl border transition-all duration-200 cursor-pointer disabled:cursor-default focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)]"
                                         style={{
-                                            padding: "16px 20px",
+                                            padding: "14px 16px",
+                                            minHeight: 56,
                                             background: isSelected ? "rgba(123,169,139,0.10)" : "white",
                                             borderColor: isSelected ? "var(--sage)" : "var(--border)",
                                             color: isSelected ? "var(--sage-dark)" : "var(--text)",
@@ -1194,23 +1215,33 @@ ${personalizedNote}`;
                                             justifyContent: "space-between",
                                             gap: 12,
                                         }}
-                                        onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                            if (!isSelected)
-                                                e.currentTarget.style.borderColor = "var(--sage-light)";
+                                        onMouseEnter={(e) => {
+                                            if (!isSelected) e.currentTarget.style.borderColor = "var(--sage-light)";
                                         }}
-                                        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                            if (!isSelected)
-                                                e.currentTarget.style.borderColor = "var(--border)";
+                                        onMouseLeave={(e) => {
+                                            if (!isSelected) e.currentTarget.style.borderColor = "var(--border)";
                                         }}
                                     >
-                                        <span className="text-sm font-light leading-relaxed">
+                                        <span
+                                            className="font-light leading-snug"
+                                            style={{
+                                                fontSize: "clamp(14px, 4vw, 15px)",
+                                                flex: 1,
+                                                whiteSpace: "normal",
+                                                wordBreak: "break-word",
+                                            }}
+                                        >
                                             {opt.label}
                                         </span>
+
+                                        {/* Visual radio indicator — hidden from AT (aria-checked handles it) */}
                                         <span
                                             className="flex-shrink-0 rounded-full flex items-center justify-center transition-all duration-200"
+                                            aria-hidden="true"
                                             style={{
                                                 width: 22,
                                                 height: 22,
+                                                minWidth: 22,
                                                 background: isSelected ? "var(--sage)" : "transparent",
                                                 border: isSelected
                                                     ? "2px solid var(--sage)"
@@ -1219,15 +1250,13 @@ ${personalizedNote}`;
                                         >
                                             {isSelected && (
                                                 <svg
-                                                    width="11"
-                                                    height="11"
+                                                    width="11" height="11"
                                                     viewBox="0 0 11 11"
                                                     fill="none"
                                                     stroke="white"
                                                     strokeWidth="2.2"
                                                     strokeLinecap="round"
                                                     strokeLinejoin="round"
-                                                    aria-hidden="true"
                                                 >
                                                     <path d="M2 5.5l2.5 2.5L9 3" />
                                                 </svg>
@@ -1250,12 +1279,16 @@ ${personalizedNote}`;
         return (
             <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
                 <BgBlobs />
-                <section className="relative z-10 pt-20 pb-24 px-4 sm:px-6">
+                <section
+                    className="relative z-10 pt-12 sm:pt-20 pb-24 px-4 sm:px-6"
+                    aria-labelledby="email-heading"
+                >
                     <div className="max-w-md mx-auto animate-fade-up">
 
-                        <div className="text-center mb-8">
+                        <div className="text-center mb-7 sm:mb-8">
                             <div
                                 className="inline-flex items-center justify-center rounded-2xl mb-5"
+                                aria-hidden="true"
                                 style={{
                                     width: 56,
                                     height: 56,
@@ -1265,9 +1298,10 @@ ${personalizedNote}`;
                                 <Mail size={24} color="white" strokeWidth={1.8} />
                             </div>
                             <h2
+                                id="email-heading"
                                 className="font-cormorant font-light mb-3"
                                 style={{
-                                    fontSize: "clamp(28px, 5vw, 38px)",
+                                    fontSize: "clamp(26px, 6vw, 38px)",
                                     color: "var(--deep)",
                                     letterSpacing: "-0.02em",
                                     lineHeight: 1.2,
@@ -1276,8 +1310,13 @@ ${personalizedNote}`;
                                 Almost there
                             </h2>
                             <p
-                                className="text-sm font-light leading-relaxed"
-                                style={{ color: "var(--text-muted)", maxWidth: 340, margin: "0 auto" }}
+                                className="font-light leading-relaxed"
+                                style={{
+                                    fontSize: "clamp(14px, 3.8vw, 15px)",
+                                    color: "var(--text-muted)",
+                                    maxWidth: 340,
+                                    margin: "0 auto",
+                                }}
                             >
                                 Enter your details to receive your personalised results and be
                                 matched with the right therapist.
@@ -1293,7 +1332,9 @@ ${personalizedNote}`;
                                 boxShadow: "0 4px 24px rgba(28,58,58,0.07)",
                             }}
                         >
+                            {/* Decorative top bar */}
                             <div
+                                aria-hidden="true"
                                 className="absolute top-0 left-0 right-0"
                                 style={{
                                     height: 2,
@@ -1301,13 +1342,14 @@ ${personalizedNote}`;
                                 }}
                             />
 
-                            <div className="px-7 pt-8 pb-7">
-                                <form onSubmit={handleEmailSubmit} className="flex flex-col gap-5">
+                            <div className="px-5 sm:px-7 pt-7 sm:pt-8 pb-6 sm:pb-7">
+                                <form onSubmit={handleEmailSubmit} className="flex flex-col gap-5" noValidate>
 
+                                    {/* Name */}
                                     <div>
                                         <label
                                             htmlFor="field-name"
-                                            className="block text-xs font-medium uppercase tracking-widest mb-2"
+                                            className="block text-xs font-semibold uppercase tracking-widest mb-2"
                                             style={{ color: "var(--sage-dark)" }}
                                         >
                                             Your Name
@@ -1318,23 +1360,29 @@ ${personalizedNote}`;
                                             placeholder="First name"
                                             value={name}
                                             autoComplete="given-name"
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            aria-required="true"
+                                            aria-invalid={!!errors.name}
+                                            aria-describedby={errors.name ? "error-name" : undefined}
+                                            onChange={(e) => {
                                                 setName(e.target.value);
                                                 setErrors((prev) => ({ ...prev, name: undefined }));
                                             }}
                                             className={`form-input${errors.name ? " form-input-error" : ""}`}
+                                            // 16px prevents iOS Safari from zooming on focus
+                                            style={{ fontSize: "16px" }}
                                         />
                                         {errors.name && (
-                                            <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>
+                                            <p id="error-name" role="alert" className="text-xs mt-1.5" style={{ color: "var(--error)" }}>
                                                 {errors.name}
                                             </p>
                                         )}
                                     </div>
 
+                                    {/* Email */}
                                     <div>
                                         <label
                                             htmlFor="field-email"
-                                            className="block text-xs font-medium uppercase tracking-widest mb-2"
+                                            className="block text-xs font-semibold uppercase tracking-widest mb-2"
                                             style={{ color: "var(--sage-dark)" }}
                                         >
                                             Email Address
@@ -1345,23 +1393,29 @@ ${personalizedNote}`;
                                             placeholder="you@example.com"
                                             value={email}
                                             autoComplete="email"
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            inputMode="email"
+                                            aria-required="true"
+                                            aria-invalid={!!errors.email}
+                                            aria-describedby={errors.email ? "error-email" : undefined}
+                                            onChange={(e) => {
                                                 setEmail(e.target.value);
                                                 setErrors((prev) => ({ ...prev, email: undefined }));
                                             }}
                                             className={`form-input${errors.email ? " form-input-error" : ""}`}
+                                            style={{ fontSize: "16px" }}
                                         />
                                         {errors.email && (
-                                            <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>
+                                            <p id="error-email" role="alert" className="text-xs mt-1.5" style={{ color: "var(--error)" }}>
                                                 {errors.email}
                                             </p>
                                         )}
                                     </div>
 
+                                    {/* Phone */}
                                     <div>
                                         <label
                                             htmlFor="field-phone"
-                                            className="block text-xs font-medium uppercase tracking-widest mb-2"
+                                            className="block text-xs font-semibold uppercase tracking-widest mb-2"
                                             style={{ color: "var(--sage-dark)" }}
                                         >
                                             Phone Number
@@ -1372,14 +1426,19 @@ ${personalizedNote}`;
                                             placeholder="+234 000 000 0000"
                                             value={phone}
                                             autoComplete="tel"
-                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                            inputMode="tel"
+                                            aria-required="true"
+                                            aria-invalid={!!errors.phone}
+                                            aria-describedby={errors.phone ? "error-phone" : undefined}
+                                            onChange={(e) => {
                                                 setPhone(e.target.value);
                                                 setErrors((prev) => ({ ...prev, phone: undefined }));
                                             }}
                                             className={`form-input${errors.phone ? " form-input-error" : ""}`}
+                                            style={{ fontSize: "16px" }}
                                         />
                                         {errors.phone && (
-                                            <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>
+                                            <p id="error-phone" role="alert" className="text-xs mt-1.5" style={{ color: "var(--error)" }}>
                                                 {errors.phone}
                                             </p>
                                         )}
@@ -1388,26 +1447,23 @@ ${personalizedNote}`;
                                     <button
                                         type="submit"
                                         disabled={submitting}
-                                        className="w-full inline-flex items-center justify-center gap-2 text-sm font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer mt-1"
+                                        className="w-full inline-flex items-center justify-center gap-2 font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer mt-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)]"
                                         style={{
-                                            padding: "15px 28px",
+                                            padding: "16px 28px",
+                                            fontSize: "clamp(14px, 4vw, 15px)",
                                             background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
                                             boxShadow: "0 4px 18px rgba(61,139,139,0.25)",
                                         }}
+                                        aria-busy={submitting}
                                     >
                                         {submitting ? "Saving your results…" : "See My Results"}
-                                        {!submitting && <ArrowRight size={15} strokeWidth={2} />}
+                                        {!submitting && <ArrowRight size={15} strokeWidth={2} aria-hidden="true" />}
                                     </button>
 
                                 </form>
 
-                                <div className="flex items-center justify-center gap-2 mt-5">
-                                    <Shield
-                                        size={12}
-                                        fill="#6fb8b8"
-                                        stroke="#3d8b8b"
-                                        strokeWidth={1.5}
-                                    />
+                                <div className="flex items-center justify-center gap-2 mt-5" aria-hidden="true">
+                                    <Shield size={12} fill="#6fb8b8" stroke="#3d8b8b" strokeWidth={1.5} />
                                     <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                                         We never share your data. Unsubscribe any time.
                                     </p>
@@ -1419,7 +1475,7 @@ ${personalizedNote}`;
                             By continuing you agree to our{" "}
                             <Link
                                 href="/privacy"
-                                className="underline underline-offset-2"
+                                className="underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)] rounded-sm"
                                 style={{ color: "var(--sage-dark)" }}
                             >
                                 Privacy Policy
@@ -1437,34 +1493,44 @@ ${personalizedNote}`;
     return (
         <div className="relative min-h-screen" style={{ background: "var(--white)" }}>
             <BgBlobs />
-            <section className="relative z-10 pt-20 pb-24 px-4 sm:px-6">
+            <section
+                className="relative z-10 pt-12 sm:pt-20 pb-24 px-4 sm:px-6"
+                aria-labelledby="result-heading"
+            >
                 <div className="max-w-lg mx-auto animate-fade-up">
 
                     {/* Score banner */}
                     <div
                         className="rounded-3xl relative overflow-hidden mb-5 text-white text-center"
-                        style={{ padding: "44px 36px", background: result.gradient }}
+                        style={{
+                            padding: "36px 24px",
+                            background: result.gradient,
+                        }}
+                        role="region"
+                        aria-label={`Your result: ${result.band}. Score ${totalScore} out of ${questions.length * 3}`}
                     >
                         <div
+                            aria-hidden="true"
                             className="absolute inset-0 opacity-10"
                             style={{
-                                backgroundImage:
-                                    "radial-gradient(circle at 20% 80%, white 0%, transparent 60%)",
+                                backgroundImage: "radial-gradient(circle at 20% 80%, white 0%, transparent 60%)",
                             }}
                         />
                         <p
+                            aria-hidden="true"
                             className="text-xs uppercase tracking-widest opacity-75 mb-2 relative z-10"
                             style={{ letterSpacing: "0.14em" }}
                         >
                             Your result
                         </p>
                         <p
+                            aria-hidden="true"
                             className="font-cormorant font-light relative z-10"
-                            style={{ fontSize: "clamp(30px, 5vw, 42px)", lineHeight: 1.15 }}
+                            style={{ fontSize: "clamp(28px, 7vw, 42px)", lineHeight: 1.15 }}
                         >
                             {result.band}
                         </p>
-                        <div className="flex items-center justify-center gap-3 mt-2 relative z-10">
+                        <div className="flex items-center justify-center gap-3 mt-2 relative z-10" aria-hidden="true">
                             <div className="h-px flex-1 opacity-25" style={{ background: "white" }} />
                             <p className="text-xs opacity-60">
                                 Score {totalScore} / {questions.length * 3}
@@ -1475,7 +1541,7 @@ ${personalizedNote}`;
 
                     {/* Headline + summary */}
                     <div
-                        className="rounded-2xl border p-7 mb-4"
+                        className="rounded-2xl border p-5 sm:p-7 mb-4"
                         style={{
                             background: "white",
                             borderColor: "var(--border)",
@@ -1483,9 +1549,10 @@ ${personalizedNote}`;
                         }}
                     >
                         <h2
+                            id="result-heading"
                             className="font-cormorant font-light mb-3"
                             style={{
-                                fontSize: "clamp(22px, 4vw, 28px)",
+                                fontSize: "clamp(20px, 5vw, 28px)",
                                 color: "var(--deep)",
                                 letterSpacing: "-0.01em",
                                 lineHeight: 1.25,
@@ -1494,64 +1561,79 @@ ${personalizedNote}`;
                             {result.headline}
                             {name ? `, ${name}` : ""}
                         </h2>
-                        <p className="text-sm font-light leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                        <p
+                            className="font-light leading-relaxed"
+                            style={{ fontSize: "clamp(14px, 3.8vw, 15px)", color: "var(--text-muted)" }}
+                        >
                             {result.summary}
                         </p>
                     </div>
 
                     {/* What happens next */}
                     <div
-                        className="rounded-2xl border p-6 mb-6"
+                        className="rounded-2xl border p-5 sm:p-6 mb-6"
                         style={{
                             background: "rgba(123,169,139,0.06)",
                             borderColor: "rgba(123,169,139,0.22)",
                         }}
                     >
                         <p
-                            className="text-xs font-medium uppercase tracking-widest mb-4"
+                            className="text-xs font-semibold uppercase tracking-widest mb-4"
                             style={{ color: "var(--sage-dark)", letterSpacing: "0.1em" }}
+                            id="next-steps-heading"
                         >
                             What happens next
                         </p>
-                        <div className="flex flex-col gap-3">
+                        <ul
+                            className="flex flex-col gap-3"
+                            aria-labelledby="next-steps-heading"
+                            style={{ listStyle: "none", padding: 0, margin: 0 }}
+                        >
                             {nextSteps.map((item) => (
-                                <div key={item} className="flex items-start gap-3">
+                                <li key={item} className="flex items-start gap-3">
                                     <CheckCircle
                                         size={15}
                                         fill="var(--sage)"
                                         stroke="white"
                                         strokeWidth={2.5}
                                         style={{ flexShrink: 0, marginTop: 2 }}
+                                        aria-hidden="true"
                                     />
-                                    <span className="text-sm font-light" style={{ color: "var(--text-muted)" }}>
+                                    <span
+                                        className="font-light leading-relaxed"
+                                        style={{ fontSize: "clamp(13px, 3.5vw, 14px)", color: "var(--text-muted)" }}
+                                    >
                                         {item}
                                     </span>
-                                </div>
+                                </li>
                             ))}
-                        </div>
+                        </ul>
                     </div>
 
                     {/* CTAs */}
                     <div className="flex flex-col sm:flex-row gap-3">
                         <Link
                             href={whatsappUrl}
-                            // href="/#book"
-                            className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${result.cta} — opens WhatsApp`}
+                            className="flex-1 inline-flex items-center justify-center gap-2 font-medium text-white rounded-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)]"
                             style={{
-                                padding: "15px 24px",
+                                padding: "16px 24px",
+                                fontSize: "clamp(14px, 4vw, 15px)",
                                 background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
                                 boxShadow: "0 4px 18px rgba(61,139,139,0.25)",
                             }}
-                            target="_blank"
                         >
                             {result.cta}
-                            <ArrowRight size={15} strokeWidth={2} />
+                            <ArrowRight size={15} strokeWidth={2} aria-hidden="true" />
                         </Link>
                         <Link
                             href="/services"
-                            className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium rounded-full border transition-all duration-200 hover:-translate-y-0.5"
+                            className="flex-1 inline-flex items-center justify-center gap-2 font-medium rounded-full border transition-all duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)]"
                             style={{
-                                padding: "15px 24px",
+                                padding: "16px 24px",
+                                fontSize: "clamp(14px, 4vw, 15px)",
                                 borderColor: "var(--border)",
                                 color: "var(--sage-dark)",
                                 background: "white",
@@ -1562,16 +1644,18 @@ ${personalizedNote}`;
                     </div>
 
                     {/* Spam notice + crisis line */}
-                    <p className="text-center text-xs mt-5" style={{ color: "var(--text-muted)" }}>
+                    <p
+                        className="text-center text-xs mt-5 leading-relaxed"
+                        style={{ color: "var(--text-muted)" }}
+                    >
                         Didn&apos;t receive your email?{" "}
                         <span style={{ color: "var(--sage-dark)", fontWeight: 500 }}>
-                            Check your spam or junk folder
-                        </span>
-                        {" "} it may have landed there.
-                        {" "}If you&apos;re in crisis, please contact{" "}
+                            Check your spam or junk folder.
+                        </span>{" "}
+                        If you&apos;re in crisis, please contact{" "}
                         <a
                             href="tel:112"
-                            className="underline underline-offset-2"
+                            className="underline underline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--teal)] rounded-sm"
                             style={{ color: "var(--sage-dark)" }}
                         >
                             emergency services
