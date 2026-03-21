@@ -1895,6 +1895,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
+import { retryAsync } from "@/utilz";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -2658,23 +2659,51 @@ export async function POST(req: Request): Promise<NextResponse> {
       console.error("Admin email failed:", adminResult.reason);
     }
 
-    // ── Silent DB save — fire-and-forget ──────────────────────────────────
-    db.lead
-      .create({
-        data: {
-          name: safeName,
-          email: String(email),
-          phone: safePhone || null,
-          score,
-          band: band.band,
-          severity: band.severity,
-          answers: safeAnswers,
-          status: "new",
-        },
-      })
-      .catch((err: unknown) => {
-        console.error("DB save failed (non-fatal):", err);
-      });
+    // // ── Silent DB save — fire-and-forget ──────────────────────────────────
+    // db.lead
+    //   .create({
+    //     data: {
+    //       name: safeName,
+    //       email: String(email),
+    //       phone: safePhone || null,
+    //       score,
+    //       band: band.band,
+    //       severity: band.severity,
+    //       answers: safeAnswers,
+    //       status: "new",
+    //     },
+    //   })
+    //   .catch((err: unknown) => {
+    //     console.error("DB save failed (non-fatal):", err);
+    //   });
+
+    // if (adminResult.status === "rejected" && userResult.status === "rejected") {
+    //   return NextResponse.json(
+    //     { success: false, error: "Both emails failed to send" },
+    //     { status: 500 },
+    //   );
+    // }
+
+    // ── Silent DB save — 3 attempts with backoff, never blocks the response ───────
+    retryAsync(
+      () =>
+        db.lead.create({
+          data: {
+            name: safeName,
+            email: String(email),
+            phone: safePhone || null,
+            score,
+            band: band.band,
+            severity: band.severity,
+            answers: safeAnswers,
+            status: "new",
+          },
+        }),
+      3, // attempts
+      300, // 300ms → 600ms → 1200ms
+    ).catch((err: unknown) => {
+      console.error("DB save failed after 3 retries (non-fatal):", err);
+    });
 
     if (adminResult.status === "rejected" && userResult.status === "rejected") {
       return NextResponse.json(

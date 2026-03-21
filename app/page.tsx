@@ -6,7 +6,7 @@
 // import { Shield, Clock, Star, Leaf, ArrowRight, Brain, Heart, Anchor } from "lucide-react";
 
 // const trustItems = [
-//   { icon: Shield, text: "HIPAA-compliant & fully confidential" },
+//   { icon: Shield, text: "NDPR-compliant & fully confidential" },
 //   { icon: Star, text: "Licensed, empathetic professionals" },
 //   { icon: Clock, text: "First session response within 24 hours" },
 // ];
@@ -259,7 +259,7 @@
 // } from "lucide-react";
 
 // const trustItems = [
-//   { icon: Shield, text: "HIPAA-compliant & fully confidential" },
+//   { icon: Shield, text: "NDPR-compliant & fully confidential" },
 //   { icon: Star, text: "Licensed, empathetic professionals" },
 //   { icon: Clock, text: "First session response within 24 hours" },
 // ];
@@ -720,7 +720,7 @@ import {
 } from "lucide-react";
 
 const trustItems = [
-  { icon: Shield, text: "HIPAA-compliant & fully confidential" },
+  { icon: Shield, text: "NDPR-compliant & fully confidential" },
   { icon: Star, text: "Licensed, empathetic professionals" },
   { icon: Clock, text: "First session response within 24 hours" },
 ];
@@ -813,7 +813,7 @@ const faqs = [
   },
   {
     q: "Is everything I share kept confidential?",
-    a: "Absolutely. Your sessions are protected by professional confidentiality and our platform is fully HIPAA-compliant. We never share your information with third parties.",
+    a: "Absolutely. Your sessions are protected by professional confidentiality and our platform is fully NDPR-compliant. We never share your information with third parties.",
   },
   {
     q: "What if I'm not happy with my therapist?",
