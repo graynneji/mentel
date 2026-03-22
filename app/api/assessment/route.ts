@@ -1896,6 +1896,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
 import { retryAsync } from "@/utilz";
+import { after } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -2684,26 +2685,28 @@ export async function POST(req: Request): Promise<NextResponse> {
     //   );
     // }
 
-    // ── Silent DB save — 3 attempts with backoff, never blocks the response ───────
-    retryAsync(
-      () =>
-        db.lead.create({
-          data: {
-            name: safeName,
-            email: String(email),
-            phone: safePhone || null,
-            score,
-            band: band.band,
-            severity: band.severity,
-            answers: safeAnswers,
-            status: "new",
-          },
-        }),
-      3, // attempts
-      300, // 300ms → 600ms → 1200ms
-    ).catch((err: unknown) => {
-      console.error("DB save failed after 3 retries (non-fatal):", err);
-    });
+    // inside your POST handler, replace the retryAsync block with:
+    after(
+      retryAsync(
+        () =>
+          db.lead.create({
+            data: {
+              name: safeName,
+              email: String(email),
+              phone: safePhone || null,
+              score,
+              band: band.band,
+              severity: band.severity,
+              answers: safeAnswers,
+              status: "new",
+            },
+          }),
+        5,
+        500,
+      ).catch((err: unknown) => {
+        console.error("[DB] Lead save failed after all retries:", err);
+      }),
+    );
 
     if (adminResult.status === "rejected" && userResult.status === "rejected") {
       return NextResponse.json(
