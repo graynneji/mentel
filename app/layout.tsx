@@ -229,6 +229,10 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessSchema) }}
         />
+<link
+  rel="canonical"
+  href={`https://trymentel.com${typeof window !== 'undefined' ? window.location.pathname : ''}`}
+/>
       </head>
       <body
         className="bg-off-white min-h-screen flex flex-col"
