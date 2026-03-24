@@ -1,3 +1,5 @@
+
+
 // "use client";
 // import { useState } from "react";
 // import Script from "next/script";
@@ -41,11 +43,13 @@
 // declare global {
 //     interface Window {
 //         PaystackPop: {
-//             // v1 inline.js API — setup() with access_code
 //             setup: (config: {
-//                 key?: string;
+//                 key: string;
+//                 email: string;
+//                 firstname?: string;
+//                 lastname?: string;
+//                 phone?: string;
 //                 access_code?: string;
-//                 email?: string;
 //                 amount?: number;
 //                 currency?: string;
 //                 ref?: string;
@@ -86,14 +90,13 @@
 //         if (!validate()) return;
 
 //         if (!paystackReady || !window.PaystackPop) {
-//             setErrors({ form: "Payment provider is still loading. Please wait a moment and try again." });
+//             setErrors({ form: "Payment provider is still loading. Please try again." });
 //             return;
 //         }
 
 //         setLoading(true);
-//         console.log("key:", process.env.NEXT_PUBLIC_PAYSTACK_KEY);
+
 //         try {
-//             // Step 1: Server initializes transaction, returns access_code
 //             const res = await fetch("/api/paystack/initialize", {
 //                 method: "POST",
 //                 headers: { "Content-Type": "application/json" },
@@ -114,18 +117,25 @@
 //                 return;
 //             }
 
-//             // Step 2: Open Paystack popup using access_code via v1 setup() API
-//             // access_code tells Paystack which pre-initialized transaction to open.
-//             // No public key or amount needed — all config lives on the server.
+//             // Paystack v1 setup() requires key + email even when using access_code.
+//             // The access_code links to the server-initialized transaction (with the
+//             // correct amount). key + email are required by the popup to open the UI.
 //             const handler = window.PaystackPop.setup({
-//                 key: process.env.NEXT_PUBLIC_PAYSTACK_KEY!,  // add this line
+//                 key: process.env.NEXT_PUBLIC_PAYSTACK_KEY!,
+//                 email: form.email,
+//                 firstname: form.name.split(" ")[0],           // add this
+//                 lastname: form.name.split(" ").slice(1).join(" ") || undefined,  // add this
+//                 phone: form.phone,
+//                 amount: data.amount,
+//                 ref: data.reference,
 //                 access_code: data.accessCode,
 //                 callback: () => {
 //                     setLoading(false);
 //                     setSuccess(true);
-//                     window.ttq?.track("CompletePayment");
-//                     window.ttq?.track("Schedule");
-//                     window.ttq?.track("CompleteRegistration");
+//                     window.ttq?.track("Place an Order", {
+//                         value: data.amount,      // order amount
+//                         currency: "NGN",   // order currency
+//                     });
 //                 },
 //                 onClose: () => {
 //                     setLoading(false);
@@ -160,163 +170,158 @@
 //     }
 
 //     return (
-//         <>
-//             {/* ── Paystack v1 inline script ─────────────────────────────────────────
-//                 MUST use v1 URL — v1 exposes PaystackPop.setup() with access_code support.
-//                 strategy="afterInteractive" ensures it loads after hydration.
-//                 onLoad sets paystackReady so we know the global is available before use. */}
+//         <form onSubmit={handleSubmit} noValidate>
 
+//             {/* Paystack script inside the form — required by Paystack's DOM check */}
 //             <Script
 //                 src="https://js.paystack.co/v1/inline.js"
 //                 strategy="afterInteractive"
 //                 onLoad={() => setPaystackReady(true)}
 //             />
-//             <form onSubmit={handleSubmit} noValidate>
 
-//                 {/* Name */}
-//                 <div className="mb-4">
-//                     <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-//                         Full Name
-//                     </label>
-//                     <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)}
-//                         placeholder="Your full name" autoComplete="name"
-//                         className={`form-input ${errors.name ? "form-input-error" : ""}`} />
-//                     {errors.name && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.name}</p>}
+//             {/* Name */}
+//             <div className="mb-4">
+//                 <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+//                     Full Name
+//                 </label>
+//                 <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)}
+//                     placeholder="Your full name" autoComplete="name"
+//                     className={`form-input ${errors.name ? "form-input-error" : ""}`} />
+//                 {errors.name && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.name}</p>}
+//             </div>
+
+//             {/* Email */}
+//             <div className="mb-4">
+//                 <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+//                     Email Address
+//                 </label>
+//                 <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)}
+//                     placeholder="you@example.com" autoComplete="email"
+//                     className={`form-input ${errors.email ? "form-input-error" : ""}`} />
+//                 {errors.email && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.email}</p>}
+//             </div>
+
+//             {/* Phone */}
+//             <div className="mb-4">
+//                 <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+//                     Phone Number
+//                 </label>
+//                 <input type="tel" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)}
+//                     placeholder="+234 000 0000 000" autoComplete="tel"
+//                     className={`form-input ${errors.phone ? "form-input-error" : ""}`} />
+//                 {errors.phone && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.phone}</p>}
+//             </div>
+
+//             {/* Reason */}
+//             <div className="mb-5">
+//                 <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+//                     Reason for Consultation
+//                 </label>
+//                 <div className="relative">
+//                     <select value={form.reason} onChange={(e) => handleChange("reason", e.target.value)}
+//                         className={`form-input pr-10 ${errors.reason ? "form-input-error" : ""}`}>
+//                         <option value="" disabled>Select a reason&hellip;</option>
+//                         {REASONS.map((r) => <option key={r} value={r}>{r}</option>)}
+//                     </select>
+//                     <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+//                         style={{ color: "var(--text-muted)" }} />
 //                 </div>
+//                 {errors.reason && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.reason}</p>}
+//             </div>
 
-//                 {/* Email */}
-//                 <div className="mb-4">
-//                     <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-//                         Email Address
-//                     </label>
-//                     <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)}
-//                         placeholder="you@example.com" autoComplete="email"
-//                         className={`form-input ${errors.email ? "form-input-error" : ""}`} />
-//                     {errors.email && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.email}</p>}
-//                 </div>
-
-//                 {/* Phone */}
-//                 <div className="mb-4">
-//                     <label className="block text-xs font-medium uppercase tracking-widests mb-1.5" style={{ color: "var(--text-muted)" }}>
-//                         Phone Number
-//                     </label>
-//                     <input type="tel" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)}
-//                         placeholder="+234 000 0000 000" autoComplete="tel"
-//                         className={`form-input ${errors.phone ? "form-input-error" : ""}`} />
-//                     {errors.phone && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.phone}</p>}
-//                 </div>
-
-//                 {/* Reason */}
-//                 <div className="mb-5">
-//                     <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-//                         Reason for Consultation
-//                     </label>
-//                     <div className="relative">
-//                         <select value={form.reason} onChange={(e) => handleChange("reason", e.target.value)}
-//                             className={`form-input pr-10 ${errors.reason ? "form-input-error" : ""}`}>
-//                             <option value="" disabled>Select a reason&hellip;</option>
-//                             {REASONS.map((r) => <option key={r} value={r}>{r}</option>)}
-//                         </select>
-//                         <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-//                             style={{ color: "var(--text-muted)" }} />
-//                     </div>
-//                     {errors.reason && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.reason}</p>}
-//                 </div>
-
-//                 {/* Plans */}
-//                 <div className="mb-5">
-//                     <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
-//                         Choose a Plan
-//                     </p>
-//                     <div className="flex flex-col gap-2.5">
-//                         {PLANS.map((plan) => {
-//                             const isSelected = form.plan === plan.id;
-//                             const Icon = plan.icon;
-//                             return (
-//                                 <label key={plan.id} className="cursor-pointer block">
-//                                     <input type="radio" name="plan" value={plan.id} checked={isSelected}
-//                                         onChange={(e) => handleChange("plan", e.target.value)} className="sr-only" />
-//                                     <div className="rounded-2xl border-2 p-4 transition-all duration-200 hover:-translate-y-0.5"
-//                                         style={{
-//                                             background: isSelected ? "rgba(123,169,139,0.08)" : "white",
-//                                             borderColor: isSelected ? "var(--sage)" : "var(--border)",
-//                                             boxShadow: isSelected ? "0 0 0 3px rgba(123,169,139,0.12)" : "none",
-//                                         }}>
-//                                         <div className="flex items-center gap-3">
-//                                             <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-//                                                 style={{ background: isSelected ? "linear-gradient(135deg, var(--sage-dark), var(--teal))" : "rgba(123,169,139,0.10)" }}>
-//                                                 <Icon size={16} color={isSelected ? "white" : "var(--sage-dark)"} />
-//                                             </div>
-//                                             <div className="flex-1 min-w-0">
-//                                                 <div className="flex items-center gap-2 flex-wrap">
-//                                                     <span className="text-sm font-semibold" style={{ color: "var(--deep)" }}>{plan.label}</span>
-//                                                     <span className="text-xs px-2 py-0.5 rounded-full border font-medium" style={plan.badgeStyle}>{plan.badge}</span>
-//                                                 </div>
-//                                                 <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{plan.desc}</p>
-//                                             </div>
-//                                             <div className="text-right flex-shrink-0">
-//                                                 <span className="font-cormorant text-xl font-semibold block"
-//                                                     style={{ color: isSelected ? "var(--sage-dark)" : "var(--deep)" }}>{plan.price}</span>
-//                                                 {plan.originalPrice && (
-//                                                     <span className="text-xs line-through opacity-40" style={{ color: "var(--text-muted)" }}>{plan.originalPrice}</span>
-//                                                 )}
-//                                             </div>
-//                                         </div>
-//                                         {isSelected && (
-//                                             <div className="mt-3 pt-3 flex flex-wrap gap-2" style={{ borderTop: "1px solid rgba(123,169,139,0.2)" }}>
-//                                                 {plan.perks.map((perk) => (
-//                                                     <span key={perk} className="text-xs px-2.5 py-1 rounded-full"
-//                                                         style={{ background: "rgba(123,169,139,0.10)", color: "var(--sage-dark)" }}>
-//                                                         ✓ {perk}
-//                                                     </span>
-//                                                 ))}
-//                                             </div>
-//                                         )}
-//                                     </div>
-//                                 </label>
-//                             );
-//                         })}
-//                     </div>
-//                 </div>
-
-//                 {/* General error */}
-//                 {errors.form && (
-//                     <div className="rounded-xl px-4 py-3 mb-4 text-sm"
-//                         style={{ background: "rgba(192,85,90,0.08)", color: "var(--error)", border: "1px solid rgba(192,85,90,0.2)" }}>
-//                         {errors.form}
-//                     </div>
-//                 )}
-
-//                 {/* Legal */}
-//                 <p className="text-center text-xs mb-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-//                     By submitting you agree to our{" "}
-//                     <a href="/terms" className="underline transition-colors" style={{ color: "var(--teal)" }}>Terms of Service</a>{" "}
-//                     and{" "}
-//                     <a href="/privacy" className="underline transition-colors" style={{ color: "var(--teal)" }}>Privacy Policy</a>.
+//             {/* Plans */}
+//             <div className="mb-5">
+//                 <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
+//                     Choose a Plan
 //                 </p>
+//                 <div className="flex flex-col gap-2.5">
+//                     {PLANS.map((plan) => {
+//                         const isSelected = form.plan === plan.id;
+//                         const Icon = plan.icon;
+//                         return (
+//                             <label key={plan.id} className="cursor-pointer block">
+//                                 <input type="radio" name="plan" value={plan.id} checked={isSelected}
+//                                     onChange={(e) => handleChange("plan", e.target.value)} className="sr-only" />
+//                                 <div className="rounded-2xl border-2 p-4 transition-all duration-200 hover:-translate-y-0.5"
+//                                     style={{
+//                                         background: isSelected ? "rgba(123,169,139,0.08)" : "white",
+//                                         borderColor: isSelected ? "var(--sage)" : "var(--border)",
+//                                         boxShadow: isSelected ? "0 0 0 3px rgba(123,169,139,0.12)" : "none",
+//                                     }}>
+//                                     <div className="flex items-center gap-3">
+//                                         <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+//                                             style={{ background: isSelected ? "linear-gradient(135deg, var(--sage-dark), var(--teal))" : "rgba(123,169,139,0.10)" }}>
+//                                             <Icon size={16} color={isSelected ? "white" : "var(--sage-dark)"} />
+//                                         </div>
+//                                         <div className="flex-1 min-w-0">
+//                                             <div className="flex items-center gap-2 flex-wrap">
+//                                                 <span className="text-sm font-semibold" style={{ color: "var(--deep)" }}>{plan.label}</span>
+//                                                 <span className="text-xs px-2 py-0.5 rounded-full border font-medium" style={plan.badgeStyle}>{plan.badge}</span>
+//                                             </div>
+//                                             <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{plan.desc}</p>
+//                                         </div>
+//                                         <div className="text-right flex-shrink-0">
+//                                             <span className="font-cormorant text-xl font-semibold block"
+//                                                 style={{ color: isSelected ? "var(--sage-dark)" : "var(--deep)" }}>{plan.price}</span>
+//                                             {plan.originalPrice && (
+//                                                 <span className="text-xs line-through opacity-40" style={{ color: "var(--text-muted)" }}>{plan.originalPrice}</span>
+//                                             )}
+//                                         </div>
+//                                     </div>
+//                                     {isSelected && (
+//                                         <div className="mt-3 pt-3 flex flex-wrap gap-2" style={{ borderTop: "1px solid rgba(123,169,139,0.2)" }}>
+//                                             {plan.perks.map((perk) => (
+//                                                 <span key={perk} className="text-xs px-2.5 py-1 rounded-full"
+//                                                     style={{ background: "rgba(123,169,139,0.10)", color: "var(--sage-dark)" }}>
+//                                                     ✓ {perk}
+//                                                 </span>
+//                                             ))}
+//                                         </div>
+//                                     )}
+//                                 </div>
+//                             </label>
+//                         );
+//                     })}
+//                 </div>
+//             </div>
 
-//                 {/* Submit */}
-//                 <button type="submit" disabled={loading}
-//                     className="w-full py-4 rounded-2xl text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
-//                     style={{
-//                         background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
-//                         boxShadow: loading ? "none" : "0 4px 20px rgba(61,139,139,0.25)",
-//                     }}>
-//                     {loading
-//                         ? <><Loader2 size={16} className="animate-spin" />Preparing payment&hellip;</>
-//                         : <>Continue to Payment — {selectedPlan.price}</>
-//                     }
-//                 </button>
+//             {/* General error */}
+//             {errors.form && (
+//                 <div className="rounded-xl px-4 py-3 mb-4 text-sm"
+//                     style={{ background: "rgba(192,85,90,0.08)", color: "var(--error)", border: "1px solid rgba(192,85,90,0.2)" }}>
+//                     {errors.form}
+//                 </div>
+//             )}
 
-//             </form>
-//         </>
+//             {/* Legal */}
+//             <p className="text-center text-xs mb-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+//                 By submitting you agree to our{" "}
+//                 <a href="/terms" className="underline transition-colors" style={{ color: "var(--teal)" }}>Terms of Service</a>{" "}
+//                 and{" "}
+//                 <a href="/privacy" className="underline transition-colors" style={{ color: "var(--teal)" }}>Privacy Policy</a>.
+//             </p>
+
+//             {/* Submit */}
+//             <button type="submit" disabled={loading}
+//                 className="w-full py-4 rounded-2xl text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+//                 style={{
+//                     background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
+//                     boxShadow: loading ? "none" : "0 4px 20px rgba(61,139,139,0.25)",
+//                 }}>
+//                 {loading
+//                     ? <><Loader2 size={16} className="animate-spin" />Preparing payment&hellip;</>
+//                     : <>Continue to Payment — {selectedPlan.price}</>
+//                 }
+//             </button>
+
+//         </form>
 //     );
 // }
 
 "use client";
 import { useState } from "react";
 import Script from "next/script";
-import { ChevronDown, CheckCircle, Loader2, Zap, Calendar } from "lucide-react";
+import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft } from "lucide-react";
 
 const REASONS = [
     "Anxiety", "Depression", "Marriage Counselling", "Grief & Loss",
@@ -374,14 +379,17 @@ declare global {
     }
 }
 
+const STEP_LABELS = ["Your details", "Choose a plan", "Payment"];
+
 export default function BookingForm() {
+    const [step, setStep] = useState<1 | 2 | 3>(1);
     const [form, setForm] = useState<FormData>({ name: "", email: "", phone: "", reason: "", plan: "once" });
     const [errors, setErrors] = useState<FormErrors>({});
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [paystackReady, setPaystackReady] = useState(false);
 
-    const validate = (): boolean => {
+    const validateStep1 = (): boolean => {
         const e: FormErrors = {};
         if (!form.name.trim() || form.name.trim().length < 2) e.name = "Please enter your full name.";
         if (!form.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Please enter a valid email address.";
@@ -396,12 +404,19 @@ export default function BookingForm() {
         setErrors((prev) => ({ ...prev, [field]: undefined, form: undefined }));
     };
 
+    const handleNext = () => {
+        if (step === 1 && validateStep1()) setStep(2);
+        if (step === 2) setStep(3);
+    };
+
+    const handleBack = () => {
+        if (step === 2) setStep(1);
+        if (step === 3) setStep(2);
+    };
+
     const selectedPlan = PLANS.find((p) => p.id === form.plan)!;
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!validate()) return;
-
+    const handleSubmit = async () => {
         if (!paystackReady || !window.PaystackPop) {
             setErrors({ form: "Payment provider is still loading. Please try again." });
             return;
@@ -430,14 +445,11 @@ export default function BookingForm() {
                 return;
             }
 
-            // Paystack v1 setup() requires key + email even when using access_code.
-            // The access_code links to the server-initialized transaction (with the
-            // correct amount). key + email are required by the popup to open the UI.
             const handler = window.PaystackPop.setup({
                 key: process.env.NEXT_PUBLIC_PAYSTACK_KEY!,
                 email: form.email,
-                firstname: form.name.split(" ")[0],           // add this
-                lastname: form.name.split(" ").slice(1).join(" ") || undefined,  // add this
+                firstname: form.name.split(" ")[0],
+                lastname: form.name.split(" ").slice(1).join(" ") || undefined,
                 phone: form.phone,
                 amount: data.amount,
                 ref: data.reference,
@@ -446,8 +458,8 @@ export default function BookingForm() {
                     setLoading(false);
                     setSuccess(true);
                     window.ttq?.track("Place an Order", {
-                        value: data.amount,      // order amount
-                        currency: "NGN",   // order currency
+                        value: data.amount,
+                        currency: "NGN",
                     });
                 },
                 onClose: () => {
@@ -483,150 +495,294 @@ export default function BookingForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} noValidate>
-
-            {/* Paystack script inside the form — required by Paystack's DOM check */}
+        <div>
             <Script
                 src="https://js.paystack.co/v1/inline.js"
                 strategy="afterInteractive"
                 onLoad={() => setPaystackReady(true)}
             />
 
-            {/* Name */}
-            <div className="mb-4">
-                <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-                    Full Name
-                </label>
-                <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)}
-                    placeholder="Your full name" autoComplete="name"
-                    className={`form-input ${errors.name ? "form-input-error" : ""}`} />
-                {errors.name && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.name}</p>}
-            </div>
-
-            {/* Email */}
-            <div className="mb-4">
-                <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-                    Email Address
-                </label>
-                <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="you@example.com" autoComplete="email"
-                    className={`form-input ${errors.email ? "form-input-error" : ""}`} />
-                {errors.email && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.email}</p>}
-            </div>
-
-            {/* Phone */}
-            <div className="mb-4">
-                <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-                    Phone Number
-                </label>
-                <input type="tel" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)}
-                    placeholder="+234 000 0000 000" autoComplete="tel"
-                    className={`form-input ${errors.phone ? "form-input-error" : ""}`} />
-                {errors.phone && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.phone}</p>}
-            </div>
-
-            {/* Reason */}
-            <div className="mb-5">
-                <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
-                    Reason for Consultation
-                </label>
-                <div className="relative">
-                    <select value={form.reason} onChange={(e) => handleChange("reason", e.target.value)}
-                        className={`form-input pr-10 ${errors.reason ? "form-input-error" : ""}`}>
-                        <option value="" disabled>Select a reason&hellip;</option>
-                        {REASONS.map((r) => <option key={r} value={r}>{r}</option>)}
-                    </select>
-                    <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-                        style={{ color: "var(--text-muted)" }} />
-                </div>
-                {errors.reason && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.reason}</p>}
-            </div>
-
-            {/* Plans */}
-            <div className="mb-5">
-                <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
-                    Choose a Plan
-                </p>
-                <div className="flex flex-col gap-2.5">
-                    {PLANS.map((plan) => {
-                        const isSelected = form.plan === plan.id;
-                        const Icon = plan.icon;
-                        return (
-                            <label key={plan.id} className="cursor-pointer block">
-                                <input type="radio" name="plan" value={plan.id} checked={isSelected}
-                                    onChange={(e) => handleChange("plan", e.target.value)} className="sr-only" />
-                                <div className="rounded-2xl border-2 p-4 transition-all duration-200 hover:-translate-y-0.5"
+            {/* Step indicator */}
+            <div className="flex items-center gap-0 mb-6">
+                {STEP_LABELS.map((label, i) => {
+                    const num = i + 1;
+                    const isActive = step === num;
+                    const isDone = step > num;
+                    return (
+                        <div key={num} className="flex items-center" style={{ flex: num < STEP_LABELS.length ? 1 : "none" }}>
+                            <div className="flex flex-col items-center gap-1">
+                                <div
+                                    className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-300"
                                     style={{
-                                        background: isSelected ? "rgba(123,169,139,0.08)" : "white",
-                                        borderColor: isSelected ? "var(--sage)" : "var(--border)",
-                                        boxShadow: isSelected ? "0 0 0 3px rgba(123,169,139,0.12)" : "none",
-                                    }}>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
-                                            style={{ background: isSelected ? "linear-gradient(135deg, var(--sage-dark), var(--teal))" : "rgba(123,169,139,0.10)" }}>
-                                            <Icon size={16} color={isSelected ? "white" : "var(--sage-dark)"} />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-2 flex-wrap">
-                                                <span className="text-sm font-semibold" style={{ color: "var(--deep)" }}>{plan.label}</span>
-                                                <span className="text-xs px-2 py-0.5 rounded-full border font-medium" style={plan.badgeStyle}>{plan.badge}</span>
-                                            </div>
-                                            <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{plan.desc}</p>
-                                        </div>
-                                        <div className="text-right flex-shrink-0">
-                                            <span className="font-cormorant text-xl font-semibold block"
-                                                style={{ color: isSelected ? "var(--sage-dark)" : "var(--deep)" }}>{plan.price}</span>
-                                            {plan.originalPrice && (
-                                                <span className="text-xs line-through opacity-40" style={{ color: "var(--text-muted)" }}>{plan.originalPrice}</span>
-                                            )}
-                                        </div>
-                                    </div>
-                                    {isSelected && (
-                                        <div className="mt-3 pt-3 flex flex-wrap gap-2" style={{ borderTop: "1px solid rgba(123,169,139,0.2)" }}>
-                                            {plan.perks.map((perk) => (
-                                                <span key={perk} className="text-xs px-2.5 py-1 rounded-full"
-                                                    style={{ background: "rgba(123,169,139,0.10)", color: "var(--sage-dark)" }}>
-                                                    ✓ {perk}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
+                                        background: isDone
+                                            ? "linear-gradient(135deg, var(--sage-dark), var(--teal))"
+                                            : isActive
+                                                ? "linear-gradient(135deg, var(--sage-dark), var(--teal))"
+                                                : "rgba(123,169,139,0.12)",
+                                        color: isActive || isDone ? "white" : "var(--text-muted)",
+                                    }}
+                                >
+                                    {isDone ? <CheckCircle size={13} /> : num}
                                 </div>
-                            </label>
-                        );
-                    })}
-                </div>
+                                <span
+                                    className="text-xs whitespace-nowrap"
+                                    style={{
+                                        color: isActive ? "var(--sage-dark)" : "var(--text-muted)",
+                                        fontWeight: isActive ? 600 : 400,
+                                    }}
+                                >
+                                    {label}
+                                </span>
+                            </div>
+
+                            {num < STEP_LABELS.length && (
+                                <div
+                                    className="flex-1 h-px mx-2 mb-5 transition-all duration-500"
+                                    style={{
+                                        background: isDone
+                                            ? "linear-gradient(90deg, var(--sage-dark), var(--teal))"
+                                            : "rgba(123,169,139,0.2)",
+                                    }}
+                                />
+                            )}
+                        </div>
+                    );
+                })}
             </div>
 
-            {/* General error */}
-            {errors.form && (
-                <div className="rounded-xl px-4 py-3 mb-4 text-sm"
-                    style={{ background: "rgba(192,85,90,0.08)", color: "var(--error)", border: "1px solid rgba(192,85,90,0.2)" }}>
-                    {errors.form}
+            {/* ── STEP 1: Personal details ── */}
+            {step === 1 && (
+                <div className="animate-fade-up">
+                    {/* Name */}
+                    <div className="mb-4">
+                        <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+                            Full Name
+                        </label>
+                        <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)}
+                            placeholder="Your full name" autoComplete="name"
+                            className={`form-input ${errors.name ? "form-input-error" : ""}`} />
+                        {errors.name && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.name}</p>}
+                    </div>
+
+                    {/* Email */}
+                    <div className="mb-4">
+                        <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+                            Email Address
+                        </label>
+                        <input type="email" value={form.email} onChange={(e) => handleChange("email", e.target.value)}
+                            placeholder="you@example.com" autoComplete="email"
+                            className={`form-input ${errors.email ? "form-input-error" : ""}`} />
+                        {errors.email && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.email}</p>}
+                    </div>
+
+                    {/* Phone */}
+                    <div className="mb-4">
+                        <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+                            Phone Number
+                        </label>
+                        <input type="tel" value={form.phone} onChange={(e) => handleChange("phone", e.target.value)}
+                            placeholder="+234 000 0000 000" autoComplete="tel"
+                            className={`form-input ${errors.phone ? "form-input-error" : ""}`} />
+                        {errors.phone && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.phone}</p>}
+                    </div>
+
+                    {/* Reason */}
+                    <div className="mb-6">
+                        <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>
+                            Reason for Consultation
+                        </label>
+                        <div className="relative">
+                            <select value={form.reason} onChange={(e) => handleChange("reason", e.target.value)}
+                                className={`form-input pr-10 ${errors.reason ? "form-input-error" : ""}`}>
+                                <option value="" disabled>Select a reason&hellip;</option>
+                                {REASONS.map((r) => <option key={r} value={r}>{r}</option>)}
+                            </select>
+                            <ChevronDown size={16} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                                style={{ color: "var(--text-muted)" }} />
+                        </div>
+                        {errors.reason && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.reason}</p>}
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleNext}
+                        className="w-full py-4 rounded-2xl text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
+                        style={{
+                            background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
+                            boxShadow: "0 4px 20px rgba(61,139,139,0.25)",
+                        }}
+                    >
+                        Continue to Plans
+                    </button>
                 </div>
             )}
 
-            {/* Legal */}
-            <p className="text-center text-xs mb-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                By submitting you agree to our{" "}
-                <a href="/terms" className="underline transition-colors" style={{ color: "var(--teal)" }}>Terms of Service</a>{" "}
-                and{" "}
-                <a href="/privacy" className="underline transition-colors" style={{ color: "var(--teal)" }}>Privacy Policy</a>.
-            </p>
+            {/* ── STEP 2: Plan selection ── */}
+            {step === 2 && (
+                <div className="animate-fade-up">
+                    <div className="flex flex-col gap-2.5 mb-6">
+                        {PLANS.map((plan) => {
+                            const isSelected = form.plan === plan.id;
+                            const Icon = plan.icon;
+                            return (
+                                <label key={plan.id} className="cursor-pointer block">
+                                    <input type="radio" name="plan" value={plan.id} checked={isSelected}
+                                        onChange={(e) => handleChange("plan", e.target.value)} className="sr-only" />
+                                    <div className="rounded-2xl border-2 p-4 transition-all duration-200 hover:-translate-y-0.5"
+                                        style={{
+                                            background: isSelected ? "rgba(123,169,139,0.08)" : "white",
+                                            borderColor: isSelected ? "var(--sage)" : "var(--border)",
+                                            boxShadow: isSelected ? "0 0 0 3px rgba(123,169,139,0.12)" : "none",
+                                        }}>
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+                                                style={{ background: isSelected ? "linear-gradient(135deg, var(--sage-dark), var(--teal))" : "rgba(123,169,139,0.10)" }}>
+                                                <Icon size={16} color={isSelected ? "white" : "var(--sage-dark)"} />
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 flex-wrap">
+                                                    <span className="text-sm font-semibold" style={{ color: "var(--deep)" }}>{plan.label}</span>
+                                                    <span className="text-xs px-2 py-0.5 rounded-full border font-medium" style={plan.badgeStyle}>{plan.badge}</span>
+                                                </div>
+                                                <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{plan.desc}</p>
+                                            </div>
+                                            <div className="text-right flex-shrink-0">
+                                                <span className="font-cormorant text-xl font-semibold block"
+                                                    style={{ color: isSelected ? "var(--sage-dark)" : "var(--deep)" }}>{plan.price}</span>
+                                                {plan.originalPrice && (
+                                                    <span className="text-xs line-through opacity-40" style={{ color: "var(--text-muted)" }}>{plan.originalPrice}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        {isSelected && (
+                                            <div className="mt-3 pt-3 flex flex-wrap gap-2" style={{ borderTop: "1px solid rgba(123,169,139,0.2)" }}>
+                                                {plan.perks.map((perk) => (
+                                                    <span key={perk} className="text-xs px-2.5 py-1 rounded-full"
+                                                        style={{ background: "rgba(123,169,139,0.10)", color: "var(--sage-dark)" }}>
+                                                        ✓ {perk}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </label>
+                            );
+                        })}
+                    </div>
 
-            {/* Submit */}
-            <button type="submit" disabled={loading}
-                className="w-full py-4 rounded-2xl text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
-                style={{
-                    background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
-                    boxShadow: loading ? "none" : "0 4px 20px rgba(61,139,139,0.25)",
-                }}>
-                {loading
-                    ? <><Loader2 size={16} className="animate-spin" />Preparing payment&hellip;</>
-                    : <>Continue to Payment — {selectedPlan.price}</>
-                }
-            </button>
+                    <div className="flex gap-3">
+                        <button
+                            type="button"
+                            onClick={handleBack}
+                            className="flex items-center justify-center gap-1.5 px-4 py-4 rounded-2xl text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+                            style={{
+                                border: "1.5px solid var(--border)",
+                                color: "var(--text-muted)",
+                                background: "transparent",
+                            }}
+                        >
+                            <ArrowLeft size={15} />
+                            Back
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleNext}
+                            className="flex-1 py-4 rounded-2xl text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
+                            style={{
+                                background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
+                                boxShadow: "0 4px 20px rgba(61,139,139,0.25)",
+                            }}
+                        >
+                            Continue — {selectedPlan.price}
+                        </button>
+                    </div>
+                </div>
+            )}
 
-        </form>
+            {/* ── STEP 3: Review & pay ── */}
+            {step === 3 && (
+                <div className="animate-fade-up">
+                    {/* Summary card */}
+                    <div className="rounded-2xl p-4 mb-5"
+                        style={{ background: "rgba(123,169,139,0.06)", border: "1px solid rgba(123,169,139,0.18)" }}>
+                        <p className="text-xs font-medium uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
+                            Booking summary
+                        </p>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex justify-between items-center">
+                                <span className="text-sm" style={{ color: "var(--text-muted)" }}>Name</span>
+                                <span className="text-sm font-medium" style={{ color: "var(--deep)" }}>{form.name}</span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <span className="text-sm" style={{ color: "var(--text-muted)" }}>Reason</span>
+                                <span className="text-sm font-medium" style={{ color: "var(--deep)" }}>{form.reason}</span>
+                            </div>
+                            <div style={{ height: "1px", background: "rgba(123,169,139,0.15)", margin: "4px 0" }} />
+                            <div className="flex justify-between items-center">
+                                <span className="text-sm" style={{ color: "var(--text-muted)" }}>{selectedPlan.label}</span>
+                                <div className="text-right">
+                                    <span className="font-cormorant text-lg font-semibold block" style={{ color: "var(--sage-dark)" }}>
+                                        {selectedPlan.price}
+                                    </span>
+                                    {selectedPlan.originalPrice && (
+                                        <span className="text-xs line-through opacity-40" style={{ color: "var(--text-muted)" }}>
+                                            {selectedPlan.originalPrice}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* General error */}
+                    {errors.form && (
+                        <div className="rounded-xl px-4 py-3 mb-4 text-sm"
+                            style={{ background: "rgba(192,85,90,0.08)", color: "var(--error)", border: "1px solid rgba(192,85,90,0.2)" }}>
+                            {errors.form}
+                        </div>
+                    )}
+
+                    {/* Legal */}
+                    <p className="text-center text-xs mb-4 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                        By submitting you agree to our{" "}
+                        <a href="/terms" className="underline transition-colors" style={{ color: "var(--teal)" }}>Terms of Service</a>{" "}
+                        and{" "}
+                        <a href="/privacy" className="underline transition-colors" style={{ color: "var(--teal)" }}>Privacy Policy</a>.
+                    </p>
+
+                    <div className="flex gap-3">
+                        <button
+                            type="button"
+                            onClick={handleBack}
+                            disabled={loading}
+                            className="flex items-center justify-center gap-1.5 px-4 py-4 rounded-2xl text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            style={{
+                                border: "1.5px solid var(--border)",
+                                color: "var(--text-muted)",
+                                background: "transparent",
+                            }}
+                        >
+                            <ArrowLeft size={15} />
+                            Back
+                        </button>
+                        <button
+                            type="button"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                            className="flex-1 py-4 rounded-2xl text-white text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none cursor-pointer"
+                            style={{
+                                background: "linear-gradient(135deg, var(--sage-dark), var(--teal))",
+                                boxShadow: loading ? "none" : "0 4px 20px rgba(61,139,139,0.25)",
+                            }}
+                        >
+                            {loading
+                                ? <><Loader2 size={16} className="animate-spin" />Preparing payment&hellip;</>
+                                : <>Pay {selectedPlan.price} securely</>
+                            }
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 }
