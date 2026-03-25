@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { BookingProvider } from "@/app/context/BookingContext";
 
 export default function ConditionalShell({
     children,
@@ -18,9 +19,11 @@ export default function ConditionalShell({
 
     return (
         <>
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
+            <BookingProvider>
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+            </BookingProvider>
         </>
     );
 }

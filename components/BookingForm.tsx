@@ -334,7 +334,7 @@ const PLANS = [
     {
         id: "once",
         label: "Single Session",
-        price: "₦10,000",
+        price: "₦5,500",
         originalPrice: "₦35,000",
         desc: "One-time · Limited offer",
         badge: "🔥 Limited",

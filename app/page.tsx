@@ -87,7 +87,7 @@ const faqs = [
         a: "Yes — research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
     },
     {
-        q: "How does the ₦10,000 single session work?",
+        q: "How does the ₦5,500 single session work?",
         a: "You book and pay online, then your matched therapist contacts you within 24 hours to schedule your 50-minute session via secure video call. It's a one-time charge with no commitment required.",
     },
     {

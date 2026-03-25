@@ -8,6 +8,7 @@ import Script from "next/script";
 import { Nunito, DM_Sans } from "next/font/google";
 import ConditionalShell from "@/components/Conditionalshell";
 
+
 const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -229,10 +230,10 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessSchema) }}
         />
-<link
-  rel="canonical"
-  href={`https://trymentel.com${typeof window !== 'undefined' ? window.location.pathname : ''}`}
-/>
+        <link
+          rel="canonical"
+          href={`https://trymentel.com${typeof window !== 'undefined' ? window.location.pathname : ''}`}
+        />
       </head>
       <body
         className="bg-off-white min-h-screen flex flex-col"
