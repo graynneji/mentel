@@ -149,8 +149,8 @@ export default function HomePage() {
                                 className="sm:text-base leading-relaxed mb-6 font-light"
                                 style={{ color: "var(--text-muted)", maxWidth: "420px" }}
                             >
-                                Whatever you&apos;re carrying — anxiety, grief, burnout, a relationship at a
-                                breaking point — Mentel connects you with a licensed therapist who genuinely
+                                Whatever you&apos;re carrying, anxiety, grief, burnout, a relationship at a
+                                breaking point. Mentel connects you with a licensed therapist who genuinely
                                 listens. Evidence-based care, delivered with warmth.
                             </p>
 
