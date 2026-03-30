@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import Script from "next/script";
 import { Nunito, DM_Sans } from "next/font/google";
 import ConditionalShell from "@/components/Conditionalshell";
-
+import { Analytics } from "@vercel/analytics/next"
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -230,7 +230,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessSchema) }}
         />
-      
+
       </head>
       <body
         className="bg-off-white min-h-screen flex flex-col"
@@ -281,6 +281,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* ConditionalShell hides Navbar + Footer on /admin routes */}
         <ConditionalShell>{children}</ConditionalShell>
+        <Analytics />
       </body>
     </html>
   );
