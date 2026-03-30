@@ -144,3 +144,15 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* Minimum tap target size (WCAG AA) */
+button,
+[role="button"],
+a {
+  min-height: 44px;
+}
