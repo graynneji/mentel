@@ -11,7 +11,7 @@ export default function AdminLogout() {
     async function handleLogout() {
         setLoading(true);
         await fetch("/api/admin/auth", { method: "DELETE" });
-        router.push("/admin/login");
+        router.push("/login");
         router.refresh();
     }
 

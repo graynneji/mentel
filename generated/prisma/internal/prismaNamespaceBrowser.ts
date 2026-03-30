@@ -55,7 +55,8 @@ export const ModelName = {
   Message: 'Message',
   Appointment: 'Appointment',
   Session: 'Session',
-  Payment: 'Payment'
+  Payment: 'Payment',
+  Setting: 'Setting'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -159,6 +160,15 @@ export const PaymentScalarFieldEnum = {
 } as const
 
 export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const SettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
 
 
 export const SortOrder = {

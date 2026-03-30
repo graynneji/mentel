@@ -66,3 +66,8 @@ export type Session = Prisma.SessionModel
  * 
  */
 export type Payment = Prisma.PaymentModel
+/**
+ * Model Setting
+ * 
+ */
+export type Setting = Prisma.SettingModel
