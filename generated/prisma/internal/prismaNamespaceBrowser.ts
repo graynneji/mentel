@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Lead: 'Lead',
-  Message: 'Message'
+  Message: 'Message',
+  Appointment: 'Appointment',
+  Session: 'Session',
+  Payment: 'Payment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -84,6 +87,9 @@ export const LeadScalarFieldEnum = {
   answers: 'answers',
   status: 'status',
   notes: 'notes',
+  source: 'source',
+  therapist: 'therapist',
+  tags: 'tags',
   seq1SentAt: 'seq1SentAt',
   seq2SentAt: 'seq2SentAt',
   seq3SentAt: 'seq3SentAt'
@@ -103,6 +109,56 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const AppointmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  leadId: 'leadId',
+  scheduledAt: 'scheduledAt',
+  durationMin: 'durationMin',
+  therapist: 'therapist',
+  type: 'type',
+  status: 'status',
+  notes: 'notes'
+} as const
+
+export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
+
+
+export const SessionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  leadId: 'leadId',
+  appointmentId: 'appointmentId',
+  conductedAt: 'conductedAt',
+  therapist: 'therapist',
+  type: 'type',
+  durationMin: 'durationMin',
+  notes: 'notes',
+  mood: 'mood',
+  progress: 'progress'
+} as const
+
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  leadId: 'leadId',
+  sessionId: 'sessionId',
+  amountKobo: 'amountKobo',
+  currency: 'currency',
+  status: 'status',
+  method: 'method',
+  reference: 'reference',
+  paidAt: 'paidAt',
+  notes: 'notes'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const SortOrder = {

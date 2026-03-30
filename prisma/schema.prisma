@@ -20,18 +20,25 @@ model Lead {
   severity String
   answers  Json
 
-  status String  @default("new")
-  notes  String? @default("")
+  status    String  @default("new")
+  notes     String? @default("")
+  source    String? @default("organic")   // organic | referral | social | direct | ads
+  therapist String?
+  tags      String[] @default([])
 
   seq1SentAt DateTime? @map("seq1_sent_at")
   seq2SentAt DateTime? @map("seq2_sent_at")
   seq3SentAt DateTime? @map("seq3_sent_at")
 
-  messages Message[]
+  messages     Message[]
+  appointments Appointment[]
+  sessions     Session[]
+  payments     Payment[]
 
   @@index([email])
   @@index([status])
   @@index([band])
+  @@index([source])
   @@map("leads")
 }
 
@@ -44,9 +51,81 @@ model Message {
 
   subject String
   body    String  @default("")
-  type    String
+  type    String  // seq1 | seq2 | seq3 | custom
   sentBy  String  @default("admin") @map("sent_by")
 
   @@index([leadId])
   @@map("messages")
+}
+
+model Appointment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  leadId    String   @map("lead_id")
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  scheduledAt DateTime  @map("scheduled_at")
+  durationMin Int       @default(50) @map("duration_min")
+  therapist   String
+  type        String    @default("initial")   // initial | follow-up | assessment | group
+  status      String    @default("scheduled") // scheduled | completed | cancelled | no-show
+  notes       String?
+
+  session     Session?
+
+  @@index([leadId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("appointments")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  leadId        String  @map("lead_id")
+  lead          Lead    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  appointmentId String?      @unique @map("appointment_id")
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+
+  conductedAt DateTime @map("conducted_at")
+  therapist   String
+  type        String   @default("individual") // individual | group | assessment
+  durationMin Int      @default(50)           @map("duration_min")
+  notes       String?
+  mood        Int?     // 1-5 mood rating after session
+  progress    String?  // therapist progress notes
+
+  payment     Payment?
+
+  @@index([leadId])
+  @@index([conductedAt])
+  @@map("sessions")
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  leadId    String @map("lead_id")
+  lead      Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  sessionId String?  @unique @map("session_id")
+  session   Session? @relation(fields: [sessionId], references: [id])
+
+  amountKobo  Int      @map("amount_kobo")   // store in kobo (₦1 = 100 kobo) for precision
+  currency    String   @default("NGN")
+  status      String   @default("pending")   // pending | paid | refunded | failed
+  method      String   @default("transfer")  // transfer | card | cash | pos
+  reference   String?  @unique               // payment gateway reference
+  paidAt      DateTime? @map("paid_at")
+  notes       String?
+
+  @@index([leadId])
+  @@index([status])
+  @@index([paidAt])
+  @@map("payments")
 }

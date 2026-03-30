@@ -46,6 +46,8 @@ export type LeadMinAggregateOutputType = {
   severity: string | null
   status: string | null
   notes: string | null
+  source: string | null
+  therapist: string | null
   seq1SentAt: Date | null
   seq2SentAt: Date | null
   seq3SentAt: Date | null
@@ -63,6 +65,8 @@ export type LeadMaxAggregateOutputType = {
   severity: string | null
   status: string | null
   notes: string | null
+  source: string | null
+  therapist: string | null
   seq1SentAt: Date | null
   seq2SentAt: Date | null
   seq3SentAt: Date | null
@@ -81,6 +85,9 @@ export type LeadCountAggregateOutputType = {
   answers: number
   status: number
   notes: number
+  source: number
+  therapist: number
+  tags: number
   seq1SentAt: number
   seq2SentAt: number
   seq3SentAt: number
@@ -108,6 +115,8 @@ export type LeadMinAggregateInputType = {
   severity?: true
   status?: true
   notes?: true
+  source?: true
+  therapist?: true
   seq1SentAt?: true
   seq2SentAt?: true
   seq3SentAt?: true
@@ -125,6 +134,8 @@ export type LeadMaxAggregateInputType = {
   severity?: true
   status?: true
   notes?: true
+  source?: true
+  therapist?: true
   seq1SentAt?: true
   seq2SentAt?: true
   seq3SentAt?: true
@@ -143,6 +154,9 @@ export type LeadCountAggregateInputType = {
   answers?: true
   status?: true
   notes?: true
+  source?: true
+  therapist?: true
+  tags?: true
   seq1SentAt?: true
   seq2SentAt?: true
   seq3SentAt?: true
@@ -248,6 +262,9 @@ export type LeadGroupByOutputType = {
   answers: runtime.JsonValue
   status: string
   notes: string | null
+  source: string | null
+  therapist: string | null
+  tags: string[]
   seq1SentAt: Date | null
   seq2SentAt: Date | null
   seq3SentAt: Date | null
@@ -289,10 +306,16 @@ export type LeadWhereInput = {
   answers?: Prisma.JsonFilter<"Lead">
   status?: Prisma.StringFilter<"Lead"> | string
   notes?: Prisma.StringNullableFilter<"Lead"> | string | null
+  source?: Prisma.StringNullableFilter<"Lead"> | string | null
+  therapist?: Prisma.StringNullableFilter<"Lead"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Lead">
   seq1SentAt?: Prisma.DateTimeNullableFilter<"Lead"> | Date | string | null
   seq2SentAt?: Prisma.DateTimeNullableFilter<"Lead"> | Date | string | null
   seq3SentAt?: Prisma.DateTimeNullableFilter<"Lead"> | Date | string | null
   messages?: Prisma.MessageListRelationFilter
+  appointments?: Prisma.AppointmentListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type LeadOrderByWithRelationInput = {
@@ -308,10 +331,16 @@ export type LeadOrderByWithRelationInput = {
   answers?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  therapist?: Prisma.SortOrderInput | Prisma.SortOrder
+  tags?: Prisma.SortOrder
   seq1SentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   seq2SentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   seq3SentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   messages?: Prisma.MessageOrderByRelationAggregateInput
+  appointments?: Prisma.AppointmentOrderByRelationAggregateInput
+  sessions?: Prisma.SessionOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -330,10 +359,16 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   answers?: Prisma.JsonFilter<"Lead">
   status?: Prisma.StringFilter<"Lead"> | string
   notes?: Prisma.StringNullableFilter<"Lead"> | string | null
+  source?: Prisma.StringNullableFilter<"Lead"> | string | null
+  therapist?: Prisma.StringNullableFilter<"Lead"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Lead">
   seq1SentAt?: Prisma.DateTimeNullableFilter<"Lead"> | Date | string | null
   seq2SentAt?: Prisma.DateTimeNullableFilter<"Lead"> | Date | string | null
   seq3SentAt?: Prisma.DateTimeNullableFilter<"Lead"> | Date | string | null
   messages?: Prisma.MessageListRelationFilter
+  appointments?: Prisma.AppointmentListRelationFilter
+  sessions?: Prisma.SessionListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id">
 
 export type LeadOrderByWithAggregationInput = {
@@ -349,6 +384,9 @@ export type LeadOrderByWithAggregationInput = {
   answers?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  therapist?: Prisma.SortOrderInput | Prisma.SortOrder
+  tags?: Prisma.SortOrder
   seq1SentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   seq2SentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   seq3SentAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -375,6 +413,9 @@ export type LeadScalarWhereWithAggregatesInput = {
   answers?: Prisma.JsonWithAggregatesFilter<"Lead">
   status?: Prisma.StringWithAggregatesFilter<"Lead"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
+  source?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
+  therapist?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
+  tags?: Prisma.StringNullableListFilter<"Lead">
   seq1SentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
   seq2SentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
   seq3SentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Lead"> | Date | string | null
@@ -393,10 +434,16 @@ export type LeadCreateInput = {
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
   seq1SentAt?: Date | string | null
   seq2SentAt?: Date | string | null
   seq3SentAt?: Date | string | null
   messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateInput = {
@@ -412,10 +459,16 @@ export type LeadUncheckedCreateInput = {
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
   seq1SentAt?: Date | string | null
   seq2SentAt?: Date | string | null
   seq3SentAt?: Date | string | null
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUpdateInput = {
@@ -431,10 +484,16 @@ export type LeadUpdateInput = {
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
   seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateInput = {
@@ -450,10 +509,16 @@ export type LeadUncheckedUpdateInput = {
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
   seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateManyInput = {
@@ -469,6 +534,9 @@ export type LeadCreateManyInput = {
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
   seq1SentAt?: Date | string | null
   seq2SentAt?: Date | string | null
   seq3SentAt?: Date | string | null
@@ -487,6 +555,9 @@ export type LeadUpdateManyMutationInput = {
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
   seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -505,9 +576,20 @@ export type LeadUncheckedUpdateManyInput = {
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
   seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type LeadCountOrderByAggregateInput = {
@@ -523,6 +605,9 @@ export type LeadCountOrderByAggregateInput = {
   answers?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  therapist?: Prisma.SortOrder
+  tags?: Prisma.SortOrder
   seq1SentAt?: Prisma.SortOrder
   seq2SentAt?: Prisma.SortOrder
   seq3SentAt?: Prisma.SortOrder
@@ -544,6 +629,8 @@ export type LeadMaxOrderByAggregateInput = {
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  therapist?: Prisma.SortOrder
   seq1SentAt?: Prisma.SortOrder
   seq2SentAt?: Prisma.SortOrder
   seq3SentAt?: Prisma.SortOrder
@@ -561,6 +648,8 @@ export type LeadMinOrderByAggregateInput = {
   severity?: Prisma.SortOrder
   status?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  therapist?: Prisma.SortOrder
   seq1SentAt?: Prisma.SortOrder
   seq2SentAt?: Prisma.SortOrder
   seq3SentAt?: Prisma.SortOrder
@@ -573,6 +662,10 @@ export type LeadSumOrderByAggregateInput = {
 export type LeadScalarRelationFilter = {
   is?: Prisma.LeadWhereInput
   isNot?: Prisma.LeadWhereInput
+}
+
+export type LeadCreatetagsInput = {
+  set: string[]
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -595,6 +688,11 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type LeadUpdatetagsInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
@@ -613,6 +711,48 @@ export type LeadUpdateOneRequiredWithoutMessagesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutMessagesInput, Prisma.LeadUpdateWithoutMessagesInput>, Prisma.LeadUncheckedUpdateWithoutMessagesInput>
 }
 
+export type LeadCreateNestedOneWithoutAppointmentsInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutAppointmentsInput, Prisma.LeadUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutAppointmentsInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutAppointmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutAppointmentsInput, Prisma.LeadUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutAppointmentsInput
+  upsert?: Prisma.LeadUpsertWithoutAppointmentsInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.LeadUpdateWithoutAppointmentsInput>, Prisma.LeadUncheckedUpdateWithoutAppointmentsInput>
+}
+
+export type LeadCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutSessionsInput, Prisma.LeadUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutSessionsInput, Prisma.LeadUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.LeadUpsertWithoutSessionsInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutSessionsInput, Prisma.LeadUpdateWithoutSessionsInput>, Prisma.LeadUncheckedUpdateWithoutSessionsInput>
+}
+
+export type LeadCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPaymentsInput, Prisma.LeadUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPaymentsInput, Prisma.LeadUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.LeadUpsertWithoutPaymentsInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutPaymentsInput, Prisma.LeadUpdateWithoutPaymentsInput>, Prisma.LeadUncheckedUpdateWithoutPaymentsInput>
+}
+
 export type LeadCreateWithoutMessagesInput = {
   id?: string
   createdAt?: Date | string
@@ -626,9 +766,15 @@ export type LeadCreateWithoutMessagesInput = {
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
   seq1SentAt?: Date | string | null
   seq2SentAt?: Date | string | null
   seq3SentAt?: Date | string | null
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutMessagesInput = {
@@ -644,9 +790,15 @@ export type LeadUncheckedCreateWithoutMessagesInput = {
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: string
   notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
   seq1SentAt?: Date | string | null
   seq2SentAt?: Date | string | null
   seq3SentAt?: Date | string | null
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutMessagesInput = {
@@ -678,9 +830,15 @@ export type LeadUpdateWithoutMessagesInput = {
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
   seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutMessagesInput = {
@@ -696,9 +854,351 @@ export type LeadUncheckedUpdateWithoutMessagesInput = {
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   status?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
   seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadCreateWithoutAppointmentsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutAppointmentsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutAppointmentsInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutAppointmentsInput, Prisma.LeadUncheckedCreateWithoutAppointmentsInput>
+}
+
+export type LeadUpsertWithoutAppointmentsInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutAppointmentsInput, Prisma.LeadUncheckedUpdateWithoutAppointmentsInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutAppointmentsInput, Prisma.LeadUncheckedCreateWithoutAppointmentsInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutAppointmentsInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutAppointmentsInput, Prisma.LeadUncheckedUpdateWithoutAppointmentsInput>
+}
+
+export type LeadUpdateWithoutAppointmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutAppointmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadCreateWithoutSessionsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutSessionsInput, Prisma.LeadUncheckedCreateWithoutSessionsInput>
+}
+
+export type LeadUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutSessionsInput, Prisma.LeadUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutSessionsInput, Prisma.LeadUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutSessionsInput, Prisma.LeadUncheckedUpdateWithoutSessionsInput>
+}
+
+export type LeadUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadCreateWithoutPaymentsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutPaymentsInput, Prisma.LeadUncheckedCreateWithoutPaymentsInput>
+}
+
+export type LeadUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutPaymentsInput, Prisma.LeadUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutPaymentsInput, Prisma.LeadUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutPaymentsInput, Prisma.LeadUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type LeadUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 
@@ -708,10 +1208,16 @@ export type LeadUncheckedUpdateWithoutMessagesInput = {
 
 export type LeadCountOutputType = {
   messages: number
+  appointments: number
+  sessions: number
+  payments: number
 }
 
 export type LeadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   messages?: boolean | LeadCountOutputTypeCountMessagesArgs
+  appointments?: boolean | LeadCountOutputTypeCountAppointmentsArgs
+  sessions?: boolean | LeadCountOutputTypeCountSessionsArgs
+  payments?: boolean | LeadCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -731,6 +1237,27 @@ export type LeadCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.MessageWhereInput
 }
 
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppointmentWhereInput
+}
+
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionWhereInput
+}
+
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -745,10 +1272,16 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   answers?: boolean
   status?: boolean
   notes?: boolean
+  source?: boolean
+  therapist?: boolean
+  tags?: boolean
   seq1SentAt?: boolean
   seq2SentAt?: boolean
   seq3SentAt?: boolean
   messages?: boolean | Prisma.Lead$messagesArgs<ExtArgs>
+  appointments?: boolean | Prisma.Lead$appointmentsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Lead$sessionsArgs<ExtArgs>
+  payments?: boolean | Prisma.Lead$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lead"]>
 
@@ -765,6 +1298,9 @@ export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   answers?: boolean
   status?: boolean
   notes?: boolean
+  source?: boolean
+  therapist?: boolean
+  tags?: boolean
   seq1SentAt?: boolean
   seq2SentAt?: boolean
   seq3SentAt?: boolean
@@ -783,6 +1319,9 @@ export type LeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   answers?: boolean
   status?: boolean
   notes?: boolean
+  source?: boolean
+  therapist?: boolean
+  tags?: boolean
   seq1SentAt?: boolean
   seq2SentAt?: boolean
   seq3SentAt?: boolean
@@ -801,14 +1340,20 @@ export type LeadSelectScalar = {
   answers?: boolean
   status?: boolean
   notes?: boolean
+  source?: boolean
+  therapist?: boolean
+  tags?: boolean
   seq1SentAt?: boolean
   seq2SentAt?: boolean
   seq3SentAt?: boolean
 }
 
-export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "email" | "phone" | "score" | "band" | "severity" | "answers" | "status" | "notes" | "seq1SentAt" | "seq2SentAt" | "seq3SentAt", ExtArgs["result"]["lead"]>
+export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "email" | "phone" | "score" | "band" | "severity" | "answers" | "status" | "notes" | "source" | "therapist" | "tags" | "seq1SentAt" | "seq2SentAt" | "seq3SentAt", ExtArgs["result"]["lead"]>
 export type LeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   messages?: boolean | Prisma.Lead$messagesArgs<ExtArgs>
+  appointments?: boolean | Prisma.Lead$appointmentsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Lead$sessionsArgs<ExtArgs>
+  payments?: boolean | Prisma.Lead$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LeadIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -818,6 +1363,9 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Lead"
   objects: {
     messages: Prisma.$MessagePayload<ExtArgs>[]
+    appointments: Prisma.$AppointmentPayload<ExtArgs>[]
+    sessions: Prisma.$SessionPayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -832,6 +1380,9 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     answers: runtime.JsonValue
     status: string
     notes: string | null
+    source: string | null
+    therapist: string | null
+    tags: string[]
     seq1SentAt: Date | null
     seq2SentAt: Date | null
     seq3SentAt: Date | null
@@ -1230,6 +1781,9 @@ readonly fields: LeadFieldRefs;
 export interface Prisma__LeadClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   messages<T extends Prisma.Lead$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  appointments<T extends Prisma.Lead$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.Lead$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Lead$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1271,6 +1825,9 @@ export interface LeadFieldRefs {
   readonly answers: Prisma.FieldRef<"Lead", 'Json'>
   readonly status: Prisma.FieldRef<"Lead", 'String'>
   readonly notes: Prisma.FieldRef<"Lead", 'String'>
+  readonly source: Prisma.FieldRef<"Lead", 'String'>
+  readonly therapist: Prisma.FieldRef<"Lead", 'String'>
+  readonly tags: Prisma.FieldRef<"Lead", 'String[]'>
   readonly seq1SentAt: Prisma.FieldRef<"Lead", 'DateTime'>
   readonly seq2SentAt: Prisma.FieldRef<"Lead", 'DateTime'>
   readonly seq3SentAt: Prisma.FieldRef<"Lead", 'DateTime'>
@@ -1688,6 +2245,78 @@ export type Lead$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * Lead.appointments
+ */
+export type Lead$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Appointment
+   */
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Appointment
+   */
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
+  where?: Prisma.AppointmentWhereInput
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
+  cursor?: Prisma.AppointmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
+}
+
+/**
+ * Lead.sessions
+ */
+export type Lead$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Session
+   */
+  select?: Prisma.SessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Session
+   */
+  omit?: Prisma.SessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionInclude<ExtArgs> | null
+  where?: Prisma.SessionWhereInput
+  orderBy?: Prisma.SessionOrderByWithRelationInput | Prisma.SessionOrderByWithRelationInput[]
+  cursor?: Prisma.SessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionScalarFieldEnum | Prisma.SessionScalarFieldEnum[]
+}
+
+/**
+ * Lead.payments
+ */
+export type Lead$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

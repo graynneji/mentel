@@ -256,3 +256,133 @@ export async function POST(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+// app/api/admin/messages/route.ts
+
+// ── GET /api/admin/messages ────────────────────────────────────────────────────
+// Returns all messages with optional filters.
+// Query params: leadId, type (seq1|seq2|seq3|custom), sentBy, page, limit, from, to
+export async function GET(req: Request): Promise<NextResponse> {
+  try {
+    const { searchParams } = new URL(req.url);
+    const leadId = searchParams.get("leadId");
+    const type = searchParams.get("type");
+    const sentBy = searchParams.get("sentBy");
+    const from = searchParams.get("from"); // ISO date string
+    const to = searchParams.get("to"); // ISO date string
+    const page = Math.max(1, parseInt(searchParams.get("page") ?? "1"));
+    const limit = Math.min(
+      200,
+      Math.max(1, parseInt(searchParams.get("limit") ?? "50")),
+    );
+    const skip = (page - 1) * limit;
+
+    const where = {
+      ...(leadId ? { leadId } : {}),
+      ...(type ? { type } : {}),
+      ...(sentBy ? { sentBy } : {}),
+      ...(from || to
+        ? {
+            createdAt: {
+              ...(from ? { gte: new Date(from) } : {}),
+              ...(to ? { lte: new Date(to) } : {}),
+            },
+          }
+        : {}),
+    };
+
+    const [messages, total] = await Promise.all([
+      db.message.findMany({
+        where,
+        include: {
+          lead: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              band: true,
+              status: true,
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        skip,
+        take: limit,
+      }),
+      db.message.count({ where }),
+    ]);
+
+    // ── Aggregate stats ────────────────────────────────────────────────────────
+    const [typeCounts, sentByCounts] = await Promise.all([
+      db.message.groupBy({ by: ["type"], _count: { id: true } }),
+      db.message.groupBy({ by: ["sentBy"], _count: { id: true } }),
+    ]);
+
+    // Messages sent per day for the last 14 days (simple approach)
+    const now = new Date();
+    const cutoff = new Date(now.getTime() - 14 * 86_400_000);
+    const recentMessages = await db.message.findMany({
+      where: { createdAt: { gte: cutoff } },
+      select: { createdAt: true },
+    });
+
+    const dailyCounts: Record<string, number> = {};
+    for (let i = 0; i < 14; i++) {
+      const d = new Date(now.getTime() - i * 86_400_000);
+      const key = d.toISOString().slice(0, 10);
+      dailyCounts[key] = 0;
+    }
+    for (const m of recentMessages) {
+      const key = new Date(m.createdAt).toISOString().slice(0, 10);
+      if (key in dailyCounts) dailyCounts[key]++;
+    }
+
+    const analytics = {
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+      typeCounts: Object.fromEntries(
+        typeCounts.map((r) => [r.type, r._count.id]),
+      ),
+      sentByCounts: Object.fromEntries(
+        sentByCounts.map((r) => [r.sentBy, r._count.id]),
+      ),
+      // Ordered oldest→newest for charting
+      dailySends: Object.entries(dailyCounts)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([date, count]) => ({ date, count })),
+    };
+
+    return NextResponse.json({ success: true, messages, analytics });
+  } catch (error) {
+    console.error("GET messages error:", error);
+    return NextResponse.json(
+      { success: false, error: "Server error" },
+      { status: 500 },
+    );
+  }
+}
+
+// ── DELETE /api/admin/messages — delete a single message log entry ─────────────
+export async function DELETE(req: Request): Promise<NextResponse> {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, error: "Missing id" },
+        { status: 400 },
+      );
+    }
+
+    await db.message.delete({ where: { id } });
+    return NextResponse.json({ success: true, deleted: true });
+  } catch (error) {
+    console.error("DELETE message error:", error);
+    return NextResponse.json(
+      { success: false, error: "Server error" },
+      { status: 500 },
+    );
+  }
+}

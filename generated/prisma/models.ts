@@ -10,4 +10,7 @@
  */
 export type * from './models/Lead'
 export type * from './models/Message'
+export type * from './models/Appointment'
+export type * from './models/Session'
+export type * from './models/Payment'
 export type * from './commonInputTypes'

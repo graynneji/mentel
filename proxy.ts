@@ -13,7 +13,7 @@ export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Always allow the login page and the auth API route through
-  if (pathname === "/admin/login" || pathname.startsWith("/api/admin/auth")) {
+  if (pathname === "/login" || pathname.startsWith("/api/admin/auth")) {
     return NextResponse.next();
   }
 
@@ -22,7 +22,7 @@ export function proxy(req: NextRequest) {
     const session = req.cookies.get(SESSION_COOKIE)?.value;
 
     if (!session || session !== SESSION_SECRET) {
-      const loginUrl = new URL("/admin/login", req.url);
+      const loginUrl = new URL("/login", req.url);
       return NextResponse.redirect(loginUrl);
     }
   }

@@ -51,3 +51,18 @@ export type Lead = Prisma.LeadModel
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model Appointment
+ * 
+ */
+export type Appointment = Prisma.AppointmentModel
+/**
+ * Model Session
+ * 
+ */
+export type Session = Prisma.SessionModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
