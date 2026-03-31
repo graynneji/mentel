@@ -151,8 +151,3 @@ textarea {
 }
 
 /* Minimum tap target size (WCAG AA) */
-button,
-[role="button"],
-a {
-  min-height: 44px;
-}
