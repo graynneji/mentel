@@ -23,6 +23,14 @@ const microTrust = [
 export default function HeroPanel() {
     const { showForm, openBooking, closeBooking } = useBooking();
 
+
+    const trustBadges = [
+        { name: "A", gradient: "linear-gradient(135deg, #3d8b8b, #6fb8b8)" }, // teal
+        { name: "E", gradient: "linear-gradient(135deg, #a97b3d, #d4b87b)" }, // warm gold
+        { name: "F", gradient: "linear-gradient(135deg, #4e7a5e, #7ba98b)" }, // sage
+        { name: "K", gradient: "linear-gradient(135deg, #5a6fa8, #8fa4d6)" }, // calm blue
+        { name: "T", gradient: "linear-gradient(135deg, #8b5e7a, #c08fa4)" }, // soft plum
+    ];
     return (
         <>
             <div id="hero-panel">
@@ -61,7 +69,7 @@ export default function HeroPanel() {
                             }}
                         >
                             <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ background: "var(--error)" }} />
-                            Single session — ₦5,500 limited offer
+                            Single session - ₦5,500 limited offer
                         </div>
 
                         <div className="flex flex-col gap-3 mb-7">
@@ -77,20 +85,24 @@ export default function HeroPanel() {
 
                         <div className="flex items-center gap-3 mb-7 pb-6 border-b" style={{ borderColor: "rgba(123,169,139,0.15)" }}>
                             <div className="flex -space-x-2">
-                                {["A", "E", "F", "K", "T"].map((initial) => (
+                                {trustBadges.map((badge) => (
                                     <div
-                                        key={initial}
+                                        key={badge.name}
                                         className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-semibold text-white"
-                                        style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))", borderColor: "white" }}
+                                        style={{
+                                            background: badge.gradient,
+                                            borderColor: "white",
+                                        }}
                                     >
-                                        {initial}
+                                        {badge.name}
                                     </div>
                                 ))}
                             </div>
                             <div>
                                 <div className="flex gap-0.5 mb-0.5">
                                     {[1, 2, 3, 4, 5].map((i) => (
-                                        <Star key={i} size={11} fill="var(--sage)" style={{ color: "var(--sage)" }} />
+                                        <Star key={i} size={11} fill="#c7a86b" style={{ color: "#c7a86b", opacity: 0.9 }} />
+                                        // <Star key={i} size={11} fill="var(--sage)" style={{ color: "var(--sage)" }} />
                                     ))}
                                 </div>
                                 <p className="text-xs" style={{ color: "var(--text-muted)" }}>Trusted by 500+ clients across Nigeria</p>

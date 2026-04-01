@@ -23,7 +23,7 @@ export default function BottomCTA() {
                     Your first consultation is the hardest part. We make it easy, safe, and judgment-free.
                 </p>
                 <p className="text-xs mb-8 font-medium" style={{ color: "var(--sage-dark)" }}>
-                    🔥 Single session currently ₦10,000 — limited time offer
+                    🔥 Single session currently ₦5,000 - limited time offer
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <button
