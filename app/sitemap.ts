@@ -168,7 +168,7 @@ export const articles = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `https://trymentel.com/blog/${article.slug}`,
+    url: `https://trymentel.com/articles/${article.slug}`,
     changeFrequency: "monthly",
     priority: article.featured ? 0.8 : 0.6,
     lastModified: new Date(article.date),
