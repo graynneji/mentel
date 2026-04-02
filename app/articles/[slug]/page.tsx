@@ -312,7 +312,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const param = await params
-    const article = articles.find((a) => a.slug === params.slug);
+    const article = articles.find((a) => a.slug === param.slug);
     if (!article) notFound();
 
     const content = articleContent[article.slug];
