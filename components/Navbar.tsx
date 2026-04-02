@@ -14,6 +14,7 @@ DEADLINE.setMilliseconds(999);
 const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
+    { href: "/articles", label: "Articles" },
     { href: "/services", label: "Services" },
     { href: "/contact", label: "Contact" },
 ];
