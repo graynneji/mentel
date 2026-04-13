@@ -56,7 +56,11 @@ export const ModelName = {
   Appointment: 'Appointment',
   Session: 'Session',
   Payment: 'Payment',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  Company: 'Company',
+  CompanyEmployee: 'CompanyEmployee',
+  EAPAssessment: 'EAPAssessment',
+  EAPSession: 'EAPSession'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -171,6 +175,116 @@ export const SettingScalarFieldEnum = {
 export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
 
 
+export const CompanyScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  slug: 'slug',
+  logoUrl: 'logoUrl',
+  industry: 'industry',
+  sizeRange: 'sizeRange',
+  country: 'country',
+  contactName: 'contactName',
+  contactEmail: 'contactEmail',
+  contactPhone: 'contactPhone',
+  hrEmail: 'hrEmail',
+  hrPasswordHash: 'hrPasswordHash',
+  accessCode: 'accessCode',
+  lastLogin: 'lastLogin',
+  plan: 'plan',
+  planSeats: 'planSeats',
+  sessionCap: 'sessionCap',
+  planStartAt: 'planStartAt',
+  planRenewAt: 'planRenewAt',
+  billingStatus: 'billingStatus',
+  allowAnonymous: 'allowAnonymous',
+  focusAreas: 'focusAreas',
+  customDomains: 'customDomains',
+  status: 'status'
+} as const
+
+export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const CompanyEmployeeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  companyId: 'companyId',
+  name: 'name',
+  email: 'email',
+  emailHash: 'emailHash',
+  phone: 'phone',
+  department: 'department',
+  jobTitle: 'jobTitle',
+  employeeRef: 'employeeRef',
+  anonymous: 'anonymous',
+  enrolledAt: 'enrolledAt',
+  status: 'status',
+  riskBand: 'riskBand',
+  overallScore: 'overallScore',
+  lastAssessmentAt: 'lastAssessmentAt',
+  improvementPct: 'improvementPct',
+  sessionsUsed: 'sessionsUsed',
+  sessionsRemaining: 'sessionsRemaining',
+  baselineScore: 'baselineScore',
+  baselineAssessmentId: 'baselineAssessmentId'
+} as const
+
+export type CompanyEmployeeScalarFieldEnum = (typeof CompanyEmployeeScalarFieldEnum)[keyof typeof CompanyEmployeeScalarFieldEnum]
+
+
+export const EAPAssessmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  employeeId: 'employeeId',
+  answers: 'answers',
+  stressScore: 'stressScore',
+  anxietyScore: 'anxietyScore',
+  depressionScore: 'depressionScore',
+  burnoutScore: 'burnoutScore',
+  sleepScore: 'sleepScore',
+  relationshipScore: 'relationshipScore',
+  selfEsteemScore: 'selfEsteemScore',
+  substanceScore: 'substanceScore',
+  totalScore: 'totalScore',
+  riskBand: 'riskBand',
+  flags: 'flags',
+  relationshipStatus: 'relationshipStatus',
+  hasChildren: 'hasChildren',
+  recommendations: 'recommendations',
+  therapistNotes: 'therapistNotes',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type EAPAssessmentScalarFieldEnum = (typeof EAPAssessmentScalarFieldEnum)[keyof typeof EAPAssessmentScalarFieldEnum]
+
+
+export const EAPSessionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  companyId: 'companyId',
+  employeeId: 'employeeId',
+  scheduledAt: 'scheduledAt',
+  conductedAt: 'conductedAt',
+  durationMin: 'durationMin',
+  therapist: 'therapist',
+  type: 'type',
+  modality: 'modality',
+  status: 'status',
+  moodPre: 'moodPre',
+  moodPost: 'moodPost',
+  progressNotes: 'progressNotes',
+  domains: 'domains'
+} as const
+
+export type EAPSessionScalarFieldEnum = (typeof EAPSessionScalarFieldEnum)[keyof typeof EAPSessionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -184,6 +298,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

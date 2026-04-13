@@ -10,7 +10,8 @@
   --color-deep: #1c3a3a;
   --color-mist: #edf4f0;
   --color-off-white: #fafcfb;
-  --color-text-muted: #4e6358;
+  --color-text-muted: #2d2d3a;
+  /* --color-text-muted: #4e6358; */
   /* --color-text-muted: #6b8275; */
   --color-border: #c8ddd2;
 
@@ -31,7 +32,8 @@
   --mist: #edf4f0;
   --white: #fafcfb;
   --text: #2c3e35;
-  --text-muted: #4e6358;
+  --text-muted: #2d2d3a;
+  /* --text-muted: #4e6358; this is the one used previously */
   /* --text-muted: #6b8275; */
   --border: #c8ddd2;
   --error: #c0555a;

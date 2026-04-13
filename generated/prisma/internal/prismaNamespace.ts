@@ -389,7 +389,11 @@ export const ModelName = {
   Appointment: 'Appointment',
   Session: 'Session',
   Payment: 'Payment',
-  Setting: 'Setting'
+  Setting: 'Setting',
+  Company: 'Company',
+  CompanyEmployee: 'CompanyEmployee',
+  EAPAssessment: 'EAPAssessment',
+  EAPSession: 'EAPSession'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting"
+    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -853,6 +857,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Company: {
+      payload: Prisma.$CompanyPayload<ExtArgs>
+      fields: Prisma.CompanyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompanyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompanyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        findFirst: {
+          args: Prisma.CompanyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompanyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        findMany: {
+          args: Prisma.CompanyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+        }
+        create: {
+          args: Prisma.CompanyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        createMany: {
+          args: Prisma.CompanyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompanyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+        }
+        delete: {
+          args: Prisma.CompanyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        update: {
+          args: Prisma.CompanyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        deleteMany: {
+          args: Prisma.CompanyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompanyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompanyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>[]
+        }
+        upsert: {
+          args: Prisma.CompanyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyPayload>
+        }
+        aggregate: {
+          args: Prisma.CompanyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompany>
+        }
+        groupBy: {
+          args: Prisma.CompanyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompanyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyCountAggregateOutputType> | number
+        }
+      }
+    }
+    CompanyEmployee: {
+      payload: Prisma.$CompanyEmployeePayload<ExtArgs>
+      fields: Prisma.CompanyEmployeeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CompanyEmployeeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CompanyEmployeeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>
+        }
+        findFirst: {
+          args: Prisma.CompanyEmployeeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CompanyEmployeeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>
+        }
+        findMany: {
+          args: Prisma.CompanyEmployeeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>[]
+        }
+        create: {
+          args: Prisma.CompanyEmployeeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>
+        }
+        createMany: {
+          args: Prisma.CompanyEmployeeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CompanyEmployeeCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>[]
+        }
+        delete: {
+          args: Prisma.CompanyEmployeeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>
+        }
+        update: {
+          args: Prisma.CompanyEmployeeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>
+        }
+        deleteMany: {
+          args: Prisma.CompanyEmployeeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CompanyEmployeeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CompanyEmployeeUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>[]
+        }
+        upsert: {
+          args: Prisma.CompanyEmployeeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompanyEmployeePayload>
+        }
+        aggregate: {
+          args: Prisma.CompanyEmployeeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompanyEmployee>
+        }
+        groupBy: {
+          args: Prisma.CompanyEmployeeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyEmployeeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CompanyEmployeeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompanyEmployeeCountAggregateOutputType> | number
+        }
+      }
+    }
+    EAPAssessment: {
+      payload: Prisma.$EAPAssessmentPayload<ExtArgs>
+      fields: Prisma.EAPAssessmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EAPAssessmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EAPAssessmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>
+        }
+        findFirst: {
+          args: Prisma.EAPAssessmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EAPAssessmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>
+        }
+        findMany: {
+          args: Prisma.EAPAssessmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>[]
+        }
+        create: {
+          args: Prisma.EAPAssessmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>
+        }
+        createMany: {
+          args: Prisma.EAPAssessmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EAPAssessmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>[]
+        }
+        delete: {
+          args: Prisma.EAPAssessmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>
+        }
+        update: {
+          args: Prisma.EAPAssessmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.EAPAssessmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EAPAssessmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EAPAssessmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.EAPAssessmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPAssessmentPayload>
+        }
+        aggregate: {
+          args: Prisma.EAPAssessmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEAPAssessment>
+        }
+        groupBy: {
+          args: Prisma.EAPAssessmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EAPAssessmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EAPAssessmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EAPAssessmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    EAPSession: {
+      payload: Prisma.$EAPSessionPayload<ExtArgs>
+      fields: Prisma.EAPSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EAPSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EAPSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.EAPSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EAPSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>
+        }
+        findMany: {
+          args: Prisma.EAPSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>[]
+        }
+        create: {
+          args: Prisma.EAPSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>
+        }
+        createMany: {
+          args: Prisma.EAPSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EAPSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.EAPSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>
+        }
+        update: {
+          args: Prisma.EAPSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.EAPSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EAPSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EAPSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.EAPSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EAPSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.EAPSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEAPSession>
+        }
+        groupBy: {
+          args: Prisma.EAPSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EAPSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EAPSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EAPSessionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -988,6 +1288,116 @@ export const SettingScalarFieldEnum = {
 export type SettingScalarFieldEnum = (typeof SettingScalarFieldEnum)[keyof typeof SettingScalarFieldEnum]
 
 
+export const CompanyScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  slug: 'slug',
+  logoUrl: 'logoUrl',
+  industry: 'industry',
+  sizeRange: 'sizeRange',
+  country: 'country',
+  contactName: 'contactName',
+  contactEmail: 'contactEmail',
+  contactPhone: 'contactPhone',
+  hrEmail: 'hrEmail',
+  hrPasswordHash: 'hrPasswordHash',
+  accessCode: 'accessCode',
+  lastLogin: 'lastLogin',
+  plan: 'plan',
+  planSeats: 'planSeats',
+  sessionCap: 'sessionCap',
+  planStartAt: 'planStartAt',
+  planRenewAt: 'planRenewAt',
+  billingStatus: 'billingStatus',
+  allowAnonymous: 'allowAnonymous',
+  focusAreas: 'focusAreas',
+  customDomains: 'customDomains',
+  status: 'status'
+} as const
+
+export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const CompanyEmployeeScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  companyId: 'companyId',
+  name: 'name',
+  email: 'email',
+  emailHash: 'emailHash',
+  phone: 'phone',
+  department: 'department',
+  jobTitle: 'jobTitle',
+  employeeRef: 'employeeRef',
+  anonymous: 'anonymous',
+  enrolledAt: 'enrolledAt',
+  status: 'status',
+  riskBand: 'riskBand',
+  overallScore: 'overallScore',
+  lastAssessmentAt: 'lastAssessmentAt',
+  improvementPct: 'improvementPct',
+  sessionsUsed: 'sessionsUsed',
+  sessionsRemaining: 'sessionsRemaining',
+  baselineScore: 'baselineScore',
+  baselineAssessmentId: 'baselineAssessmentId'
+} as const
+
+export type CompanyEmployeeScalarFieldEnum = (typeof CompanyEmployeeScalarFieldEnum)[keyof typeof CompanyEmployeeScalarFieldEnum]
+
+
+export const EAPAssessmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  employeeId: 'employeeId',
+  answers: 'answers',
+  stressScore: 'stressScore',
+  anxietyScore: 'anxietyScore',
+  depressionScore: 'depressionScore',
+  burnoutScore: 'burnoutScore',
+  sleepScore: 'sleepScore',
+  relationshipScore: 'relationshipScore',
+  selfEsteemScore: 'selfEsteemScore',
+  substanceScore: 'substanceScore',
+  totalScore: 'totalScore',
+  riskBand: 'riskBand',
+  flags: 'flags',
+  relationshipStatus: 'relationshipStatus',
+  hasChildren: 'hasChildren',
+  recommendations: 'recommendations',
+  therapistNotes: 'therapistNotes',
+  reviewedBy: 'reviewedBy',
+  reviewedAt: 'reviewedAt'
+} as const
+
+export type EAPAssessmentScalarFieldEnum = (typeof EAPAssessmentScalarFieldEnum)[keyof typeof EAPAssessmentScalarFieldEnum]
+
+
+export const EAPSessionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  companyId: 'companyId',
+  employeeId: 'employeeId',
+  scheduledAt: 'scheduledAt',
+  conductedAt: 'conductedAt',
+  durationMin: 'durationMin',
+  therapist: 'therapist',
+  type: 'type',
+  modality: 'modality',
+  status: 'status',
+  moodPre: 'moodPre',
+  moodPost: 'moodPost',
+  progressNotes: 'progressNotes',
+  domains: 'domains'
+} as const
+
+export type EAPSessionScalarFieldEnum = (typeof EAPSessionScalarFieldEnum)[keyof typeof EAPSessionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1001,6 +1411,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1087,6 +1505,13 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1204,6 +1629,10 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   payment?: Prisma.PaymentOmit
   setting?: Prisma.SettingOmit
+  company?: Prisma.CompanyOmit
+  companyEmployee?: Prisma.CompanyEmployeeOmit
+  eAPAssessment?: Prisma.EAPAssessmentOmit
+  eAPSession?: Prisma.EAPSessionOmit
 }
 
 /* Types for Logging */

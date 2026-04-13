@@ -505,7 +505,7 @@ export default function SettingsPage() {
         try {
             await fetch("/api/admin/logout", { method: "POST" });
         } catch { /* ignore */ }
-        window.location.href = "/admin/login";
+        window.location.href = "/login";
     };
 
     const SECTIONS = [

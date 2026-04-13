@@ -25,7 +25,7 @@ export const articles = [
     {
         slug: "online-therapy-nigeria-how-it-works",
         category: "Getting Started",
-        title: "How Online Therapy Works in Nigeria — and Why It's Changing Lives",
+        title: "How Online Therapy Works in Nigeria and Why It's Changing Lives",
         excerpt:
             "Stigma, distance, cost. The old barriers to mental healthcare are falling. We break down exactly how virtual therapy works, what to expect, and whether it's right for you.",
         readMin: 6,
@@ -39,7 +39,7 @@ export const articles = [
         category: "Anxiety",
         title: "7 Signs of Anxiety Nigerians Are Taught to Ignore",
         excerpt:
-            "\"Just pray about it.\" \"You're overthinking.\" Anxiety wears many masks in Nigerian culture — here's how to recognise it before it silently takes over your life.",
+            "\"Just pray about it.\" \"You're overthinking.\" Anxiety wears many masks in Nigerian culture, here's how to recognise it before it silently takes over your life.",
         readMin: 5,
         date: "2025-05-14",
         featured: false,
@@ -87,7 +87,7 @@ export const articles = [
         category: "Burnout",
         title: "Burnout vs. Stress: How to Tell the Difference (and Why It Matters)",
         excerpt:
-            "Everyone is stressed. But burnout is something else entirely — a state that doesn't resolve with rest alone. Here's how to know which one you're dealing with.",
+            "Everyone is stressed. But burnout is something else entirely, a state that doesn't resolve with rest alone. Here's how to know which one you're dealing with.",
         readMin: 5,
         date: "2025-03-08",
         featured: false,
@@ -99,7 +99,7 @@ export const articles = [
         category: "Trauma",
         title: "Understanding Trauma and PTSD in a Nigerian Context",
         excerpt:
-            "Road accidents, loss, violence, childhood experiences — trauma is more common than we admit. This guide explains what trauma does to the brain and how evidence-based therapies heal it.",
+            "Road accidents, loss, violence, childhood experiences, trauma is more common than we admit. This guide explains what trauma does to the brain and how evidence-based therapies heal it.",
         readMin: 9,
         date: "2025-02-20",
         featured: false,

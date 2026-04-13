@@ -12,8 +12,11 @@ export default function ConditionalShell({
 }) {
     const pathname = usePathname();
     const isAdmin = pathname.startsWith("/admin");
+    const isHr = pathname.startsWith("/hr");
+    const isEAP = pathname.startsWith("/eap/");
+    const isassessment = pathname.startsWith("/assessment");
 
-    if (isAdmin) {
+    if (isAdmin || isHr || isEAP || isassessment) {
         return <>{children}</>;
     }
 

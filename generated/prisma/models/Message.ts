@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Message
- * 
+ * An email or message sent to a lead.
  */
 export type MessageModel = runtime.Types.Result.DefaultSelection<Prisma.$MessagePayload>
 

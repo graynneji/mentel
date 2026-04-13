@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Lead
- * 
+ * A prospective or active individual client who completed the public assessment.
  */
 export type LeadModel = runtime.Types.Result.DefaultSelection<Prisma.$LeadPayload>
 

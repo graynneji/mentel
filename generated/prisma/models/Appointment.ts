@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Appointment
- * 
+ * A scheduled therapy appointment for an individual lead.
  */
 export type AppointmentModel = runtime.Types.Result.DefaultSelection<Prisma.$AppointmentPayload>
 

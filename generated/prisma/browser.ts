@@ -19,31 +19,57 @@ export * as $Enums from './enums'
 export * from './enums';
 /**
  * Model Lead
- * 
+ * A prospective or active individual client who completed the public assessment.
  */
 export type Lead = Prisma.LeadModel
 /**
  * Model Message
- * 
+ * An email or message sent to a lead.
  */
 export type Message = Prisma.MessageModel
 /**
  * Model Appointment
- * 
+ * A scheduled therapy appointment for an individual lead.
  */
 export type Appointment = Prisma.AppointmentModel
 /**
  * Model Session
- * 
+ * A completed therapy session linked to an appointment and optionally a payment.
  */
 export type Session = Prisma.SessionModel
 /**
  * Model Payment
- * 
+ * A payment record for an individual session or service.
  */
 export type Payment = Prisma.PaymentModel
 /**
  * Model Setting
- * 
+ * Global key-value configuration store (e.g. email templates, pricing, feature flags).
  */
 export type Setting = Prisma.SettingModel
+/**
+ * Model Company
+ * A corporate client subscribed to Mentel's EAP programme.
+ */
+export type Company = Prisma.CompanyModel
+/**
+ * Model CompanyEmployee
+ * An employee enrolled under a company's EAP programme.
+ */
+export type CompanyEmployee = Prisma.CompanyEmployeeModel
+/**
+ * Model EAPAssessment
+ * A comprehensive EAP wellbeing assessment.
+ * Covers 8 domains: stress, anxiety, depression, burnout, sleep,
+ * relationships (personalised by relationship status), self-esteem, and substance risk.
+ * Admin can update domain scores post-therapy to reflect improvement.
+ * Score updates cascade to CompanyEmployee.overallScore and HR dashboard charts.
+ */
+export type EAPAssessment = Prisma.EAPAssessmentModel
+/**
+ * Model EAPSession
+ * A therapy or coaching session delivered under the EAP umbrella.
+ * Distinct from the individual-platform Session model.
+ * Used for session utilisation tracking visible in HR dashboard.
+ */
+export type EAPSession = Prisma.EAPSessionModel

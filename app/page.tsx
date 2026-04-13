@@ -6,6 +6,7 @@ import {
     Leaf, ArrowRight,
     Brain, Heart, Anchor, ClipboardCheck,
     Flame, Sun, Users, Sparkles, Quote, ChevronDown, Star, Clock, Shield,
+    Building2,
 } from "lucide-react";
 
 const services = [
@@ -271,6 +272,67 @@ export default function HomePage() {
                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                             >
                                 Start Free Check
+                                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1 duration-200" />
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+            </section>
+
+            {/* /* ── EAP Corporate Banner ── */}
+            <section className="relative z-10 py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto">
+                    <Link
+                        href="/eap"
+                        className="group block rounded-2xl sm:rounded-3xl p-7 sm:p-10 relative overflow-hidden border transition-all hover:-translate-y-1 hover:shadow-xl duration-300"
+                        style={{
+                            background: "linear-gradient(135deg, rgba(28,58,58,0.04) 0%, rgba(61,94,139,0.08) 100%)",
+                            borderColor: "rgba(28,58,58,0.2)"
+                        }}
+                    >
+                        <div className="absolute top-0 left-0 right-0 h-0.5"
+                            style={{ background: "linear-gradient(90deg, #1c3a3a, #3d5e8b, #4e8c6a)" }} />
+                        <div className="absolute right-0 top-0 bottom-0 w-48 sm:w-72 pointer-events-none opacity-10"
+                            style={{ background: "radial-gradient(ellipse at right center, #1c3a3a 0%, transparent 70%)" }} />
+
+                        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-10">
+                            <div
+                                className="rounded-2xl flex items-center justify-center flex-shrink-0"
+                                style={{
+                                    background: "linear-gradient(135deg, #1c3a3a, #3d5e8b)",
+                                    width: "52px", height: "52px"
+                                }}
+                            >
+                                <Building2 size={24} color="white" />
+                            </div>
+
+                            <div className="flex-1">
+                                <div
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium uppercase tracking-widest mb-2 border"
+                                    style={{
+                                        background: "rgba(28,58,58,0.08)",
+                                        borderColor: "rgba(28,58,58,0.2)",
+                                        color: "#1c3a3a"
+                                    }}
+                                >
+                                    <Building2 size={10} />
+                                    For Companies · Employee Assistance Programme
+                                </div>
+                                <h2 className="font-cormorant text-2xl sm:text-3xl font-light mb-1" style={{ color: "var(--deep)" }}>
+                                    Does your organisation care about your people&apos;s mental health?{" "}
+                                    <em className="italic" style={{ color: "#3d5e8b" }}>We can help.</em>
+                                </h2>
+                                <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)", maxWidth: "520px" }}>
+                                    Mentel EAP gives your employees confidential therapy access, a clinical-grade 8-domain assessment,
+                                    and your HR team anonymised insights to build a healthier organisation.
+                                </p>
+                            </div>
+
+                            <div
+                                className="inline-flex items-center gap-2 text-sm font-medium text-white px-6 py-3 rounded-full flex-shrink-0 whitespace-nowrap"
+                                style={{ background: "linear-gradient(135deg, #1c3a3a, #3d5e8b)" }}
+                            >
+                                Explore EAP Plans
                                 <ArrowRight size={15} className="transition-transform group-hover:translate-x-1 duration-200" />
                             </div>
                         </div>

@@ -1,3 +1,10 @@
+// prisma/schema.prisma
+// ─────────────────────────────────────────────────────────────────────────────
+// MENTEL — COMPLETE PRISMA SCHEMA
+// Original models: Lead, Message, Appointment, Session, Payment, Setting
+// EAP models:      Company, CompanyEmployee, EAPAssessment, EAPSession
+// ─────────────────────────────────────────────────────────────────────────────
+
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -7,25 +14,35 @@ datasource db {
   provider = "postgresql"
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 1 — CORE PLATFORM (individual leads, therapy, payments)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/// A prospective or active individual client who completed the public assessment.
 model Lead {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt      @map("updated_at")
 
+  // Identity
   name     String
   email    String
   phone    String?
-  score    Int
-  band     String
-  severity String
-  answers  Json
 
-  status    String  @default("new")
-  notes     String? @default("")
-  source    String? @default("organic")   // organic | referral | social | direct | ads
+  // Assessment result
+  score    Int
+  band     String   // Low | Mild | Moderate | High | Critical
+  severity String   // maps to band for display
+  answers  Json     // raw assessment answers {question_id: value}
+
+  // CRM
+  status    String   @default("new")     // new | contacted | booked | active | discharged | lost
+  notes     String?  @default("")
+  source    String?  @default("organic") // organic | referral | social | direct | ads | eap
   therapist String?
   tags      String[] @default([])
 
+  // Email sequence tracking
   seq1SentAt DateTime? @map("seq1_sent_at")
   seq2SentAt DateTime? @map("seq2_sent_at")
   seq3SentAt DateTime? @map("seq3_sent_at")
@@ -42,6 +59,7 @@ model Lead {
   @@map("leads")
 }
 
+/// An email or message sent to a lead.
 model Message {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
@@ -58,22 +76,23 @@ model Message {
   @@map("messages")
 }
 
+/// A scheduled therapy appointment for an individual lead.
 model Appointment {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt      @map("updated_at")
 
-  leadId    String   @map("lead_id")
-  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId String @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  scheduledAt DateTime  @map("scheduled_at")
-  durationMin Int       @default(50) @map("duration_min")
+  scheduledAt DateTime @map("scheduled_at")
+  durationMin Int      @default(50)          @map("duration_min")
   therapist   String
-  type        String    @default("initial")   // initial | follow-up | assessment | group
-  status      String    @default("scheduled") // scheduled | completed | cancelled | no-show
+  type        String   @default("initial")   // initial | follow-up | assessment | group
+  status      String   @default("scheduled") // scheduled | completed | cancelled | no-show
   notes       String?
 
-  session     Session?
+  session Session?
 
   @@index([leadId])
   @@index([status])
@@ -81,12 +100,13 @@ model Appointment {
   @@map("appointments")
 }
 
+/// A completed therapy session linked to an appointment and optionally a payment.
 model Session {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  leadId        String  @map("lead_id")
-  lead          Lead    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId String @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   appointmentId String?      @unique @map("appointment_id")
   appointment   Appointment? @relation(fields: [appointmentId], references: [id])
@@ -96,33 +116,34 @@ model Session {
   type        String   @default("individual") // individual | group | assessment
   durationMin Int      @default(50)           @map("duration_min")
   notes       String?
-  mood        Int?     // 1-5 mood rating after session
-  progress    String?  // therapist progress notes
+  mood        Int?     // 1–5 client mood rating post-session
+  progress    String?  // therapist progress notes (internal)
 
-  payment     Payment?
+  payment Payment?
 
   @@index([leadId])
   @@index([conductedAt])
   @@map("sessions")
 }
 
+/// A payment record for an individual session or service.
 model Payment {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  leadId    String @map("lead_id")
-  lead      Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId String @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   sessionId String?  @unique @map("session_id")
   session   Session? @relation(fields: [sessionId], references: [id])
 
-  amountKobo  Int      @map("amount_kobo")   // store in kobo (₦1 = 100 kobo) for precision
-  currency    String   @default("NGN")
-  status      String   @default("pending")   // pending | paid | refunded | failed
-  method      String   @default("transfer")  // transfer | card | cash | pos
-  reference   String?  @unique               // payment gateway reference
-  paidAt      DateTime? @map("paid_at")
-  notes       String?
+  amountKobo Int       @map("amount_kobo") // ₦1 = 100 kobo — always store in kobo
+  currency   String    @default("NGN")
+  status     String    @default("pending") // pending | paid | refunded | failed
+  method     String    @default("transfer") // transfer | card | cash | pos
+  reference  String?   @unique             // Paystack / Flutterwave reference
+  paidAt     DateTime? @map("paid_at")
+  notes      String?
 
   @@index([leadId])
   @@index([status])
@@ -130,9 +151,219 @@ model Payment {
   @@map("payments")
 }
 
-  model Setting {
+/// Global key-value configuration store (e.g. email templates, pricing, feature flags).
+model Setting {
   key       String   @id
   value     Json
   updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("settings")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 2 — EAP (Employee Assistance Programme)
+// Completely separate data graph from Section 1.
+// Companies subscribe → employees enrol via access code → take assessments →
+// get matched to therapists → HR sees anonymised aggregate dashboard.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/// A corporate client subscribed to Mentel's EAP programme.
+model Company {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  // ── Identity ────────────────────────────────────────────────────────────────
+  name      String          // "Zenith Bank PLC"
+  slug      String  @unique // "zenith-bank" — URL-safe unique identifier
+  logoUrl   String? @map("logo_url")
+  industry  String?         // "Banking & Finance"
+  sizeRange String? @map("size_range") // "51-150" | "151-500" | "501-1000" | "1000+"
+  country   String  @default("NG")
+
+  // ── HR contact (for admin comms, NOT portal login) ───────────────────────────
+  contactName  String  @map("contact_name")
+  contactEmail String  @map("contact_email")
+  contactPhone String? @map("contact_phone")
+
+  // ── HR portal authentication ─────────────────────────────────────────────────
+  // Authentication strategy: the accessCode IS the HR login credential.
+  // No traditional username/password — one code unlocks the HR portal.
+  // hrPasswordHash kept for future optional password upgrade.
+  hrEmail        String    @unique @map("hr_email")       // HR portal identity
+  hrPasswordHash String    @map("hr_password_hash")       // bcrypt, reserved for future use
+  accessCode     String    @unique @map("access_code")    // e.g. "ZNB-A3F2C1" — employees & HR use this
+  lastLogin      DateTime? @map("last_login")
+
+  // ── Plan & billing ───────────────────────────────────────────────────────────
+  plan          String    @default("starter")  // starter | growth | enterprise | trial
+  planSeats     Int       @default(50)         @map("plan_seats")     // max enrolled employees
+  sessionCap    Int       @default(6)          @map("session_cap")    // included sessions per employee / year
+  planStartAt   DateTime? @map("plan_start_at")
+  planRenewAt   DateTime? @map("plan_renew_at")
+  billingStatus String    @default("active")   @map("billing_status") // active | overdue | cancelled
+
+  // ── Programme configuration ──────────────────────────────────────────────────
+  allowAnonymous Boolean  @default(true)  @map("allow_anonymous") // employees can assess without sharing name
+  focusAreas     String[] @default([])   @map("focus_areas")      // e.g. ["Stress","Burnout"] — empty = all domains
+  customDomains  Json?    @map("custom_domains")                   // enterprise: custom question overrides
+
+  // ── Lifecycle ────────────────────────────────────────────────────────────────
+  status String @default("trial") // trial | active | paused | cancelled
+
+  employees   CompanyEmployee[]
+  eapSessions EAPSession[]
+
+  @@index([status])
+  @@index([hrEmail])
+  @@index([accessCode])
+  @@map("companies")
+}
+
+/// An employee enrolled under a company's EAP programme.
+model CompanyEmployee {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // ── Identity — may be withheld if company allows anonymous enrolment ──────────
+  name        String? // null if anonymous
+  email       String? // null if anonymous
+  emailHash   String? @map("email_hash")   // SHA-256 of lowercased email — deduplication without storing PII
+  phone       String?  // optional — for therapist to contact if email fails
+  department  String?
+  jobTitle    String? @map("job_title")
+  employeeRef String? @map("employee_ref") // company's own HR system ID (optional)
+  anonymous   Boolean @default(false)
+
+  // ── Enrolment ────────────────────────────────────────────────────────────────
+  enrolledAt DateTime @default(now()) @map("enrolled_at")
+  status     String   @default("active") // active | inactive | churned
+
+  // ── Aggregated progress (denormalised for fast dashboard queries) ─────────────
+  // These fields are recomputed every time an assessment is saved or a score is updated.
+  riskBand          String?  @map("risk_band")          // Low | Mild | Moderate | High | Critical
+  overallScore      Int?     @map("overall_score")       // 0–100 composite (lower = better)
+  lastAssessmentAt  DateTime? @map("last_assessment_at")
+  improvementPct    Float?   @map("improvement_pct")    // ((firstScore - latestScore) / firstScore) × 100
+  sessionsUsed      Int      @default(0)                 @map("sessions_used")
+  sessionsRemaining Int?     @map("sessions_remaining") // derived: company.sessionCap - sessionsUsed
+
+  // In model CompanyEmployee, add after improvementPct:
+//
+  baselineScore     Int?     @map("baseline_score")
+//   // The totalScore from the employee's FIRST assessment.
+//   // Set once on first assessment submission and NEVER changed.
+//   // Used as the denominator for all future improvementPct calculations.
+//   // Without this, editing scores on the first assessment breaks improvement %.
+//
+ baselineAssessmentId String? @map("baseline_assessment_id")
+//   // ID of the first assessment — so we never accidentally overwrite its scores.
+
+  assessments EAPAssessment[]
+  eapSessions EAPSession[]
+
+  @@index([companyId])
+  @@index([emailHash])
+  @@index([riskBand])
+  @@index([status])
+  @@map("company_employees")
+}
+
+/// A comprehensive EAP wellbeing assessment.
+/// Covers 8 domains: stress, anxiety, depression, burnout, sleep,
+/// relationships (personalised by relationship status), self-esteem, and substance risk.
+/// Admin can update domain scores post-therapy to reflect improvement.
+/// Score updates cascade to CompanyEmployee.overallScore and HR dashboard charts.
+model EAPAssessment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  employeeId String          @map("employee_id")
+  employee   CompanyEmployee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  // ── Raw answers ──────────────────────────────────────────────────────────────
+  answers Json // { question_id: selected_option_value, ... }
+
+  // ── Per-domain scores (0–100, higher = more distress) ────────────────────────
+  // Editable by admin/therapist post-session to reflect therapy-driven improvement.
+  stressScore        Int?  @map("stress_score")
+  anxietyScore       Int?  @map("anxiety_score")
+  depressionScore    Int?  @map("depression_score")
+  burnoutScore       Int?  @map("burnout_score")
+  sleepScore         Int?  @map("sleep_score")
+  relationshipScore  Int?  @map("relationship_score")  // null if employee indicated n/a
+  selfEsteemScore    Int?  @map("self_esteem_score")
+  substanceScore     Int?  @map("substance_score")      // reserved — not in current assessment
+
+  // ── Composite ─────────────────────────────────────────────────────────────────
+  totalScore Int    @map("total_score")  // 0–100 weighted composite (recomputed on domain edit)
+  riskBand   String @map("risk_band")   // Low | Mild | Moderate | High | Critical
+
+  // ── Clinical flags (auto-detected at submission) ──────────────────────────────
+  flags String[] @default([])
+  // Possible values: suicidal_ideation | crisis | burnout_severe |
+  //                  depression_severe | anxiety_severe
+
+  // ── Personalisation context ───────────────────────────────────────────────────
+  relationshipStatus String? @map("relationship_status")
+  // single | partnered | married | separated | divorced | widowed
+  hasChildren Boolean? @map("has_children")
+
+  // ── AI-generated recommendations ─────────────────────────────────────────────
+  recommendations Json? @default("[]")
+  // [{ type: string, title: string, description: string }]
+
+  // ── Therapist review (admin-editable) ────────────────────────────────────────
+  therapistNotes String?   @map("therapist_notes")
+  reviewedBy     String?   @map("reviewed_by")   // admin user who last updated scores
+  reviewedAt     DateTime? @map("reviewed_at")
+
+  @@index([employeeId])
+  @@index([createdAt])
+  @@index([riskBand])
+  @@map("eap_assessments")
+}
+
+/// A therapy or coaching session delivered under the EAP umbrella.
+/// Distinct from the individual-platform Session model.
+/// Used for session utilisation tracking visible in HR dashboard.
+model EAPSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  companyId String  @map("company_id")
+  company   Company @relation(fields: [companyId], references: [id])
+
+  employeeId String          @map("employee_id")
+  employee   CompanyEmployee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  // ── Scheduling ───────────────────────────────────────────────────────────────
+  scheduledAt DateTime  @map("scheduled_at")
+  conductedAt DateTime? @map("conducted_at")
+  durationMin Int       @default(50)         @map("duration_min")
+  therapist   String
+  type        String    @default("individual") // individual | couples | group | coaching | crisis
+  modality    String    @default("video")      // video | phone | in-person
+
+  // ── Status ───────────────────────────────────────────────────────────────────
+  status String @default("scheduled")
+  // scheduled | completed | cancelled | no-show | rescheduled
+
+  // ── Post-session data (therapist-entered, admin-only — never shown to HR) ─────
+  moodPre       Int?    @map("mood_pre")    // 1–10 employee self-rated before session
+  moodPost      Int?    @map("mood_post")   // 1–10 employee self-rated after session
+  progressNotes String? @map("progress_notes")
+  domains       String[] @default([])       // domains addressed e.g. ["anxiety","sleep"]
+
+  @@index([companyId])
+  @@index([employeeId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("eap_sessions")
 }

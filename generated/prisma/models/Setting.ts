@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace"
 
 /**
  * Model Setting
- * 
+ * Global key-value configuration store (e.g. email templates, pricing, feature flags).
  */
 export type SettingModel = runtime.Types.Result.DefaultSelection<Prisma.$SettingPayload>
 
