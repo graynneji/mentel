@@ -247,7 +247,7 @@ export default function Navbar() {
                                     className={`text-sm py-1 ${pathname === link.href ? "font-medium" : ""}`}
                                     style={{ color: pathname === link.href ? "var(--sage-dark)" : "var(--text-muted)" }}
                                 >
-                                    {link.href}
+                                    {link.label}
                                 </Link>
                             ))}
                             <Link

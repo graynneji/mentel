@@ -3381,7 +3381,7 @@ export default function AssessmentPage() {
                             }}
                         >
                             <div style={{ display: "flex" }}>
-                                {["#d4b87b", "#6fb8b8", "#88c4a3", "#5da885"].map((bg, i) => (
+                                {["linear-gradient(135deg, #3d8b8b, #6fb8b8)", "linear-gradient(135deg, #a97b3d, #d4b87b)", "linear-gradient(135deg, #4e7a5e, #7ba98b)", "linear-gradient(135deg, #5a6fa8, #8fa4d6)"].map((bg, i) => (
                                     <div
                                         key={i}
                                         style={{
@@ -3532,7 +3532,7 @@ export default function AssessmentPage() {
                                     border: "none",
                                     borderRadius: 99,
                                     padding: "19px 40px",
-                                    fontSize: 16,
+                                    fontSize: "clamp(13px, 3vw, 15px)",
                                     fontWeight: 500,
                                     fontFamily: "'DM Sans', sans-serif",
                                     cursor: "pointer",
@@ -3540,7 +3540,7 @@ export default function AssessmentPage() {
                                     letterSpacing: "0.01em",
                                 }}
                             >
-                                Start Free Mental Health Check
+                                Start free Mental Health Check
                                 <ArrowRight size={17} strokeWidth={2} />
                             </button>
 
