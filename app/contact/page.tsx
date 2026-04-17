@@ -10,10 +10,10 @@ export const metadata: Metadata = {
         canonical: "/contact",
     },
     openGraph: {
-        title: "Contact Us | Mentel",
+        title: "Contact Us - Mentel",
         description:
             "Have a question before booking? Reach out to Mentel and our team will respond within one business day.",
-        url: "https://trymentel.com/contact",
+        url: "https://www.trymentel.com/contact",
         images: [
             {
                 url: "/og-image.png",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Contact Us | Mentel",
+        title: "Contact Us - Mentel",
         description:
             "Have a question before booking? Reach out to Mentel and our team will respond within one business day.",
         images: ["/og-image.png"],

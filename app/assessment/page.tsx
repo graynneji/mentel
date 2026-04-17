@@ -33,26 +33,31 @@ export const metadata: Metadata = {
 };
 
 export default function Assessment() {
-    <Script
-        id="assessment-schema"
-        type="application/ld+json"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-                url: "https://trymentel.com/assessment",
-                description:
-                    "A quick mental health assessment to evaluate anxiety, stress, and emotional well-being.",
-                audience: {
-                    "@type": "Audience",
-                    geographicArea: {
-                        "@type": "Country",
-                        name: "Nigeria",
-                    },
-                },
-
-            })
-        }}
-    />
-
-    return <AssessmentPage />;
+    return (
+        <>
+            <Script
+                id="assessment-schema"
+                type="application/ld+json"
+                strategy="beforeInteractive"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebPage",
+                        url: "https://trymentel.com/assessment",
+                        name: "Free Mental Health Assessment Test (2-Minute Check) | Mentel Nigeria",
+                        description:
+                            "A quick mental health assessment to evaluate anxiety, stress, and emotional well-being.",
+                        audience: {
+                            "@type": "Audience",
+                            geographicArea: {
+                                "@type": "Country",
+                                name: "Nigeria",
+                            },
+                        },
+                    }),
+                }}
+            />
+            <AssessmentPage />
+        </>
+    );
 }

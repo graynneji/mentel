@@ -10,10 +10,10 @@ export const metadata: Metadata = {
         canonical: "/services",
     },
     openGraph: {
-        title: "Our Services | Mentel",
+        title: "Our Services - Mentel",
         description:
             "From anxiety and depression to relationships and burnout, explore evidence-based therapy services tailored to your needs.",
-        url: "https://mentel.com/services",
+        url: "https://www.trymentel.com/services",
         images: [
             {
                 url: "/og-image.png",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Our Services | Mentel",
+        title: "Our Services - Mentel",
         description:
             "From anxiety and depression to relationships and burnout, explore evidence-based therapy services tailored to your needs.",
         images: ["/og-image.png"],

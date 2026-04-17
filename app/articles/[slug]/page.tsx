@@ -233,13 +233,13 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     if (!article) return {};
 
     return {
-        title: `${article.title} | Mentel`,
+        title: `${article.title} - Mentel`,
         description: article.excerpt,
         alternates: {
             canonical: `/articles/${article.slug}`,
         },
         openGraph: {
-            title: `${article.title} | Mentel`,
+            title: `${article.title} - Mentel`,
             description: article.excerpt,
             url: `https://www.trymentel.com/articles/${article.slug}`,
             type: "article",
@@ -257,7 +257,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         },
         twitter: {
             card: "summary_large_image",
-            title: `${article.title} | Mentel`,
+            title: `${article.title} - Mentel`,
             description: article.excerpt,
             images: ["/og-image.png"],
         },
