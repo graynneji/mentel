@@ -6,7 +6,32 @@ export const metadata = {
     title: "Mental Health Articles & Resources | Mentel",
     description:
         "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+    alternates: {
+        canonical: "/articles",
+    },
+    openGraph: {
+        title: "Mental Health Articles & Resources | Mentel",
+        description:
+            "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+        url: "https://www.trymentel.com/articles",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "Mental Health Articles & Resources — Mentel",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Mental Health Articles & Resources | Mentel",
+        description:
+            "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+        images: ["/og-image.png"],
+    },
 };
+
 
 /* ─── Article data (hard-coded — no DB needed) ─── */
 export const articles = [

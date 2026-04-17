@@ -13,7 +13,7 @@ export const metadata: Metadata = {
         title: "About Us | Mentel",
         description:
             "Mentel was built on one belief — everyone deserves access to quality mental health care. Meet the team behind the mission.",
-        url: "https://mentel.com/about",
+        url: "https://www.trymentel.com/about",
         images: [
             {
                 url: "/og-image.png",
