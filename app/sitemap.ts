@@ -186,7 +186,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: "https://www.trymentel.com/blog",
+      url: "https://www.trymentel.com/articles",
       changeFrequency: "weekly",
       priority: 0.8,
     },
