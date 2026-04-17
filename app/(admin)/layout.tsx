@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation";
 import {
     LayoutDashboard, Users, Calendar, CreditCard,
     MessageSquare, BarChart2, Settings, ChevronLeft,
-    ChevronRight, Bell, LogOut, Menu, X,
+    ChevronRight, Bell, LogOut, Menu, X, Tags,
     Building2,
     Inbox,
 } from "lucide-react";
@@ -32,6 +32,7 @@ const NAV = [
     { href: "/admin/payments", icon: CreditCard, label: "Payments" },
     { href: "/admin/communications", icon: MessageSquare, label: "Communications" },
     { href: "/admin/analytics", icon: BarChart2, label: "Analytics" },
+    { href: "/admin/seo-report", icon: Tags, label: "SEO Report" },
     { href: "/admin/contact", icon: Inbox, label: "Contact Submissions" },
     { href: "/admin/settings", icon: Settings, label: "Settings" },
     { href: "/admin/companies", icon: Building2, label: "EAP Companies" },

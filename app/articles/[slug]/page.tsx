@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
 import { articles } from "../page";
+import { scorePageSEO } from "@/lib/seo-scoring-engine";
 
 /* ─── Full article bodies ─── */
 const articleContent: Record<string, { intro: string; sections: { heading: string; body: string }[]; tldr: string; faq: { q: string; a: string }[] }> = {
@@ -314,6 +315,27 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             ],
         },
     };
+
+    const seoScore = scorePageSEO({
+        title: article.title,
+        description: article.excerpt,
+        keywords: article.tags,
+        content: [
+            content?.intro,
+            content?.sections?.map((s) => s.body).join(" "),
+            content?.tldr,
+        ].join(" "),
+        schemaTypes: ["Article", "MedicalBusiness"],
+        internalLinks: 3, // adjust if you want to auto-calc later
+        headings: content?.sections?.map((s) => `h2-${s.heading}`),
+    });
+
+    if (process.env.NODE_ENV === "development") {
+        console.log("SEO SCORE:", {
+            slug: article.slug,
+            score: seoScore,
+        });
+    }
 
     /* ── JSON-LD: FAQ schema per article ── */
     const faqSchema = content?.faq
