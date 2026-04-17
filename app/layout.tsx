@@ -538,82 +538,6 @@ const breadcrumbSchema = {
   ],
 };
 
-/* ─────────────────────────────────────────────
-   GEO: Global FAQ schema
-   These are the questions AI engines surface most
-   often about Nigerian online therapy platforms.
-   Each article page adds its own topic-specific FAQ.
-───────────────────────────────────────────── */
-const globalFaqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is Mentel?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦5,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How much does therapy cost on Mentel?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Sessions on Mentel start from ₦5,500. This is significantly more affordable than most private clinic rates in Nigeria (₦15,000–₦50,000), with no transport costs or waiting rooms.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Are Mentel therapists licensed?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. All therapists on Mentel are licensed and vetted. They hold recognised qualifications in clinical or counselling psychology and are registered with Nigerian professional bodies including AHPCN, NACP, or APROCON.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is online therapy available in Nigeria?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states. Sessions are conducted via secure video call and can be scheduled on evenings and weekends.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is therapy confidential on Mentel?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. All sessions are fully confidential and conducted over encrypted video calls. No information is shared without your consent.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How do I book a therapy session in Nigeria?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What types of therapy does Mentel offer?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Mentel offers individual therapy, couples therapy, trauma therapy (including EMDR), anxiety treatment (CBT), depression support, and burnout recovery. Therapists are matched to your specific needs.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I get a free mental health assessment?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
-      },
-    },
-  ],
-};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -638,10 +562,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalFaqSchema) }}
         />
       </head>
       <body
