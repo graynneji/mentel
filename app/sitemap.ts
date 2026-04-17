@@ -168,7 +168,7 @@ export const articles = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const articleEntries: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `https://trymentel.com/articles/${article.slug}`,
+    url: `https://www.trymentel.com/articles/${article.slug}`,
     changeFrequency: "monthly",
     priority: article.featured ? 0.8 : 0.6,
     lastModified: new Date(article.date),
@@ -176,42 +176,42 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: "https://trymentel.com",
+      url: "https://www.trymentel.com",
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
-      url: "https://trymentel.com/assessment",
+      url: "https://www.trymentel.com/assessment",
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: "https://trymentel.com/blog",
+      url: "https://www.trymentel.com/blog",
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://trymentel.com/services",
+      url: "https://www.trymentel.com/services",
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
-      url: "https://trymentel.com/about",
+      url: "https://www.trymentel.com/about",
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: "https://trymentel.com/contact",
+      url: "https://www.trymentel.com/contact",
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
-      url: "https://trymentel.com/privacy",
+      url: "https://www.trymentel.com/privacy",
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
-      url: "https://trymentel.com/terms",
+      url: "https://www.trymentel.com/terms",
       changeFrequency: "yearly",
       priority: 0.3,
     },
