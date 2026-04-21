@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/_next/", "/admin/"],
       },
     ],
-    sitemap: "https://trymentel.com/sitemap.xml",
-    host: "https://trymentel.com",
+    sitemap: "https://www.trymentel.com/sitemap.xml",
+    host: "https://www.trymentel.com",
   };
 }
