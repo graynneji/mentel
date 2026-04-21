@@ -97,6 +97,7 @@ export const articles = [
         image: null,
     },
     {
+        // will start here stoped here for indexing google
         slug: "couples-therapy-nigeria-when-to-go",
         category: "Relationships",
         title: "When Should Nigerian Couples Seek Therapy? 8 Honest Signals",

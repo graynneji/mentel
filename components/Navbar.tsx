@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/app/context/BookingContext";
+import CrisisBar from "./CrisisBar";
 
 const now = new Date();
 const DEADLINE = new Date(now);
@@ -14,7 +15,7 @@ DEADLINE.setMilliseconds(999);
 const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/eap", label: "Company" },
+    { href: "/eap", label: "For Teams" },
     { href: "/articles", label: "Articles" },
     { href: "/services", label: "Services" },
     { href: "/contact", label: "Contact" },
@@ -69,6 +70,23 @@ export default function Navbar() {
 
     useEffect(() => { setOpen(false); }, [pathname]);
 
+    // useEffect(() => {
+    //     setMounted(true);
+    //     if (sessionStorage.getItem("promo-banner-dismissed") === "true") {
+    //         setBannerDismissed(true);
+    //         return;
+    //     }
+    //     setBannerDismissed(false);
+    //     setTimeLeft(getTimeLeft());
+    //     const interval = setInterval(() => {
+    //         const t = getTimeLeft();
+    //         setTimeLeft(t);
+    //         if (!t) clearInterval(interval);
+    //     }, 1000);
+    //     return () => clearInterval(interval);
+    // }, []);
+
+
     useEffect(() => {
         setMounted(true);
         if (sessionStorage.getItem("promo-banner-dismissed") === "true") {
@@ -76,14 +94,35 @@ export default function Navbar() {
             return;
         }
         setBannerDismissed(false);
-        setTimeLeft(getTimeLeft());
+
+        // Persist deadline so countdown doesn't reset on page navigation
+        const STORAGE_KEY = "promo-deadline";
+        let deadline = Number(sessionStorage.getItem(STORAGE_KEY));
+        if (!deadline || deadline < Date.now()) {
+            // Set a 30-minute deadline from first visit
+            deadline = Date.now() + 30 * 60 * 1000;
+            sessionStorage.setItem(STORAGE_KEY, String(deadline));
+        }
+
+        function getTimeLeftFromDeadline() {
+            const diff = deadline - Date.now();
+            if (diff <= 0) return null;
+            return {
+                hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+                mins: Math.floor((diff / (1000 * 60)) % 60),
+                secs: Math.floor((diff / 1000) % 60),
+            };
+        }
+
+        setTimeLeft(getTimeLeftFromDeadline());
         const interval = setInterval(() => {
-            const t = getTimeLeft();
+            const t = getTimeLeftFromDeadline();
             setTimeLeft(t);
             if (!t) clearInterval(interval);
         }, 1000);
         return () => clearInterval(interval);
     }, []);
+
 
     function handleDismiss() {
         setBannerDismissed(true);
@@ -184,7 +223,7 @@ export default function Navbar() {
                         </button>
                     </div>
                 )}
-
+                {/* <CrisisBar />  Moved CrisisBar inside Navbar to ensure it appears above the promo banner when both are visible */}
                 {/* ── Navbar ── */}
                 <header
                     className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
