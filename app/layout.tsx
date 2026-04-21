@@ -308,8 +308,8 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mentel | Mental Health & Therapy Services",
-    template: "%s | Mentel",
+    default: "Mentel - Mental Health & Therapy Services",
+    template: "%s - Mentel",
   },
   applicationName: "Mentel",
   description:
@@ -343,7 +343,7 @@ export const metadata: Metadata = {
     locale: "en_NG",
     url: "https://www.trymentel.com",
     siteName: "Mentel",
-    title: "Mentel | Mental Health & Therapy Services",
+    title: "Mentel - Mental Health & Therapy Services",
     description:
       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
     images: [
@@ -351,13 +351,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Mentel | Mental Health & Therapy Services",
+        alt: "Mentel - Mental Health & Therapy Services",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mentel | Mental Health & Therapy Services",
+    title: "Mentel - Mental Health & Therapy Services",
     description:
       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
     images: ["/og-image.png"],

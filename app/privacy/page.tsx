@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         canonical: "/privacy",
     },
     openGraph: {
-        title: "Privacy Policy | Mentel",
+        title: "Privacy Policy - Mentel",
         description: "Learn how Mentel collects, uses, and protects your personal information.",
         url: "https://trymentel.com/privacy",
         images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Mentel Privacy Policy" }],

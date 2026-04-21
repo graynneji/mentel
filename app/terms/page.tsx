@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         canonical: "/terms",
     },
     openGraph: {
-        title: "Terms of Service | Mentel",
+        title: "Terms of Service - Mentel",
         description: "Read Mentel's terms of service and understand your rights when using our platform.",
         url: "https://trymentel.com/terms",
         images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Mentel Terms of Service" }],

@@ -3,14 +3,14 @@ import AssessmentPage from "@/components/AssessmentPage";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-    title: "Free Mental Health Assessment Test (2-Minute Check) | Mentel Nigeria",
+    title: "Free Mental Health Assessment Test (2-Minute Check) - Mentel",
     description:
         "Take a free 2-minute mental health assessment in Nigeria. Check anxiety, stress, and emotional well-being instantly. No sign-up required. 100% confidential.",
     alternates: {
         canonical: "/assessment",
     },
     openGraph: {
-        title: "Free Mental Health Test (2 Minutes) | Mentel",
+        title: "Free Mental Health Test (2 Minutes) - Mentel",
         description:
             "Answer 8 questions and understand your mental state instantly. Private, fast, and free.",
         url: "https://trymentel.com/assessment",

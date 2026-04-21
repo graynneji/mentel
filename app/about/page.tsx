@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         canonical: "/about",
     },
     openGraph: {
-        title: "About Us | Mentel",
+        title: "About Us - Mentel",
         description:
             "Mentel was built on one belief — everyone deserves access to quality mental health care. Meet the team behind the mission.",
         url: "https://www.trymentel.com/about",
