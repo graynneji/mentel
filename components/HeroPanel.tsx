@@ -69,7 +69,7 @@ export default function HeroPanel() {
                             }}
                         >
                             <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ background: "var(--error)" }} />
-                            Single session - ₦5,500 limited offer
+                            Single session - ₦8,500 limited offer
                         </div>
 
                         <div className="flex flex-col gap-3 mb-7">

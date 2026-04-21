@@ -120,7 +120,7 @@ export default function Navbar() {
                                 <span className="text-white text-xs font-medium truncate">
                                     Single session —{" "}
                                     <span className="line-through opacity-40 font-normal">₦35k</span>{" "}
-                                    <span className="font-bold">₦5,500</span>
+                                    <span className="font-bold">₦8,500</span>
                                 </span>
                             </div>
                             <div className="flex items-center gap-1 flex-shrink-0 text-white text-xs tabular-nums opacity-80">
@@ -148,7 +148,7 @@ export default function Navbar() {
                                 <span className="font-medium">
                                     Book a single session for{" "}
                                     <span className="line-through opacity-40 font-normal">₦35,000</span>{" "}
-                                    <span className="font-bold text-white text-base">₦5,500</span>
+                                    <span className="font-bold text-white text-base">₦8,500</span>
                                 </span>
                             </div>
                             <div className="w-px h-4 bg-white opacity-20" />
@@ -264,7 +264,7 @@ export default function Navbar() {
                                 className="text-sm font-medium text-white px-5 py-2.5 rounded-full text-center mt-1 cursor-pointer"
                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                             >
-                                Book Now — ₦5,500
+                                Book Now — ₦8,500
                             </button>
                         </div>
                     )}

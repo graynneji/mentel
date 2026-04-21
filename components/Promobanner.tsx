@@ -76,7 +76,7 @@ export default function PromoBanner() {
                     >
                         ₦35,000
                     </span>{" "}
-                    <span className="font-semibold text-white">₦5,500</span>
+                    <span className="font-semibold text-white">₦8,500</span>
                 </span>
             </div>
 
