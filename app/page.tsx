@@ -946,7 +946,7 @@ export default function HomePage() {
                       className="w-1.5 h-1.5 rounded-full animate-pulse-dot flex-shrink-0"
                       style={{ background: "var(--sage)" }}
                     />
-                    <span>Certified &bull; Confidential &bull; Evidence-based</span>
+                    <span>Certified &bull; Confidential &bull; Evidence</span>
                   </div>
 
                   <h2
