@@ -30,7 +30,7 @@ import {
 
 /* ─── SEO metadata ─────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: "Mentel — Online Therapy & Mental Health Support in Nigeria",
+  title: "Mentel - Online Therapy & Mental Health Support in Nigeria",
   description:
     "Book a licensed therapist in Nigeria from ₦8,500. Confidential online therapy for anxiety, burnout, depression & more. NDPR-compliant. Lagos, Abuja, Port Harcourt.",
   keywords: [
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     "online counseling Nigeria",
   ],
   openGraph: {
-    title: "Mentel — Online Therapy in Nigeria",
+    title: "Mentel - Online Therapy in Nigeria",
     description:
       "Connect with a licensed therapist in Nigeria. Confidential, affordable, evidence-based care from ₦8,500.",
     url: "https://www.trymentel.com",
@@ -133,7 +133,7 @@ const testimonials = [
 const faqs = [
   {
     q: "Is online therapy as effective as in-person?",
-    a: "Yes — research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
+    a: "Yes, research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
   },
   {
     q: "How does the ₦8,500 single session work?",
@@ -273,21 +273,21 @@ export default function HomePage() {
                                      * New: anchors Nigeria + professional context while keeping warmth.
                                      * Local keyword ("Nigeria") appears naturally in sub-copy.
                                      */}
-                  <h1
+                  <h2
                     className="font-cormorant text-4xl sm:text-5xl lg:text-6xl font-light leading-tight mb-5"
                     style={{ color: "var(--deep)", letterSpacing: "-0.02em" }}
                   >
                     Real support for<br />
                     real life in{" "}
                     <em className="italic" style={{ color: "var(--sage-dark)" }}>Nigeria</em>.
-                  </h1>
+                  </h2>
 
                   <p
                     className="sm:text-base leading-relaxed mb-6 font-light"
                     style={{ color: "var(--text-muted)", maxWidth: "420px" }}
                   >
                     Whether you&apos;re burning out at work, carrying anxiety alone, or watching
-                    a relationship fray — Mentel connects you with a licensed therapist who
+                    a relationship fray, Mentel connects you with a licensed therapist who
                     genuinely listens. Culturally grounded, evidence-based care, from ₦8,500.
                   </p>
 
@@ -433,7 +433,7 @@ export default function HomePage() {
                       <em className="italic" style={{ color: "var(--sage-dark)" }}>Take the free assessment.</em>
                     </h2>
                     <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)", maxWidth: "520px" }}>
-                      Answer 8 simple questions and get a personalised mental health snapshot — matched to the right support for you.
+                      Answer 8 simple questions and get a personalised mental health snapshot, matched to the right support for you.
                     </p>
                   </div>
                   <div
@@ -468,7 +468,7 @@ export default function HomePage() {
                   Therapy Services in Nigeria
                 </h2>
                 <p className="text-sm sm:text-base max-w-xs sm:max-w-sm mx-auto" style={{ color: "var(--text-muted)" }}>
-                  Professional, licensed therapy tailored to your specific needs — available online across Nigeria.
+                  Professional, licensed therapy tailored to your specific needs, available online across Nigeria.
                 </p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

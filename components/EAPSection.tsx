@@ -27,7 +27,7 @@ const PILLARS = [
     {
         icon: Shield,
         title: "Confidential access",
-        desc: "Unlimited private therapy sessions for every employee — no employer visibility into individual usage.",
+        desc: "Unlimited private therapy sessions for every employee, no employer visibility into individual usage.",
     },
     {
         icon: BarChart3,
@@ -133,7 +133,7 @@ export default function EAPSection() {
                         <p className="text-sm leading-relaxed mb-8" style={{ color: "rgba(200,221,210,0.8)", maxWidth: "500px" }}>
                             Nigerian companies lose billions annually to burnout, absenteeism, and low
                             engagement. Mentel EAP gives your employees confidential access to licensed
-                            therapists — and gives HR the anonymised insights to build a healthier organisation.
+                            therapists and gives HR the anonymised insights to build a healthier organisation.
                         </p>
 
                         {/* Outcome stats */}
@@ -328,7 +328,7 @@ export default function EAPSection() {
 
                                 <div className="mt-4 pt-4 border-t flex flex-col gap-2" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
                                     <a
-                                        href="https://wa.me/2348000000000?text=Hi%2C+I%27d+like+to+learn+more+about+Mentel+EAP+for+my+team."
+                                        href="https://wa.me/254734527573?text=Hi%2C+I%27d+like+to+learn+more+about+Mentel+EAP+for+my+team."
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="flex items-center justify-center gap-2 text-xs font-medium py-2.5 rounded-full transition-all hover:opacity-80"

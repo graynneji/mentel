@@ -436,8 +436,12 @@ const organizationSchema = {
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": "https://www.trymentel.com/#website",
   name: "Mentel",
   url: "https://www.trymentel.com",
+  "publisher": {
+    "@id": "https://www.trymentel.com/#organization" // Link to your brand
+  },
   description:
     "Nigeria's online therapy platform. Licensed therapists from ₦5,500 per session.",
   inLanguage: "en-NG",
@@ -454,6 +458,7 @@ const websiteSchema = {
 const medicalBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "MedicalBusiness",
+  "@id": "https://www.trymentel.com/#organization",
   name: "Mentel",
   url: "https://www.trymentel.com",
   logo: "https://www.trymentel.com/logo.png",

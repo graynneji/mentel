@@ -41,7 +41,7 @@ export default function TwoFunnelStrip() {
                             For You
                         </p>
                         <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                            Individual therapy, couples sessions, trauma support — from ₦8,500.
+                            Individual therapy, couples sessions, trauma support, from ₦8,500.
                         </p>
                     </div>
                     <ArrowRight

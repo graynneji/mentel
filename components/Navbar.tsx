@@ -157,7 +157,7 @@ export default function Navbar() {
                             <div className="flex items-center gap-1.5 min-w-0">
                                 <Zap size={11} className="text-white opacity-80 flex-shrink-0" fill="currentColor" />
                                 <span className="text-white text-xs font-medium truncate">
-                                    Single session —{" "}
+                                    Single session -{" "}
                                     <span className="line-through opacity-40 font-normal">₦35k</span>{" "}
                                     <span className="font-bold">₦8,500</span>
                                 </span>
@@ -183,7 +183,7 @@ export default function Navbar() {
                         <div className="hidden sm:flex items-center justify-center gap-5 px-12 py-2.5 text-white text-sm">
                             <div className="flex items-center gap-2">
                                 <Zap size={13} fill="currentColor" className="opacity-80" />
-                                <span className="font-light opacity-80">Introductory offer —</span>
+                                <span className="font-light opacity-80">Introductory offer </span>
                                 <span className="font-medium">
                                     Book a single session for{" "}
                                     <span className="line-through opacity-40 font-normal">₦35,000</span>{" "}
@@ -231,7 +231,9 @@ export default function Navbar() {
                 >
                     <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                         <Link href="/" className="flex items-center gap-2.5">
-                            <Image src="/logo.png" alt="Mentel logo" width={108} height={61} className="object-contain" priority />
+                            <h1>
+                                <Image src="/logo.png" alt="Mentel" width={108} height={61} className="object-contain" priority />
+                            </h1>
                         </Link>
 
                         {/* Desktop nav */}
@@ -303,7 +305,7 @@ export default function Navbar() {
                                 className="text-sm font-medium text-white px-5 py-2.5 rounded-full text-center mt-1 cursor-pointer"
                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                             >
-                                Book Now — ₦8,500
+                                Book Now - ₦8,500
                             </button>
                         </div>
                     )}

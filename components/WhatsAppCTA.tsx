@@ -19,7 +19,7 @@
 
 import { MessageCircle, ArrowRight } from "lucide-react";
 
-const WA_NUMBER = "2348000000000"; // ← replace with real number
+const WA_NUMBER = "254734527573"; // ← replace with real number
 
 const OPTIONS = [
     {
@@ -57,7 +57,7 @@ export default function WhatsAppCTA() {
                                 Prefer to chat first?
                             </p>
                             <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                                We&apos;re on WhatsApp — usually respond within the hour.
+                                We&apos;re on WhatsApp, usually respond within the hour.
                             </p>
                         </div>
                     </div>
