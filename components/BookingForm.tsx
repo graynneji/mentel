@@ -474,6 +474,7 @@ import { useState } from "react";
 import Script from "next/script";
 import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft, Wallet, Shield, Building2 } from "lucide-react";
 
+
 const REASONS = [
     "Anxiety", "Depression", "Marriage Counselling", "Grief & Loss",
     "Trauma & PTSD", "Stress Management", "Self-Esteem & Confidence",
@@ -702,7 +703,7 @@ export default function BookingForm() {
     }
 
     return (
-        <div>
+        <form>
             <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" onLoad={() => setPaystackReady(true)} />
 
             {/* Step indicator */}
@@ -1017,6 +1018,6 @@ export default function BookingForm() {
                     </div>
                 </div>
             )}
-        </div>
+        </form>
     );
 }
