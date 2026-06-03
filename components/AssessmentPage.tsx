@@ -4707,14 +4707,14 @@ function AssessmentNav({ step }: { step: Step }) {
                                 width: 32,
                                 height: 32,
                                 borderRadius: 10,
-                                background: "linear-gradient(135deg, #2d7a5a, #1e6b6b)",
+                                // background: "linear-gradient(135deg, #2d7a5a, #1e6b6b)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 overflow: "hidden",
                             }}
                         >
-                            <Image src="/hr-logo.png" alt="Mentel logo" width={32} height={32} style={{ objectFit: "cover" }} />
+                            <Image src="/logo-assessment.png" alt="Mentel logo" width={32} height={32} style={{ objectFit: "cover" }} />
                         </div>
                         <span
                             style={{
@@ -5205,7 +5205,8 @@ export default function AssessmentPage() {
                                 marginBottom: 52,
                             }}
                         >
-                            A confidential 2-minute check-in designed by licensed professionals.
+                            {/* A confidential 2-minute check-in designed by licensed professionals. */}
+                            A confidential 1-minute check-in designed by licensed professionals.
                             Understand where you are and get matched with the right support.
                         </p>
 
@@ -5222,7 +5223,8 @@ export default function AssessmentPage() {
                         >
                             {[
                                 { num: "2,400+", label: "People assessed" },
-                                { num: "2 min", label: "Average time" },
+                                // { num: "2 min", label: "Average time" },
+                                { num: "1 min", label: "Average time" },
                                 { num: "97%", label: "Found it helpful" },
                             ].map((stat, i) => (
                                 <Fragment key={stat.num}>
@@ -5312,7 +5314,8 @@ export default function AssessmentPage() {
                             </button>
 
                             <p style={{ fontSize: 12, color: "#a0aba3", marginTop: 16, fontWeight: 300 }}>
-                                Takes 2 minutes · No account needed · Completely confidential
+                                Takes 1 minutes · No account needed · Completely confidential
+                                {/* Takes 2 minutes · No account needed · Completely confidential */}
                             </p>
                         </div>
                     </div>
