@@ -4406,6 +4406,7 @@ import {
     Sparkles,
     AlertTriangle,
     Menu,
+    Activity,
     X,
     type LucideIcon,
 } from "lucide-react";
@@ -5246,8 +5247,45 @@ export default function AssessmentPage() {
                             ))}
                         </div>
 
+
+                        {/* CTA */}
+                        <div className="fade-up fade-up-delay-3" style={{ marginBottom: 44 }}>
+                            <button
+                                type="button"
+                                onClick={() => { setStep("quiz"); (window as any).ttq?.track("Start trial"); }}
+                                className="cta-btn"
+                                style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    gap: 10,
+                                    background: "linear-gradient(135deg, #2d7a5a 0%, #1e6b6b 100%)",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: 99,
+                                    padding: "19px 40px",
+                                    fontSize: "clamp(13px, 3vw, 15px)",
+                                    fontWeight: 500,
+                                    fontFamily: "'DM Sans', sans-serif",
+                                    cursor: "pointer",
+                                    boxShadow: "0 6px 28px rgba(30,107,107,0.32)",
+                                    letterSpacing: "0.01em",
+                                }}
+                            >
+                                <Activity size={17} strokeWidth={3} />
+                                Start free Mental Health Check
+                                <ArrowRight size={17} strokeWidth={2} style={{ opacity: 0.55 }} />
+                            </button>
+
+                            <p style={{ fontSize: 12, color: "#a0aba3", marginTop: 16, fontWeight: 300 }}>
+                                Takes 1 minutes · No account needed · Completely confidential
+                                {/* Takes 2 minutes · No account needed · Completely confidential */}
+                            </p>
+                        </div>
+
+
                         {/* Trust grid */}
-                        <div className="trust-grid fade-up fade-up-delay-2" style={{ marginBottom: 44 }}>
+                        <div className="trust-grid fade-up fade-up-delay-2" >
                             {[
                                 { icon: Lock, title: "Confidential", desc: "Your answers are private and never stored anywhere" },
                                 { icon: Sparkles, title: "Free", desc: "No hidden costs, no subscription required" },
@@ -5285,39 +5323,7 @@ export default function AssessmentPage() {
                             ))}
                         </div>
 
-                        {/* CTA */}
-                        <div className="fade-up fade-up-delay-3">
-                            <button
-                                type="button"
-                                onClick={() => { setStep("quiz"); (window as any).ttq?.track("Start trial"); }}
-                                className="cta-btn"
-                                style={{
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    gap: 10,
-                                    background: "linear-gradient(135deg, #2d7a5a 0%, #1e6b6b 100%)",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: 99,
-                                    padding: "19px 40px",
-                                    fontSize: "clamp(13px, 3vw, 15px)",
-                                    fontWeight: 500,
-                                    fontFamily: "'DM Sans', sans-serif",
-                                    cursor: "pointer",
-                                    boxShadow: "0 6px 28px rgba(30,107,107,0.32)",
-                                    letterSpacing: "0.01em",
-                                }}
-                            >
-                                Start free Mental Health Check
-                                <ArrowRight size={17} strokeWidth={2} />
-                            </button>
 
-                            <p style={{ fontSize: 12, color: "#a0aba3", marginTop: 16, fontWeight: 300 }}>
-                                Takes 1 minutes · No account needed · Completely confidential
-                                {/* Takes 2 minutes · No account needed · Completely confidential */}
-                            </p>
-                        </div>
                     </div>
                 </section>
 
