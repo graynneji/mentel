@@ -359,46 +359,46 @@
 //             </div>
 //           </section>
 
-//           {/* ── Stats Strip ── */}
-//           <section className="relative z-10" aria-label="Platform statistics">
-//             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-//               <div className="h-px w-full" style={{ background: "var(--border)" }} />
-//               <div
-//                 className="grid grid-cols-1 sm:grid-cols-3"
-//                 style={{ background: "linear-gradient(135deg, rgba(61,139,139,0.06) 0%, rgba(123,169,139,0.09) 100%)" }}
-//               >
-//                 {stats.map(({ stat, label, icon: Icon }, i) => (
-//                   <div
-//                     key={label}
-//                     className="flex flex-col items-center justify-center py-6 sm:py-8 px-4 text-center relative"
-//                   >
-//                     {i < stats.length - 1 && (
-//                       <div className="hidden sm:block absolute right-0 top-1/4 h-1/2 w-px" style={{ background: "var(--border)" }} />
-//                     )}
-//                     {i < stats.length - 1 && (
-//                       <div className="sm:hidden absolute bottom-0 left-8 right-8 h-px" style={{ background: "var(--border)" }} />
-//                     )}
-//                     <div
-//                       className="w-10 h-10 rounded-full flex items-center justify-center mb-3"
-//                       style={{ background: "linear-gradient(135deg, #4e7a5e, #3d8b8b)" }}
-//                     >
-//                       <Icon size={20} color="white" />
-//                     </div>
-//                     <p
-//                       className="font-cormorant font-semibold leading-none mb-1.5"
-//                       style={{ color: "var(--deep)", fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)", letterSpacing: "-0.02em" }}
-//                     >
-//                       {stat}
-//                     </p>
-//                     <p className="text-xs uppercase tracking-widest leading-snug" style={{ color: "var(--text-muted)" }}>
-//                       {label}
-//                     </p>
-//                   </div>
-//                 ))}
-//               </div>
-//               <div className="h-px w-full" style={{ background: "var(--border)" }} />
-//             </div>
-//           </section>
+// {/* ── Stats Strip ── */}
+// <section className="relative z-10" aria-label="Platform statistics">
+//   <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+//     <div className="h-px w-full" style={{ background: "var(--border)" }} />
+//     <div
+//       className="grid grid-cols-1 sm:grid-cols-3"
+//       style={{ background: "linear-gradient(135deg, rgba(61,139,139,0.06) 0%, rgba(123,169,139,0.09) 100%)" }}
+//     >
+//       {stats.map(({ stat, label, icon: Icon }, i) => (
+//         <div
+//           key={label}
+//           className="flex flex-col items-center justify-center py-6 sm:py-8 px-4 text-center relative"
+//         >
+//           {i < stats.length - 1 && (
+//             <div className="hidden sm:block absolute right-0 top-1/4 h-1/2 w-px" style={{ background: "var(--border)" }} />
+//           )}
+//           {i < stats.length - 1 && (
+//             <div className="sm:hidden absolute bottom-0 left-8 right-8 h-px" style={{ background: "var(--border)" }} />
+//           )}
+//           <div
+//             className="w-10 h-10 rounded-full flex items-center justify-center mb-3"
+//             style={{ background: "linear-gradient(135deg, #4e7a5e, #3d8b8b)" }}
+//           >
+//             <Icon size={20} color="white" />
+//           </div>
+//           <p
+//             className="font-cormorant font-semibold leading-none mb-1.5"
+//             style={{ color: "var(--deep)", fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)", letterSpacing: "-0.02em" }}
+//           >
+//             {stat}
+//           </p>
+//           <p className="text-xs uppercase tracking-widest leading-snug" style={{ color: "var(--text-muted)" }}>
+//             {label}
+//           </p>
+//         </div>
+//       ))}
+//     </div>
+//     <div className="h-px w-full" style={{ background: "var(--border)" }} />
+//   </div>
+// </section>
 
 //           {/* ── Assessment Banner ── */}
 //           <section className="relative z-10 py-6 sm:py-8 px-4 sm:px-6 lg:px-8" aria-label="Free assessment">
@@ -703,12 +703,12 @@ import {
   Leaf, ArrowRight,
   Brain, Heart, Anchor, ClipboardCheck,
   Flame, Sun, Users, Sparkles, Quote, ChevronDown, Star, Clock, Shield,
-  CheckCircle2,
+  CheckCircle2, Calendar, Lock
 } from "lucide-react";
 
 /* ─── SEO metadata ─────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: "Mentel - Online Therapy & Mental Health Support in Nigeria",
+  title: "Mentel - Online Therapy & Mental Health Support",
   description:
     "Book a licensed therapist in Nigeria from ₦8,500. Confidential online therapy for anxiety, burnout, depression & more. NDPR-compliant. Lagos, Abuja, Port Harcourt.",
   keywords: [
@@ -718,9 +718,11 @@ export const metadata: Metadata = {
     "employee mental health Nigeria",
     "burnout support Lagos",
     "online counseling Nigeria",
+    "How much does therapy cost",
+    "cheap therapy services Nigeria",
   ],
   openGraph: {
-    title: "Mentel - Online Therapy in Nigeria",
+    title: "Mentel - Online Therapy & Mental Health Support",
     description:
       "Connect with a licensed therapist in Nigeria. Confidential, affordable, evidence-based care from ₦8,500.",
     url: "https://www.trymentel.com",
@@ -851,6 +853,14 @@ const howItWorksSteps = [
   },
 ];
 
+
+const trustBadges = [
+  { name: "A", gradient: "linear-gradient(135deg, #3d8b8b, #6fb8b8)" }, // teal
+  { name: "E", gradient: "linear-gradient(135deg, #a97b3d, #d4b87b)" }, // warm gold
+  { name: "F", gradient: "linear-gradient(135deg, #4e7a5e, #7ba98b)" }, // sage
+  { name: "K", gradient: "linear-gradient(135deg, #5a6fa8, #8fa4d6)" }, // calm blue
+  { name: "T", gradient: "linear-gradient(135deg, #8b5e7a, #c08fa4)" }, // soft plum
+];
 /* ─── Structured data ───────────────────────────────────────── */
 const faqSchema = {
   "@context": "https://schema.org",
@@ -926,116 +936,133 @@ export default function HomePage() {
         <BgBlobs />
 
         <main id="main-content">
-
           {/* ── Hero ── */}
-          <section className="relative z-10 pt-16 sm:pt-20 pb-12 sm:pb-16">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-14 lg:items-start">
+          <section className="relative z-10 pt-20 pb-12 sm:pt-24 sm:pb-24">
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
 
-                {/* LEFT copy */}
-                <div className="lg:order-1 animate-fade-up pt-4 w-full">
-                  <div
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-widest mb-5 border"
+              {/* Eyebrow */}
+              <div className="inline-flex items-center justify-center gap-2 px-3 sm:px-4 py-1.5 rounded-full border mb-6 sm:mb-8 max-w-full"
+                style={{ background: "rgba(45,122,90,0.08)", borderColor: "rgba(45,122,90,0.2)" }}>
+                <span className="w-2 h-2 rounded-full flex-shrink-0 animate-pulse"
+                  style={{ background: "#2d7a5a" }} />
+                <span className="font-semibold uppercase tracking-widest text-center"
+                  style={{ color: "#2d7a5a", fontSize: "clamp(9px, 2.6vw, 12px)", letterSpacing: "0.12em" }}>
+                  Certified · Confidential · NDPR-Compliant
+                </span>
+              </div>
+
+              {/* H1  */}
+              <h1 className="font-cormorant font-light mb-4 sm:mb-5 w-full px-1"
+                style={{
+                  fontSize: "clamp(36px, 11vw, 80px)", lineHeight: 1.08,
+                  letterSpacing: "-0.02em", color: "#1c2820"
+                }}>
+                Online therapy in Nigeria,{" "}
+                <em className="italic" style={{ color: "#2d7a5a" }}>built for real life</em>.
+              </h1>
+
+              {/* Subhead */}
+              <p className="font-light mx-auto mb-8 sm:mb-9 w-full px-2"
+                style={{
+                  fontSize: "clamp(14px, 3.5vw, 18px)", lineHeight: 1.75,
+                  color: "var(--text-muted)", maxWidth: 680
+                }}>
+                Whether it&apos;s anxiety, burnout, relationship strain, or a heaviness
+                you can&apos;t name, Mentel connects you with a{" "}
+                <strong className="font-medium" style={{ color: "#1c2820" }}>
+                  licensed Nigerian therapist
+                </strong>{" "}
+                who genuinely listens. Culturally grounded care from{" "}
+                <strong className="font-medium" style={{ color: "#1c2820" }}>₦8,500</strong>.
+                No waitlists.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-col items-center gap-3 mb-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 w-full sm:w-auto px-4 sm:px-0">
+                  <Link
+                    href="/book"
+                    className="inline-flex items-center justify-center gap-2 text-white font-medium rounded-full transition-all hover:-translate-y-0.5 hover:shadow-xl duration-200 w-full sm:w-auto"
                     style={{
-                      background: "rgba(123,169,139,0.12)",
-                      borderColor: "rgba(123,169,139,0.3)",
-                      color: "var(--sage-dark)",
+                      background: "linear-gradient(135deg, #2d7a5a, #1e6b6b)",
+                      padding: "16px 28px",
+                      fontSize: 15,
+                      boxShadow: "0 6px 24px rgba(30,107,107,0.28)"
                     }}
                   >
-                    <span
-                      className="w-1.5 h-1.5 rounded-full animate-pulse-dot flex-shrink-0"
-                      style={{ background: "var(--sage)" }}
-                    />
-                    <span>Certified &bull; Confidential &bull; Evidence</span>
+                    <Calendar size={16} />
+                    Book a session
+                    <ArrowRight size={15} style={{ opacity: 0.65 }} />
+                  </Link>
+                  <Link href="/assessment"
+                    className="inline-flex items-center justify-center gap-2 font-light rounded-full border transition-all hover:-translate-y-0.5 duration-200 w-full sm:w-auto"
+                    style={{
+                      padding: "15px 28px", fontSize: 15, color: "#2d7a5a",
+                      borderColor: "rgba(45,122,90,0.28)", background: "white"
+                    }}>
+                    Free mental health check
+                  </Link>
+                </div>
+                <p className="text-xs font-light text-center px-4" style={{ color: "var(--text-muted)" }}>
+                  Sessions from ₦8,500 · No commitment · Response within 24 hrs
+                </p>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px mx-auto my-8 sm:my-9" style={{ background: "rgba(28,40,36,0.08)", maxWidth: 320 }} />
+
+              {/* Trust row */}
+              <div className="flex flex-col sm:flex-row w-full rounded-2xl border overflow-hidden mb-8 sm:mb-9 divide-y sm:divide-y-0 sm:divide-x"
+                style={{ background: "white", borderColor: "rgba(28,40,36,0.09)" }}>
+                {[
+                  { icon: Lock, label: "Fully confidential", desc: "NDPR-compliant. Never shared." },
+                  { icon: Users, label: "35+ licensed therapists", desc: "Individually vetted." },
+                  { icon: Clock, label: "24 hr response", desc: "Book today, matched tomorrow." },
+                ].map(({ icon: Icon, label, desc }) => (
+                  <div key={label}
+                    className="flex-1 flex flex-row sm:flex-col items-center sm:items-center text-left sm:text-center px-4 sm:px-3 py-4 sm:py-5 gap-3 sm:gap-2"
+                    style={{ borderColor: "rgba(28,40,36,0.08)" }}>
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: "rgba(45,122,90,0.09)", border: "1px solid rgba(45,122,90,0.18)" }}>
+                      <Icon size={16} stroke="#2d7a5a" strokeWidth={1.8} />
+                    </div>
+                    <div className="flex flex-col sm:items-center">
+                      <p className="text-xs font-medium leading-tight" style={{ color: "#1c2820" }}>{label}</p>
+                      <p className="text-xs font-light" style={{ color: "var(--text-muted)" }}>{desc}</p>
+                    </div>
                   </div>
+                ))}
+              </div>
 
-                  <h2
-                    className="font-cormorant text-4xl sm:text-5xl lg:text-6xl font-light leading-tight mb-5"
-                    style={{ color: "var(--deep)", letterSpacing: "-0.02em" }}
-                  >
-                    Real support for<br />
-                    real life {" "}
-                    {/* real life in{" "} */}
-                    <em className="italic" style={{ color: "var(--sage-dark)" }}>Anywhere</em>.
-                  </h2>
-
-                  <p
-                    className="sm:text-base leading-relaxed mb-6 font-light"
-                    style={{ color: "var(--text-muted)", maxWidth: "420px" }}
-                  >
-                    Whether you&apos;re burning out at work, carrying anxiety alone, or watching
-                    a relationship fray, Mentel connects you with a licensed therapist who
-                    genuinely listens. Culturally grounded, evidence-based care, from ₦8,500.
-                  </p>
-
-                  {/* Two-funnel micro-strip */}
-                  <TwoFunnelStrip />
-
-                  {/* Trust signals */}
-                  <div className="flex flex-col gap-3 mt-6">
-                    {[
-                      { icon: Shield, text: "NDPR-compliant & fully confidential" },
-                      { icon: Star, text: "Licensed, empathetic professionals" },
-                      { icon: Clock, text: "First session response within 24 hours" },
-                    ].map(({ icon: Icon, text }) => (
-                      <div key={text} className="flex items-center gap-3">
-                        <div
-                          className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                          style={{ background: "linear-gradient(135deg, #4e7a5e, #3d8b8b)" }}
-                        >
-                          <Icon size={16} color="white" />
-                        </div>
-                        <span className="text-sm" style={{ color: "var(--text-muted)" }}>{text}</span>
-                      </div>
+              {/* Social proof pill */}
+              <div className="flex items-center justify-center gap-3 mb-7 pb-6 border-b" style={{ borderColor: "rgba(123,169,139,0.15)" }}>
+                <div className="flex -space-x-2">
+                  {trustBadges.map((badge) => (
+                    <div
+                      key={badge.name}
+                      className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-semibold text-white"
+                      style={{
+                        background: badge.gradient,
+                        borderColor: "white",
+                      }}
+                    >
+                      {badge.name}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="flex gap-0.5 mb-0.5">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star key={i} size={11} fill="#c7a86b" style={{ color: "#c7a86b", opacity: 0.9 }} />
+                      // <Star key={i} size={11} fill="var(--sage)" style={{ color: "var(--sage)" }} />
                     ))}
                   </div>
-                </div>
-
-                {/* RIGHT panel */}
-                <div className="lg:order-2 animate-fade-up-delay w-full mt-10 lg:mt-0">
-                  <div
-                    className="rounded-2xl px-5 py-4 mb-4 flex items-center gap-4 border"
-                    style={{
-                      background: "rgba(255,255,255,0.7)",
-                      borderColor: "var(--border)",
-                      backdropFilter: "blur(8px)",
-                    }}
-                  >
-                    <div className="flex -space-x-2 flex-shrink-0">
-                      {[
-                        { initials: "AO", bg: "linear-gradient(135deg,#7ba98b,#4e7a5e)" },
-                        { initials: "KI", bg: "linear-gradient(135deg,#3d8b8b,#2a6666)" },
-                        { initials: "FN", bg: "linear-gradient(135deg,#a8c4b0,#7ba98b)" },
-                        { initials: "EB", bg: "linear-gradient(135deg,#4e7a5e,#3d8b8b)" },
-                      ].map(({ initials, bg }) => (
-                        <div
-                          key={initials}
-                          className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white border-2 flex-shrink-0"
-                          style={{ background: bg, borderColor: "white" }}
-                          aria-hidden="true"
-                        >
-                          {initials}
-                        </div>
-                      ))}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-1 mb-0.5">
-                        {[1, 2, 3, 4, 5].map((i) => (
-                          <Star key={i} size={11} fill="var(--sage)" style={{ color: "var(--sage)" }} />
-                        ))}
-                        <span className="text-xs font-medium ml-1" style={{ color: "var(--deep)" }}>4.9</span>
-                      </div>
-                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                        35+ licensed therapists ready to help you
-                      </p>
-                    </div>
-                  </div>
-                  <HeroPanel />
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Trusted by 500+ clients across Nigeria</p>
                 </div>
               </div>
             </div>
-          </section>
 
+          </section>
           {/* ── Stats Strip ── */}
           <section className="relative z-10" aria-label="Platform statistics">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1496,7 +1523,7 @@ export default function HomePage() {
           <BottomCTA />
 
         </main>
-      </div>
+      </div >
     </>
   );
 }

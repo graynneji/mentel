@@ -648,9 +648,9 @@ export default function BookingForm() {
                 onClose: () => { setLoading(false); },
             });
             handler.openIframe();
-        } catch (err) {
+        } catch (err: unknown) {
             console.error("Payment init error:", err);
-            setErrors({ form: "Network error. Please check your connection and try again." });
+            setErrors({ form: err instanceof Error ? err.message : "Network error. Please check your connection and try again." });
             setLoading(false);
         }
     };

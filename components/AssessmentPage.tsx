@@ -5272,7 +5272,7 @@ export default function AssessmentPage() {
                                     letterSpacing: "0.01em",
                                 }}
                             >
-                                <Activity size={17} strokeWidth={3} />
+                                <Activity size={17} strokeWidth={3} color="#a8e6cf " />
                                 Start free Mental Health Check
                                 <ArrowRight size={17} strokeWidth={2} style={{ opacity: 0.55 }} />
                             </button>

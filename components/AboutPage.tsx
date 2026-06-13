@@ -10,7 +10,7 @@ const values = [
     {
         icon: Award,
         title: "Evidence-Based Practice",
-        desc: "Our therapists use clinically proven methods — CBT, EMDR, and more.",
+        desc: "Our therapists use clinically proven methods, CBT, EMDR, and more.",
     },
     {
         icon: Users,
@@ -41,9 +41,16 @@ export default function AboutPage() {
                         Our Story
                     </div>
                     <h1 className="font-cormorant text-5xl font-light mb-5 leading-tight" style={{ color: "var(--deep)" }}>
+                        {/* The "Eyebrow" - visually small, but feeds Google the exact keywords */}
+                        <span className="block text-sm uppercase tracking-widest font-sans mb-4 font-medium" style={{ color: "var(--sage-dark)" }}>
+                            About Mentel
+                        </span>
+
+                        {/* Your poetic branding */}
                         Rooted in care,<br />
                         <em className="italic" style={{ color: "var(--sage-dark)" }}>guided by science</em>.
                     </h1>
+
                     <p className="text-base leading-relaxed font-light" style={{ color: "var(--text-muted)" }}>
                         Mentel was founded on a simple belief: that every person deserves access to
                         high-quality, compassionate mental health support. We built a team of licensed

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/app/context/BookingContext";
@@ -46,6 +46,7 @@ export default function Navbar() {
     const [mounted, setMounted] = useState(false);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+    const router = useRouter()
     const { openBooking } = useBooking();
 
     useEffect(() => {
@@ -133,6 +134,7 @@ export default function Navbar() {
     function handleBookNow() {
         setOpen(false);
         openBooking();
+        router.push("/book");
     }
 
     const showBanner = mounted && !bannerDismissed && !!timeLeft;
@@ -230,10 +232,11 @@ export default function Navbar() {
                     style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
                 >
                     <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                        {/* <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between"> */}
                         <Link href="/" className="flex items-center gap-2.5">
-                            <h1>
-                                <Image src="/logo.png" alt="Mentel" width={108} height={61} className="object-contain" priority />
-                            </h1>
+
+                            <Image src="/logo.png" alt="Mentel" width={108} height={61} className="object-contain" priority />
+
                         </Link>
 
                         {/* Desktop nav */}
