@@ -31,7 +31,7 @@ export default function ArticlesPreview() {
                             Resources
                         </div>
                         <h2
-                            className="font-cormorant text-3xl sm:text-4xl font-light"
+                            className="font-cormorant text-3xl sm:text-4xl font-normal"
                             style={{ color: "var(--deep)" }}
                         >
                             Guides &amp;{" "}
@@ -40,7 +40,7 @@ export default function ArticlesPreview() {
                             </em>
                         </h2>
                         <p
-                            className="text-sm sm:text-base mt-2 font-light max-w-sm"
+                            className="text-sm sm:text-base mt-2 font-normal max-w-sm"
                             style={{ color: "var(--text-muted)" }}
                         >
                             Expert-written mental health content for Nigerians, backed by evidence.
@@ -99,7 +99,7 @@ export default function ArticlesPreview() {
                                 </h3>
 
                                 <p
-                                    className="text-sm leading-relaxed font-light flex-1 line-clamp-3"
+                                    className="text-sm leading-relaxed font-normal flex-1 line-clamp-3"
                                     style={{ color: "var(--text-muted)" }}
                                 >
                                     {article.excerpt}

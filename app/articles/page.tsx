@@ -2,6 +2,9 @@
 import Link from "next/link";
 import { ArrowRight, Clock, Leaf, BookOpen, TrendingUp } from "lucide-react";
 
+import ArticlesExplorer from "@/components/ArticlesExplorer";
+import { FeaturedCard } from "@/components/ArticleCard";
+
 export const metadata = {
     title: "Mental Health Articles & Resources - Mentel",
     description:
@@ -46,7 +49,7 @@ export const articles = [
         date: "2025-06-12",
         featured: true,
         tags: ["Lagos", "Therapy", "Access"],
-        image: null, // swap for a real URL later
+        image: "/Mental_Health_Services_Lagos_Guide_202606131252.jpg", // swap for a real URL later
     },
     {
         slug: "online-therapy-nigeria-how-it-works",
@@ -58,7 +61,7 @@ export const articles = [
         date: "2025-05-28",
         featured: false,
         tags: ["Online Therapy", "Nigeria"],
-        image: null,
+        image: "/recreate_202606131305.jpg",
     },
     {
         slug: "anxiety-signs-nigerians-ignore",
@@ -70,7 +73,7 @@ export const articles = [
         date: "2025-05-14",
         featured: false,
         tags: ["Anxiety", "Culture", "Self-Awareness"],
-        image: null,
+        image: "/AdobeStock_309579619.webp",
     },
     {
         slug: "depression-nigeria-men-silent-struggle",
@@ -82,7 +85,7 @@ export const articles = [
         date: "2025-04-30",
         featured: false,
         tags: ["Depression", "Men", "Nigeria"],
-        image: null,
+        image: "depression.jpg",
     },
     {
         slug: "cost-therapy-nigeria-affordable-options",
@@ -94,7 +97,7 @@ export const articles = [
         date: "2025-04-15",
         featured: false,
         tags: ["Cost", "Access", "Nigeria"],
-        image: null,
+        image: "/Black_male_and_female_in_202606131327.jpg",
     },
     {
         // will start here stoped here for indexing google
@@ -107,7 +110,7 @@ export const articles = [
         date: "2025-03-22",
         featured: false,
         tags: ["Couples", "Marriage", "Relationships"],
-        image: null,
+        image: "/couples_therapy_in_nigeria_images_202606131329.jpg",
     },
     {
         slug: "burnout-vs-stress-difference",
@@ -119,7 +122,7 @@ export const articles = [
         date: "2025-03-08",
         featured: false,
         tags: ["Burnout", "Stress", "Work"],
-        image: null,
+        image: "/Burnout_stress_make_it_real_202606131335.jpg",
     },
     {
         slug: "trauma-ptsd-nigeria-understanding",
@@ -131,7 +134,7 @@ export const articles = [
         date: "2025-02-20",
         featured: false,
         tags: ["Trauma", "PTSD", "Healing"],
-        image: null,
+        image: "/trauma_ptsd_human_black_mixed_202606131357.jpg",
     },
     {
         slug: "mental-health-abuja-resources",
@@ -143,7 +146,7 @@ export const articles = [
         date: "2025-02-05",
         featured: false,
         tags: ["Abuja", "FCT", "Resources"],
-        image: null,
+        image: "/Mental_health_resource_Abuja_202606131359.jpg",
     },
     {
         slug: "how-to-find-right-therapist-nigeria",
@@ -155,7 +158,7 @@ export const articles = [
         date: "2025-01-18",
         featured: false,
         tags: ["Finding Therapy", "Guide"],
-        image: null,
+        image: "/Find_right_therapist_image_202606131359.jpg",
     },
 ];
 
@@ -202,7 +205,7 @@ function ArticleCard({ article, large = false }: { article: (typeof articles)[0]
                 </h2>
 
                 <p
-                    className="text-sm leading-relaxed font-light flex-1"
+                    className="text-sm leading-relaxed font-normal flex-1"
                     style={{ color: "var(--text-muted)" }}
                 >
                     {article.excerpt}
@@ -231,10 +234,96 @@ function ArticleCard({ article, large = false }: { article: (typeof articles)[0]
     );
 }
 
+// export default function ArticlesPage() {
+//     const [featured, ...rest] = articles;
+
+//     const categories = Array.from(new Set(articles.map((a) => a.category)));
+
+//     return (
+//         <div className="relative overflow-x-hidden">
+//             {/* Hero */}
+//             <section className="relative z-10 pt-20 sm:pt-28 pb-10 sm:pb-14 border-b" style={{ borderColor: "var(--border)" }}>
+//                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+//                     <div
+//                         className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-widest mb-5 border"
+//                         style={{ background: "rgba(123,169,139,0.10)", borderColor: "rgba(123,169,139,0.25)", color: "var(--sage-dark)" }}
+//                     >
+//                         <BookOpen size={11} />
+//                         Resources &amp; Insights
+//                     </div>
+//                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+//                         <div>
+//                             <h1
+//                                 className="font-cormorant text-4xl sm:text-5xl font-light leading-tight mb-3"
+//                                 style={{ color: "var(--deep)", letterSpacing: "-0.02em" }}
+//                             >
+//                                 Mental health,{" "}
+//                                 <em className="italic" style={{ color: "var(--sage-dark)" }}>
+//                                     explained.
+//                                 </em>
+//                             </h1>
+//                             <p className="text-sm sm:text-base font-light max-w-md" style={{ color: "var(--text-muted)" }}>
+//                                 Evidence-based guides written by clinicians. Real talk about anxiety, depression, relationships, and healing in a Nigerian context.
+//                             </p>
+//                         </div>
+//                         <div className="flex items-center gap-2 text-xs" style={{ color: "var(--text-muted)" }}>
+//                             <TrendingUp size={14} style={{ color: "var(--sage-dark)" }} />
+//                             {articles.length} articles published
+//                         </div>
+//                     </div>
+
+//                     {/* Category filter pills */}
+//                     <div className="flex flex-wrap gap-2 mt-7">
+//                         <span
+//                             className="text-xs px-3 py-1.5 rounded-full border font-medium cursor-default"
+//                             style={{ background: "var(--sage-dark)", borderColor: "var(--sage-dark)", color: "white" }}
+//                         >
+//                             All
+//                         </span>
+//                         {categories.map((cat) => (
+//                             <span
+//                                 key={cat}
+//                                 className="text-xs px-3 py-1.5 rounded-full border font-medium cursor-pointer hover:bg-[rgba(123,169,139,0.12)] transition-colors"
+//                                 style={{ borderColor: "var(--border)", color: "var(--text-muted)" }}
+//                             >
+//                                 {cat}
+//                             </span>
+//                         ))}
+//                     </div>
+//                 </div>
+//             </section>
+
+//             {/* Featured article */}
+//             <section className="relative z-10 py-10 sm:py-12">
+//                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+//                     <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: "var(--sage-dark)" }}>
+//                         Featured
+//                     </p>
+//                     <ArticleCard article={featured} large />
+//                 </div>
+//             </section>
+
+//             {/* All articles grid */}
+//             <section className="relative z-10 pb-16 sm:pb-20 border-t" style={{ borderColor: "var(--border)" }}>
+//                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+//                     <p className="text-xs font-medium uppercase tracking-widest mb-6" style={{ color: "var(--sage-dark)" }}>
+//                         All Articles
+//                     </p>
+//                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+//                         {rest.map((article) => (
+//                             <ArticleCard key={article.slug} article={article} />
+//                         ))}
+//                     </div>
+//                 </div>
+//             </section>
+//         </div>
+//     );
+// }
+
 export default function ArticlesPage() {
     const [featured, ...rest] = articles;
-
     const categories = Array.from(new Set(articles.map((a) => a.category)));
+    const trending = articles.slice(0, 5);
 
     return (
         <div className="relative overflow-x-hidden">
@@ -251,7 +340,7 @@ export default function ArticlesPage() {
                     <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                         <div>
                             <h1
-                                className="font-cormorant text-4xl sm:text-5xl font-light leading-tight mb-3"
+                                className="font-cormorant text-4xl sm:text-5xl font-normal leading-tight mb-3"
                                 style={{ color: "var(--deep)", letterSpacing: "-0.02em" }}
                             >
                                 Mental health,{" "}
@@ -259,7 +348,7 @@ export default function ArticlesPage() {
                                     explained.
                                 </em>
                             </h1>
-                            <p className="text-sm sm:text-base font-light max-w-md" style={{ color: "var(--text-muted)" }}>
+                            <p className="text-sm sm:text-base font-normal max-w-md" style={{ color: "var(--text-muted)" }}>
                                 Evidence-based guides written by clinicians. Real talk about anxiety, depression, relationships, and healing in a Nigerian context.
                             </p>
                         </div>
@@ -268,49 +357,26 @@ export default function ArticlesPage() {
                             {articles.length} articles published
                         </div>
                     </div>
-
-                    {/* Category filter pills */}
-                    <div className="flex flex-wrap gap-2 mt-7">
-                        <span
-                            className="text-xs px-3 py-1.5 rounded-full border font-medium cursor-default"
-                            style={{ background: "var(--sage-dark)", borderColor: "var(--sage-dark)", color: "white" }}
-                        >
-                            All
-                        </span>
-                        {categories.map((cat) => (
-                            <span
-                                key={cat}
-                                className="text-xs px-3 py-1.5 rounded-full border font-medium cursor-pointer hover:bg-[rgba(123,169,139,0.12)] transition-colors"
-                                style={{ borderColor: "var(--border)", color: "var(--text-muted)" }}
-                            >
-                                {cat}
-                            </span>
-                        ))}
-                    </div>
                 </div>
             </section>
 
-            {/* Featured article */}
+            {/* Featured hero */}
             <section className="relative z-10 py-10 sm:py-12">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: "var(--sage-dark)" }}>
                         Featured
                     </p>
-                    <ArticleCard article={featured} large />
+                    <FeaturedCard article={featured} />
                 </div>
             </section>
 
-            {/* All articles grid */}
+            {/* Explorer: filters + grid + trending */}
             <section className="relative z-10 pb-16 sm:pb-20 border-t" style={{ borderColor: "var(--border)" }}>
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
                     <p className="text-xs font-medium uppercase tracking-widest mb-6" style={{ color: "var(--sage-dark)" }}>
                         All Articles
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {rest.map((article) => (
-                            <ArticleCard key={article.slug} article={article} />
-                        ))}
-                    </div>
+                    <ArticlesExplorer rest={rest} trending={trending} categories={categories} />
                 </div>
             </section>
         </div>
