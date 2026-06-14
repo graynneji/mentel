@@ -5190,6 +5190,8 @@ export default function AssessmentPage() {
                                 marginBottom: 24,
                             }}
                         >
+
+
                             How are you{" "}
                             <em style={{ color: "#2d7a5a", fontStyle: "italic" }}>really</em>{" "}
                             doing?
@@ -5201,14 +5203,16 @@ export default function AssessmentPage() {
                                 fontSize: "clamp(16px, 2.8vw, 18px)",
                                 fontWeight: 300,
                                 lineHeight: 1.75,
-                                color: "#5a6b5e",
+                                color: "var(--text-secondary)",
+                                // color: "#5a6b5e",
                                 maxWidth: 500,
                                 marginBottom: 52,
                             }}
                         >
                             {/* A confidential 2-minute check-in designed by licensed professionals. */}
-                            A confidential 1-minute check-in designed by licensed professionals.
-                            Understand where you are and get matched with the right support.
+                            {/* A confidential 1-minute check-in designed by licensed professionals. */}
+                            {/* Understand where you are and get matched with the right support. */}
+                            Take our confidential 1-minute check-in designed by licensed professionals and get instant clarity on your mental wellness.
                         </p>
 
                         {/* Stats row */}
@@ -5236,7 +5240,8 @@ export default function AssessmentPage() {
                                         >
                                             {stat.num}
                                         </div>
-                                        <div style={{ fontSize: 11, color: "#8a9a8e", marginTop: 4, letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 500 }}>
+                                        {/* <div style={{ fontSize: 11, color: "#8a9a8e", marginTop: 4, letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 500 }}> */}
+                                        <div style={{ fontSize: 11, color: "#5a6b5e", marginTop: 4, letterSpacing: "0.06em", textTransform: "uppercase", fontWeight: 500 }}>
                                             {stat.label}
                                         </div>
                                     </div>
@@ -5265,6 +5270,7 @@ export default function AssessmentPage() {
                                     borderRadius: 99,
                                     padding: "19px 40px",
                                     fontSize: "clamp(13px, 3vw, 15px)",
+                                    // fontSize: "clamp(13px, 3vw, 15px)",
                                     fontWeight: 500,
                                     fontFamily: "'DM Sans', sans-serif",
                                     cursor: "pointer",
@@ -5272,13 +5278,16 @@ export default function AssessmentPage() {
                                     letterSpacing: "0.01em",
                                 }}
                             >
-                                <Activity size={17} strokeWidth={3} color="#a8e6cf " />
-                                Start free Mental Health Check
+                                <Activity size={17} strokeWidth={3} color="#a8e6cf" />
+                                {/* Start free Mental Health Check */}
+                                Get My Wellness Score
+                                {/* Start your free 1-Minute Check */}
                                 <ArrowRight size={17} strokeWidth={2} style={{ opacity: 0.55 }} />
                             </button>
 
-                            <p style={{ fontSize: 12, color: "#a0aba3", marginTop: 16, fontWeight: 300 }}>
-                                Takes 1 minutes · No account needed · Completely confidential
+                            {/* <p style={{ fontSize: 12, color: "#a0aba3", marginTop: 16, fontWeight: 300 }}> */}
+                            <p style={{ fontSize: 12, color: "#5a6b5e", marginTop: 16, fontWeight: 300 }}>
+                                Takes 1 minute · No account needed · Completely confidential
                                 {/* Takes 2 minutes · No account needed · Completely confidential */}
                             </p>
                         </div>
@@ -5318,7 +5327,7 @@ export default function AssessmentPage() {
                                         <Icon size={17} stroke="#2d7a5a" strokeWidth={1.8} />
                                     </div>
                                     <div style={{ fontSize: 14, fontWeight: 500, color: "#1c2820" }}>{title}</div>
-                                    <div style={{ fontSize: 12, fontWeight: 300, color: "#8a9a8e", lineHeight: 1.6 }}>{desc}</div>
+                                    <div style={{ fontSize: 12, fontWeight: 300, color: "#5a6b5e", lineHeight: 1.6 }}>{desc}</div>
                                 </div>
                             ))}
                         </div>
@@ -5342,7 +5351,8 @@ export default function AssessmentPage() {
                                 fontSize: 11,
                                 letterSpacing: "0.12em",
                                 textTransform: "uppercase",
-                                color: "#b0bab4",
+                                color: "#5a6b5e",
+                                // color: "#b0bab4",
                                 fontWeight: 600,
                                 textAlign: "center",
                                 marginBottom: 36,
@@ -5411,7 +5421,7 @@ export default function AssessmentPage() {
                         </div>
                     </div>
                 </div>
-            </PageWrapper>
+            </PageWrapper >
         );
     }
 
