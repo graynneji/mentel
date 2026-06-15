@@ -271,7 +271,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             tags: article.tags,
             images: [
                 {
-                    url: "/og-image.png",
+                    url: article.image,
                     width: 1200,
                     height: 630,
                     alt: article.title,
@@ -282,7 +282,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             card: "summary_large_image",
             title: `${article.title} - Mentel`,
             description: article.excerpt,
-            images: ["/og-image.png"],
+            images: [article.image],
         },
     };
 }
