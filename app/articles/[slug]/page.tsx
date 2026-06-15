@@ -9,7 +9,16 @@ import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisua
 import { ArticleCard } from "../../../components/ArticleCard";
 
 /* ─── Full article bodies ─── */
-const articleContent: Record<string, { intro: string; sections: { heading: string; body: string }[]; tldr: string; faq: { q: string; a: string }[] }> = {
+const articleContent: Record<string, {
+    intro: string;
+    sections: {
+        heading: string;
+        body: string;
+        list?: { label?: string; value: string }[];
+    }[];
+    tldr: string;
+    faq: { q: string; a: string }[];
+}> = {
     "mental-health-services-lagos": {
         tldr: "Lagos has government hospitals (free–₦5,000), private clinics (₦15,000–₦40,000), and online platforms like Mentel (from ₦5,500). HMOs increasingly cover mental health. For crises, call LASEMA on 767 or 112.",
         faq: [
@@ -86,13 +95,13 @@ const articleContent: Record<string, { intro: string; sections: { heading: strin
         intro:
             "In Nigeria, anxiety is frequently dismissed as weakness, lack of faith, or overthinking. As a result, millions of people are living with an anxiety disorder that is undiagnosed and untreated. Here are the signs that are most commonly missed or explained away.",
         sections: [
-            { heading: "1. Constant physical tension", body: "Anxiety is as physical as it is mental. Jaw clenching, tight shoulders, a churning stomach, frequent headaches: these are not just stress. They are your nervous system in a prolonged state of threat response. Many Nigerians treat these symptoms medically without ever addressing their psychological root." },
-            { heading: "2. Difficulty sleeping even when exhausted", body: "Racing thoughts at night that prevent sleep, despite being physically tired, is one of the most reliable signs of an anxiety disorder. If you regularly lie awake running through worst-case scenarios, it is worth speaking to a mental health professional." },
-            { heading: "3. Avoiding social situations", body: "If you consistently make excuses to avoid gatherings, struggle intensely with public speaking or social interaction, or feel physically sick before social events, this goes beyond introversion. Social anxiety is a treatable condition." },
-            { heading: "4. Irritability and short temper", body: "Anxiety does not always look like worry. Sometimes it presents as a hair-trigger temper, low frustration tolerance, or feeling constantly on edge. If the people closest to you comment on your irritability, anxiety could be the cause." },
-            { heading: "5. Overthinking decisions", body: "Spending hours or days agonising over simple decisions is a hallmark of anxiety. This is not being 'careful'; it is the brain getting stuck in threat-assessment loops that never resolve." },
-            { heading: "6. Chest tightness or racing heart", body: "Panic attacks and anxiety can mimic cardiac symptoms so closely that many people end up in hospital emergency rooms having heart checks that come back normal. If you've been cleared medically but still experience these symptoms, consider an anxiety assessment." },
-            { heading: "7. Chronic 'what if' thinking", body: "Anxiety hijacks your thoughts with an endless stream of worst-case scenarios. \"What if I lose my job?\" \"What if something happens to my children?\" These thoughts feel productive but are actually a form of rumination that maintains and worsens anxiety." },
+            { heading: " Constant physical tension", body: "Anxiety is as physical as it is mental. Jaw clenching, tight shoulders, a churning stomach, frequent headaches: these are not just stress. They are your nervous system in a prolonged state of threat response. Many Nigerians treat these symptoms medically without ever addressing their psychological root." },
+            { heading: " Difficulty sleeping even when exhausted", body: "Racing thoughts at night that prevent sleep, despite being physically tired, is one of the most reliable signs of an anxiety disorder. If you regularly lie awake running through worst-case scenarios, it is worth speaking to a mental health professional." },
+            { heading: " Avoiding social situations", body: "If you consistently make excuses to avoid gatherings, struggle intensely with public speaking or social interaction, or feel physically sick before social events, this goes beyond introversion. Social anxiety is a treatable condition." },
+            { heading: " Irritability and short temper", body: "Anxiety does not always look like worry. Sometimes it presents as a hair-trigger temper, low frustration tolerance, or feeling constantly on edge. If the people closest to you comment on your irritability, anxiety could be the cause." },
+            { heading: " Overthinking decisions", body: "Spending hours or days agonising over simple decisions is a hallmark of anxiety. This is not being 'careful'; it is the brain getting stuck in threat-assessment loops that never resolve." },
+            { heading: " Chest tightness or racing heart", body: "Panic attacks and anxiety can mimic cardiac symptoms so closely that many people end up in hospital emergency rooms having heart checks that come back normal. If you've been cleared medically but still experience these symptoms, consider an anxiety assessment." },
+            { heading: " Chronic 'what if' thinking", body: "Anxiety hijacks your thoughts with an endless stream of worst-case scenarios. \"What if I lose my job?\" \"What if something happens to my children?\" These thoughts feel productive but are actually a form of rumination that maintains and worsens anxiety." },
         ],
     },
 
@@ -124,7 +133,17 @@ const articleContent: Record<string, { intro: string; sections: { heading: strin
         intro:
             "\"Therapy is for the rich.\" This is one of the most persistent and damaging myths in Nigerian mental healthcare. Yes, some therapists charge ₦30,000–₦50,000 per session. But that is nowhere near the full picture. Here is a clear-eyed breakdown of what therapy actually costs and how to make it work on your budget.",
         sections: [
-            { heading: "The real range of costs", body: "Government hospitals: ₦2,000–₦5,000 per session. University counselling services: often free for students. Online platforms (like Mentel): ₦5,500 per session. Mid-range private therapists: ₦10,000–₦20,000. Premium private practices (Lagos Island, Ikoyi, VI): ₦25,000–₦50,000. Most people have more options than they realise." },
+            {
+                heading: "The real range of costs",
+                body: "Most people have more options than they realise.",
+                list: [
+                    { label: "Government hospitals", value: "₦2,000 – ₦5,000 per session" },
+                    { label: "University counselling", value: "Often free for students" },
+                    { label: "Online platforms (Mentel)", value: "₦5,500 per session" },
+                    { label: "Mid-range private therapists", value: "₦10,000 – ₦20,000" },
+                    { label: "Premium private (Lagos Island, Ikoyi, VI)", value: "₦25,000 – ₦50,000" },
+                ],
+            },
             { heading: "HMO coverage: check before you pay out of pocket", body: "If you have health insurance through your employer, check whether mental health sessions are covered. Hygeia, Reliance HMO, Leadway Health, and Avon HMO all have plans that include psychological consultations. Some plans cover up to 6 sessions per year at little or no additional cost to you." },
             { heading: "Sliding scale fees", body: "Many licensed therapists in Nigeria offer sliding-scale pricing, where the fee is adjusted based on your income. This is not widely advertised, but if you are struggling financially, it is entirely appropriate to ask. Most ethical therapists would rather see you at a reduced rate than not see you at all." },
             { heading: "The cost of NOT getting help", body: "Untreated anxiety and depression reduce workplace productivity, damage relationships, worsen physical health, and in severe cases contribute to premature death. The ₦5,500 you spend on a therapy session could prevent thousands of naira in lost income, medical costs, or the far greater cost of a relationship or career falling apart." },
@@ -142,14 +161,14 @@ const articleContent: Record<string, { intro: string; sections: { heading: strin
         intro:
             "All couples argue. All relationships go through difficult seasons. But some patterns, if left unaddressed, will erode even the strongest marriage. Here are eight honest signals that couples therapy could genuinely help.",
         sections: [
-            { heading: "1. The same argument keeps repeating", body: "If you are having the same fight over and over, about money, family, intimacy, or trust, without resolution, it is rarely about the surface topic. Skilled couples therapy identifies the underlying emotional need driving the pattern and helps both partners respond to it." },
-            { heading: "2. Communication has broken down", body: "When conversations consistently escalate into shouting, shut down into silence, or never happen at all, the communication system has broken down. A therapist can teach you the specific skills to talk about hard things without it becoming a fight." },
-            { heading: "3. Infidelity or breach of trust", body: "An affair or any significant betrayal is not automatically the end of a marriage. But trust cannot be rebuilt without a structured process. Couples therapy provides a safe, mediated space where both partners can process the pain and, if both choose it, rebuild." },
-            { heading: "4. You're co-existing but not connecting", body: "Living as roommates rather than partners, with minimal conversation, no physical intimacy, and separate emotional lives, is a form of relationship distress that is easy to ignore and hard to reverse alone." },
-            { heading: "5. A major life event has destabilised the relationship", body: "Job loss, the death of a parent, a new baby, relocation, a health diagnosis: major transitions change the dynamic of a relationship. Therapy can help couples navigate the change as a team rather than being pulled apart by it." },
-            { heading: "6. One or both partners is considering leaving", body: "If you or your spouse has seriously considered ending the marriage, therapy is not too late, but it shouldn't be delayed. Many couples who thought they were heading for divorce have found their way back to each other through therapeutic support." },
-            { heading: "7. You're using children as go-betweens", body: "When children become messengers, allies, or emotional support for one parent, it damages both the marriage and the children. This is a significant indicator that professional help is needed urgently." },
-            { heading: "8. You simply want a stronger relationship", body: "You do not have to be in crisis to benefit from couples therapy. Many couples use therapy proactively to deepen connection, improve communication, and build the foundations of a genuinely fulfilling partnership." },
+            { heading: " The same argument keeps repeating", body: "If you are having the same fight over and over, about money, family, intimacy, or trust, without resolution, it is rarely about the surface topic. Skilled couples therapy identifies the underlying emotional need driving the pattern and helps both partners respond to it." },
+            { heading: " Communication has broken down", body: "When conversations consistently escalate into shouting, shut down into silence, or never happen at all, the communication system has broken down. A therapist can teach you the specific skills to talk about hard things without it becoming a fight." },
+            { heading: " Infidelity or breach of trust", body: "An affair or any significant betrayal is not automatically the end of a marriage. But trust cannot be rebuilt without a structured process. Couples therapy provides a safe, mediated space where both partners can process the pain and, if both choose it, rebuild." },
+            { heading: " You're co-existing but not connecting", body: "Living as roommates rather than partners, with minimal conversation, no physical intimacy, and separate emotional lives, is a form of relationship distress that is easy to ignore and hard to reverse alone." },
+            { heading: " A major life event has destabilised the relationship", body: "Job loss, the death of a parent, a new baby, relocation, a health diagnosis: major transitions change the dynamic of a relationship. Therapy can help couples navigate the change as a team rather than being pulled apart by it." },
+            { heading: " One or both partners is considering leaving", body: "If you or your spouse has seriously considered ending the marriage, therapy is not too late, but it shouldn't be delayed. Many couples who thought they were heading for divorce have found their way back to each other through therapeutic support." },
+            { heading: " You're using children as go-betweens", body: "When children become messengers, allies, or emotional support for one parent, it damages both the marriage and the children. This is a significant indicator that professional help is needed urgently." },
+            { heading: " You simply want a stronger relationship", body: "You do not have to be in crisis to benefit from couples therapy. Many couples use therapy proactively to deepen connection, improve communication, and build the foundations of a genuinely fulfilling partnership." },
         ],
     },
 
@@ -238,6 +257,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     return {
         title: `${article.title} - Mentel`,
         description: article.excerpt,
+        keywords: article.keywords?.join(", "),
         alternates: {
             canonical: `/articles/${article.slug}`,
         },
@@ -267,352 +287,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
 }
 
-// export default async function ArticlePage({ params }: { params: { slug: string } }) {
-//     const param = await params;
-//     const article = articles.find((a) => a.slug === param.slug);
-//     if (!article) notFound();
-
-//     const content = articleContent[article.slug];
-//     const articleIndex = articles.findIndex((a) => a.slug === param.slug);
-//     const prev = articles[articleIndex - 1] ?? null;
-//     const next = articles[articleIndex + 1] ?? null;
-
-//     /* ── JSON-LD: Article schema ── */
-//     const articleSchema = {
-//         "@context": "https://schema.org",
-//         "@type": "Article",
-//         headline: article.title,
-//         description: article.excerpt,
-//         datePublished: article.date,
-//         dateModified: article.date,
-//         author: {
-//             "@type": "Organization",
-//             name: "Mentel Clinical Team",
-//             url: "https://www.trymentel.com",
-//         },
-//         publisher: {
-//             "@type": "Organization",
-//             name: "Mentel",
-//             url: "https://www.trymentel.com",
-//             logo: {
-//                 "@type": "ImageObject",
-//                 url: "https://www.trymentel.com/logo.png",
-//             },
-//         },
-//         url: `https://www.trymentel.com/articles/${article.slug}`,
-//         image: "https://www.trymentel.com/og-image.png",
-//         keywords: article.tags.join(", "),
-//         articleSection: article.category,
-//         inLanguage: "en-NG",
-//         about: {
-//             "@type": "MedicalCondition",
-//             name: article.category,
-//         },
-//         breadcrumb: {
-//             "@type": "BreadcrumbList",
-//             itemListElement: [
-//                 { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trymentel.com" },
-//                 { "@type": "ListItem", position: 2, name: "Articles", item: "https://www.trymentel.com/articles" },
-//                 { "@type": "ListItem", position: 3, name: article.title, item: `https://www.trymentel.com/articles/${article.slug}` },
-//             ],
-//         },
-//     };
-
-//     const seoScore = scorePageSEO({
-//         title: article.title,
-//         description: article.excerpt,
-//         keywords: article.tags,
-//         content: [
-//             content?.intro,
-//             content?.sections?.map((s) => s.body).join(" "),
-//             content?.tldr,
-//         ].join(" "),
-//         schemaTypes: ["Article", "MedicalBusiness"],
-//         internalLinks: 3, // adjust if you want to auto-calc later
-//         headings: content?.sections?.map((s) => `h2-${s.heading}`),
-//     });
-
-//     if (process.env.NODE_ENV === "development") {
-//         console.log("SEO SCORE:", {
-//             slug: article.slug,
-//             score: seoScore,
-//         });
-//     }
-
-//     /* ── JSON-LD: FAQ schema per article ── */
-//     const faqSchema = content?.faq
-//         ? {
-//             "@context": "https://schema.org",
-//             "@type": "FAQPage",
-//             mainEntity: content.faq.map(({ q, a }) => ({
-//                 "@type": "Question",
-//                 name: q,
-//                 acceptedAnswer: { "@type": "Answer", text: a },
-//             })),
-//         }
-//         : null;
-
-//     return (
-//         <>
-//             <script
-//                 type="application/ld+json"
-//                 dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-//             />
-//             {faqSchema && (
-//                 <script
-//                     type="application/ld+json"
-//                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-//                 />
-//             )}
-
-//             <div className="relative overflow-x-hidden">
-//                 {/* Back nav */}
-//                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
-//                     <Link
-//                         href="/articles"
-//                         className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--teal)]"
-//                         style={{ color: "var(--text-muted)" }}
-//                     >
-//                         <ArrowLeft size={14} />
-//                         All Articles
-//                     </Link>
-//                 </div>
-
-//                 <article className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 sm:pb-20">
-//                     <header className="mb-10">
-//                         <div className="flex items-center gap-2 mb-4">
-//                             <span
-//                                 className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full"
-//                                 style={{ background: "rgba(123,169,139,0.12)", color: "var(--sage-dark)" }}
-//                             >
-//                                 <Leaf size={9} />
-//                                 {article.category}
-//                             </span>
-//                         </div>
-
-//                         <h1
-//                             className="font-cormorant text-3xl sm:text-4xl lg:text-5xl font-normal leading-tight mb-5"
-//                             style={{ color: "var(--deep)", letterSpacing: "-0.02em" }}
-//                         >
-//                             {article.title}
-//                         </h1>
-
-//                         <p className="text-base sm:text-lg font-normal leading-relaxed mb-6" style={{ color: "var(--text-muted)" }}>
-//                             {article.excerpt}
-//                         </p>
-
-//                         <div className="flex items-center justify-between pt-5 border-t" style={{ borderColor: "var(--border)" }}>
-//                             <div className="flex items-center gap-4">
-//                                 <div
-//                                     className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white"
-//                                     style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
-//                                 >
-//                                     M
-//                                 </div>
-//                                 <div>
-//                                     <p className="text-sm font-medium" style={{ color: "var(--deep)" }}>
-//                                         Mentel Clinical Team
-//                                     </p>
-//                                     <div className="flex items-center gap-3 text-xs" style={{ color: "var(--text-muted)" }}>
-//                                         <span>
-//                                             {new Date(article.date).toLocaleDateString("en-NG", {
-//                                                 day: "numeric",
-//                                                 month: "long",
-//                                                 year: "numeric",
-//                                             })}
-//                                         </span>
-//                                         <span>·</span>
-//                                         <span className="flex items-center gap-1">
-//                                             <Clock size={11} />
-//                                             {article.readMin} min read
-//                                         </span>
-//                                     </div>
-//                                 </div>
-//                             </div>
-//                             <button
-//                                 className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border transition-all hover:shadow-sm"
-//                                 style={{ borderColor: "var(--border)", color: "var(--text-muted)" }}
-//                             >
-//                                 <Share2 size={12} />
-//                                 Share
-//                             </button>
-//                         </div>
-//                     </header>
-
-//                     {/* ── TL;DR box (GEO + UX) ── */}
-//                     {content?.tldr && (
-//                         <div
-//                             className="mb-10 rounded-xl p-5 border-l-4"
-//                             style={{
-//                                 background: "rgba(123,169,139,0.06)",
-//                                 borderLeft: "4px solid var(--sage)",
-//                                 border: "1px solid rgba(123,169,139,0.2)",
-//                                 borderLeftColor: "var(--sage)",
-//                             }}
-//                         >
-//                             <p className="text-xs font-semibold uppercase tracking-widest mb-1.5" style={{ color: "var(--sage-dark)" }}>
-//                                 TL;DR — Key takeaways
-//                             </p>
-//                             <p className="text-sm leading-relaxed font-normal" style={{ color: "var(--text)" }}>
-//                                 {content.tldr}
-//                             </p>
-//                         </div>
-//                     )}
-
-//                     {/* Divider */}
-//                     <div className="h-px w-full mb-10" style={{ background: "var(--border)" }} />
-
-//                     {/* Article body */}
-//                     {content && (
-//                         <div className="prose-mentel">
-//                             <p
-//                                 className="text-base sm:text-lg leading-relaxed font-normal mb-10"
-//                                 style={{ color: "var(--text)", lineHeight: "1.85" }}
-//                             >
-//                                 {content.intro}
-//                             </p>
-
-//                             <div className="space-y-10">
-//                                 {content.sections.map((section, i) => (
-//                                     <section key={i}>
-//                                         <h2
-//                                             className="font-cormorant text-2xl sm:text-3xl font-semibold mb-3"
-//                                             style={{ color: "var(--deep)" }}
-//                                         >
-//                                             {section.heading}
-//                                         </h2>
-//                                         <p
-//                                             className="text-sm sm:text-base leading-relaxed font-normal"
-//                                             style={{ color: "var(--text)", lineHeight: "1.85" }}
-//                                         >
-//                                             {section.body}
-//                                         </p>
-//                                     </section>
-//                                 ))}
-//                             </div>
-//                         </div>
-//                     )}
-
-//                     {/* Tags */}
-//                     <div className="flex flex-wrap gap-2 mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
-//                         {article.tags.map((tag) => (
-//                             <span
-//                                 key={tag}
-//                                 className="text-xs px-2.5 py-1 rounded-full border"
-//                                 style={{
-//                                     borderColor: "rgba(123,169,139,0.3)",
-//                                     color: "var(--sage-dark)",
-//                                     background: "rgba(123,169,139,0.07)",
-//                                 }}
-//                             >
-//                                 {tag}
-//                             </span>
-//                         ))}
-//                     </div>
-
-//                     {/* ── Visible FAQ section (GEO + UX) ── */}
-//                     {content?.faq && content.faq.length > 0 && (
-//                         <div className="mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
-//                             <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--sage-dark)" }}>
-//                                 Quick answers
-//                             </p>
-//                             <h2
-//                                 className="font-cormorant text-2xl sm:text-3xl font-normal mb-6"
-//                                 style={{ color: "var(--deep)" }}
-//                             >
-//                                 Frequently asked questions
-//                             </h2>
-//                             <div className="space-y-4">
-//                                 {content.faq.map(({ q, a }) => (
-//                                     <div
-//                                         key={q}
-//                                         className="rounded-xl p-5 border"
-//                                         style={{ borderColor: "var(--border)", background: "white" }}
-//                                     >
-//                                         <p className="text-sm font-semibold mb-2" style={{ color: "var(--deep)" }}>
-//                                             {q}
-//                                         </p>
-//                                         <p className="text-sm font-normal leading-relaxed" style={{ color: "var(--text-muted)" }}>
-//                                             {a}
-//                                         </p>
-//                                     </div>
-//                                 ))}
-//                             </div>
-//                         </div>
-//                     )}
-
-//                     {/* CTA box */}
-//                     <div
-//                         className="mt-12 rounded-2xl p-6 sm:p-8"
-//                         style={{
-//                             background: "rgba(123,169,139,0.06)",
-//                             border: "1px solid rgba(123,169,139,0.2)",
-//                             borderLeft: "4px solid var(--sage)",
-//                         }}
-//                     >
-//                         <p className="font-cormorant text-xl sm:text-2xl font-normal mb-2" style={{ color: "var(--deep)" }}>
-//                             Ready to take the first step?
-//                         </p>
-//                         <p className="text-sm font-normal mb-5" style={{ color: "var(--text-muted)" }}>
-//                             Book a session with a licensed therapist from ₦5,500. No commitment. Fully confidential.
-//                         </p>
-//                         <div className="flex flex-wrap gap-3">
-//                             <Link
-//                                 href="/book"
-//                                 className="inline-flex items-center gap-2 text-sm font-medium text-white px-5 py-2.5 rounded-full"
-//                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
-//                             >
-//                                 Book a Session
-//                                 <ArrowRight size={14} />
-//                             </Link>
-//                             <Link
-//                                 href="/assessment"
-//                                 className="inline-flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-full border"
-//                                 style={{ borderColor: "var(--border)", color: "var(--sage-dark)" }}
-//                             >
-//                                 Free Assessment
-//                             </Link>
-//                         </div>
-//                     </div>
-
-//                     {/* Prev / Next */}
-//                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
-//                         {prev ? (
-//                             <Link
-//                                 href={`/articles/${prev.slug}`}
-//                                 className="group rounded-2xl p-5 border hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
-//                                 style={{ background: "white", borderColor: "var(--border)" }}
-//                             >
-//                                 <p className="text-xs font-medium uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
-//                                     ← Previous
-//                                 </p>
-//                                 <p className="text-sm font-medium line-clamp-2 group-hover:text-[var(--teal)] transition-colors" style={{ color: "var(--deep)" }}>
-//                                     {prev.title}
-//                                 </p>
-//                             </Link>
-//                         ) : (
-//                             <div />
-//                         )}
-//                         {next && (
-//                             <Link
-//                                 href={`/articles/${next.slug}`}
-//                                 className="group rounded-2xl p-5 border hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 text-right sm:col-start-2"
-//                                 style={{ background: "white", borderColor: "var(--border)" }}
-//                             >
-//                                 <p className="text-xs font-medium uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
-//                                     Next →
-//                                 </p>
-//                                 <p className="text-sm font-medium line-clamp-2 group-hover:text-[var(--teal)] transition-colors" style={{ color: "var(--deep)" }}>
-//                                     {next.title}
-//                                 </p>
-//                             </Link>
-//                         )}
-//                     </div>
-//                 </article>
-//             </div>
-//         </>
-//     );
-// }
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const param = await params;
@@ -732,7 +406,29 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                             <p className="text-sm leading-relaxed font-normal" style={{ color: "var(--text)" }}>
                                 {content.tldr}
                             </p>
+
                         </div>
+                    )}
+
+                    {content && content.sections.length >= 5 && (
+                        <nav className="mb-10 rounded-xl p-5 border" style={{ borderColor: "var(--border)", background: "white" }} aria-label="Table of contents">
+                            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "var(--sage-dark)" }}>
+                                In this article
+                            </p>
+                            <ol className="space-y-2">
+                                {content.sections.map((section, i) => (
+                                    <li key={i}>
+                                        <Link
+                                            href={`#section-${i}`}
+                                            className="text-sm hover:text-[var(--teal)] transition-colors"
+                                            style={{ color: "var(--text-muted)" }}
+                                        >
+                                            {i + 1}. {section.heading}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ol>
+                        </nav>
                     )}
 
                     {/* Article body — unchanged */}
@@ -746,9 +442,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                             </p>
                             <div className="space-y-10">
                                 {content.sections.map((section, i) => (
-                                    <section key={i}>
+                                    <section key={i} id={`section-${i}`}>
                                         <h2
-                                            className="font-cormorant text-2xl sm:text-3xl font-semibold mb-3"
+                                            className={`font-cormorant  font-semibold mb-3 scroll-mt-24 ${i === 0 ? "text-2xl sm:text-3xl" : "text-lg sm:text-xl"}`}
                                             style={{ color: "var(--deep)" }}
                                         >
                                             {section.heading}
@@ -759,6 +455,19 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                                         >
                                             {section.body}
                                         </p>
+                                        {section.list && (
+                                            <ul className="mt-4 space-y-2">
+                                                {section.list.map((item, j) => (
+                                                    <li key={j} className="flex gap-3 text-sm sm:text-base" style={{ color: "var(--text)" }}>
+                                                        <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "var(--sage)" }} />
+                                                        <span>
+                                                            {item.label && <strong style={{ color: "var(--deep)" }}>{item.label}: </strong>}
+                                                            {item.value}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </section>
                                 ))}
                             </div>
