@@ -742,7 +742,7 @@ export default function BookingForm() {
                     <div className="mb-4">
                         <label className="block text-xs font-medium uppercase tracking-widest mb-1.5" style={{ color: "var(--text-muted)" }}>Full Name</label>
                         <input type="text" value={form.name} onChange={(e) => handleChange("name", e.target.value)}
-                            placeholder="Your full name" autoComplete="name" className={`form-input ${errors.name ? "form-input-error" : ""}`} />
+                            placeholder="Your full name" autoComplete="name" autoFocus className={`form-input ${errors.name ? "form-input-error" : ""}`} />
                         {errors.name && <p className="text-xs mt-1.5" style={{ color: "var(--error)" }}>{errors.name}</p>}
                     </div>
                     <div className="mb-4">
