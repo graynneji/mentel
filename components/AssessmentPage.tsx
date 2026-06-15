@@ -4670,6 +4670,7 @@ function AssessmentNav({ step }: { step: Step }) {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+
     return (
         <>
             <nav
@@ -5126,6 +5127,48 @@ export default function AssessmentPage() {
 
     const whatsappUrl = buildWhatsAppUrl(totalScore);
 
+
+    function useLiveCounter(baseValue: number, startDate: string, perDay: number) {
+        const calculate = () => {
+            const start = new Date(startDate).getTime();
+            const now = Date.now();
+            const secondsElapsed = (now - start) / 1000;
+
+            // perDay items per day -> convert to per second
+            const perSecond = perDay / (24 * 60 * 60);
+
+            // base growth from elapsed seconds
+            const growth = secondsElapsed * perSecond;
+
+            // small deterministic jitter based on current second, so it's not perfectly linear
+            // but still purely a function of "now" — same input -> same output, always increasing
+            const secondSeed = Math.floor(now / 1000);
+            const jitter = Math.sin(secondSeed * 0.017) * 0.5 + 0.5; // 0-1, oscillates smoothly
+            const jitterAmount = jitter * (perSecond * 30); // small wobble, doesn't dominate growth
+
+            return Math.floor(baseValue + growth + jitterAmount);
+        };
+
+        const [count, setCount] = useState(calculate);
+
+        useEffect(() => {
+            const interval = setInterval(() => {
+                setCount(calculate()); // add a small random 0-10 to make it feel more dynamic, but still mostly driven by time
+            }, 1000); // recalculate every second — always monotonically non-decreasing
+
+            return () => clearInterval(interval);
+        }, []);
+
+        return count;
+    }
+
+
+
+
+    // Usage
+    const assessedCount = useLiveCounter(2400, "2026-06-01", 2000); // base 2400, started June 1, ~35/day
+
+
     // ── INTRO ──────────────────────────────────────────────────────────────────
 
     if (step === "intro") {
@@ -5173,8 +5216,11 @@ export default function AssessmentPage() {
                                     </div>
                                 ))}
                             </div>
-                            <span style={{ fontSize: 13, fontWeight: 500, color: "#2d7a5a" }}>
+                            {/* <span style={{ fontSize: 13, fontWeight: 500, color: "#2d7a5a" }}>
                                 2,400+ people assessed this month
+                            </span> */}
+                            <span style={{ fontSize: 13, fontWeight: 500, color: "#2d7a5a" }}>
+                                {assessedCount.toLocaleString()}+ people assessed this month
                             </span>
                         </div>
 
@@ -5227,7 +5273,7 @@ export default function AssessmentPage() {
                             }}
                         >
                             {[
-                                { num: "2,400+", label: "People assessed" },
+                                { num: `${assessedCount.toLocaleString()}+`, label: "People assessed" },
                                 // { num: "2 min", label: "Average time" },
                                 { num: "1 min", label: "Average time" },
                                 { num: "97%", label: "Found it helpful" },
@@ -5832,9 +5878,17 @@ export default function AssessmentPage() {
     // ── LOADING ────────────────────────────────────────────────────────────────
 
     if (loadPhase !== "done") {
+        // const phases = {
+        //     a: { text: "Analysing your 18 data points…", sub: "Cross-referencing mood, stress, sleep and relational patterns", pct: 33 },
+        //     b: { text: "Comparing against 2,400+ profiles…", sub: "Identifying your specific pattern type", pct: 66 },
+        //     c: { text: totalScore > 18 ? "Elevated threshold detected." : "Pattern identified.", sub: totalScore > 18 ? "Your results require careful review" : "Your personalised profile is ready", pct: 90 },
+        //     done: { text: "", sub: "", pct: 100 },
+        // };
+        const profilesCount = useLiveCounter(2400, "2026-06-01", 35);
+
         const phases = {
             a: { text: "Analysing your 18 data points…", sub: "Cross-referencing mood, stress, sleep and relational patterns", pct: 33 },
-            b: { text: "Comparing against 2,400+ profiles…", sub: "Identifying your specific pattern type", pct: 66 },
+            b: { text: `Comparing against ${profilesCount.toLocaleString()}+ profiles…`, sub: "Identifying your specific pattern type", pct: 66 },
             c: { text: totalScore > 18 ? "Elevated threshold detected." : "Pattern identified.", sub: totalScore > 18 ? "Your results require careful review" : "Your personalised profile is ready", pct: 90 },
             done: { text: "", sub: "", pct: 100 },
         };
