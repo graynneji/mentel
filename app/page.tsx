@@ -749,42 +749,94 @@ export const metadata: Metadata = {
 };
 
 /* ─── Page-level data ───────────────────────────────────────── */
+// const services = [
+//   {
+//     icon: Brain,
+//     title: "Anxiety & Stress",
+//     desc: "Learn practical, evidence-based tools to manage racing thoughts, worry, and the physical toll of chronic stress.",
+//     tags: ["CBT", "Mindfulness", "Breathing Techniques"],
+//   },
+//   {
+//     icon: Heart,
+//     title: "Depression",
+//     desc: "Work through low mood, lack of motivation, and persistent sadness with a therapist who truly understands.",
+//     tags: ["Behavioural Activation", "Talk Therapy"],
+//   },
+//   {
+//     icon: Users,
+//     title: "Marriage & Couples",
+//     desc: "Strengthen communication, rebuild trust, and navigate conflict with skilled relationship therapy.",
+//     tags: ["Gottman Method", "EFT", "Conflict Resolution"],
+//   },
+//   {
+//     icon: Anchor,
+//     title: "Trauma & PTSD",
+//     desc: "Heal from past experiences in a safe, trauma-informed space using approaches proven to work.",
+//     tags: ["EMDR", "Somatic Therapy", "Narrative Therapy"],
+//   },
+//   {
+//     icon: Flame,
+//     title: "Burnout & Life Transitions",
+//     desc: "Reclaim your energy, identity, and direction when life feels overwhelming or in flux.",
+//     tags: ["Life Coaching", "Values Work", "Goal Setting"],
+//   },
+//   {
+//     icon: Sun,
+//     title: "Self-Esteem & Growth",
+//     desc: "Build a healthier relationship with yourself, challenge inner criticism, and grow into your full potential.",
+//     tags: ["Schema Therapy", "ACT", "Compassion Work"],
+//   },
+//   {
+//     icon: ClipboardCheck,
+//     title: "Free Assessment",
+//     desc: "Not sure where to start? Take our free 2-minute mental health check and get matched to the right therapist.",
+//     tags: [] as string[],
+//     isCTA: true,
+//   },
+// ];
+
 const services = [
   {
     icon: Brain,
     title: "Anxiety & Stress",
     desc: "Learn practical, evidence-based tools to manage racing thoughts, worry, and the physical toll of chronic stress.",
     tags: ["CBT", "Mindfulness", "Breathing Techniques"],
+    color: { bg: "rgba(109,143,214,0.10)", icon: "#5a7fd1" },
   },
   {
     icon: Heart,
     title: "Depression",
     desc: "Work through low mood, lack of motivation, and persistent sadness with a therapist who truly understands.",
     tags: ["Behavioural Activation", "Talk Therapy"],
+    color: { bg: "rgba(214,139,158,0.10)", icon: "#c4748b" },
   },
   {
     icon: Users,
     title: "Marriage & Couples",
     desc: "Strengthen communication, rebuild trust, and navigate conflict with skilled relationship therapy.",
     tags: ["Gottman Method", "EFT", "Conflict Resolution"],
+    color: { bg: "rgba(224,164,88,0.10)", icon: "#c4914a" },
   },
   {
     icon: Anchor,
     title: "Trauma & PTSD",
     desc: "Heal from past experiences in a safe, trauma-informed space using approaches proven to work.",
     tags: ["EMDR", "Somatic Therapy", "Narrative Therapy"],
+    color: { bg: "rgba(123,148,168,0.10)", icon: "#647d92" },
   },
   {
     icon: Flame,
     title: "Burnout & Life Transitions",
     desc: "Reclaim your energy, identity, and direction when life feels overwhelming or in flux.",
     tags: ["Life Coaching", "Values Work", "Goal Setting"],
+    color: { bg: "rgba(212,130,90,0.10)", icon: "#c66f47" },
   },
   {
     icon: Sun,
     title: "Self-Esteem & Growth",
     desc: "Build a healthier relationship with yourself, challenge inner criticism, and grow into your full potential.",
     tags: ["Schema Therapy", "ACT", "Compassion Work"],
+    color: { bg: "rgba(123,169,139,0.10)", icon: "var(--sage-dark)" },
   },
   {
     icon: ClipboardCheck,
@@ -792,8 +844,11 @@ const services = [
     desc: "Not sure where to start? Take our free 2-minute mental health check and get matched to the right therapist.",
     tags: [] as string[],
     isCTA: true,
+    color: { bg: "", icon: "" },
   },
 ];
+
+
 
 const stats = [
   { stat: "4.9★", label: "Average client rating", icon: Star },
@@ -801,27 +856,95 @@ const stats = [
   { stat: "24hrs", label: "Average first response", icon: Clock },
 ];
 
+// const testimonials = [
+//   {
+//     quote:
+//       "I was skeptical about online therapy but Mentel made it feel completely safe and personal. My therapist genuinely listens and I've seen real changes in just 6 weeks.",
+//     name: "Adaeze O.",
+//     location: "Lagos",
+//     stars: 5,
+//   },
+//   {
+//     quote:
+//       "After struggling with anxiety for years, I finally feel like I have real tools to manage it. Booking was so easy and the price made it accessible for me.",
+//     name: "Emeka T.",
+//     location: "Abuja",
+//     stars: 5,
+//   },
+//   {
+//     quote:
+//       "My husband and I tried couples therapy through Mentel and it genuinely saved our marriage. The therapist was warm, professional and non-judgmental.",
+//     name: "Funmi & Seun A.",
+//     location: "Port Harcourt",
+//     stars: 5,
+//   },
+// ];
+
+const featuredTestimonial = {
+  quote:
+    "I'd put off therapy for years because I didn't think I had the time or money. Mentel made it easy to find someone who actually understood what I was going through, and for the first time, I feel like I'm moving forward instead of just surviving.",
+  name: "Adaeze O.",
+  location: "Lagos",
+  topic: "Anxiety & Stress",
+  stars: 5,
+  image: "/adaeze.jpg",
+};
+
 const testimonials = [
   {
     quote:
-      "I was skeptical about online therapy but Mentel made it feel completely safe and personal. My therapist genuinely listens and I've seen real changes in just 6 weeks.",
-    name: "Adaeze O.",
-    location: "Lagos",
-    stars: 5,
-  },
-  {
-    quote:
-      "After struggling with anxiety for years, I finally feel like I have real tools to manage it. Booking was so easy and the price made it accessible for me.",
+      "Booking was simple and my therapist was great. It took a few sessions before I felt comfortable opening up, but it's been worth it overall.",
     name: "Emeka T.",
     location: "Abuja",
-    stars: 5,
+    topic: "Burnout",
+    stars: 4,
+    image: "/emeka.jpg",
   },
   {
     quote:
-      "My husband and I tried couples therapy through Mentel and it genuinely saved our marriage. The therapist was warm, professional and non-judgmental.",
+      "My husband and I tried couples therapy through Mentel and it genuinely helped us communicate better. The therapist was warm and non-judgmental.",
     name: "Funmi & Seun A.",
     location: "Port Harcourt",
+    topic: "Couples",
     stars: 5,
+    image: "/funmi-seun.jpg",
+  },
+  {
+    quote:
+      "Good experience overall. The platform is easy to use and my therapist was knowledgeable, though I had to switch once before finding the right fit.",
+    name: "Chidinma E.",
+    location: "Texas, USA",
+    // location: "Enugu",
+    topic: "Depression",
+    stars: 4,
+    image: "/chidinma.jpg",
+  },
+  {
+    quote:
+      "Therapy helped me put words to feelings I'd carried for years. Some sessions were harder than others, but my therapist made the process feel manageable.",
+    name: "Tunde A.",
+    location: "Ibadan",
+    topic: "Trauma",
+    stars: 5,
+    image: "/tunde.jpg",
+  },
+  {
+    quote:
+      "It's helped me, especially with managing stress at work. Scheduling can be a bit tricky around my hours, but the sessions have been valuable.",
+    name: "Ngozi P.",
+    location: "Benin City",
+    topic: "Self-Esteem",
+    stars: 4,
+    image: "/ngozi.jpg",
+  },
+  {
+    quote:
+      "Decent first experience. My therapist was kind, though I think it'll take more sessions before I see real change. Still glad I started.",
+    name: "Bola K.",
+    location: "Lagos",
+    topic: "Anxiety",
+    stars: 3,
+    image: "/bola.jpg",
   },
 ];
 
@@ -948,7 +1071,7 @@ export default function HomePage() {
       />
 
       <div className="relative overflow-x-hidden">
-        <BgBlobs />
+        {/* <BgBlobs /> */}
 
         <main id="main-content">
           {/* ── Hero ── */}
@@ -1341,7 +1464,7 @@ export default function HomePage() {
                   {/* Professional, licensed therapy tailored to your specific needs, available online across Nigeria. */}
                 </p>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {services.map(({ icon: Icon, title, desc, tags, isCTA }) =>
                   isCTA ? (
                     <Link
@@ -1405,6 +1528,86 @@ export default function HomePage() {
                     </div>
                   )
                 )}
+              </div> */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                {services.map(({ icon: Icon, title, desc, tags, isCTA, color }) =>
+                  isCTA ? (
+                    <Link
+                      key={title}
+                      href="/assessment"
+                      className="sm:col-span-2 lg:col-span-3 rounded-2xl p-6 sm:p-8 border transition-all hover:-translate-y-1 hover:shadow-md duration-200 flex flex-col sm:flex-row sm:items-center gap-5 group"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(123,169,139,0.10), rgba(61,139,139,0.08))",
+                        borderColor: "rgba(123,169,139,0.35)",
+                      }}
+                    >
+                      <div
+                        className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+                      >
+                        <Icon size={20} color="white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-cormorant text-xl font-semibold mb-1" style={{ color: "var(--deep)" }}>{title}</h3>
+                        <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>{desc}</p>
+                      </div>
+                      <div
+                        className="inline-flex items-center gap-2 text-sm font-medium text-white px-5 py-2.5 rounded-full flex-shrink-0"
+                        style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+                      >
+                        Start Free
+                        <ArrowRight size={14} className="transition-transform group-hover:translate-x-1 duration-200" />
+                      </div>
+                    </Link>
+                  ) : (
+                    <div
+                      key={title}
+                      className="rounded-2xl p-6 border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl flex flex-col group relative"
+                      style={{
+                        background: "white",
+                        borderColor: "var(--border)",
+                      }}
+                    >
+                      {/* Icon badge */}
+                      <div
+                        className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                        style={{ background: color.bg }}
+                      >
+                        <Icon size={22} style={{ color: color.icon }} strokeWidth={2} />
+                      </div>
+
+                      <h3 className="font-cormorant text-xl font-semibold mb-2" style={{ color: "var(--deep)" }}>
+                        {title}
+                      </h3>
+                      <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: "var(--text-muted)" }}>
+                        {desc}
+                      </p>
+
+                      {tags && tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 pt-4 border-t" style={{ borderColor: "var(--border)" }}>
+                          {tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="text-xs px-2.5 py-1 rounded-full font-medium"
+                              style={{
+                                color: color.icon,
+                                background: color.bg,
+                              }}
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Subtle corner glow on hover */}
+                      <div
+                        className="absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-2xl"
+                        style={{ background: color.icon }}
+                      />
+                    </div>
+                  )
+                )}
               </div>
               <div className="text-center mt-8">
                 <Link
@@ -1426,7 +1629,7 @@ export default function HomePage() {
           <WhatsAppCTA />
 
           {/* ── Testimonials ── */}
-          <section
+          {/* <section
             className="relative z-10 py-12 sm:py-16 border-t"
             style={{ borderColor: "var(--border)" }}
             aria-labelledby="testimonials-heading"
@@ -1475,6 +1678,157 @@ export default function HomePage() {
                         aria-hidden="true"
                       >
                         {t.name.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium" style={{ color: "var(--deep)" }}>{t.name}</p>
+                        <p className="text-xs" style={{ color: "var(--text-muted)" }}>{t.location}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section> */}
+          <section
+            className="relative z-10 py-16 sm:py-24 border-t overflow-hidden"
+            style={{ borderColor: "var(--border)" }}
+            aria-labelledby="testimonials-heading"
+          >
+            {/* Soft background accents */}
+            {/* <div
+              className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-20 blur-3xl pointer-events-none"
+              style={{ background: "var(--sage)" }}
+            />
+            <div
+              className="absolute bottom-0 left-0 w-72 h-72 rounded-full opacity-15 blur-3xl pointer-events-none"
+              style={{ background: "var(--teal)" }}
+            /> */}
+
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+              {/* Header */}
+              <div className="text-center mb-10 sm:mb-14">
+                <div
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-widest mb-4 border"
+                  style={{ background: "rgba(123,169,139,0.10)", borderColor: "rgba(123,169,139,0.25)", color: "var(--sage-dark)" }}
+                >
+                  <Star size={11} />
+                  Client Stories
+                </div>
+                <h2 id="testimonials-heading" className="font-cormorant text-3xl sm:text-4xl lg:text-5xl font-light mb-4" style={{ color: "var(--deep)" }}>
+                  Real people, real{" "}
+                  <em className="italic" style={{ color: "var(--sage-dark)" }}>progress</em>
+                </h2>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      // <Star key={i} size={15} fill="var(--sage)" style={{ color: "var(--sage)" }} />
+                      <Star key={i} size={15} fill="#d4a574" style={{ color: "#d4a574" }} />
+                    ))}
+                  </div>
+                  <span className="text-sm font-medium" style={{ color: "var(--deep)" }}>4.7</span>
+                  <span className="text-sm" style={{ color: "var(--text-muted)" }}>from 340+ client reviews</span>
+                </div>
+              </div>
+
+              {/* Featured testimonial */}
+              <div
+                className="rounded-3xl p-8 sm:p-10 lg:p-12 mb-6 sm:mb-8 border relative overflow-hidden"
+                style={{
+                  // background: "linear-gradient(135deg, rgba(123,169,139,0.08), rgba(61,139,139,0.06))",
+                  borderColor: "var(--border)",
+                  // borderColor: "rgba(123,169,139,0.25)",
+                }}
+              >
+                <Quote
+                  size={64}
+                  className="absolute -top-2 -left-2 opacity-60"
+                  style={{ color: "var(--sage-dark)" }}
+                  aria-hidden="true"
+                />
+                <div className="relative max-w-3xl">
+                  <div className="flex gap-0.5 mb-4" aria-label={`${featuredTestimonial.stars} out of 5 stars`}>
+                    {/* {Array.from({ length: featuredTestimonial.stars }).map((_, i) => (
+                      <Star key={i} size={16} fill="#d4a574" style={{ color: "#d4a574" }} aria-hidden="true" />
+                    ))} */}
+                  </div>
+                  <p className="font-nunito text-xl sm:text-2xl lg:text-3xl font-normal leading-relaxed mb-6" style={{ color: "var(--deep)" }}>
+                    &ldquo;{featuredTestimonial.quote}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full flex-shrink-0 overflow-hidden relative">
+                      {featuredTestimonial.image ? (
+                        <Image
+                          src={featuredTestimonial.image}
+                          alt={featuredTestimonial.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div
+                          className="w-full h-full flex items-center justify-center text-sm font-semibold text-white"
+                          style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+                          aria-hidden="true"
+                        >
+                          {featuredTestimonial.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium" style={{ color: "var(--deep)" }}>{featuredTestimonial.name}</p>
+                      <p className="text-xs" style={{ color: "var(--text-muted)" }}>{featuredTestimonial.location} · {featuredTestimonial.topic}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Grid of smaller testimonials */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {testimonials.map((t) => (
+                  <div
+                    key={t.name}
+                    className="rounded-2xl p-6 border flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                    style={{ background: "white", borderColor: "var(--border)" }}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex gap-0.5" aria-label={`${t.stars} out of 5 stars`}>
+                        {/* {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            size={13}
+                            fill={i < t.stars ? "#d4a574" : "none"}
+                            style={{ color: "#d4a574" }}
+                            aria-hidden="true"
+                          />
+                        ))} */}
+                      </div>
+                      <span
+                        className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(123,169,139,0.10)", color: "var(--sage-dark)" }}
+                      >
+                        {t.topic}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed mb-5 flex-1" style={{ color: "var(--text)" }}>
+                      &ldquo;{t.quote}&rdquo;
+                    </p>
+                    <div className="flex items-center gap-2 pt-4 border-t" style={{ borderColor: "var(--border)" }}>
+                      <div className="w-8 h-8 rounded-full flex-shrink-0 overflow-hidden relative">
+                        {t.image ? (
+                          <Image
+                            src={t.image}
+                            alt={t.name}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div
+                            className="w-full h-full flex items-center justify-center text-xs font-semibold text-white"
+                            style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+                            aria-hidden="true"
+                          >
+                            {t.name.charAt(0)}
+                          </div>
+                        )}
                       </div>
                       <div>
                         <p className="text-xs font-medium" style={{ color: "var(--deep)" }}>{t.name}</p>

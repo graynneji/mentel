@@ -6,6 +6,7 @@ import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/app/context/BookingContext";
 import CrisisBar from "./CrisisBar";
+import BgBlobs from "./BgBlobs";
 
 const now = new Date();
 const DEADLINE = new Date(now);
@@ -143,6 +144,7 @@ export default function Navbar() {
         <>
             <div ref={wrapperRef} className="fixed top-0 left-0 right-0 z-50">
 
+
                 {/* ── Promo Banner ── */}
                 {showBanner && (
                     <div
@@ -231,6 +233,10 @@ export default function Navbar() {
                     className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
                     style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
                 >
+                    {/* <header
+                    className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
+                    style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
+                > */}
                     <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
                         {/* <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between"> */}
                         <Link href="/" className="flex items-center gap-2.5">
@@ -241,6 +247,7 @@ export default function Navbar() {
 
                         {/* Desktop nav */}
                         <div className="hidden md:flex items-center gap-8">
+
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.href}

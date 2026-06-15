@@ -5269,7 +5269,7 @@ export default function AssessmentPage() {
                                     border: "none",
                                     borderRadius: 99,
                                     padding: "19px 40px",
-                                    fontSize: "clamp(13px, 3vw, 15px)",
+                                    fontSize: "clamp(14px, 4vw, 17px)",
                                     // fontSize: "clamp(13px, 3vw, 15px)",
                                     fontWeight: 500,
                                     fontFamily: "'DM Sans', sans-serif",
@@ -5715,10 +5715,11 @@ export default function AssessmentPage() {
                                         </label>
                                         <input
                                             id="field-name"
-                                            type="text"
+                                            type="name"
                                             placeholder="First name"
                                             value={name}
-                                            autoComplete="given-name"
+                                            autoFocus
+                                            autoComplete="name"
                                             onChange={handleNameChange}
                                             className={errors.name ? "error" : ""}
                                             aria-invalid={!!errors.name}

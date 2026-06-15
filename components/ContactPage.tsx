@@ -82,7 +82,7 @@ export default function ContactPage() {
 
     return (
         <div className="relative">
-            <BgBlobs />
+            {/* <BgBlobs /> */}
             <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-20">
 
                 {/* Header */}
