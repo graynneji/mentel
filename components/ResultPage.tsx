@@ -588,6 +588,12 @@ export default function ResultPage() {
         return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }, [router]);
 
+    useEffect(() => {
+        if (typeof window !== "undefined" && (window as any).fbq) {
+            (window as any).fbq('track', 'Lead');
+        }
+    }, []);
+
     if (!hydrated || !data) return null;
 
     const { name, score } = data;
