@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Clock, BookOpen, Leaf } from "lucide-react";
-import { articles } from "@/app/articles/page";
+import { articles } from "@/utilz/articles";
 
 export default function ArticlesPreview() {
     // Show the 3 most recent articles

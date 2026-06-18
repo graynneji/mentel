@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Clock, Leaf } from "lucide-react";
-import type { articles } from "../app/articles/page";
+import type { articles } from "@/utilz/articles";
 import { ArticleCover, getCategoryStyle } from "./ArticleVisuals";
 
 type Article = (typeof articles)[number];
