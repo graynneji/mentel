@@ -2,7 +2,7 @@
 // SEO Audit Dashboard for Mentel Articles (Internal Tool)
 
 import { scorePageSEO } from "@/lib/seo-scoring-engine";
-import { articles } from "@/app/articles/page";
+import { articles } from "@/utilz/articles";
 
 export default function SEOReportPage() {
     const report = articles.map((article) => {
@@ -71,10 +71,10 @@ export default function SEOReportPage() {
                         <div className="text-right">
                             <p
                                 className={`text-2xl font-bold ${item.score.overallScore >= 80
-                                        ? "text-green-600"
-                                        : item.score.overallScore >= 60
-                                            ? "text-yellow-600"
-                                            : "text-red-600"
+                                    ? "text-green-600"
+                                    : item.score.overallScore >= 60
+                                        ? "text-yellow-600"
+                                        : "text-red-600"
                                     }`}
                             >
                                 {item.score.overallScore}
