@@ -335,6 +335,7 @@ import Script from "next/script";
 import { Nunito, DM_Sans } from "next/font/google";
 import ConditionalShell from "@/components/Conditionalshell";
 import { Analytics } from "@vercel/analytics/next";
+import FacebookPixel from "@/components/FacebookPixel";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -397,7 +398,8 @@ export const metadata: Metadata = {
       "Find licensed therapists in Nigeria for anxiety, depression, trauma, burnout, stress, and relationship challenges. Secure online therapy sessions from ₦8,500.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
+        // url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Mentel - Mental Health & Therapy Services",
@@ -409,7 +411,8 @@ export const metadata: Metadata = {
     title: "Mentel - Mental Health & Therapy Services",
     description:
       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
+    // images: ["/og-image.png"],
     creator: "@mentel",
     site: "@mentel",
   },
@@ -428,6 +431,7 @@ export const metadata: Metadata = {
       { url: "/favicon.ico" },
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "48x48", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png" }],
   },
@@ -488,7 +492,7 @@ const structuredData = {
       sameAs: [
         "https://instagram.com/mentel_ltd",
         "https://tiktok.com/@mentelltd",
-        "https://wa.me/+254734527573",
+        "https://wa.me/254734527573",
       ],
       priceRange: "₦₦",
       currenciesAccepted: "NGN",
@@ -598,7 +602,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-
+        <FacebookPixel />
         <ConditionalShell>{children}</ConditionalShell>
         <Analytics />
       </body>

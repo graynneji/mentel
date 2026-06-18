@@ -3,14 +3,14 @@ import AssessmentPage from "@/components/AssessmentPage";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-    title: "Free Mental Health Assessment Test (2-Minute Check) - Mentel",
+    title: "Free Mental Health Assessment Test (1-Minute Check) - Mentel",
     description:
-        "Take a free 2-minute mental health assessment in Nigeria. Check anxiety, stress, and emotional well-being instantly. No sign-up required. 100% confidential.",
+        "Take a free 1-minute mental health assessment in Nigeria. Check anxiety, stress, and emotional well-being instantly. No sign-up required. 100% confidential.",
     alternates: {
         canonical: "/assessment",
     },
     openGraph: {
-        title: "Free Mental Health Test (2 Minutes) - Mentel",
+        title: "Free Mental Health Test (1 Minute) - Mentel",
         description:
             "Answer 8 questions and understand your mental state instantly. Private, fast, and free.",
         url: "https://trymentel.com/assessment",
@@ -25,10 +25,11 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Free Mental Health Test (2 Minutes)",
+        title: "Free Mental Health Test (1 Minute)",
         description:
-            "Check your mental health in under 2 minutes. Free and confidential.",
-        images: ["/assessment-og.png"],
+            "Check your mental health in under 1 minute. Free and confidential.",
+        images: ["/assessment-og.jpg"],
+        // images: ["/assessment-og.png"],
     },
 };
 
@@ -44,7 +45,7 @@ export default function Assessment() {
                         "@context": "https://schema.org",
                         "@type": "WebPage",
                         url: "https://trymentel.com/assessment",
-                        name: "Free Mental Health Assessment Test (2-Minute Check) | Mentel Nigeria",
+                        name: "Free Mental Health Assessment Test (1-Minute Check) | Mentel Nigeria",
                         description:
                             "A quick mental health assessment to evaluate anxiety, stress, and emotional well-being.",
                         audience: {

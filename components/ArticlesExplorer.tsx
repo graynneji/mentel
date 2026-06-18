@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Clock, TrendingUp } from "lucide-react";
-import type { articles as ArticlesType } from "../app/articles/page";
+import type { articles as ArticlesType } from "@/utilz/articles";
 import { ArticleCard } from "./ArticleCard";
 import { ArticleCover, getCategoryStyle } from "./ArticleVisuals";
 
