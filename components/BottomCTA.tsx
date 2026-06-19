@@ -84,14 +84,15 @@ export default function BottomCTA() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     {/* Fixed: now calls openBooking() instead of broken scrollToBooking() */}
-                    <button
-                        onClick={openBooking}
+                    <Link
+                        // onClick={openBooking}
+                        href="/book"
                         className="inline-flex items-center justify-center gap-2 text-sm font-medium text-white px-7 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200 cursor-pointer"
                         style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                     >
                         Book Your Session
                         <ArrowRight size={15} />
-                    </button>
+                    </Link>
                     <Link
                         href="/assessment"
                         className="inline-flex items-center justify-center gap-2 text-sm font-medium px-7 py-3.5 rounded-full border transition-all hover:-translate-y-0.5 hover:shadow-sm duration-200"
