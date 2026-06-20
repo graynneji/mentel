@@ -3024,28 +3024,6 @@ export default function AssessmentPage() {
     const progress = ((current + 1) / questions.length) * 100;
     const assessedCount = useLiveCounter(2400, "2026-06-01", 2000);
 
-    const getDeviceInfo = () => {
-        if (typeof window === "undefined") return null;
-
-        return {
-            userAgent: window.navigator.userAgent,
-            platform: window.navigator.platform,
-            language: window.navigator.language,
-            screen: {
-                width: window.screen.width,
-                height: window.screen.height,
-            },
-        };
-    };
-
-    const safeMeta = (meta?: any) => {
-        try {
-            return JSON.parse(JSON.stringify(meta));
-        } catch {
-            return {};
-        }
-    };
-
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         setSelectedOption(null);
@@ -3245,6 +3223,12 @@ export default function AssessmentPage() {
                                 onClick={() => {
                                     setStep("quiz");
                                     (window as any).ttq?.track("Start trial");
+
+                                    // fire and forget (BEST UX)
+                                    fetch("/api/events/assessment-started", {
+                                        method: "POST",
+                                        keepalive: true,
+                                    });
                                 }}
                                 className="cta-btn inline-flex items-center justify-center gap-2.5 bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] text-white border-0 rounded-full px-10 py-[19px] text-[clamp(14px,4vw,17px)] font-medium font-['DM_Sans',sans-serif] cursor-pointer shadow-[0_6px_28px_rgba(30,107,107,0.32)] tracking-[0.01em]"
                             >
@@ -3327,11 +3311,6 @@ export default function AssessmentPage() {
 
     if (step === "quiz") {
         const q = questions[current];
-        logger.business("ASSESSMENT_STARTED", {
-            meta: safeMeta({
-                device: getDeviceInfo(),
-            }),
-        });
         if (!q) return null;
 
         const r = 18;

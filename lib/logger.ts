@@ -123,7 +123,7 @@ function write(payload: LogPayload) {
     meta: sanitize(payload.meta),
   };
 
-  if (ENV === "production") {
+  if (ENV === "development") {
     switch (payload.level) {
       case "error":
         console.error(JSON.stringify(log));

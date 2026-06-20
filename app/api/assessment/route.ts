@@ -837,12 +837,13 @@ import { db } from "@/lib/db";
 import { retryAsync } from "@/utilz";
 import { after } from "next/server";
 import { logger } from "@/lib/logger";
+import { EVENTS } from "@/utilz";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const ADMIN_EMAIL = "hello@mail.trymentel.com";
 const FROM_EMAIL = "Mentel <hello@mail.trymentel.com>";
-const BOOKING_URL = "https://trymentel.com/#book";
+const BOOKING_URL = "https://www.trymentel.com/book";
 const TOTAL_QUESTIONS = 8;
 
 // ── Sanitizer ──────────────────────────────────────────────────────────────────
@@ -1138,8 +1139,8 @@ Questions? Just reply to this email — we read every one.
 This wellness check-in is for informational purposes only and is not a substitute for professional mental health advice.
 
 (c) ${new Date().getFullYear()} Mentel
-Privacy Policy: https://trymentel.com/privacy
-Unsubscribe: https://trymentel.com/unsubscribe
+Privacy Policy: https://www.trymentel.com/privacy
+Unsubscribe: https://www.trymentel.com/unsubscribe
 
 Mentel provides access to licensed therapists and does not provide medical diagnosis or clinical treatment.`;
 }
@@ -1606,7 +1607,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       }),
     );
 
-    logger.business("LEAD_CAPTURED", {
+    logger.business(EVENTS.LEAD_CAPTURED, {
       meta: {
         email: safeEmail,
         name: safeName,
@@ -1622,7 +1623,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       );
     }
 
-    logger.business("ASSESSMENT_COMPLETED", {
+    logger.business(EVENTS.ASSESSMENT_COMPLETED, {
       meta: {
         email: safeEmail,
         score,
