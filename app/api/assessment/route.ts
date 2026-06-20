@@ -836,6 +836,7 @@ import { Resend } from "resend";
 import { db } from "@/lib/db";
 import { retryAsync } from "@/utilz";
 import { after } from "next/server";
+import { logger } from "@/lib/logger";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -1499,6 +1500,11 @@ export async function POST(req: Request): Promise<NextResponse> {
       answers: unknown;
     };
 
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0] ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email))) {
       return NextResponse.json(
         { success: false, error: "Invalid email address" },
@@ -1600,12 +1606,31 @@ export async function POST(req: Request): Promise<NextResponse> {
       }),
     );
 
+    logger.business("LEAD_CAPTURED", {
+      meta: {
+        email: safeEmail,
+        name: safeName,
+        score,
+        ip,
+      },
+    });
+
     if (adminResult.status === "rejected" && userResult.status === "rejected") {
       return NextResponse.json(
         { success: false, error: "Both emails failed to send" },
         { status: 500 },
       );
     }
+
+    logger.business("ASSESSMENT_COMPLETED", {
+      meta: {
+        email: safeEmail,
+        score,
+        band: band.band,
+        severity: band.severity,
+        ip,
+      },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

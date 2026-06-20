@@ -15,7 +15,7 @@ export const metadata: Metadata = {
         url: "https://www.trymentel.com/book",
         images: [
             {
-                url: "/book-og.png",
+                url: "/book-og.jpg",
                 width: 1200,
                 height: 630,
                 alt: "Book a therapy session with Mentel",
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
         title: "Book a Therapy Session - Mentel",
         description:
             "Licensed therapists in Nigeria. Sessions from ₦8,500. Confidential and evidence-based.",
-        images: ["/book-og.png"],
+        images: ["/book-og.jpg"],
     },
 };
 

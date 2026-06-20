@@ -398,8 +398,8 @@ export const metadata: Metadata = {
       "Find licensed therapists in Nigeria for anxiety, depression, trauma, burnout, stress, and relationship challenges. Secure online therapy sessions from ₦8,500.",
     images: [
       {
-        url: "/og-image.jpg",
-        // url: "/og-image.png",
+        url: "https://www.trymentel.com/og-image.jpg",
+        // url: "https://www.trymentel.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "Mentel - Mental Health & Therapy Services",
@@ -411,7 +411,7 @@ export const metadata: Metadata = {
     title: "Mentel - Mental Health & Therapy Services",
     description:
       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
-    images: ["/og-image.jpg"],
+    images: ["https://www.trymentel.com/og-image.jpg"],
     // images: ["/og-image.png"],
     creator: "@mentel",
     site: "@mentel",

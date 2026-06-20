@@ -2739,6 +2739,7 @@ import {
     Loader2,
 } from "lucide-react";
 import { useLiveCounter } from "@/hooks/use-live-counter";
+import { logger } from "@/lib/logger";
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Option {
@@ -3221,6 +3222,19 @@ export default function AssessmentPage() {
                                 onClick={() => {
                                     setStep("quiz");
                                     (window as any).ttq?.track("Start trial");
+                                    logger.business("ASSESSMENT_STARTED", {
+                                        meta: {
+                                            device: {
+                                                userAgent: navigator.userAgent,
+                                                platform: navigator.platform,
+                                                language: navigator.language,
+                                                screen: {
+                                                    width: window.screen.width,
+                                                    height: window.screen.height,
+                                                },
+                                            },
+                                        },
+                                    });
                                 }}
                                 className="cta-btn inline-flex items-center justify-center gap-2.5 bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] text-white border-0 rounded-full px-10 py-[19px] text-[clamp(14px,4vw,17px)] font-medium font-['DM_Sans',sans-serif] cursor-pointer shadow-[0_6px_28px_rgba(30,107,107,0.32)] tracking-[0.01em]"
                             >

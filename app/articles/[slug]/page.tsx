@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             tags: article.tags,
             images: [
                 {
-                    url: article.image,
+                    url: `https://www.trymentel.com${article.image}`,
                     width: 1200,
                     height: 630,
                     alt: article.title,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             card: "summary_large_image",
             title: `${article.title} - Mentel`,
             description: article.excerpt,
-            images: [article.image],
+            images: [`https://www.trymentel.com${article.image}`],
         },
     };
 }
