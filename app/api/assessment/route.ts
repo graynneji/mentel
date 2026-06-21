@@ -1560,30 +1560,42 @@ export async function POST(req: Request): Promise<NextResponse> {
       safeAnswers,
     );
 
-    const [userResult, adminResult] = await Promise.allSettled([
-      resend.emails.send({
+    // const [userResult, adminResult] = await Promise.allSettled([
+    //   resend.emails.send({
+    //     from: FROM_EMAIL,
+    //     to: [String(email)],
+    //     subject: `Your Mentel Results — ${patternNames[band.band] ?? band.severity}`,
+    //     html: userHtml,
+    //     text: userText,
+    //   }),
+    //   resend.emails.send({
+    //     from: FROM_EMAIL,
+    //     to: [ADMIN_EMAIL],
+    //     subject: `New Assessment: ${safeName} — ${band.severity} (${score}pts)`,
+    //     html: adminHtml,
+    //     text: adminText,
+    //     replyTo: String(email),
+    //   }),
+    // ]);
+    const userResult = await resend.emails
+      .send({
         from: FROM_EMAIL,
         to: [String(email)],
         subject: `Your Mentel Results — ${patternNames[band.band] ?? band.severity}`,
         html: userHtml,
         text: userText,
-      }),
-      resend.emails.send({
-        from: FROM_EMAIL,
-        to: [ADMIN_EMAIL],
-        subject: `New Assessment: ${safeName} — ${band.severity} (${score}pts)`,
-        html: adminHtml,
-        text: adminText,
-        replyTo: String(email),
-      }),
-    ]);
+      })
+      .catch((reason) => {
+        console.error("User email failed:", reason);
+        return null;
+      });
 
-    if (userResult.status === "rejected") {
-      console.error("User email failed:", userResult.reason);
-    }
-    if (adminResult.status === "rejected") {
-      console.error("Admin email failed:", adminResult.reason);
-    }
+    // if (userResult.status === "rejected") {
+    //   console.error("User email failed:", userResult.reason);
+    // }
+    // if (adminResult.status === "rejected") {
+    //   console.error("Admin email failed:", adminResult.reason);
+    // }
 
     after(
       retryAsync(
@@ -1616,9 +1628,16 @@ export async function POST(req: Request): Promise<NextResponse> {
       },
     });
 
-    if (adminResult.status === "rejected" && userResult.status === "rejected") {
+    // if (adminResult.status === "rejected" && userResult.status === "rejected") {
+    //   return NextResponse.json(
+    //     { success: false, error: "Both emails failed to send" },
+    //     { status: 500 },
+    //   );
+    // }
+
+    if (!userResult) {
       return NextResponse.json(
-        { success: false, error: "Both emails failed to send" },
+        { success: false, error: "Email failed to send" },
         { status: 500 },
       );
     }

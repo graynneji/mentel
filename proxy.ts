@@ -1,29 +1,48 @@
-// // middleware.ts — place in project ROOT (same level as app/ and package.json)
-// // Runs on every /admin request and checks for a valid session cookie.
-// // If no valid cookie → redirect to /admin/login
-// // /admin/login itself is excluded so you don't get an infinite redirect loop.
-
 // import { NextResponse } from "next/server";
 // import type { NextRequest } from "next/server";
 
-// const SESSION_COOKIE = "mentel_admin_session";
-// const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET!;
+// const ADMIN_COOKIE = "mentel_admin_session";
+// const HR_COOKIE = "mentel_hr_session";
 
-// export function proxy(req: NextRequest) {
+// export async function proxy(req: NextRequest) {
 //   const { pathname } = req.nextUrl;
 
-//   // Always allow the login page and the auth API route through
-//   if (pathname === "/login" || pathname.startsWith("/api/admin/auth")) {
-//     return NextResponse.next();
+//   // ── Admin protection (existing logic, unchanged) ─────────────────────────
+//   if (pathname.startsWith("/admin")) {
+//     // Allow login page and auth API through
+//     if (pathname === "/login" || pathname.startsWith("/api/admin/auth")) {
+//       return NextResponse.next();
+//     }
+//     const session = req.cookies.get(ADMIN_COOKIE)?.value;
+//     if (!session || session !== process.env.ADMIN_SESSION_SECRET) {
+//       const url = new URL("/login", req.url);
+//       url.searchParams.set("from", pathname);
+//       return NextResponse.redirect(url);
+//     }
 //   }
 
-//   // Protect everything else under /admin
-//   if (pathname.startsWith("/admin")) {
-//     const session = req.cookies.get(SESSION_COOKIE)?.value;
+//   // ── HR portal protection ─────────────────────────────────────────────────
+//   if (pathname.startsWith("/hr")) {
+//     // Allow the access page (login) and auth API through
+//     if (pathname === "/hr/access" || pathname.startsWith("/api/hr/auth")) {
+//       return NextResponse.next();
+//     }
+//     // Check HR session cookie
+//     const hrSession = req.cookies.get(HR_COOKIE)?.value;
+//     if (!hrSession) {
+//       const url = new URL("/hr/access", req.url);
+//       url.searchParams.set("from", pathname);
+//       return NextResponse.redirect(url);
+//     }
+//     // Note: Full signature verification happens in getHRSession() in API routes.
+//     // Middleware just checks cookie exists (fast path); API routes do full verification.
+//   }
 
-//     if (!session || session !== SESSION_SECRET) {
-//       const loginUrl = new URL("/login", req.url);
-//       return NextResponse.redirect(loginUrl);
+//   // ── EAP employee area — just needs enrol token ───────────────────────────
+//   if (pathname.startsWith("/eap/assessment")) {
+//     const token = req.cookies.get("mentel_eap_token")?.value;
+//     if (!token) {
+//       return NextResponse.redirect(new URL("/eap/enrol", req.url));
 //     }
 //   }
 
@@ -31,29 +50,168 @@
 // }
 
 // export const config = {
-//   matcher: ["/admin/:path*"],
+//   matcher: [
+//     "/admin/:path*",
+//     "/hr/:path*",
+//     "/eap/assessment/:path*",
+//     // Exclude static assets and Next.js internals
+//     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|ico|css|js)$).*)",
+//   ],
 // };
-
-// middleware.ts — place in project ROOT (same level as app/ and package.json)
-// Handles BOTH admin auth (existing) AND HR portal auth (new).
-// HR uses access-code-based session cookie; admin uses env var secret.
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  adminLimit,
+  apiLimit,
+  assessmentLimit,
+  landingLimit,
+} from "./lib/rateLimit";
 
 const ADMIN_COOKIE = "mentel_admin_session";
 const HR_COOKIE = "mentel_hr_session";
 
+/* ─────────────────────────────────────────────
+   BOT SCAN BLOCKING
+───────────────────────────────────────────── */
+
+const blockedPaths = [
+  "/wp-admin",
+  "/wp-login.php",
+  "/wp-content",
+  "/wp-includes",
+  "/xmlrpc.php",
+  "/phpmyadmin",
+  "/administrator",
+  // "/admin",
+  "/login.php",
+  "/config.php",
+];
+
+const blockedPatterns = [
+  /\.env/,
+  /\.git/,
+  /\.svn/,
+  /\.bak/,
+  /\.sql/,
+  /\.zip/,
+  /\.tar/,
+];
+
+type MemoryRecord = {
+  count: number;
+  ts: number;
+};
+
+/* ─────────────────────────────
+   SEPARATED MEMORY BUCKETS
+───────────────────────────── */
+
+const memoryStore = {
+  landing: new Map<string, MemoryRecord>(),
+  api: new Map<string, MemoryRecord>(),
+  assessment: new Map<string, MemoryRecord>(),
+  admin: new Map<string, MemoryRecord>(),
+};
+
+const WINDOW_MS = 60 * 1000;
+const MEMORY_LIMITS = {
+  landing: 120,
+  api: 120,
+  assessment: 120,
+  admin: 10,
+};
+
+function memoryRateLimit(
+  bucket: keyof typeof memoryStore,
+  key: string,
+): boolean {
+  const store = memoryStore[bucket];
+  const now = Date.now();
+
+  const limit = MEMORY_LIMITS[bucket];
+
+  const record = store.get(key);
+
+  if (!record) {
+    store.set(key, { count: 1, ts: now });
+    return false;
+  }
+
+  if (now - record.ts > WINDOW_MS) {
+    store.set(key, { count: 1, ts: now });
+    return false;
+  }
+
+  record.count++;
+
+  return record.count > limit;
+}
+
+/* ─────────────────────────────────────────────
+   MIDDLEWARE
+───────────────────────────────────────────── */
+
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ── Admin protection (existing logic, unchanged) ─────────────────────────
+  /* ── REAL IP ── */
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-real-ip") ||
+    "unknown";
+
+  /* ── BLOCK ATTACK SCANS FIRST ── */
+  if (blockedPaths.some((p) => pathname.startsWith(p))) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
+  if (blockedPatterns.some((p) => p.test(pathname))) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
+  let allowed = true;
+
+  try {
+    if (pathname.startsWith("/admin")) {
+      const { success } = await adminLimit.limit(ip);
+      allowed = success;
+    } else if (pathname.startsWith("/api")) {
+      const { success } = await apiLimit.limit(ip);
+      allowed = success;
+    } else if (pathname.startsWith("/eap/assessment")) {
+      const { success } = await assessmentLimit.limit(ip);
+      allowed = success;
+    } else {
+      const { success } = await landingLimit.limit(ip);
+      allowed = success;
+    }
+  } catch {
+    console.warn("Redis failed → using distributed memory fallback");
+
+    if (pathname.startsWith("/admin")) {
+      allowed = !memoryRateLimit("admin", ip);
+    } else if (pathname.startsWith("/api")) {
+      allowed = !memoryRateLimit("api", ip);
+    } else if (pathname.startsWith("/eap/assessment")) {
+      allowed = !memoryRateLimit("assessment", ip);
+    } else {
+      allowed = !memoryRateLimit("landing", ip);
+    }
+  }
+
+  if (!allowed) {
+    return new NextResponse("Too Many Requests", { status: 429 });
+  }
+
+  /* ── ADMIN PROTECTION ── */
   if (pathname.startsWith("/admin")) {
-    // Allow login page and auth API through
     if (pathname === "/login" || pathname.startsWith("/api/admin/auth")) {
       return NextResponse.next();
     }
+
     const session = req.cookies.get(ADMIN_COOKIE)?.value;
+
     if (!session || session !== process.env.ADMIN_SESSION_SECRET) {
       const url = new URL("/login", req.url);
       url.searchParams.set("from", pathname);
@@ -61,26 +219,25 @@ export async function proxy(req: NextRequest) {
     }
   }
 
-  // ── HR portal protection ─────────────────────────────────────────────────
+  /* ── HR PORTAL ── */
   if (pathname.startsWith("/hr")) {
-    // Allow the access page (login) and auth API through
     if (pathname === "/hr/access" || pathname.startsWith("/api/hr/auth")) {
       return NextResponse.next();
     }
-    // Check HR session cookie
+
     const hrSession = req.cookies.get(HR_COOKIE)?.value;
+
     if (!hrSession) {
       const url = new URL("/hr/access", req.url);
       url.searchParams.set("from", pathname);
       return NextResponse.redirect(url);
     }
-    // Note: Full signature verification happens in getHRSession() in API routes.
-    // Middleware just checks cookie exists (fast path); API routes do full verification.
   }
 
-  // ── EAP employee area — just needs enrol token ───────────────────────────
+  /* ── EAP PROTECTION ── */
   if (pathname.startsWith("/eap/assessment")) {
     const token = req.cookies.get("mentel_eap_token")?.value;
+
     if (!token) {
       return NextResponse.redirect(new URL("/eap/enrol", req.url));
     }
@@ -89,12 +246,15 @@ export async function proxy(req: NextRequest) {
   return NextResponse.next();
 }
 
+/* ─────────────────────────────────────────────
+   MATCHER
+───────────────────────────────────────────── */
+
 export const config = {
   matcher: [
     "/admin/:path*",
     "/hr/:path*",
     "/eap/assessment/:path*",
-    // Exclude static assets and Next.js internals
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|ico|css|js)$).*)",
   ],
 };
