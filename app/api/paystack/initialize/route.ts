@@ -54,7 +54,8 @@ export async function POST(req: Request) {
           currency: "NGN",
           reference,
           // callback_url only used if user somehow ends up on the hosted page
-          callback_url: `${BASE_URL}/?payment=success`,
+          // callback_url: `${BASE_URL}/?payment=success`,
+          callback_url: `${BASE_URL}/verify`,
           metadata: {
             custom_fields: [
               {

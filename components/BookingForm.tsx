@@ -473,7 +473,7 @@
 import { useState } from "react";
 import Script from "next/script";
 import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft, Wallet, Shield, Building2 } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 
 const REASONS = [
     "Anxiety", "Depression", "Marriage Counselling", "Grief & Loss",
@@ -569,6 +569,7 @@ export default function BookingForm() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [paystackReady, setPaystackReady] = useState(false);
+    const router = useRouter()
 
     const validateStep1 = (): boolean => {
         const e: FormErrors = {};
@@ -640,10 +641,22 @@ export default function BookingForm() {
                 amount: data.amount,
                 ref: data.reference,
                 access_code: data.accessCode,
-                callback: () => {
-                    setLoading(false);
-                    setSuccess(true);
-                    window.ttq?.track("Place an Order", { value: data.amount, currency: "NGN" });
+                // callback: () => {
+                //     setLoading(false);
+                //     setSuccess(true);
+                //     window.ttq?.track("Place an Order", { value: data.amount, currency: "NGN" });
+                // },
+                callback: (response) => {
+                    window.ttq?.track("Place an Order", {
+                        value: data.amount,
+                        currency: "NGN",
+                    });
+
+                    router.push(
+                        `/verify?reference=${encodeURIComponent(
+                            response.reference || data.reference
+                        )}`
+                    );
                 },
                 onClose: () => { setLoading(false); },
             });

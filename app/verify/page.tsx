@@ -77,6 +77,17 @@ function VerifyContent() {
                         window.ttq.track("Schedule");
                         window.ttq.track("CompleteRegistration");
                     }
+
+                    (window as any).fbq?.(
+                        "track",
+                        "Purchase",
+                        // {
+                        //     value: data.payment.amount,
+                        //     currency: "NGN",
+                        //     transaction_id: data.payment.reference,
+                        // }
+                    );
+
                 } else {
                     setErrorMsg(data.error ?? "Payment could not be verified.");
                     setState("failed");
