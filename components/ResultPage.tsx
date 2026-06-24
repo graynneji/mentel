@@ -917,7 +917,7 @@ function getResult(score: number): Result {
             headline: "You're in a good place",
             summary:
                 "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions, therapy can be valuable even when you're not in crisis.",
-            cta: "Schedule Free into call",
+            cta: "Book your free into call",
             // cta: "Chat us on WhatsApp",
         };
     if (score <= 12)
@@ -927,7 +927,7 @@ function getResult(score: number): Result {
             headline: "Some areas could use support",
             summary:
                 "Your responses suggest you're experiencing some difficulties worth exploring. A therapist can help you build practical tools and understand patterns before they become harder to manage.",
-            cta: "Schedule Free into call",
+            cta: "Book your free into call",
             // cta: "Chat us on WhatsApp",
         };
     if (score <= 18)
@@ -937,7 +937,7 @@ function getResult(score: number): Result {
             headline: "You deserve real support",
             summary:
                 "Your responses suggest you're going through a genuinely difficult time. You're not alone, what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
-            cta: "Schedule Free into call",
+            cta: "Book your free into call",
             // cta: "Chat us on WhatsApp",
         };
     return {
@@ -946,7 +946,7 @@ function getResult(score: number): Result {
         headline: "Please reach out, you matter",
         summary:
             "Your responses suggest you're struggling significantly right now. We strongly encourage you to speak with a professional as soon as possible. Our therapists are here for you, without judgment.",
-        cta: "Free into call",
+        cta: "Book your free into call",
         // cta: "Chat us on WhatsApp",
     };
 }

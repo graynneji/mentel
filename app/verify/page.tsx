@@ -23,7 +23,7 @@ interface Payment {
 function LoadingScreen() {
     return (
         <div className="relative min-h-screen">
-            <BgBlobs />
+            {/* <BgBlobs /> */}
             <section className="relative z-10 pt-32 pb-20 px-4 sm:px-6">
                 <div className="max-w-md mx-auto text-center animate-fade-up">
                     <div
