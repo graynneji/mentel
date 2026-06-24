@@ -569,6 +569,7 @@ export default function BookingForm() {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [paystackReady, setPaystackReady] = useState(false);
+    const CAL_EVENT_TYPE_ID: number = 6108062
     const router = useRouter()
 
     const validateStep1 = (): boolean => {
@@ -647,6 +648,24 @@ export default function BookingForm() {
                 //     window.ttq?.track("Place an Order", { value: data.amount, currency: "NGN" });
                 // },
                 callback: (response) => {
+
+                    if (typeof window !== "undefined") {
+                        sessionStorage.setItem(
+                            "mentel_booking",
+                            JSON.stringify({
+                                name: form.name,
+                                email: form.email,
+                                phone: form.phone,
+                                reason: form.reason,
+                                plan: form.plan,
+                                reference: response.reference || data.reference,
+                                paidAt: new Date().toISOString(),
+                                CAL_EVENT_TYPE_ID,
+                            })
+                        );
+                    }
+
+
                     window.ttq?.track("Place an Order", {
                         value: data.amount,
                         currency: "NGN",

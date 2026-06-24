@@ -2994,7 +2994,7 @@ function AssessmentNav() {
 
 // ── PageWrapper ────────────────────────────────────────────────────────────────
 
-function PageWrapper({ children }: { children: React.ReactNode }) {
+export function PageWrapper({ children }: { children: React.ReactNode }) {
     return (
         <div className="min-h-screen bg-[#faf9f6] font-['DM_Sans',sans-serif]">
             <AssessmentNav />
@@ -3023,6 +3023,7 @@ export default function AssessmentPage() {
     const totalScore = Object.values(answers).reduce((a, v) => a + v, 0);
     const progress = ((current + 1) / questions.length) * 100;
     const assessedCount = useLiveCounter(2400, "2026-06-01", 2000);
+    const CAL_EVENT_TYPE_ID: number = 6101260
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3138,7 +3139,7 @@ export default function AssessmentPage() {
             if (typeof window !== "undefined") {
                 sessionStorage.setItem(
                     "mentel_assessment_result",
-                    JSON.stringify({ name, email, score: totalScore, answers })
+                    JSON.stringify({ name, email, score: totalScore, answers, CAL_EVENT_TYPE_ID })
                 );
             }
 

@@ -114,7 +114,7 @@ function VerifyContent() {
 
         return (
             <div className="relative min-h-screen">
-                <BgBlobs />
+                {/* <BgBlobs /> */}
                 <section className="relative z-10 pt-24 pb-20 px-4 sm:px-6">
                     <div className="max-w-lg mx-auto animate-fade-up">
 
@@ -183,8 +183,9 @@ function VerifyContent() {
                             </div>
                         </div>
 
-                        <div className="flex flex-col sm:flex-row gap-3">
-                            <Link href="/"
+                        <div className="w-full">
+                            {/* <div className="flex flex-col sm:flex-row gap-3"> */}
+                            {/* <Link href="/"
                                 className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-white px-6 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200"
                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}>
                                 Back to Home <ArrowRight size={15} />
@@ -193,6 +194,17 @@ function VerifyContent() {
                                 className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium px-6 py-3.5 rounded-full border transition-all hover:-translate-y-0.5 hover:shadow-sm duration-200"
                                 style={{ borderColor: "var(--border)", color: "var(--sage-dark)" }}>
                                 View our services
+                            </Link> */}
+                            <Link
+                                // href={whatsappUrl}
+                                href="/book-call?from=verify"
+                                // target="_blank"
+                                rel="noopener noreferrer"
+                                className="cta-btn flex items-center justify-center gap-2.5 py-[17px] px-7 rounded-full text-white text-[15px] font-medium font-['DM_Sans',sans-serif] no-underline"
+                                style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+                            >
+                                Schedule your session
+                                <ArrowRight size={15} strokeWidth={2} />
                             </Link>
                         </div>
 
@@ -205,7 +217,7 @@ function VerifyContent() {
     // Failed state
     return (
         <div className="relative min-h-screen">
-            <BgBlobs />
+            {/* <BgBlobs /> */}
             <section className="relative z-10 pt-32 pb-20 px-4 sm:px-6">
                 <div className="max-w-md mx-auto text-center animate-fade-up">
                     <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center"
@@ -224,7 +236,7 @@ function VerifyContent() {
                             style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}>
                             Try again <ArrowRight size={15} />
                         </Link>
-                        <a href="mailto:hello@trymentel.com"
+                        <a href="mailto:hello@mail.trymentel.com"
                             className="inline-flex items-center justify-center gap-2 text-sm font-medium px-6 py-3.5 rounded-full border transition-all hover:-translate-y-0.5 hover:shadow-sm duration-200"
                             style={{ borderColor: "var(--border)", color: "var(--sage-dark)" }}>
                             Contact support
