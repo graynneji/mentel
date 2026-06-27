@@ -19,8 +19,9 @@ export default function ConditionalShell({
     const isLogin = pathname.startsWith("/login");
     const isResult = pathname.startsWith("/result");
     const isBookCall = pathname.startsWith("/book-call");
+    const isBurnoutCalculator = pathname.startsWith("/burnout-calculator");
 
-    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall) {
+    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator) {
         return <>{children}</>;
     }
 

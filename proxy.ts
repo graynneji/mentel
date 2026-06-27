@@ -255,6 +255,6 @@ export const config = {
     "/admin/:path*",
     "/hr/:path*",
     "/eap/assessment/:path*",
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|ico|css|js)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|ico|css|js)$).*)",
   ],
 };
