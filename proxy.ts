@@ -156,6 +156,15 @@ export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   /* ── REAL IP ── */
+
+  // Add this check at the start of your rate-limiting logic
+  const userAgent = req.headers.get("user-agent") || "";
+  const isVerifiedBot = /Googlebot|Bingbot|Slurp|DuckDuckBot/i.test(userAgent);
+
+  if (isVerifiedBot) {
+    return NextResponse.next(); // Skip rate limiting for search engines
+  }
+
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     req.headers.get("x-real-ip") ||
