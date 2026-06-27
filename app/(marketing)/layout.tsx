@@ -206,9 +206,7 @@ export default function AnalyticsLayout({ children }: { children: React.ReactNod
         * { box-sizing: border-box; }
 
         .mta-shell {
-          display: grid;
-          grid-template-columns: 220px 1fr;
-          min-height: 100vh;
+        
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
           color: #1a1d23;
           background: #f7f8fa;
