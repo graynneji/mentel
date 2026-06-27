@@ -1,3 +1,6 @@
+import { apiLimit } from "../lib/rateLimit";
+import { NextResponse } from "next/server";
+
 // ── Retry helper — exponential backoff, fully silent ──────────────────────────
 export async function retryAsync<T>(
   fn: () => Promise<T>,
@@ -30,3 +33,25 @@ export const EVENTS = {
 } as const;
 
 export type EventName = (typeof EVENTS)[keyof typeof EVENTS];
+
+// ── Check API Rate Limit RATE LIMITER HELPER───────────────────────────────────────────────────────
+export async function checkApiLimit(req: Request) {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const { success } = await apiLimit.limit(ip);
+
+  if (!success) {
+    return NextResponse.json({ error: "Too Many Requests" }, { status: 429 });
+  }
+  return null; // Return null if allowed
+}
+
+export function getMentelIds(req: Request) {
+  const cookieHeader = req.headers.get("cookie") ?? "";
+  const get = (name: string) =>
+    cookieHeader.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] ?? null;
+  return {
+    visitorId: get("mentel_vid"),
+    sessionId: get("mentel_sid"),
+  };
+}

@@ -35,6 +35,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Resend } from "resend";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -68,9 +69,11 @@ const CATEGORY_LABELS: Record<ContactCategory, string> = {
 
 // ── POST: submit contact form ─────────────────────────────────────────────────
 
-export async function POST(req: NextRequest) {
+export async function POST_HANDLER(req: Request) {
+  const nextReq = req as NextRequest;
+
   try {
-    const body = await req.json();
+    const body = await nextReq.json();
     const name = String(body.name ?? "").trim();
     const email = String(body.email ?? "").trim();
     const phone = String(body.phone ?? "").trim();
@@ -182,13 +185,14 @@ export async function POST(req: NextRequest) {
 
 // ── GET: admin fetch contacts by category ──────────────────────────────────────
 
-export async function GET(req: NextRequest) {
-  if (!requireAdmin(req)) {
+export async function GET_HANDLER(req: Request) {
+  const nextReq = req as NextRequest;
+  if (!requireAdmin(nextReq)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = new URL(nextReq.url);
     const category = searchParams.get("category"); // e.g. "hmo_booking"
     const status = searchParams.get("status");
     const search = searchParams.get("search");
@@ -272,3 +276,5 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+export const GET = withRateLimit(GET_HANDLER);
+export const POST = withRateLimit(POST_HANDLER);

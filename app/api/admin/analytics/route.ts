@@ -1,9 +1,14 @@
 // app/api/admin/analytics/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { checkApiLimit } from "@/utilz";
+import { withRateLimit } from "@/lib/withRateLimit";
 
+export const revalidate = 300;
 // ── GET /api/admin/analytics — dashboard-level aggregates ─────────────────────
-export async function GET(): Promise<NextResponse> {
+export async function GET_HANDLER(req: Request): Promise<NextResponse> {
+  const limitError = await checkApiLimit(req);
+  if (limitError) return limitError;
   try {
     const now = new Date();
     const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -227,3 +232,5 @@ export async function GET(): Promise<NextResponse> {
     );
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);

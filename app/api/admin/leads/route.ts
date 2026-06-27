@@ -245,9 +245,10 @@
 // app/api/admin/leads/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 // ── GET /api/admin/leads ───────────────────────────────────────────────────────
-export async function GET(req: Request): Promise<NextResponse> {
+export async function GET_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const search = searchParams.get("search");
@@ -309,7 +310,7 @@ export async function GET(req: Request): Promise<NextResponse> {
 }
 
 // ── PATCH /api/admin/leads ─────────────────────────────────────────────────────
-export async function PATCH(req: Request): Promise<NextResponse> {
+export async function PATCH_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body = (await req.json()) as {
       id: string;
@@ -347,3 +348,7 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);
+
+export const PATCH = withRateLimit(PATCH_HANDLER);

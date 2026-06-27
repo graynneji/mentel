@@ -1,9 +1,10 @@
 // app/api/admin/sessions/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 // ── GET /api/admin/sessions ────────────────────────────────────────────────────
-export async function GET(req: Request): Promise<NextResponse> {
+export async function GET_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const leadId = searchParams.get("leadId");
@@ -84,7 +85,7 @@ export async function GET(req: Request): Promise<NextResponse> {
 
 // ── POST /api/admin/sessions ───────────────────────────────────────────────────
 // Called when marking an appointment as completed (creates a session record)
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body = (await req.json()) as {
       leadId: string;
@@ -171,7 +172,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 }
 
 // ── PATCH /api/admin/sessions ──────────────────────────────────────────────────
-export async function PATCH(req: Request): Promise<NextResponse> {
+export async function PATCH_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body = (await req.json()) as {
       id: string;
@@ -210,3 +211,7 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);
+export const POST = withRateLimit(POST_HANDLER);
+export const PATCH = withRateLimit(PATCH_HANDLER);

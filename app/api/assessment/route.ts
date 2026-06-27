@@ -834,10 +834,12 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
-import { retryAsync } from "@/utilz";
+import { getMentelIds, retryAsync } from "@/utilz";
 import { after } from "next/server";
 import { logger } from "@/lib/logger";
 import { EVENTS } from "@/utilz";
+import { withRateLimit } from "@/lib/withRateLimit";
+import { ensureVisitorAndSession, recordEvent } from "@/lib/analytics/ingest";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -1491,7 +1493,7 @@ function buildAdminEmail(
 }
 
 // ── API Route — UNCHANGED ──────────────────────────────────────────────────────
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body: unknown = await req.json();
     const { name, email, phone, answers } = body as {
@@ -1652,6 +1654,44 @@ export async function POST(req: Request): Promise<NextResponse> {
       },
     });
 
+    logger.business(EVENTS.ASSESSMENT_COMPLETED, {
+      meta: {
+        email: safeEmail,
+        score,
+        band: band.band,
+        severity: band.severity,
+        ip,
+      },
+    });
+
+    // ── Analytics event — fire and forget, never blocks the response ──────────
+    const { visitorId, sessionId } = getMentelIds(req);
+    if (visitorId && sessionId) {
+      after(
+        (async () => {
+          const ctx = {
+            visitorId,
+            sessionId,
+            userId: null,
+            isNewSession: false,
+            utm: {},
+            referrer: req.headers.get("referer"),
+            landingPage: null,
+          };
+          await ensureVisitorAndSession(req.headers, ctx);
+          await recordEvent(
+            {
+              event: "ASSESSMENT_COMPLETED",
+              properties: { score, band: band.band, severity: band.severity },
+            },
+            ctx,
+          );
+        })().catch((err) =>
+          console.error("[analytics] ASSESSMENT_COMPLETED failed:", err),
+        ),
+      );
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Assessment route error:", error);
@@ -1661,3 +1701,5 @@ export async function POST(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+export const POST = withRateLimit(POST_HANDLER);

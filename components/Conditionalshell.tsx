@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BookingProvider } from "@/app/context/BookingContext";
 import GlobalObserver from "./GlobalObserver";
+import { AnalyticsProvider } from "./AnalyticsProvider";
 
 export default function ConditionalShell({
     children,
@@ -20,19 +21,22 @@ export default function ConditionalShell({
     const isResult = pathname.startsWith("/result");
     const isBookCall = pathname.startsWith("/book-call");
     const isBurnoutCalculator = pathname.startsWith("/burnout-calculator");
+    const isMarketing = pathname.startsWith("/marketing");
 
-    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator) {
+    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator || isMarketing) {
         return <>{children}</>;
     }
 
     return (
         <>
-            <BookingProvider>
-                <Navbar />
-                <GlobalObserver />
-                <main className="flex-1">{children}</main>
-                <Footer />
-            </BookingProvider>
+            <AnalyticsProvider>
+                <BookingProvider>
+                    <Navbar />
+                    <GlobalObserver />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                </BookingProvider>
+            </AnalyticsProvider>
         </>
     );
 }

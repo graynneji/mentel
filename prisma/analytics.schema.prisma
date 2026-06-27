@@ -1,0 +1,235 @@
+// Dedicated Prisma schema for the ANALYTICS database (Vercel Postgres).
+// This is intentionally separate from your main Supabase schema (users, therapists,
+// assessments, payments, appointments). Keep two Prisma clients — see README.md.
+//
+// Generate into its own client so it never collides with your Supabase client:
+//   npx prisma generate --schema=prisma/analytics.schema.prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/analytics" // separate from "../generated/prisma" (your Supabase client)
+}
+
+datasource db {
+  provider = "postgresql"
+// url      = env("ANALYTICS_DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Identity
+// ─────────────────────────────────────────────────────────────────────────
+
+model Visitor {
+  id          String    @id // crypto.randomUUID(), stored in the mentel_vid cookie
+  userId      String? // set once they log in (Supabase auth user id) — string only, no FK across DBs
+  firstSeenAt DateTime  @default(now())
+  lastSeenAt  DateTime  @updatedAt
+  firstUtmSource   String?
+  firstUtmMedium   String?
+  firstUtmCampaign String?
+  firstReferrer    String?
+
+  sessions       Session[]
+  events         Event[]
+  pageViews      PageView[]
+  queuedActions  QueuedAction[]
+  flagExposures  FlagExposure[]
+
+  @@index([userId])
+}
+
+model Session {
+  id          String    @id // crypto.randomUUID(), stored in the mentel_sid cookie
+  lastActivityAt DateTime @updatedAt
+  visitorId   String
+  visitor     Visitor   @relation(fields: [visitorId], references: [id])
+
+  startedAt   DateTime  @default(now())
+  endedAt     DateTime?
+  durationSec Int?
+
+  landingPage String?
+  exitPage    String?
+  referrer    String?
+
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
+  gclid       String?
+  fbclid      String?
+  ttclid      String?
+
+  device      String? // mobile | tablet | desktop
+  browser     String?
+  browserVersion String?
+  os          String?
+  osVersion   String?
+  country     String?
+  city        String?
+  language    String?
+  timezone    String?
+  ip          String? // truncated/anonymized, see lib/analytics/server.ts
+
+  screenWidth     Int?
+  screenHeight    Int?
+  viewportWidth   Int?
+  viewportHeight  Int?
+  pixelRatio      Float?
+
+  events      Event[]
+  pageViews   PageView[]
+
+  @@index([visitorId])
+  @@index([startedAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Page views (with engagement metrics attached on PAGE_LEAVE / beacon)
+// ─────────────────────────────────────────────────────────────────────────
+
+model PageView {
+  id        String   @id @default(cuid())
+  visitorId String
+  visitor   Visitor  @relation(fields: [visitorId], references: [id])
+  sessionId String?
+  session   Session?  @relation(fields: [sessionId], references: [id])
+
+  path      String
+  page      String?
+
+  loadTimeMs        Int?
+  timeOnPageMs       Int?
+  scrollPercent      Int?
+  maxScrollPercent   Int?
+  clickCount         Int?
+  rageClicks         Int?
+  inactiveMs         Int?
+  visibilityChanges  Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([visitorId])
+  @@index([sessionId])
+  @@index([path])
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Generic event stream — every click / form / assessment / funnel / custom
+// event funnels through here. Mirrors the Segment-style schema in the spec.
+// ─────────────────────────────────────────────────────────────────────────
+
+model Event {
+  id        String   @id @default(cuid())
+  visitorId String
+  visitor   Visitor  @relation(fields: [visitorId], references: [id])
+  sessionId String?
+  session   Session? @relation(fields: [sessionId], references: [id])
+  userId    String?
+
+  name      String // e.g. ASSESSMENT_STARTED, BOOKING_CLICKED, CLICK, FORM_SUBMITTED
+  page      String?
+  path      String?
+
+  properties  Json? // arbitrary event-specific payload
+  browser     Json?
+  device      Json?
+  location    Json?
+  utm         Json?
+  performance Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([name])
+  @@index([visitorId])
+  @@index([sessionId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Errors & performance — kept as dedicated tables for fast dashboard queries
+// ─────────────────────────────────────────────────────────────────────────
+
+model ErrorLog {
+  id        String   @id @default(cuid())
+  visitorId String?
+  sessionId String?
+  userId    String?
+
+  message   String
+  stack     String?
+  page      String?
+  browser   String?
+
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([visitorId])
+}
+
+model PerformanceMetric {
+  id        String   @id @default(cuid())
+  visitorId String?
+  sessionId String?
+  path      String?
+
+  cls   Float?
+  fid   Float?
+  lcp   Float?
+  inp   Float?
+  ttfb  Float?
+  domContentLoadedMs Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Feature flags / experiments
+// ─────────────────────────────────────────────────────────────────────────
+
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  key       String   @unique // e.g. "landing-page-cta"
+  variants  Json // e.g. ["A", "B"]
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model FlagExposure {
+  id        String   @id @default(cuid())
+  visitorId String
+  visitor   Visitor  @relation(fields: [visitorId], references: [id])
+  flagKey   String
+  variant   String
+  createdAt DateTime @default(now())
+
+  @@unique([visitorId, flagKey])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Remote commands — lightweight "control the browser from the backend" queue
+// ─────────────────────────────────────────────────────────────────────────
+
+model QueuedAction {
+  id         String    @id @default(cuid())
+  visitorId  String
+  visitor    Visitor   @relation(fields: [visitorId], references: [id])
+
+  type       String // SHOW_MODAL | REDIRECT | OPEN_CHAT | SHOW_DISCOUNT | REQUEST_FEEDBACK
+             // | SHOW_NOTIFICATION | REFRESH_PAGE | LOG_OUT | TRACK_CUSTOM
+  payload    Json?
+
+  executed   Boolean   @default(false)
+  executedAt DateTime?
+
+  createdAt  DateTime  @default(now())
+
+  @@index([visitorId, executed])
+}

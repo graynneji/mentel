@@ -5,6 +5,7 @@ import { retryAsync } from "@/utilz";
 import { after } from "next/server";
 import { logger } from "@/lib/logger";
 import { EVENTS } from "@/utilz";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -488,7 +489,7 @@ Reply: mailto:${email}`;
 }
 
 // ── API Route ──────────────────────────────────────────────────────────────────
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body: unknown = await req.json();
     const { name, email, phone, answers } = body as {
@@ -620,3 +621,5 @@ export async function POST(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+export const POST = withRateLimit(POST_HANDLER);

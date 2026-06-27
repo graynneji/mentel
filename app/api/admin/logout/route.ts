@@ -2,8 +2,9 @@
 // Clears the admin session cookie. Adjust cookie name to match your auth setup.
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { withRateLimit } from "@/lib/withRateLimit";
 
-export async function POST(): Promise<NextResponse> {
+export async function POST_HANDLER(): Promise<NextResponse> {
   const cookieStore = await cookies();
 
   // Clear common auth cookie names — update to match yours
@@ -19,3 +20,5 @@ export async function POST(): Promise<NextResponse> {
 
   return NextResponse.json({ success: true });
 }
+
+export const POST = withRateLimit(POST_HANDLER);

@@ -2740,6 +2740,7 @@ import {
 } from "lucide-react";
 import { useLiveCounter } from "@/hooks/use-live-counter";
 import { logger } from "@/lib/logger";
+import { analytics } from "@/lib/analytics/client";
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 interface Option {
@@ -2867,6 +2868,7 @@ function AssessmentNav() {
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
+
 
     return (
         <>
@@ -3030,6 +3032,16 @@ export default function AssessmentPage() {
         setSelectedOption(null);
     }, [current, step]);
 
+    useEffect(() => {
+        analytics.track("ASSESSMENT_PAGE_VIEWED");
+    }, []);
+
+
+    useEffect(() => {
+        if (current === 1) {
+            analytics.track("ASSESSMENT_STARTED");
+        }
+    }, [current]);
     // Drives the "analysing your results" sequence shown right after the
     // email form is submitted. Runs entirely on this page so there's only
     // ONE continuous loading experience, then we navigate straight into a
@@ -3230,6 +3242,8 @@ export default function AssessmentPage() {
                                         method: "POST",
                                         keepalive: true,
                                     });
+
+                                    analytics.track("ASSESSMENT_CLICKED")
                                 }}
                                 className="cta-btn inline-flex items-center justify-center gap-2.5 bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] text-white border-0 rounded-full px-10 py-[19px] text-[clamp(14px,4vw,17px)] font-medium font-['DM_Sans',sans-serif] cursor-pointer shadow-[0_6px_28px_rgba(30,107,107,0.32)] tracking-[0.01em]"
                             >

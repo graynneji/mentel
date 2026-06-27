@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { db } from "@/lib/db";
 import type { Lead } from "@/generated/prisma/client";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = "Mentel <hello@mail.trymentel.com>";
@@ -165,7 +166,7 @@ function buildCustomHtml(body: string): string {
 }
 
 // ── POST /api/admin/message ────────────────────────────────────────────────────
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body = (await req.json()) as {
       leadId: string;
@@ -262,7 +263,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 // ── GET /api/admin/messages ────────────────────────────────────────────────────
 // Returns all messages with optional filters.
 // Query params: leadId, type (seq1|seq2|seq3|custom), sentBy, page, limit, from, to
-export async function GET(req: Request): Promise<NextResponse> {
+export async function GET_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const leadId = searchParams.get("leadId");
@@ -364,7 +365,7 @@ export async function GET(req: Request): Promise<NextResponse> {
 }
 
 // ── DELETE /api/admin/messages — delete a single message log entry ─────────────
-export async function DELETE(req: Request): Promise<NextResponse> {
+export async function DELETE_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -386,3 +387,7 @@ export async function DELETE(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);
+export const POST = withRateLimit(POST_HANDLER);
+export const DELETE = withRateLimit(DELETE_HANDLER);

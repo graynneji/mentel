@@ -174,7 +174,7 @@ function HRAccessContent() {
                             <button
                                 type="submit"
                                 disabled={!code.trim() || loading}
-                                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl text-[14px] font-semibold text-white transition-all disabled:opacity-40"
+                                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl text-[14px] font-semibold text-white transition-all disabled:opacity-40 cursor-pointer"
                                 style={{ background: "linear-gradient(135deg, #4e8c6a, #3d8b8b)" }}>
                                 {loading ? (
                                     <><Loader2 size={16} className="animate-spin" /> Verifying…</>

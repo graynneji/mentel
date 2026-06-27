@@ -18,6 +18,7 @@
 import { NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { Resend } from "resend";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!; // sk_live_...
@@ -399,7 +400,7 @@ function buildAdminEmail(data: {
 }
 
 // ── WEBHOOK HANDLER ───────────────────────────────────────────────────────────
-export async function POST(req: Request) {
+export async function POST_HANDLER(req: Request) {
   try {
     const rawBody = await req.text();
     const signature = req.headers.get("x-paystack-signature") ?? "";
@@ -503,3 +504,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ received: true });
   }
 }
+
+export const POST = withRateLimit(POST_HANDLER);

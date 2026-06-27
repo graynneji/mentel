@@ -1,5 +1,6 @@
 // app/api/paystack/initialize/route.ts
 
+import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
 
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!;
@@ -15,7 +16,7 @@ function s(v: unknown) {
   return String(v ?? "").trim();
 }
 
-export async function POST(req: Request) {
+export async function POST_HANDLER(req: Request) {
   try {
     const body = await req.json();
     const name = s(body.name);
@@ -116,3 +117,5 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export const POST = withRateLimit(POST_HANDLER);

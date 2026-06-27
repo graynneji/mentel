@@ -3,6 +3,7 @@
 //
 // Usage: GET /api/cal/slots?eventTypeId=YOUR_ID&start=2026-06-22&end=2026-07-22&timeZone=Africa/Lagos
 
+import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
 
 const CAL_API_KEY = process.env.CAL_API_KEY!;
@@ -10,7 +11,7 @@ const CAL_SESSION_KEY = process.env.CAL_SESSION_KEY!;
 
 const CAL_API_VERSION_SLOTS = "2024-09-04";
 
-export async function GET(req: Request) {
+export async function GET_HANDLER(req: Request) {
   const { searchParams } = new URL(req.url);
 
   const eventTypeId = searchParams.get("eventTypeId");
@@ -59,3 +60,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);

@@ -98,11 +98,12 @@
 
 // app/api/paystack/verify/route.ts
 
+import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
 
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!;
 
-export async function GET(req: Request) {
+export async function GET_HANDLER(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const reference =
@@ -174,3 +175,5 @@ export async function GET(req: Request) {
     );
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);

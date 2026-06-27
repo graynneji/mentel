@@ -1,9 +1,10 @@
 // app/api/admin/appointments/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { withRateLimit } from "@/lib/withRateLimit";
 
 // ── GET /api/admin/appointments ────────────────────────────────────────────────
-export async function GET(req: Request): Promise<NextResponse> {
+export async function GET_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const leadId = searchParams.get("leadId");
@@ -85,7 +86,7 @@ export async function GET(req: Request): Promise<NextResponse> {
 }
 
 // ── POST /api/admin/appointments ───────────────────────────────────────────────
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body = (await req.json()) as {
       leadId: string;
@@ -138,7 +139,7 @@ export async function POST(req: Request): Promise<NextResponse> {
 }
 
 // ── PATCH /api/admin/appointments ──────────────────────────────────────────────
-export async function PATCH(req: Request): Promise<NextResponse> {
+export async function PATCH_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const body = (await req.json()) as {
       id: string;
@@ -188,7 +189,7 @@ export async function PATCH(req: Request): Promise<NextResponse> {
 }
 
 // ── DELETE /api/admin/appointments ─────────────────────────────────────────────
-export async function DELETE(req: Request): Promise<NextResponse> {
+export async function DELETE_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
@@ -200,7 +201,21 @@ export async function DELETE(req: Request): Promise<NextResponse> {
       );
     }
 
-    await db.appointment.delete({ where: { id } });
+    // Perform the delete once and capture the result
+    const deleted = await db.appointment
+      .delete({
+        where: { id },
+      })
+      .catch(() => null);
+
+    // If 'deleted' is null, the ID didn't exist in the database
+    if (!deleted) {
+      return NextResponse.json(
+        { success: false, error: "Appointment not found" },
+        { status: 404 },
+      );
+    }
+
     return NextResponse.json({ success: true, deleted: true });
   } catch (error) {
     console.error("DELETE appointment error:", error);
@@ -210,3 +225,8 @@ export async function DELETE(req: Request): Promise<NextResponse> {
     );
   }
 }
+
+export const GET = withRateLimit(GET_HANDLER);
+export const POST = withRateLimit(POST_HANDLER);
+export const PATCH = withRateLimit(PATCH_HANDLER);
+export const DELETE = withRateLimit(DELETE_HANDLER);

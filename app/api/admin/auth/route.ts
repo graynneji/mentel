@@ -2,6 +2,7 @@
 // POST /api/admin/auth        → login (sets session cookie)
 // DELETE /api/admin/auth      → logout (clears session cookie)
 
+import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
 
 const SESSION_COOKIE = "mentel_admin_session";
@@ -9,7 +10,7 @@ const SESSION_SECRET = process.env.ADMIN_SESSION_SECRET!;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
 
 // ── POST — login ──────────────────────────────────────────────────────────────
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST_HANDLER(req: Request): Promise<NextResponse> {
   try {
     const { password } = (await req.json()) as { password: string };
 
@@ -42,8 +43,11 @@ export async function POST(req: Request): Promise<NextResponse> {
 }
 
 // ── DELETE — logout ───────────────────────────────────────────────────────────
-export async function DELETE(): Promise<NextResponse> {
+export async function DELETE_HANDLER(): Promise<NextResponse> {
   const res = NextResponse.json({ success: true });
   res.cookies.delete(SESSION_COOKIE);
   return res;
 }
+
+export const POST = withRateLimit(POST_HANDLER);
+export const DELETE = withRateLimit(DELETE_HANDLER);

@@ -474,6 +474,7 @@ import { useState } from "react";
 import Script from "next/script";
 import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft, Wallet, Shield, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { analytics } from "@/lib/analytics/client";
 
 const REASONS = [
     "Anxiety", "Depression", "Marriage Counselling", "Grief & Loss",
@@ -616,6 +617,7 @@ export default function BookingForm() {
     const isPocketPay = form.paymentMethod === "pocket";
 
     const handleSubmitPocket = async () => {
+        analytics.track("BOOKING_CLICKED")
         if (!paystackReady || !window.PaystackPop) {
             setErrors({ form: "Payment provider is still loading. Please try again." });
             return;

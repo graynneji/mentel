@@ -1,13 +1,14 @@
 // app/api/cal/bookings/route.ts
 // Creates a Cal.com booking — keeps your API key server-side only.
 
+import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
 
 const CAL_API_KEY = process.env.CAL_API_KEY!;
 const CAL_SESSION_KEY = process.env.CAL_SESSION_KEY!;
 const CAL_API_VERSION_BOOKINGS = "2024-08-13";
 
-export async function POST(req: Request) {
+export async function POST_HANDLER(req: Request) {
   try {
     const body = await req.json();
     const { eventTypeId, start, name, email, timeZone, from, notes } = body as {
@@ -71,3 +72,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+export const POST = withRateLimit(POST_HANDLER);
