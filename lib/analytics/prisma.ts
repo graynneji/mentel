@@ -50,3 +50,7 @@ export const analyticsDb =
 if (process.env.NODE_ENV === "production") {
   globalForAnalytics.analyticsPrisma = analyticsDb;
 }
+
+if (process.env.NODE_ENV !== "production") {
+  globalForAnalytics.analyticsPrisma = analyticsDb;
+}

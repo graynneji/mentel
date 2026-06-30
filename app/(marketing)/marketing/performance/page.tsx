@@ -52,7 +52,6 @@ export const dynamic = "force-dynamic";
 export default async function PerformancePage() {
   const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const avg = await getPerformanceAverages(since);
-  console.log(avg, "average")
   return (
     <div>
       <h1 className="mta-h1">Performance — last 7 days</h1>

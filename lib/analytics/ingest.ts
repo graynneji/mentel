@@ -185,7 +185,8 @@ export async function recordEvent(
       break;
     }
     case "PERFORMANCE_METRIC": {
-      const p = payload.performance ?? {};
+      const p =
+        (payload.properties?.performance as Record<string, unknown>) ?? {};
       await analyticsDb.performanceMetric.create({
         data: {
           visitorId: ctx.visitorId,

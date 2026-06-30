@@ -206,7 +206,9 @@ export default function AnalyticsLayout({ children }: { children: React.ReactNod
         * { box-sizing: border-box; }
 
         .mta-shell {
-        
+          display: grid;
+          grid-template-columns: 220px 1fr;
+          min-height: 100vh;
           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
           color: #1a1d23;
           background: #f7f8fa;
@@ -349,33 +351,32 @@ export default function AnalyticsLayout({ children }: { children: React.ReactNod
 
         /* ───────────────────────── Mobile breakpoint ───────────────────────── */
         @media (max-width: 768px) {
-          .mta-shell { grid-template-columns: 1fr; }
+          .mta-shell { grid-template-columns: 1fr; min-height: 0 }
 
-          .mta-topbar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: #14161a;
-            color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-          }
-          .mta-burger {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 20px;
-            line-height: 1;
-            padding: 4px 6px;
-            cursor: pointer;
-          }
-          .mta-brand-mobile {
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-          }
+
+.mta-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  padding: 8px 12px; 
+  background: #14161a;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 48px; 
+}
+
+.mta-burger {
+  padding: 4px; 
+  font-size: 18px; 
+}
+
+.mta-brand-mobile {
+  font-size: 12px; 
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
 
           .mta-backdrop {
             display: block;

@@ -7,13 +7,21 @@ import type { IncomingEventPayload } from "./types";
 
 const ENDPOINT = "/api/track";
 
+const sessionStart = Date.now(); // module-level, set once when the script loads
+
 function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+  const match = document.cookie.match(
+    new RegExp("(?:^|; )" + name + "=([^;]*)"),
+  );
   return match ? decodeURIComponent(match[1]) : null;
 }
 
 function send(events: IncomingEventPayload[], userId?: string | null) {
-  const body = JSON.stringify({ events, userId, clientHints: getClientHints() });
+  const body = JSON.stringify({
+    events,
+    userId,
+    clientHints: getClientHints(),
+  });
   // Use sendBeacon when available so events survive page unload; fall back to fetch.
   if (navigator.sendBeacon) {
     const blob = new Blob([body], { type: "application/json" });
@@ -43,19 +51,39 @@ function getClientHints() {
 }
 
 let currentUserId: string | null = null;
+// let queue: IncomingEventPayload[] = [];
+// let flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+// function enqueue(event: IncomingEventPayload) {
+//   queue.push(event);
+//   if (flushTimer) return;
+//   // Micro-batch events fired within the same tick/short window into one request.
+//   flushTimer = setTimeout(() => {
+//     const batch = queue;
+//     queue = [];
+//     flushTimer = null;
+//     send(batch, currentUserId);
+//   }, 250);
+// }
 let queue: IncomingEventPayload[] = [];
 let flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+function flushQueue() {
+  if (queue.length === 0) {
+    flushTimer = null;
+    return;
+  }
+  const batch = queue;
+  queue = [];
+  flushTimer = null;
+  send(batch, currentUserId);
+}
 
 function enqueue(event: IncomingEventPayload) {
   queue.push(event);
   if (flushTimer) return;
-  // Micro-batch events fired within the same tick/short window into one request.
-  flushTimer = setTimeout(() => {
-    const batch = queue;
-    queue = [];
-    flushTimer = null;
-    send(batch, currentUserId);
-  }, 250);
+  flushTimer = setTimeout(flushQueue, 15_000); // batch for 30s instead of 250ms
+  // flushTimer = setTimeout(flushQueue, 30_000); // batch for 30s instead of 250ms
 }
 
 export const analytics = {
@@ -73,7 +101,14 @@ export const analytics = {
   /** Flush immediately, bypassing the micro-batch debounce (e.g. before navigation). */
   trackNow(event: string, properties?: Record<string, unknown>) {
     send(
-      [{ event, page: document.title, path: window.location.pathname, properties }],
+      [
+        {
+          event,
+          page: document.title,
+          path: window.location.pathname,
+          properties,
+        },
+      ],
       currentUserId,
     );
   },
@@ -158,11 +193,16 @@ function onClick(e: MouseEvent) {
 
   const el = target as HTMLElement | null;
   if (!el) return;
-  const clickable = el.closest("button, a, [role='button'], input[type=submit]") as HTMLElement | null;
+  const clickable = el.closest(
+    "button, a, [role='button'], input[type=submit]",
+  ) as HTMLElement | null;
   if (!clickable) return;
 
   analytics.track("CLICK", {
-    text: clickable.innerText?.slice(0, 120) || clickable.getAttribute("aria-label") || undefined,
+    text:
+      clickable.innerText?.slice(0, 120) ||
+      clickable.getAttribute("aria-label") ||
+      undefined,
     id: clickable.id || undefined,
     className: clickable.className || undefined,
     tag: clickable.tagName.toLowerCase(),
@@ -173,13 +213,26 @@ function onClick(e: MouseEvent) {
 
 function onFormFocus(e: FocusEvent) {
   const el = e.target as HTMLElement;
-  if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement)) return;
-  analytics.track("FORM_FIELD_FOCUSED", { name: el.name || el.id, form: el.form?.id });
+  if (
+    !(
+      el instanceof HTMLInputElement ||
+      el instanceof HTMLTextAreaElement ||
+      el instanceof HTMLSelectElement
+    )
+  )
+    return;
+  analytics.track("FORM_FIELD_FOCUSED", {
+    name: el.name || el.id,
+    form: el.form?.id,
+  });
 }
 
 function onFormSubmit(e: SubmitEvent) {
   const form = e.target as HTMLFormElement;
-  analytics.track("FORM_SUBMITTED", { formId: form.id || undefined, action: form.action || undefined });
+  analytics.track("FORM_SUBMITTED", {
+    formId: form.id || undefined,
+    action: form.action || undefined,
+  });
 }
 
 function onError(e: ErrorEvent) {
@@ -191,9 +244,16 @@ function onError(e: ErrorEvent) {
 
 function onUnhandledRejection(e: PromiseRejectionEvent) {
   analytics.trackNow("JS_ERROR", {
-    message: String(e.reason?.message ?? e.reason ?? "Unhandled promise rejection"),
+    message: String(
+      e.reason?.message ?? e.reason ?? "Unhandled promise rejection",
+    ),
     stack: e.reason?.stack,
   });
+}
+
+function trackSessionEnd() {
+  const durationSec = Math.round((Date.now() - sessionStart) / 1000);
+  analytics.trackNow("SESSION_END", { durationSec });
 }
 
 function onVisibilityChange() {
@@ -209,8 +269,11 @@ function trackPerformance() {
 
   try {
     new PerformanceObserver((list) => {
-      const last = list.getEntries().at(-1) as PerformanceEntry & { value?: number };
-      if (last?.value !== undefined) metrics.cls = (metrics.cls ?? 0) + last.value;
+      const last = list.getEntries().at(-1) as PerformanceEntry & {
+        value?: number;
+      };
+      if (last?.value !== undefined)
+        metrics.cls = (metrics.cls ?? 0) + last.value;
     }).observe({ type: "layout-shift", buffered: true });
   } catch {}
 
@@ -223,13 +286,18 @@ function trackPerformance() {
 
   try {
     new PerformanceObserver((list) => {
-      for (const entry of list.getEntries() as (PerformanceEntry & { processingStart?: number })[]) {
-        if (entry.processingStart) metrics.inp = entry.processingStart - entry.startTime;
+      for (const entry of list.getEntries() as (PerformanceEntry & {
+        processingStart?: number;
+      })[]) {
+        if (entry.processingStart)
+          metrics.inp = entry.processingStart - entry.startTime;
       }
     }).observe({ type: "event", buffered: true });
   } catch {}
 
-  const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+  const nav = performance.getEntriesByType("navigation")[0] as
+    | PerformanceNavigationTiming
+    | undefined;
   if (nav) {
     metrics.ttfb = nav.responseStart - nav.requestStart;
     metrics.domContentLoadedMs = nav.domContentLoadedEventEnd - nav.startTime;
@@ -256,7 +324,12 @@ export function initAnalytics(userId?: string | null) {
   window.addEventListener("error", onError);
   window.addEventListener("unhandledrejection", onUnhandledRejection);
   document.addEventListener("visibilitychange", onVisibilityChange);
-  window.addEventListener("pagehide", trackPageViewEnd);
+  // window.addEventListener("pagehide", trackPageViewEnd);
+  window.addEventListener("pagehide", () => {
+    trackPageViewEnd();
+    trackSessionEnd();
+    flushQueue();
+  });
 
   // Idle tracking — every 5s, if no activity in the last 5s, add to inactiveMs.
   setInterval(() => {
