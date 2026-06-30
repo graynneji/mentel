@@ -72,21 +72,26 @@ function VerifyContent() {
                     setPayment(data.payment);
                     setState("success");
 
-                    if (typeof window !== "undefined" && window.ttq) {
-                        window.ttq.track("CompletePayment", { value: data.payment.amount, currency: "NGN" });
-                        window.ttq.track("Schedule");
-                        window.ttq.track("CompleteRegistration");
+                    // if (typeof window !== "undefined" && window.ttq) {
+                    //     window.ttq.track("CompletePayment", { value: data.payment.amount, currency: "NGN" });
+                    //     window.ttq.track("Schedule");
+                    //     window.ttq.track("CompleteRegistration");
+                    // }
+
+                    if (typeof window !== "undefined" && (window as any).fbq) {
+                        (window as any).fbq("track", "Lead");
+
+                        (window as any).fbq?.(
+                            "track",
+                            "Purchase",
+                            {
+                                value: data.payment.amount,
+                                currency: "NGN",
+                                transaction_id: data.payment.reference,
+                            }
+                        );
                     }
 
-                    (window as any).fbq?.(
-                        "track",
-                        "Purchase",
-                        // {
-                        //     value: data.payment.amount,
-                        //     currency: "NGN",
-                        //     transaction_id: data.payment.reference,
-                        // }
-                    );
 
                 } else {
                     setErrorMsg(data.error ?? "Payment could not be verified.");
@@ -111,6 +116,7 @@ function VerifyContent() {
         const formattedDate = payment.paidAt
             ? new Date(payment.paidAt).toLocaleDateString("en-GB", { dateStyle: "long" })
             : new Date().toLocaleDateString("en-GB", { dateStyle: "long" });
+
 
         return (
             <div className="relative min-h-screen">

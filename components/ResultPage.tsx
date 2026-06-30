@@ -917,8 +917,8 @@ function getResult(score: number): Result {
             headline: "You're in a good place",
             summary:
                 "Your responses suggest you're managing well overall. Many people reach out proactively to build resilience, develop self-awareness, or navigate life transitions, therapy can be valuable even when you're not in crisis.",
-            cta: "Book your free into call",
-            // cta: "Chat us on WhatsApp",
+            // cta: "Book your free into call",
+            cta: "Chat us on WhatsApp",
         };
     if (score <= 12)
         return {
@@ -927,8 +927,8 @@ function getResult(score: number): Result {
             headline: "Some areas could use support",
             summary:
                 "Your responses suggest you're experiencing some difficulties worth exploring. A therapist can help you build practical tools and understand patterns before they become harder to manage.",
-            cta: "Book your free into call",
-            // cta: "Chat us on WhatsApp",
+            // cta: "Book your free into call",
+            cta: "Chat us on WhatsApp",
         };
     if (score <= 18)
         return {
@@ -937,8 +937,8 @@ function getResult(score: number): Result {
             headline: "You deserve real support",
             summary:
                 "Your responses suggest you're going through a genuinely difficult time. You're not alone, what you're feeling is valid, and speaking with a licensed therapist can make a significant difference.",
-            cta: "Book your free into call",
-            // cta: "Chat us on WhatsApp",
+            // cta: "Book your free into call",
+            cta: "Chat us on WhatsApp",
         };
     return {
         band: "High Concern",
@@ -946,8 +946,8 @@ function getResult(score: number): Result {
         headline: "Please reach out, you matter",
         summary:
             "Your responses suggest you're struggling significantly right now. We strongly encourage you to speak with a professional as soon as possible. Our therapists are here for you, without judgment.",
-        cta: "Book your free into call",
-        // cta: "Chat us on WhatsApp",
+        // cta: "Book your free into call",
+        cta: "Chat us on WhatsApp",
     };
 }
 
@@ -1362,11 +1362,11 @@ export default function ResultPage() {
         setHydrated(true);
     }, [router]);
 
-    useEffect(() => {
-        if (typeof window !== "undefined" && (window as any).fbq) {
-            (window as any).fbq('track', 'Lead');
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (typeof window !== "undefined" && (window as any).fbq) {
+    //         (window as any).fbq('track', 'Lead');
+    //     }
+    // }, []);
 
     if (!hydrated || !data) return null;
 
@@ -1526,9 +1526,9 @@ export default function ResultPage() {
                             </p>
                             <div className="flex flex-col gap-3">
                                 <Link
-                                    // href={whatsappUrl}
-                                    href="/book-call"
-                                    // target="_blank"
+                                    href={whatsappUrl}
+                                    // href="/book-call"
+                                    target="_blank"
                                     rel="noopener noreferrer"
                                     className="cta-btn flex items-center justify-center gap-2.5 py-[17px] px-7 rounded-full text-white text-[15px] font-medium font-['DM_Sans',sans-serif] no-underline"
                                     style={{
