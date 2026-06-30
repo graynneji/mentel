@@ -82,7 +82,7 @@ function flushQueue() {
 function enqueue(event: IncomingEventPayload) {
   queue.push(event);
   if (flushTimer) return;
-  flushTimer = setTimeout(flushQueue, 15_000); // batch for 30s instead of 250ms
+  flushTimer = setTimeout(flushQueue, 5_000); // batch for 30s instead of 250ms
   // flushTimer = setTimeout(flushQueue, 30_000); // batch for 30s instead of 250ms
 }
 
