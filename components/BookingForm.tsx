@@ -46,22 +46,25 @@
 //         icon: Wallet,
 //         badge: null,
 //         accentColor: "var(--sage-dark)",
+//         disabled: false,
 //     },
 //     {
 //         id: "hmo",
 //         label: "HMO / Health Insurance",
-//         desc: "Covered through your health maintenance organisation",
+//         desc: "Coming soon",
 //         icon: Shield,
-//         badge: "Check eligibility",
+//         badge: "Coming soon",
 //         accentColor: "var(--teal)",
+//         disabled: true,
 //     },
 //     {
 //         id: "corporate",
 //         label: "Corporate / EAP Plan",
-//         desc: "Covered by your employer's wellbeing programme",
+//         desc: "Coming soon",
 //         icon: Building2,
-//         badge: "Requires access code",
+//         badge: "Coming soon",
 //         accentColor: "#8b6e3d",
+//         disabled: true,
 //     },
 // ];
 
@@ -126,13 +129,61 @@
 //         return Object.keys(e).length === 0;
 //     };
 
+//     // Silently capture lead on step 1 → 2 transition; fire-and-forget, never blocks the user.
+//     // Uses source "other" which maps to the valid "Other" category in the admin CRM.
+//     const captureLeadSilently = () => {
+//         try {
+//             fetch("/api/contact", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({
+//                     name: form.name,
+//                     email: form.email,
+//                     phone: form.phone,
+//                     message: `[Booking drop-off capture] User completed Step 1 and advanced to payment method selection. Reason for consultation: ${form.reason}`,
+//                     source: "other",
+//                 }),
+//             }).catch(() => { /* silent — never surface errors to user */ });
+//         } catch {
+//             // intentionally silent
+//         }
+//     };
+
+//     const capturePaymentLeads = async () => {
+//         try {
+//             const res = await fetch("/api/contact", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({
+//                     name: form.name, email: form.email, phone: form.phone, reason: form.reason,
+//                     message: form.paymentMethod === "corporate"
+//                         ? `Corporate EAP booking. Access code: ${form.corporateCode}`
+//                         : `HMO booking. Provider: ${form.hmoProvider}. Policy: ${form.hmoPolicyNumber}`,
+//                     source: form.paymentMethod === "corporate" ? "corporate_booking" : "hmo_booking",
+//                 }),
+//             });
+//             if (res.ok) {
+//                 setSuccess(true);
+//             } else {
+//                 setErrors({ form: "Something went wrong. Please try again or email us directly." });
+//             }
+//         } catch {
+//             setErrors({ form: "Network error. Please try again." });
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
 //     const handleChange = (field: keyof FormData, value: string) => {
 //         setForm((prev) => ({ ...prev, [field]: value }));
 //         setErrors((prev) => ({ ...prev, [field]: undefined, form: undefined }));
 //     };
 
 //     const handleNext = () => {
-//         if (step === 1 && validateStep1()) setStep(2);
+//         if (step === 1 && validateStep1()) {
+//             captureLeadSilently(); // fire-and-forget, user never sees this
+//             setStep(2);
+//         }
 //         else if (step === 2 && validateStep2()) setStep(3);
 //     };
 
@@ -174,13 +225,7 @@
 //                 amount: data.amount,
 //                 ref: data.reference,
 //                 access_code: data.accessCode,
-//                 // callback: () => {
-//                 //     setLoading(false);
-//                 //     setSuccess(true);
-//                 //     window.ttq?.track("Place an Order", { value: data.amount, currency: "NGN" });
-//                 // },
 //                 callback: (response) => {
-
 //                     if (typeof window !== "undefined") {
 //                         sessionStorage.setItem(
 //                             "mentel_booking",
@@ -196,13 +241,10 @@
 //                             })
 //                         );
 //                     }
-
-
 //                     window.ttq?.track("Place an Order", {
 //                         value: data.amount,
 //                         currency: "NGN",
 //                     });
-
 //                     router.push(
 //                         `/verify?reference=${encodeURIComponent(
 //                             response.reference || data.reference
@@ -221,28 +263,7 @@
 
 //     const handleSubmitCoverage = async () => {
 //         setLoading(true);
-//         try {
-//             const res = await fetch("/api/contact", {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify({
-//                     name: form.name, email: form.email, phone: form.phone, reason: form.reason,
-//                     message: form.paymentMethod === "corporate"
-//                         ? `Corporate EAP booking. Access code: ${form.corporateCode}`
-//                         : `HMO booking. Provider: ${form.hmoProvider}. Policy: ${form.hmoPolicyNumber}`,
-//                     source: form.paymentMethod === "corporate" ? "corporate_booking" : "hmo_booking",
-//                 }),
-//             });
-//             if (res.ok) {
-//                 setSuccess(true);
-//             } else {
-//                 setErrors({ form: "Something went wrong. Please try again or email us directly." });
-//             }
-//         } catch {
-//             setErrors({ form: "Network error. Please try again." });
-//         } finally {
-//             setLoading(false);
-//         }
+//         await capturePaymentLeads();
 //     };
 
 //     if (success) {
@@ -350,19 +371,33 @@
 //                             const isSelected = form.paymentMethod === method.id;
 //                             const Icon = method.icon;
 //                             return (
-//                                 <label key={method.id} className="cursor-pointer block">
-//                                     <input type="radio" name="paymentMethod" value={method.id} checked={isSelected}
-//                                         onChange={(e) => handleChange("paymentMethod", e.target.value)} className="sr-only" />
-//                                     <div className="rounded-2xl border-2 p-4 transition-all duration-200 hover:-translate-y-0.5"
+//                                 <label key={method.id} className={`block ${method.disabled ? "cursor-not-allowed" : "cursor-pointer"}`}>
+//                                     <input
+//                                         type="radio"
+//                                         name="paymentMethod"
+//                                         value={method.id}
+//                                         checked={isSelected}
+//                                         disabled={method.disabled}
+//                                         onChange={(e) => !method.disabled && handleChange("paymentMethod", e.target.value)}
+//                                         className="sr-only"
+//                                     />
+//                                     <div
+//                                         className="rounded-2xl border-2 p-4 transition-all duration-200"
 //                                         style={{
-//                                             background: isSelected ? "rgba(123,169,139,0.08)" : "white",
-//                                             borderColor: isSelected ? "var(--sage)" : "var(--border)",
-//                                             boxShadow: isSelected ? "0 0 0 3px rgba(123,169,139,0.12)" : "none",
-//                                         }}>
+//                                             background: method.disabled
+//                                                 ? "rgba(123,169,139,0.03)"
+//                                                 : isSelected ? "rgba(123,169,139,0.08)" : "white",
+//                                             borderColor: method.disabled
+//                                                 ? "rgba(123,169,139,0.10)"
+//                                                 : isSelected ? "var(--sage)" : "var(--border)",
+//                                             boxShadow: isSelected && !method.disabled ? "0 0 0 3px rgba(123,169,139,0.12)" : "none",
+//                                             opacity: method.disabled ? 0.45 : 1,
+//                                         }}
+//                                     >
 //                                         <div className="flex items-center gap-3">
 //                                             <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-//                                                 style={{ background: isSelected ? "linear-gradient(135deg, var(--sage-dark), var(--teal))" : "rgba(123,169,139,0.10)" }}>
-//                                                 <Icon size={17} color={isSelected ? "white" : method.accentColor} />
+//                                                 style={{ background: isSelected && !method.disabled ? "linear-gradient(135deg, var(--sage-dark), var(--teal))" : "rgba(123,169,139,0.10)" }}>
+//                                                 <Icon size={17} color={isSelected && !method.disabled ? "white" : method.accentColor} />
 //                                             </div>
 //                                             <div className="flex-1 min-w-0">
 //                                                 <div className="flex items-center gap-2 flex-wrap">
@@ -377,8 +412,11 @@
 //                                                 <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{method.desc}</p>
 //                                             </div>
 //                                             <div className="w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all"
-//                                                 style={{ borderColor: isSelected ? "var(--sage)" : "var(--border)", background: isSelected ? "var(--sage)" : "transparent" }}>
-//                                                 {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
+//                                                 style={{
+//                                                     borderColor: isSelected && !method.disabled ? "var(--sage)" : "var(--border)",
+//                                                     background: isSelected && !method.disabled ? "var(--sage)" : "transparent",
+//                                                 }}>
+//                                                 {isSelected && !method.disabled && <div className="w-2 h-2 rounded-full bg-white" />}
 //                                             </div>
 //                                         </div>
 //                                     </div>
@@ -387,7 +425,7 @@
 //                         })}
 //                     </div>
 
-//                     {/* HMO fields */}
+//                     {/* HMO fields — kept but unreachable since HMO is disabled */}
 //                     {form.paymentMethod === "hmo" && (
 //                         <div className="rounded-2xl p-4 mb-4 flex flex-col gap-3"
 //                             style={{ background: "rgba(61,139,139,0.05)", border: "1px solid rgba(61,139,139,0.18)" }}>
@@ -410,7 +448,7 @@
 //                         </div>
 //                     )}
 
-//                     {/* Corporate code field */}
+//                     {/* Corporate code field — kept but unreachable since Corporate is disabled */}
 //                     {form.paymentMethod === "corporate" && (
 //                         <div className="rounded-2xl p-4 mb-4"
 //                             style={{ background: "rgba(139,110,61,0.05)", border: "1px solid rgba(139,110,61,0.18)" }}>
@@ -587,8 +625,7 @@
 // }
 
 "use client";
-import { useState } from "react";
-import Script from "next/script";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft, Wallet, Shield, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { analytics } from "@/lib/analytics/client";
@@ -692,6 +729,31 @@ export default function BookingForm() {
     const [paystackReady, setPaystackReady] = useState(false);
     const CAL_EVENT_TYPE_ID: number = 6108062
     const router = useRouter()
+    const formRef = useRef<HTMLFormElement>(null);
+
+    // Paystack's inline.js checks that its own <script> tag is actually nested
+    // inside a <form> element in the live DOM. next/script's afterInteractive
+    // strategy injects the tag outside that hierarchy (even if it's written
+    // inside <form> in JSX), which triggers:
+    // "Please put your Paystack Inline javascript file inside of a form element".
+    // So we load it manually and append it as a real child of the form node.
+    useEffect(() => {
+        if (!formRef.current) return;
+        if (window.PaystackPop) {
+            setPaystackReady(true);
+            return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://js.paystack.co/v1/inline.js";
+        script.async = true;
+        script.onload = () => setPaystackReady(true);
+        formRef.current.appendChild(script);
+
+        return () => {
+            script.remove();
+        };
+    }, []);
 
     const validateStep1 = (): boolean => {
         const e: FormErrors = {};
@@ -875,9 +937,7 @@ export default function BookingForm() {
     }
 
     return (
-        <form>
-            <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" onLoad={() => setPaystackReady(true)} />
-
+        <form ref={formRef}>
             {/* Step indicator */}
             <div className="flex items-center gap-0 mb-6">
                 {STEP_LABELS.map((label, i) => {

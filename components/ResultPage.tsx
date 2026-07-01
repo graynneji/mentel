@@ -1367,6 +1367,11 @@ export default function ResultPage() {
     //         (window as any).fbq('track', 'Lead');
     //     }
     // }, []);
+    useEffect(() => {
+        if (typeof window !== "undefined" && (window as any).fbq) {
+            (window as any).fbq('track', 'PageView');;
+        }
+    }, []);
 
     if (!hydrated || !data) return null;
 

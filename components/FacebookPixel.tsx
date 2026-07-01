@@ -4,9 +4,9 @@
 import Script from "next/script";
 
 export default function FacebookPixel() {
-    return (
-        <Script id="fb-pixel" strategy="afterInteractive">
-            {`
+  return (
+    <Script id="fb-pixel" strategy="afterInteractive">
+      {`
         !function(f,b,e,v,n,t,s){
           if(f.fbq)return;
           n=f.fbq=function(){
@@ -28,8 +28,8 @@ export default function FacebookPixel() {
         'https://connect.facebook.net/en_US/fbevents.js');
 
         fbq('init', '1701195157569863');
-        fbq('track', 'PageView');
+    
       `}
-        </Script>
-    );
+    </Script>
+  );
 }
