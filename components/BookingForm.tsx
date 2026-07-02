@@ -721,7 +721,7 @@ export default function BookingForm() {
     const [step, setStep] = useState<1 | 2 | 3>(1);
     const [form, setForm] = useState<FormData>({
         name: "", email: "", phone: "", reason: "", plan: "once",
-        paymentMethod: "", corporateCode: "", hmoProvider: "", hmoPolicyNumber: "",
+        paymentMethod: "pocket", corporateCode: "", hmoProvider: "", hmoPolicyNumber: "",
     });
     const [errors, setErrors] = useState<FormErrors>({});
     const [loading, setLoading] = useState(false);
