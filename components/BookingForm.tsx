@@ -790,7 +790,7 @@ export default function BookingForm() {
                     email: form.email,
                     phone: form.phone,
                     message: `[Booking drop-off capture] User completed Step 1 and advanced to payment method selection. Reason for consultation: ${form.reason}`,
-                    source: "other",
+                    source: "payment_initiated",
                 }),
             }).catch(() => { /* silent — never surface errors to user */ });
         } catch {

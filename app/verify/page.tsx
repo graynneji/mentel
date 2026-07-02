@@ -402,8 +402,8 @@ function VerifyContent() {
                 if (typeof window !== "undefined" && (window as any).fbq) {
                     const trackedKey = `fb_purchase_tracked_${data.payment.reference}`;
                     if (!sessionStorage.getItem(trackedKey)) {
-                        (window as any).fbq("track", "pageView");
-                        (window as any).fbq("track", "Lead");
+                        // (window as any).fbq("track", "pageView");
+                        // (window as any).fbq("track", "Lead");
                         (window as any).fbq("track", "Purchase", {
                             value: data.payment.amount,
                             currency: "NGN",

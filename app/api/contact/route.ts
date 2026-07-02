@@ -52,6 +52,7 @@ const VALID_CATEGORIES = [
   "support",
   "partnership",
   "press",
+  "payment_initiated",
   "other",
 ] as const;
 
@@ -64,6 +65,7 @@ const CATEGORY_LABELS: Record<ContactCategory, string> = {
   support: "Support Request",
   partnership: "Partnership",
   press: "Press / Media",
+  payment_initiated: "Payment Initiated",
   other: "Other",
 };
 
@@ -212,6 +214,7 @@ export async function GET_HANDLER(req: Request) {
       "support",
       "partnership",
       "press",
+      "payment_initiated",
       "other",
     ];
 

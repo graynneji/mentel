@@ -28,7 +28,7 @@ export default function FacebookPixel() {
         'https://connect.facebook.net/en_US/fbevents.js');
 
         fbq('init', '1701195157569863');
-    
+        fbq("track", "pageView");
       `}
     </Script>
   );
