@@ -1,5 +1,3 @@
-// // app/api/paystack/verify/route.ts
-
 // import { withRateLimit } from "@/lib/withRateLimit";
 // import { NextResponse } from "next/server";
 
@@ -82,6 +80,8 @@
 
 import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
+import { after } from "next/server";
+import { recordEvent, ensureVisitorAndSession } from "@/lib/analytics/ingest";
 
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!;
 
@@ -134,21 +134,65 @@ export async function GET_HANDLER(req: Request) {
           f.variable_name === variable,
       )?.value ?? "";
 
-    return NextResponse.json({
-      success: true,
-      payment: {
-        reference: tx.reference,
-        amount: tx.amount / 100,
-        currency: tx.currency,
-        channel: tx.channel,
-        paidAt: tx.paid_at,
-        name: getField("name") || tx.customer?.first_name || "",
-        email: tx.customer?.email ?? "",
-        phone: getField("phone"),
-        plan: getField("plan"),
-        reason: getField("reason"),
-      },
-    });
+    const payment = {
+      reference: tx.reference,
+      amount: tx.amount / 100,
+      currency: tx.currency,
+      channel: tx.channel,
+      paidAt: tx.paid_at,
+      name: getField("name") || tx.customer?.first_name || "",
+      email: tx.customer?.email ?? "",
+      phone: getField("phone"),
+      plan: getField("plan"),
+      reason: getField("reason"),
+    };
+
+    // ── Analytics: fire PAYMENT_COMPLETED server-side ─────────────────────────
+    // This is a browser-initiated GET (Paystack redirect), so the user's
+    // mentel_vid / mentel_sid cookies are present on the request.
+    // Fire-and-forget via after() so it never delays the response.
+    const cookieHeader = req.headers.get("cookie") ?? "";
+    const getCookie = (name: string) =>
+      cookieHeader.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] ?? null;
+
+    const visitorId = getCookie("mentel_vid");
+    const sessionId = getCookie("mentel_sid");
+
+    if (visitorId && sessionId) {
+      after(
+        (async () => {
+          const ctx = {
+            visitorId,
+            sessionId,
+            userId: null,
+            isNewSession: false,
+            utm: {},
+            referrer: req.headers.get("referer"),
+            landingPage: null,
+          };
+          await ensureVisitorAndSession(req.headers, ctx);
+          await recordEvent(
+            {
+              event: "PAYMENT_COMPLETED",
+              properties: {
+                amount: payment.amount,
+                currency: payment.currency,
+                plan: payment.plan,
+                channel: payment.channel,
+                reference: payment.reference,
+                email: payment.email,
+              },
+            },
+            ctx,
+          );
+        })().catch((err) =>
+          console.error("[analytics] PAYMENT_COMPLETED failed:", err),
+        ),
+      );
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
+    return NextResponse.json({ success: true, payment });
   } catch (error) {
     console.error("Verify error:", error);
     return NextResponse.json(
