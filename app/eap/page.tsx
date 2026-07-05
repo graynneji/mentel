@@ -1171,13 +1171,13 @@ export default function EAPLandingPage() {
                         <EnquiryForm />
                     </div>
                     <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs" style={{ color: "var(--text-muted)" }}>
-                        <a href="mailto:eap@mentel.com" className="flex items-center gap-1.5 hover:underline">
+                        <a href="mailto:hello@mail.trymentel.com" className="flex items-center gap-1.5 hover:underline">
                             <Mail size={12} />
-                            eap@mentel.com
+                            hello@mail.trymentel.com
                         </a>
-                        <a href="tel:+2341234567890" className="flex items-center gap-1.5 hover:underline">
+                        <a href="tel:+2347031362034" className="flex items-center gap-1.5 hover:underline">
                             <Phone size={12} />
-                            +234 123 456 7890
+                            +234 703 136 2034
                         </a>
                     </div>
                 </div>

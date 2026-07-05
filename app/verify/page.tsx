@@ -1,3 +1,4 @@
+
 // // app/verify/page.tsx
 
 // "use client";
@@ -44,6 +45,55 @@
 //     );
 // }
 
+// // ── Verify with retry ────────────────────────────────────────────────────────
+// // Paystack occasionally takes a moment to settle after the popup reports
+// // success client-side. Without a retry, a fast redirect can hit our /verify
+// // API before Paystack's own record shows status "success", producing a false
+// // "Payment not verified" screen for someone who genuinely paid. We retry a
+// // few times with a short delay before treating it as a real failure.
+// async function verifyWithRetry(
+//     reference: string,
+//     attempts = 3,
+//     delayMs = 1200
+// ): Promise<{ success: boolean; payment?: Payment; error?: string; status?: string }> {
+//     let lastData: { success: boolean; payment?: Payment; error?: string; status?: string } = {
+//         success: false,
+//         error: "Payment could not be verified.",
+//     };
+
+//     for (let i = 0; i < attempts; i++) {
+//         try {
+//             const res = await fetch(`/api/paystack/verify?reference=${encodeURIComponent(reference)}`, {
+//                 cache: "no-store",
+//             });
+//             const data = await res.json();
+
+//             if (res.ok && data.success) {
+//                 return data;
+//             }
+
+//             lastData = data;
+
+//             // Only retry on "not completed yet" style responses (status present but
+//             // not success). Don't retry on hard failures like invalid reference.
+//             const isPending = data.status && data.status !== "success";
+//             if (isPending && i < attempts - 1) {
+//                 await new Promise((r) => setTimeout(r, delayMs));
+//                 continue;
+//             }
+//             return data;
+//         } catch {
+//             lastData = { success: false, error: "Network error. Please contact support if you were charged." };
+//             if (i < attempts - 1) {
+//                 await new Promise((r) => setTimeout(r, delayMs));
+//                 continue;
+//             }
+//         }
+//     }
+
+//     return lastData;
+// }
+
 // // ── Inner component — split out because useSearchParams() requires Suspense ────
 // // Next.js cannot prerender pages that call useSearchParams() at build time.
 // // The fix is to move the hook into a child component and wrap it in <Suspense>.
@@ -63,47 +113,50 @@
 //             return;
 //         }
 
+//         let cancelled = false;
+
 //         const verify = async () => {
-//             try {
-//                 const res = await fetch(`/api/paystack/verify?reference=${encodeURIComponent(reference)}`);
-//                 const data = await res.json();
+//             const data = await verifyWithRetry(reference);
+//             if (cancelled) return;
 
-//                 if (res.ok && data.success) {
-//                     setPayment(data.payment);
-//                     setState("success");
+//             if (data.success && data.payment) {
+//                 setPayment(data.payment);
+//                 setState("success");
 
-//                     // if (typeof window !== "undefined" && window.ttq) {
-//                     //     window.ttq.track("CompletePayment", { value: data.payment.amount, currency: "NGN" });
-//                     //     window.ttq.track("Schedule");
-//                     //     window.ttq.track("CompleteRegistration");
-//                     // }
+//                 // if (typeof window !== "undefined" && window.ttq) {
+//                 //     window.ttq.track("CompletePayment", { value: data.payment.amount, currency: "NGN" });
+//                 //     window.ttq.track("Schedule");
+//                 //     window.ttq.track("CompleteRegistration");
+//                 // }
 
-//                     if (typeof window !== "undefined" && (window as any).fbq) {
-//                         (window as any).fbq("track", "Lead");
-
-//                         (window as any).fbq?.(
-//                             "track",
-//                             "Purchase",
-//                             {
-//                                 value: data.payment.amount,
-//                                 currency: "NGN",
-//                                 transaction_id: data.payment.reference,
-//                             }
-//                         );
+//                 // Dedupe pixel firing per reference. Without this, a refresh, the
+//                 // back button, someone re-opening the confirmation link, or React's
+//                 // Strict Mode double-invoke in dev all re-fire Purchase/Lead events
+//                 // for the same payment, inflating Meta's conversion numbers.
+//                 if (typeof window !== "undefined" && (window as any).fbq) {
+//                     const trackedKey = `fb_purchase_tracked_${data.payment.reference}`;
+//                     if (!sessionStorage.getItem(trackedKey)) {
+//                         // (window as any).fbq("track", "pageView");
+//                         // (window as any).fbq("track", "Lead");
+//                         (window as any).fbq("track", "Purchase", {
+//                             value: data.payment.amount,
+//                             currency: "NGN",
+//                             transaction_id: data.payment.reference,
+//                         });
+//                         sessionStorage.setItem(trackedKey, "1");
 //                     }
-
-
-//                 } else {
-//                     setErrorMsg(data.error ?? "Payment could not be verified.");
-//                     setState("failed");
 //                 }
-//             } catch {
-//                 setErrorMsg("Network error. Please contact support if you were charged.");
+//             } else {
+//                 setErrorMsg(data.error ?? "Payment could not be verified.");
 //                 setState("failed");
 //             }
 //         };
 
 //         verify();
+
+//         return () => {
+//             cancelled = true;
+//         };
 //     }, [reference]);
 
 //     if (state === "loading") return <LoadingScreen />;
@@ -265,7 +318,6 @@
 //     );
 // }
 
-// app/verify/page.tsx
 
 "use client";
 import { Suspense, useEffect, useState } from "react";
@@ -273,6 +325,8 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, XCircle, Loader2, ArrowRight } from "lucide-react";
 import BgBlobs from "@/components/BgBlobs";
+import { fireConversion } from "@/lib/tracking/pixels";
+import { markBooked } from "@/lib/personalization/profile";
 
 type State = "loading" | "success" | "failed";
 
@@ -389,29 +443,21 @@ function VerifyContent() {
                 setPayment(data.payment);
                 setState("success");
 
-                // if (typeof window !== "undefined" && window.ttq) {
-                //     window.ttq.track("CompletePayment", { value: data.payment.amount, currency: "NGN" });
-                //     window.ttq.track("Schedule");
-                //     window.ttq.track("CompleteRegistration");
-                // }
+                // Personalization: the booking is now confirmed server-side —
+                // mark it booked and clear resume state so returning visitors
+                // aren't shown a stale "continue booking" prompt.
+                markBooked();
 
-                // Dedupe pixel firing per reference. Without this, a refresh, the
-                // back button, someone re-opening the confirmation link, or React's
-                // Strict Mode double-invoke in dev all re-fire Purchase/Lead events
-                // for the same payment, inflating Meta's conversion numbers.
-                if (typeof window !== "undefined" && (window as any).fbq) {
-                    const trackedKey = `fb_purchase_tracked_${data.payment.reference}`;
-                    if (!sessionStorage.getItem(trackedKey)) {
-                        // (window as any).fbq("track", "pageView");
-                        // (window as any).fbq("track", "Lead");
-                        (window as any).fbq("track", "Purchase", {
-                            value: data.payment.amount,
-                            currency: "NGN",
-                            transaction_id: data.payment.reference,
-                        });
-                        sessionStorage.setItem(trackedKey, "1");
-                    }
-                }
+                // Fires Meta Pixel + Google Ads + TikTok in one call, each
+                // deduped per payment reference so a refresh, the back
+                // button, or React Strict Mode's double-invoke in dev never
+                // double-counts the same conversion.
+                fireConversion("Purchase", {
+                    value: data.payment.amount,
+                    currency: "NGN",
+                    transactionId: data.payment.reference,
+                    dedupeKey: data.payment.reference,
+                });
             } else {
                 setErrorMsg(data.error ?? "Payment could not be verified.");
                 setState("failed");

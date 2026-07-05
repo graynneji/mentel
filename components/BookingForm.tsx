@@ -1,7 +1,6 @@
 
 // "use client";
-// import { useState } from "react";
-// import Script from "next/script";
+// import { useState, useEffect, useRef } from "react";
 // import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft, Wallet, Shield, Building2 } from "lucide-react";
 // import { useRouter } from "next/navigation";
 // import { analytics } from "@/lib/analytics/client";
@@ -97,7 +96,7 @@
 //     const [step, setStep] = useState<1 | 2 | 3>(1);
 //     const [form, setForm] = useState<FormData>({
 //         name: "", email: "", phone: "", reason: "", plan: "once",
-//         paymentMethod: "", corporateCode: "", hmoProvider: "", hmoPolicyNumber: "",
+//         paymentMethod: "pocket", corporateCode: "", hmoProvider: "", hmoPolicyNumber: "",
 //     });
 //     const [errors, setErrors] = useState<FormErrors>({});
 //     const [loading, setLoading] = useState(false);
@@ -105,6 +104,31 @@
 //     const [paystackReady, setPaystackReady] = useState(false);
 //     const CAL_EVENT_TYPE_ID: number = 6108062
 //     const router = useRouter()
+//     const formRef = useRef<HTMLFormElement>(null);
+
+//     // Paystack's inline.js checks that its own <script> tag is actually nested
+//     // inside a <form> element in the live DOM. next/script's afterInteractive
+//     // strategy injects the tag outside that hierarchy (even if it's written
+//     // inside <form> in JSX), which triggers:
+//     // "Please put your Paystack Inline javascript file inside of a form element".
+//     // So we load it manually and append it as a real child of the form node.
+//     useEffect(() => {
+//         if (!formRef.current) return;
+//         if (window.PaystackPop) {
+//             setPaystackReady(true);
+//             return;
+//         }
+
+//         const script = document.createElement("script");
+//         script.src = "https://js.paystack.co/v1/inline.js";
+//         script.async = true;
+//         script.onload = () => setPaystackReady(true);
+//         formRef.current.appendChild(script);
+
+//         return () => {
+//             script.remove();
+//         };
+//     }, []);
 
 //     const validateStep1 = (): boolean => {
 //         const e: FormErrors = {};
@@ -141,7 +165,7 @@
 //                     email: form.email,
 //                     phone: form.phone,
 //                     message: `[Booking drop-off capture] User completed Step 1 and advanced to payment method selection. Reason for consultation: ${form.reason}`,
-//                     source: "other",
+//                     source: "payment_initiated",
 //                 }),
 //             }).catch(() => { /* silent — never surface errors to user */ });
 //         } catch {
@@ -288,9 +312,7 @@
 //     }
 
 //     return (
-//         <form>
-//             <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" onLoad={() => setPaystackReady(true)} />
-
+//         <form ref={formRef}>
 //             {/* Step indicator */}
 //             <div className="flex items-center gap-0 mb-6">
 //                 {STEP_LABELS.map((label, i) => {
@@ -624,11 +646,20 @@
 //     );
 // }
 
+
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { ChevronDown, CheckCircle, Loader2, Zap, Calendar, ArrowLeft, Wallet, Shield, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { analytics } from "@/lib/analytics/client";
+import {
+    getProfile,
+    saveBookingProgress,
+    markReachedPaymentPage,
+    markBooked,
+    setInterest,
+} from "@/lib/personalization/profile";
+import { fireConversion } from "@/lib/tracking/pixels";
 
 const REASONS = [
     "Anxiety", "Depression", "Marriage Counselling", "Grief & Loss",
@@ -731,6 +762,26 @@ export default function BookingForm() {
     const router = useRouter()
     const formRef = useRef<HTMLFormElement>(null);
 
+    // Personalization: resume a returning visitor who stopped partway
+    // through booking — restore their step and details instead of making
+    // them retype everything from scratch. Runs once on mount only.
+    useEffect(() => {
+        const profile = getProfile();
+        const saved = profile.booking;
+        if (!saved) return;
+        setForm((prev) => ({
+            ...prev,
+            name: saved.name ?? prev.name,
+            email: saved.email ?? prev.email,
+            phone: saved.phone ?? prev.phone,
+            reason: saved.reason ?? prev.reason,
+            plan: saved.plan ?? prev.plan,
+            paymentMethod: saved.paymentMethod ?? prev.paymentMethod,
+        }));
+        setStep(saved.step);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // Paystack's inline.js checks that its own <script> tag is actually nested
     // inside a <form> element in the live DOM. next/script's afterInteractive
     // strategy injects the tag outside that hierarchy (even if it's written
@@ -813,6 +864,7 @@ export default function BookingForm() {
             });
             if (res.ok) {
                 setSuccess(true);
+                markBooked();
             } else {
                 setErrors({ form: "Something went wrong. Please try again or email us directly." });
             }
@@ -831,9 +883,32 @@ export default function BookingForm() {
     const handleNext = () => {
         if (step === 1 && validateStep1()) {
             captureLeadSilently(); // fire-and-forget, user never sees this
+            if (form.reason) setInterest(form.reason);
+            saveBookingProgress({
+                step: 2,
+                name: form.name,
+                email: form.email,
+                phone: form.phone,
+                reason: form.reason,
+                plan: form.plan,
+                paymentMethod: form.paymentMethod,
+            });
+            markReachedPaymentPage();
+            fireConversion("InitiateCheckout", { contentName: form.plan });
             setStep(2);
         }
-        else if (step === 2 && validateStep2()) setStep(3);
+        else if (step === 2 && validateStep2()) {
+            saveBookingProgress({
+                step: 3,
+                name: form.name,
+                email: form.email,
+                phone: form.phone,
+                reason: form.reason,
+                plan: form.plan,
+                paymentMethod: form.paymentMethod,
+            });
+            setStep(3);
+        }
     };
 
     const handleBack = () => {
@@ -894,6 +969,7 @@ export default function BookingForm() {
                         value: data.amount,
                         currency: "NGN",
                     });
+                    markBooked();
                     router.push(
                         `/verify?reference=${encodeURIComponent(
                             response.reference || data.reference

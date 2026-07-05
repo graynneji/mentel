@@ -199,7 +199,7 @@ function HRAccessContent() {
 
                         <p className="mt-8 text-center text-[12px]" style={{ color: "rgba(255,255,255,0.25)" }}>
                             Don't have an access code?{" "}
-                            <a href="mailto:eap@trymentel.com" className="underline" style={{ color: "rgba(255,255,255,0.4)" }}>
+                            <a href="mailto:hello@mail.trymentel.com" className="underline" style={{ color: "rgba(255,255,255,0.4)" }}>
                                 Contact Mentel
                             </a>
                         </p>

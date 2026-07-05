@@ -1,6 +1,4 @@
 
-
-// // app/layout.tsx
 // import type { Metadata } from "next";
 // import "./globals.css";
 // import Navbar from "@/components/Navbar";
@@ -9,6 +7,8 @@
 // import { Nunito, DM_Sans } from "next/font/google";
 // import ConditionalShell from "@/components/Conditionalshell";
 // import { Analytics } from "@vercel/analytics/next";
+// import FacebookPixel from "@/components/FacebookPixel";
+// import WhatsAppButton from "@/components/WhatsAppButton";
 
 // const dmSans = DM_Sans({
 //   subsets: ["latin"],
@@ -20,7 +20,7 @@
 // const nunito = Nunito({
 //   subsets: ["latin"],
 //   weight: ["300", "400", "500"],
-//   variable: "--font-dm",
+//   variable: "--font-nunito", // Fixed variable name
 //   display: "swap",
 // });
 
@@ -33,21 +33,26 @@
 //   description:
 //     "Mentel connects you with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
 //   keywords: [
-//     "mental health",
-//     "therapy",
-//     "online therapy",
-//     "licensed therapist",
-//     "anxiety treatment",
-//     "depression help",
-//     "relationship counseling",
-//     "mental wellness",
-//     "teletherapy",
-//     "CBT",
-//     "therapy Nigeria",
-//     "mental health Lagos",
+//     "online therapy Nigeria",
+//     "licensed therapist Nigeria",
+//     "mental health Nigeria",
+//     "therapy Lagos",
 //     "therapy Abuja",
-//     "Nigerian therapist",
+//     "therapy Port Harcourt",
+//     "anxiety therapy",
+//     "depression therapy",
+//     "trauma therapy",
+//     "relationship counselling Nigeria",
+//     "couples therapy Nigeria",
+//     "psychologist Nigeria",
+//     "CBT therapy",
+//     "mental wellness",
+//     "burnout recovery",
+//     "online counselling",
 //     "affordable therapy Nigeria",
+//     "therapy near me",
+//     "find a therapist",
+//     "mental health support",
 //   ],
 //   authors: [{ name: "Mentel", url: "https://www.trymentel.com" }],
 //   creator: "Mentel",
@@ -63,10 +68,11 @@
 //     siteName: "Mentel",
 //     title: "Mentel - Mental Health & Therapy Services",
 //     description:
-//       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
+//       "Find licensed therapists in Nigeria for anxiety, depression, trauma, burnout, stress, and relationship challenges. Secure online therapy sessions from ₦8,500.",
 //     images: [
 //       {
-//         url: "/og-image.png",
+//         url: "https://www.trymentel.com/og-image.jpg",
+//         // url: "https://www.trymentel.com/og-image.png",
 //         width: 1200,
 //         height: 630,
 //         alt: "Mentel - Mental Health & Therapy Services",
@@ -78,7 +84,8 @@
 //     title: "Mentel - Mental Health & Therapy Services",
 //     description:
 //       "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
-//     images: ["/og-image.png"],
+//     images: ["https://www.trymentel.com/og-image.jpg"],
+//     // images: ["/og-image.png"],
 //     creator: "@mentel",
 //     site: "@mentel",
 //   },
@@ -97,6 +104,7 @@
 //       { url: "/favicon.ico" },
 //       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
 //       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+//       { url: "/favicon.png", sizes: "48x48", type: "image/png" },
 //     ],
 //     apple: [{ url: "/apple-touch-icon.png" }],
 //   },
@@ -104,187 +112,135 @@
 // };
 
 // /* ─────────────────────────────────────────────
-//    STRUCTURED DATA (JSON-LD)
-//    All schemas intentionally verbose for GEO:
-//    AI engines (ChatGPT, Perplexity, Gemini) parse
-//    these to surface accurate citations.
+//    UNIFIED STRUCTURED DATA (JSON-LD @graph)
+//    Combined into a single schema graph to prevent 
+//    conflicting entity IDs and resolve AI parsing issues.
 // ───────────────────────────────────────────── */
 
-// const organizationSchema = {
+// const structuredData = {
 //   "@context": "https://schema.org",
-//   "@type": "Organization",
-//   name: "Mentel",
-//   alternateName: "Mentel Mental Health",
-//   url: "https://www.trymentel.com",
-//   logo: "https://www.trymentel.com/logo.png",
-//   description:
-//     "Mentel is a Nigerian online therapy platform connecting people with licensed, vetted therapists. Sessions start from ₦5,500. Evidence-based care for anxiety, depression, burnout, trauma, and relationship issues.",
-//   foundingDate: "2024",
-//   email: "hello@mail.trymentel.com",
-//   address: {
-//     "@type": "PostalAddress",
-//     addressLocality: "Lagos",
-//     addressRegion: "Lagos",
-//     addressCountry: "NG",
-//   },
-//   areaServed: {
-//     "@type": "Country",
-//     name: "Nigeria",
-//   },
-//   sameAs: [
-//     "https://instagram.com/mentel_ltd",
-//     "https://tiktok.com/@mentelltd",
-//     "https://wa.me/+254734527573",
-//   ],
-//   knowsAbout: [
-//     "Mental Health",
-//     "Online Therapy",
-//     "Anxiety",
-//     "Depression",
-//     "Trauma",
-//     "PTSD",
-//     "Burnout",
-//     "Couples Therapy",
-//     "CBT",
-//     "EMDR",
-//     "Nigerian Mental Health",
-//   ],
-// };
-
-// const websiteSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "WebSite",
-//   "@id": "https://www.trymentel.com/#website",
-//   name: "Mentel",
-//   url: "https://www.trymentel.com",
-//   "publisher": {
-//     "@id": "https://www.trymentel.com/#organization" // Link to your brand
-//   },
-//   description:
-//     "Nigeria's online therapy platform. Licensed therapists from ₦5,500 per session.",
-//   inLanguage: "en-NG",
-//   potentialAction: {
-//     "@type": "SearchAction",
-//     target: {
-//       "@type": "EntryPoint",
-//       urlTemplate: "https://www.trymentel.com/?q={search_term_string}",
-//     },
-//     "query-input": "required name=search_term_string",
-//   },
-// };
-
-// const medicalBusinessSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "MedicalBusiness",
-//   "@id": "https://www.trymentel.com/#organization",
-//   name: "Mentel",
-//   url: "https://www.trymentel.com",
-//   logo: "https://www.trymentel.com/logo.png",
-//   description:
-//     "Licensed online therapy and mental health services for Nigerians. Evidence-based care for anxiety, depression, relationships, trauma, burnout, and more. Sessions from ₦5,500.",
-//   address: {
-//     "@type": "PostalAddress",
-//     addressLocality: "Lagos",
-//     addressRegion: "Lagos",
-//     addressCountry: "NG",
-//   },
-//   areaServed: {
-//     "@type": "Country",
-//     name: "Nigeria",
-//   },
-//   email: "hello@mail.trymentel.com",
-//   priceRange: "₦₦",
-//   currenciesAccepted: "NGN",
-//   paymentAccepted: "Credit Card, Bank Transfer",
-//   medicalSpecialty: [
-//     "Psychiatry",
-//     "Psychology",
-//     "Mental Health",
-//     "Clinical Psychology",
-//     "Counseling Psychology",
-//   ],
-//   availableService: [
+//   "@graph": [
 //     {
-//       "@type": "MedicalTherapy",
-//       name: "Individual Therapy",
-//       description: "One-on-one sessions with a licensed therapist via secure video call. From ₦5,500 per session.",
+//       "@type": "WebSite",
+//       "@id": "https://www.trymentel.com/#website",
+//       name: "Mentel",
+//       alternateName: ["Mentel", "Mentel - Mental Health & Therapy Services", "Mentel Ltd"], // Crucial for Google Site Name mapping
+//       url: "https://www.trymentel.com",
+//       inLanguage: "en-NG",
+//       description:
+//         "Nigeria's online therapy platform. Licensed therapists from ₦8,500 per session.",
+//       publisher: {
+//         "@id": "https://www.trymentel.com/#organization",
+//       },
+//       potentialAction: {
+//         "@type": "SearchAction",
+//         target: {
+//           "@type": "EntryPoint",
+//           urlTemplate: "https://www.trymentel.com/?q={search_term_string}",
+//         },
+//         "query-input": "required name=search_term_string",
+//       },
 //     },
 //     {
-//       "@type": "MedicalTherapy",
-//       name: "Couples Therapy",
-//       description: "Joint sessions for couples navigating conflict, communication breakdown, or relationship challenges.",
+//       "@type": ["MedicalBusiness", "Organization"], // Unified types
+//       "@id": "https://www.trymentel.com/#organization",
+//       name: "Mentel",
+//       alternateName: "Mentel - Mental Health & Therapy Services",
+//       url: "https://www.trymentel.com",
+//       logo: "https://www.trymentel.com/logo.png",
+//       description:
+//         "Licensed online therapy and mental health services for Nigerians. Evidence-based care for anxiety, depression, relationships, trauma, burnout, and more. Sessions from ₦5,500.",
+//       foundingDate: "2024",
+//       email: "hello@mail.trymentel.com",
+//       address: {
+//         "@type": "PostalAddress",
+//         addressLocality: "Lagos",
+//         addressRegion: "Lagos",
+//         addressCountry: "NG",
+//       },
+//       areaServed: {
+//         "@type": "Country",
+//         name: "Nigeria",
+//       },
+//       sameAs: [
+//         "https://instagram.com/mentel_ltd",
+//         "https://tiktok.com/@mentelltd",
+//         "https://wa.me/254734527573",
+//       ],
+//       priceRange: "₦₦",
+//       currenciesAccepted: "NGN",
+//       paymentAccepted: "Credit Card, Bank Transfer",
+//       medicalSpecialty: [
+//         "Psychiatry",
+//         "Psychology",
+//         "Mental Health",
+//         "Clinical Psychology",
+//         "Counseling Psychology",
+//         "telehealth",
+//         "Online Therapy",
+//       ],
+//       availableService: [
+//         {
+//           "@type": "MedicalTherapy",
+//           name: "Individual Therapy",
+//           description:
+//             "One-on-one sessions with a licensed therapist via secure video call. From ₦8,500 per session.",
+//         },
+//         {
+//           "@type": "MedicalTherapy",
+//           name: "Couples Therapy",
+//           description:
+//             "Joint sessions for couples navigating conflict, communication breakdown, or relationship challenges.",
+//         },
+//         {
+//           "@type": "MedicalTherapy",
+//           name: "Trauma Therapy",
+//           description:
+//             "Specialist trauma care using EMDR, Trauma-Focused CBT, and Somatic Experiencing.",
+//         },
+//         {
+//           "@type": "MedicalTherapy",
+//           name: "Anxiety Treatment",
+//           description:
+//             "Evidence-based treatment for anxiety disorders using Cognitive Behavioural Therapy (CBT).",
+//         },
+//         {
+//           "@type": "MedicalTherapy",
+//           name: "Depression Support",
+//           description:
+//             "Structured support for depression using Behavioural Activation and CBT.",
+//         },
+//         {
+//           "@type": "MedicalTherapy",
+//           name: "Burnout Recovery",
+//           description:
+//             "ACT-based therapy and values work to recover from occupational burnout.",
+//         },
+//       ],
 //     },
 //     {
-//       "@type": "MedicalTherapy",
-//       name: "Trauma Therapy",
-//       description: "Specialist trauma care using EMDR, Trauma-Focused CBT, and Somatic Experiencing.",
-//     },
-//     {
-//       "@type": "MedicalTherapy",
-//       name: "Anxiety Treatment",
-//       description: "Evidence-based treatment for anxiety disorders using Cognitive Behavioural Therapy (CBT).",
-//     },
-//     {
-//       "@type": "MedicalTherapy",
-//       name: "Depression Support",
-//       description: "Structured support for depression using Behavioural Activation and CBT.",
-//     },
-//     {
-//       "@type": "MedicalTherapy",
-//       name: "Burnout Recovery",
-//       description: "ACT-based therapy and values work to recover from occupational burnout.",
+//       "@type": "BreadcrumbList",
+//       "@id": "https://www.trymentel.com/#breadcrumb",
+//       itemListElement: [
+//         { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trymentel.com" },
+//         { "@type": "ListItem", position: 2, name: "Articles", item: "https://www.trymentel.com/articles" },
+//         { "@type": "ListItem", position: 3, name: "About", item: "https://www.trymentel.com/about" },
+//         { "@type": "ListItem", position: 4, name: "Services", item: "https://www.trymentel.com/services" },
+//         { "@type": "ListItem", position: 5, name: "Contact", item: "https://www.trymentel.com/contact" },
+//         { "@type": "ListItem", position: 6, name: "Book a Session", item: "https://www.trymentel.com/#book" },
+//       ],
 //     },
 //   ],
 // };
-
-// const siteNavigationSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "SiteLinksSearchBox",
-//   url: "https://www.trymentel.com",
-//   potentialAction: {
-//     "@type": "SearchAction",
-//     target: "https://www.trymentel.com/?q={search_term_string}",
-//     "query-input": "required name=search_term_string",
-//   },
-// };
-
-// const breadcrumbSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "BreadcrumbList",
-//   itemListElement: [
-//     { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trymentel.com" },
-//     { "@type": "ListItem", position: 2, name: "Articles", item: "https://www.trymentel.com/articles" },
-//     { "@type": "ListItem", position: 3, name: "About", item: "https://www.trymentel.com/about" },
-//     { "@type": "ListItem", position: 4, name: "Services", item: "https://www.trymentel.com/services" },
-//     { "@type": "ListItem", position: 5, name: "Contact", item: "https://www.trymentel.com/contact" },
-//     { "@type": "ListItem", position: 6, name: "Book a Session", item: "https://www.trymentel.com/book" },
-//   ],
-// };
-
 
 // export default function RootLayout({ children }: { children: React.ReactNode }) {
 //   return (
-//     <html lang="en" className={`${dmSans.variable}`}>
+//     // Injected both font variables so they actually load
+//     <html lang="en" className={`${dmSans.variable} ${nunito.variable}`}>
 //       <head>
 //         <script
 //           type="application/ld+json"
-//           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-//         />
-//         <script
-//           type="application/ld+json"
-//           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-//         />
-//         <script
-//           type="application/ld+json"
-//           dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalBusinessSchema) }}
-//         />
-//         <script
-//           type="application/ld+json"
-//           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationSchema) }}
-//         />
-//         <script
-//           type="application/ld+json"
-//           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+//           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
 //         />
 //       </head>
 //       <body
@@ -319,13 +275,15 @@
 //             style={{ display: "none", visibility: "hidden" }}
 //           />
 //         </noscript>
-
+//         <FacebookPixel />
+//         <WhatsAppButton />
 //         <ConditionalShell>{children}</ConditionalShell>
 //         <Analytics />
 //       </body>
 //     </html>
 //   );
 // }
+
 
 import type { Metadata } from "next";
 import "./globals.css";
@@ -336,6 +294,8 @@ import { Nunito, DM_Sans } from "next/font/google";
 import ConditionalShell from "@/components/Conditionalshell";
 import { Analytics } from "@vercel/analytics/next";
 import FacebookPixel from "@/components/FacebookPixel";
+import GoogleAdsTag from "@/components/GoogleAdsTag";
+import OneSignalInit from "@/components/OneSignalInit";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const dmSans = DM_Sans({
@@ -604,6 +564,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         <FacebookPixel />
+        <GoogleAdsTag />
+        <OneSignalInit />
         <WhatsAppButton />
         <ConditionalShell>{children}</ConditionalShell>
         <Analytics />
