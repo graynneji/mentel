@@ -1,6 +1,7 @@
 // components/WhatsAppButton.tsx
 "use client";
 
+import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 
 // Set this in your .env file:
@@ -8,7 +9,22 @@ import { MessageCircle } from "lucide-react";
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 const DEFAULT_MESSAGE = "Hi, I'd like to know more about booking a session with Mentel.";
 
+// Hide the button on internal/admin/app routes; show it everywhere else
+// (landing page, /about, /contact, /articles/*, /services, etc.).
+// A prefix deny-list means new marketing pages just work automatically —
+// you only need to remember to add a prefix here if you add a new
+// internal area, not every time you add a new public page.
+const BLOCKED_PREFIXES = ["/admin", "/assessment", "/book", "/marketing"];
+
 export default function WhatsAppButton() {
+    const pathname = usePathname();
+    const isBlocked = BLOCKED_PREFIXES.some(
+        (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+    );
+    if (isBlocked) {
+        return null;
+    }
+
     if (!WHATSAPP_NUMBER) {
         // Fails loudly in dev instead of silently rendering a dead button.
         if (process.env.NODE_ENV !== "production") {
