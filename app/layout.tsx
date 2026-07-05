@@ -336,6 +336,7 @@ import { Nunito, DM_Sans } from "next/font/google";
 import ConditionalShell from "@/components/Conditionalshell";
 import { Analytics } from "@vercel/analytics/next";
 import FacebookPixel from "@/components/FacebookPixel";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -603,6 +604,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         <FacebookPixel />
+        <WhatsAppButton />
         <ConditionalShell>{children}</ConditionalShell>
         <Analytics />
       </body>
