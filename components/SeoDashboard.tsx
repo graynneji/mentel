@@ -191,9 +191,9 @@ export default function SeoDashboard() {
                     <div key={p.path} className="flex items-center gap-3 px-5 py-3 border-b last:border-b-0" style={{ borderColor: "#eef3f0" }}>
                         <span className="text-sm font-medium text-[#1c3a3a] flex-1">{p.label}</span>
                         <span className="text-xs text-[#a0b8ac]">{p.path}</span>
-                        <a href={`${baseUrl}${p.path}`} target="_blank" rel="noopener noreferrer" className="text-[#a0b8ac] hover:text-[#3d8b8b]">
+                        <Link href={`${baseUrl}${p.path}`} target="_blank" rel="noopener noreferrer" className="text-[#a0b8ac] hover:text-[#3d8b8b]">
                             <ExternalLink size={14} />
-                        </a>
+                        </Link>
                         <button
                             onClick={() => submitForIndexing([p.path], p.path)}
                             disabled={indexing[p.path] === "pending" || !googleConfigured}
@@ -282,9 +282,9 @@ export default function SeoDashboard() {
                                     )}
 
                                     <div className="flex items-center gap-2">
-                                        <a href={`${baseUrl}${a.url}`} target="_blank" rel="noopener noreferrer" className="text-xs font-medium px-3 py-1.5 rounded-full border text-[#5a7a6e]" style={{ borderColor: "#e4eee8" }}>
+                                        <Link href={`${baseUrl}${a.url}`} target="_blank" rel="noopener noreferrer" className="text-xs font-medium px-3 py-1.5 rounded-full border text-[#5a7a6e]" style={{ borderColor: "#e4eee8" }}>
                                             View page
-                                        </a>
+                                        </Link>
                                         <button
                                             onClick={() => submitForIndexing([a.url], a.id)}
                                             disabled={indexing[a.id] === "pending" || !googleConfigured || a.status !== "published"}
