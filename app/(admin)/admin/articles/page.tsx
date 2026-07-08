@@ -130,7 +130,7 @@ export default function AdminArticlesPage() {
                                 </span>
                             )}
                             {a.status === "published" && (
-                                <a
+                                <Link
                                     href={`/articles/${a.slug}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -138,7 +138,7 @@ export default function AdminArticlesPage() {
                                     className="text-[#a0b8ac] hover:text-[#3d8b8b] shrink-0"
                                 >
                                     <ExternalLink size={14} />
-                                </a>
+                                </Link>
                             )}
                         </Link>
                     ))}

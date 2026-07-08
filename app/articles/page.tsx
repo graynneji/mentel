@@ -174,7 +174,6 @@
 //         </div>
 //     );
 // }
-
 // app/articles/page.tsx
 import Link from "next/link";
 import { ArrowRight, Clock, Leaf, BookOpen, TrendingUp } from "lucide-react";
@@ -182,6 +181,11 @@ import { articles } from "@/utilz/articles";
 import { getAllPublishedArticles } from "@/lib/articles/data";
 import ArticlesExplorer from "@/components/ArticlesExplorer";
 import { FeaturedCard } from "@/components/ArticleCard";
+
+// Re-query on every request — this list includes CMS-published articles,
+// which should appear as soon as they're published, not only after the
+// next full rebuild/deploy.
+export const dynamic = "force-dynamic";
 
 export const metadata = {
     title: "Mental Health Articles & Resources - Mentel",

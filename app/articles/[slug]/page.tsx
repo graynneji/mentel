@@ -335,21 +335,24 @@
 //     );
 // }
 
-
 // app/articles/[slug]/page.tsx
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
 import { articleContent, articles } from "@/utilz/articles";
-import { scorePageSEO } from "@/lib/seo-scoring-engine";
 import { getAllPublishedArticles, getPublishedDbArticleBySlug } from "@/lib/articles/data";
-import DbArticleView from "@/components/DbArticleView";
+import { markdownToSections } from "@/lib/articles/markdown-to-sections";
 import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisuals";
 import { ArticleCard } from "../../../components/ArticleCard";
 
+// Re-fetch on every request rather than caching indefinitely — CMS
+// articles are published dynamically and should show up immediately,
+// not only after the next full rebuild/deploy.
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
     // Static params for the legacy hard-coded articles only — DB-authored
-    // articles are rendered on-demand (still cacheable by Next's data cache).
+    // articles are rendered on-demand.
     return articles.map((a) => ({ slug: a.slug }));
 }
 
@@ -421,29 +424,61 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const param = await params;
-    const article = articles.find((a) => a.slug === param.slug);
+    const staticArticle = articles.find((a) => a.slug === param.slug);
 
-    if (!article) {
+    // ── Normalize both sources into one shared shape ────────────────────────
+    // article: { slug, title, category, excerpt, date, readMin, image, tags }
+    // content: { intro, sections: [{ heading, body, list? }], tldr?, faq? }
+    // Whichever source it came from, everything below renders identically —
+    // there is no separate "database article" layout.
+    let article: {
+        slug: string;
+        title: string;
+        category: string;
+        excerpt: string;
+        date: string;
+        readMin: number;
+        image: string | null;
+        tags: string[];
+        keywords: string[];
+    };
+    let content: {
+        intro: string;
+        sections: { heading: string; body: string; list?: { label?: string; value: string }[] }[];
+        tldr?: string;
+        faq?: { q: string; a: string }[];
+    } | undefined;
+
+    if (staticArticle) {
+        article = staticArticle;
+        content = articleContent[staticArticle.slug];
+    } else {
         const dbArticle = await getPublishedDbArticleBySlug(param.slug);
         if (!dbArticle) notFound();
 
-        const allArticles = await getAllPublishedArticles();
-        const related = allArticles
-            .filter((a) => a.slug !== dbArticle.slug && a.category === dbArticle.category)
-            .slice(0, 3);
-
-        return <DbArticleView article={dbArticle} related={related} />;
+        article = {
+            slug: dbArticle.slug,
+            title: dbArticle.title,
+            category: dbArticle.category,
+            excerpt: dbArticle.excerpt,
+            date: (dbArticle.publishedAt ?? dbArticle.createdAt).toISOString(),
+            readMin: dbArticle.readMin,
+            image: dbArticle.image,
+            tags: dbArticle.tags,
+            keywords: dbArticle.keywords,
+        };
+        content = markdownToSections(dbArticle.content);
     }
 
-    const content = articleContent[article.slug];
+    const allArticles = staticArticle ? null : await getAllPublishedArticles();
     const articleIndex = articles.findIndex((a) => a.slug === param.slug);
-    const prev = articles[articleIndex - 1] ?? null;
-    const next = articles[articleIndex + 1] ?? null;
+    const prev = staticArticle ? (articles[articleIndex - 1] ?? null) : null;
+    const next = staticArticle ? (articles[articleIndex + 1] ?? null) : null;
 
     // Related: same category, excluding current article, max 3
-    const related = articles
-        .filter((a) => a.slug !== article.slug && a.category === article.category)
-        .slice(0, 3);
+    const related = staticArticle
+        ? articles.filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3)
+        : (allArticles ?? []).filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3);
 
     const style = getCategoryStyle(article.category);
 

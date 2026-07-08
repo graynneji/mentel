@@ -332,7 +332,6 @@
 //     );
 // }
 
-
 "use client";
 
 import { useState } from "react";
@@ -397,6 +396,7 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState("");
     const [optimizing, setOptimizing] = useState(false);
+    const [applying, setApplying] = useState(false);
     const [suggestions, setSuggestions] = useState<{
         suggestedMetaTitle: string | null;
         suggestedMetaDescription: string | null;
@@ -512,15 +512,32 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
         }
     }
 
-    function applySuggestions() {
-        if (!suggestions) return;
-        if (suggestions.suggestedMetaTitle) update("metaTitle", suggestions.suggestedMetaTitle);
-        if (suggestions.suggestedMetaDescription) update("metaDescription", suggestions.suggestedMetaDescription);
-        if (suggestions.suggestedKeywordsToAdd.length > 0) {
-            const existing = form.keywords.split(",").map((k) => k.trim()).filter(Boolean);
-            update("keywords", [...new Set([...existing, ...suggestions.suggestedKeywordsToAdd])].join(", "));
+    async function applySuggestions() {
+        if (!suggestions || !articleId) return;
+        setApplying(true);
+        try {
+            // Actually persist the change — previously this only updated local
+            // form state, so re-running "Get suggestions" re-read the
+            // unchanged database record and showed the exact same suggestion
+            // again. Passing apply:true writes it straight to the article.
+            const res = await fetch("/api/admin/seo/optimize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: articleId, apply: true }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                setError(data.error ?? "Failed to apply suggestions.");
+                return;
+            }
+            const applied = data.article;
+            update("metaTitle", applied.metaTitle ?? "");
+            update("metaDescription", applied.metaDescription ?? "");
+            update("keywords", (applied.keywords ?? []).join(", "));
+            setSuggestions(null);
+        } finally {
+            setApplying(false);
         }
-        setSuggestions(null);
     }
 
     return (
@@ -684,10 +701,11 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
                                 <button
                                     type="button"
                                     onClick={applySuggestions}
-                                    className="text-xs font-semibold px-3 py-1.5 rounded-full text-white cursor-pointer"
+                                    disabled={applying}
+                                    className="text-xs font-semibold px-3 py-1.5 rounded-full text-white cursor-pointer disabled:opacity-60"
                                     style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                                 >
-                                    Apply suggestions to form
+                                    {applying ? "Saving…" : "Apply & save suggestions"}
                                 </button>
                             </div>
                         ) : (
