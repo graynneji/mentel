@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Send, Loader2, HeartHandshake, CheckCircle2 } from "lucide-react";
 
 const AREAS_OF_INTEREST = [
@@ -87,6 +87,12 @@ export default function VolunteerPage() {
                 return;
             }
             setSent(true);
+
+            // (window as any).fbq('track', 'Lead');
+            window.fbq?.("track", "Lead", {
+                content_name: "Volunteer Application",
+            });
+
         } catch {
             setServerError("Network error. Please check your connection and try again.");
         } finally {
