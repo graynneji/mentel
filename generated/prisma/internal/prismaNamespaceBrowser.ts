@@ -60,7 +60,8 @@ export const ModelName = {
   Company: 'Company',
   CompanyEmployee: 'CompanyEmployee',
   EAPAssessment: 'EAPAssessment',
-  EAPSession: 'EAPSession'
+  EAPSession: 'EAPSession',
+  Article: 'Article'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -283,6 +284,32 @@ export const EAPSessionScalarFieldEnum = {
 } as const
 
 export type EAPSessionScalarFieldEnum = (typeof EAPSessionScalarFieldEnum)[keyof typeof EAPSessionScalarFieldEnum]
+
+
+export const ArticleScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  slug: 'slug',
+  title: 'title',
+  excerpt: 'excerpt',
+  category: 'category',
+  tags: 'tags',
+  keywords: 'keywords',
+  image: 'image',
+  readMin: 'readMin',
+  featured: 'featured',
+  content: 'content',
+  metaTitle: 'metaTitle',
+  metaDescription: 'metaDescription',
+  status: 'status',
+  publishedAt: 'publishedAt',
+  seoScore: 'seoScore',
+  seoLastChecked: 'seoLastChecked',
+  lastIndexedAt: 'lastIndexedAt'
+} as const
+
+export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
 
 
 export const SortOrder = {

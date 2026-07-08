@@ -367,3 +367,52 @@ model EAPSession {
   @@index([scheduledAt])
   @@map("eap_sessions")
 }
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 3 — CONTENT (articles / blog, written from the admin CMS)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/// A blog/article entry. Replaces the previous hard-coded array in
+/// utilz/articles/index.ts — written and edited from /admin/articles.
+/// Content is stored as Markdown and rendered client-side.
+model Article {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  slug     String  @unique
+  title    String
+  excerpt  String
+  category String
+  tags     String[] @default([])
+  keywords String[] @default([]) // target SEO keywords for this article
+  image    String? // path or URL to the cover image
+  readMin  Int      @default(5) @map("read_min")
+  featured Boolean  @default(false)
+
+  // Full body content, written as Markdown in the admin editor.
+  content String @db.Text
+
+  // SEO fields — editable independently of the on-page title/excerpt so an
+  // author can tune the <title>/meta description without changing the
+  // headline shown to readers.
+  metaTitle       String? @map("meta_title")
+  metaDescription String? @map("meta_description")
+
+  status      String    @default("draft") // draft | published
+  publishedAt DateTime? @map("published_at")
+
+  // Populated by the SEO dashboard after a scorePageSEO() run — cached so
+  // the articles list can show a score without recomputing on every load.
+  seoScore       Int?      @map("seo_score")
+  seoLastChecked DateTime? @map("seo_last_checked")
+
+  // Populated after a successful Google Indexing API submission.
+  lastIndexedAt DateTime? @map("last_indexed_at")
+
+  @@index([status])
+  @@index([category])
+  @@index([publishedAt])
+  @@map("articles")
+}

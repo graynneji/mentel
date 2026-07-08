@@ -97,3 +97,10 @@ export type EAPAssessment = Prisma.EAPAssessmentModel
  * Used for session utilisation tracking visible in HR dashboard.
  */
 export type EAPSession = Prisma.EAPSessionModel
+/**
+ * Model Article
+ * A blog/article entry. Replaces the previous hard-coded array in
+ * utilz/articles/index.ts — written and edited from /admin/articles.
+ * Content is stored as Markdown and rendered client-side.
+ */
+export type Article = Prisma.ArticleModel

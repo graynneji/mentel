@@ -153,3 +153,135 @@ textarea {
 }
 
 /* Minimum tap target size (WCAG AA) */
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Rendered article content (Markdown → HTML from CMS articles and the
+   admin editor's live preview). Written by hand instead of depending on
+   @tailwindcss/typography (not installed here) — Tailwind's preflight
+   reset strips default margins from every element, so without explicit
+   rules headings/paragraphs/lists collapse into each other with no
+   spacing at all.
+   ───────────────────────────────────────────────────────────────────── */
+.article-content {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--text-muted);
+}
+
+.article-content > * + * {
+  margin-top: 1.25em;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4 {
+  font-family: var(--font-cormorant), serif;
+  color: var(--deep);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 1.8em;
+  margin-bottom: 0.5em;
+}
+
+.article-content h1 {
+  font-size: 1.9rem;
+}
+.article-content h2 {
+  font-size: 1.6rem;
+}
+.article-content h3 {
+  font-size: 1.3rem;
+}
+.article-content h4 {
+  font-size: 1.1rem;
+}
+
+.article-content h1:first-child,
+.article-content h2:first-child,
+.article-content h3:first-child {
+  margin-top: 0;
+}
+
+.article-content p {
+  margin-top: 1.1em;
+  margin-bottom: 1.1em;
+}
+
+.article-content ul,
+.article-content ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.4em;
+}
+
+.article-content ul {
+  list-style: disc;
+}
+.article-content ol {
+  list-style: decimal;
+}
+
+.article-content li {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+.article-content li > p {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+.article-content a {
+  color: var(--teal);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-content strong {
+  font-weight: 700;
+  color: var(--deep);
+}
+.article-content em {
+  font-style: italic;
+}
+
+.article-content blockquote {
+  border-left: 3px solid var(--sage);
+  padding-left: 1em;
+  margin: 1.4em 0;
+  color: var(--sage-dark);
+  font-style: italic;
+}
+
+.article-content code {
+  background: rgba(123, 169, 139, 0.12);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.article-content pre {
+  background: #1c3a3a;
+  color: #f0f4f2;
+  padding: 1em;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 1.4em 0;
+}
+
+.article-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.article-content hr {
+  border: none;
+  border-top: 1px solid var(--border, #e4eee8);
+  margin: 2em 0;
+}
+
+.article-content img {
+  border-radius: 12px;
+  margin: 1.4em 0;
+}
