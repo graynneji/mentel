@@ -1,3 +1,4 @@
+
 // "use client";
 
 // import { usePathname } from "next/navigation";
@@ -6,6 +7,7 @@
 // import { BookingProvider } from "@/app/context/BookingContext";
 // import GlobalObserver from "./GlobalObserver";
 // import { AnalyticsProvider } from "./AnalyticsProvider";
+// import ResumeBanner from "./personalization/ResumeBanner";
 
 // export default function ConditionalShell({
 //     children,
@@ -31,6 +33,7 @@
 //         <>
 //             <AnalyticsProvider>
 //                 <BookingProvider>
+//                     <ResumeBanner />
 //                     <Navbar />
 //                     <GlobalObserver />
 //                     <main className="flex-1">{children}</main>
@@ -75,8 +78,8 @@ export default function ConditionalShell({
         <>
             <AnalyticsProvider>
                 <BookingProvider>
-                    <ResumeBanner />
                     <Navbar />
+                    {/* <ResumeBanner /> */}
                     <GlobalObserver />
                     <main className="flex-1">{children}</main>
                     <Footer />

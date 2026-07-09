@@ -285,3 +285,40 @@ textarea {
   border-radius: 12px;
   margin: 1.4em 0;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Admin dashboard responsiveness safety net. Tables/wide rows populated
+   from the database (variable-length names, emails, references, etc.)
+   can otherwise blow out the whole admin shell horizontally on small
+   screens. Any table not already wrapped in its own overflow-x-auto div
+   still gets a scoped horizontal scrollbar instead of breaking layout.
+   ───────────────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────────────────
+   Admin dashboard responsiveness safety net. Long, unpredictable database
+   text (emails, names, subject lines, references) inside a flex row can
+   stretch its container wider than the viewport instead of wrapping or
+   truncating, breaking layout on smaller screens. This targets the actual
+   symptom (text stretching its container) without altering table markup
+   that already has its own working overflow-x-auto wrapper.
+   ───────────────────────────────────────────────────────────────────── */
+.admin-main table {
+  max-width: 100%;
+}
+
+.admin-main td,
+.admin-main th {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Any flex row can still be told to truncate its text via the existing
+   `truncate` utility class — the fix that matters is giving the element
+   `min-width: 0`, since flex children otherwise refuse to shrink below
+   their content's natural width no matter what overflow rules say. */
+.admin-main .flex > .truncate,
+.admin-main .flex > span.truncate,
+.admin-main .flex > div.truncate,
+.admin-main .flex > p.truncate {
+  min-width: 0;
+}

@@ -1,10 +1,9 @@
 
-
 // "use client";
 
 // import { useState } from "react";
 // import { useRouter } from "next/navigation";
-// import { Loader2, Save, Trash2, Sparkles, Eye, EyeOff } from "lucide-react";
+// import { Loader2, Save, Trash2, Sparkles, Eye, EyeOff, ImagePlus } from "lucide-react";
 // import { marked } from "marked";
 
 // export interface ArticleFormData {
@@ -61,7 +60,10 @@
 //     const [error, setError] = useState("");
 //     const [errors, setErrors] = useState<Record<string, string>>({});
 //     const [preview, setPreview] = useState(false);
+//     const [uploading, setUploading] = useState(false);
+//     const [uploadError, setUploadError] = useState("");
 //     const [optimizing, setOptimizing] = useState(false);
+//     const [applying, setApplying] = useState(false);
 //     const [suggestions, setSuggestions] = useState<{
 //         suggestedMetaTitle: string | null;
 //         suggestedMetaDescription: string | null;
@@ -72,6 +74,30 @@
 //     function update<K extends keyof ArticleFormData>(key: K, value: ArticleFormData[K]) {
 //         setForm((f) => ({ ...f, [key]: value }));
 //         setErrors((e) => ({ ...e, [key]: "" }));
+//     }
+
+//     async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+//         const file = e.target.files?.[0];
+//         e.target.value = ""; // allow re-selecting the same file later
+//         if (!file) return;
+
+//         setUploading(true);
+//         setUploadError("");
+//         try {
+//             const body = new FormData();
+//             body.append("file", file);
+//             const res = await fetch("/api/admin/upload", { method: "POST", body });
+//             const data = await res.json();
+//             if (!res.ok || !data.success) {
+//                 setUploadError(data.error ?? "Upload failed. Please try again.");
+//                 return;
+//             }
+//             update("image", data.url);
+//         } catch {
+//             setUploadError("Network error uploading image.");
+//         } finally {
+//             setUploading(false);
+//         }
 //     }
 
 //     function handleTitleChange(value: string) {
@@ -153,15 +179,32 @@
 //         }
 //     }
 
-//     function applySuggestions() {
-//         if (!suggestions) return;
-//         if (suggestions.suggestedMetaTitle) update("metaTitle", suggestions.suggestedMetaTitle);
-//         if (suggestions.suggestedMetaDescription) update("metaDescription", suggestions.suggestedMetaDescription);
-//         if (suggestions.suggestedKeywordsToAdd.length > 0) {
-//             const existing = form.keywords.split(",").map((k) => k.trim()).filter(Boolean);
-//             update("keywords", [...new Set([...existing, ...suggestions.suggestedKeywordsToAdd])].join(", "));
+//     async function applySuggestions() {
+//         if (!suggestions || !articleId) return;
+//         setApplying(true);
+//         try {
+//             // Actually persist the change — previously this only updated local
+//             // form state, so re-running "Get suggestions" re-read the
+//             // unchanged database record and showed the exact same suggestion
+//             // again. Passing apply:true writes it straight to the article.
+//             const res = await fetch("/api/admin/seo/optimize", {
+//                 method: "POST",
+//                 headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({ id: articleId, apply: true }),
+//             });
+//             const data = await res.json();
+//             if (!res.ok || !data.success) {
+//                 setError(data.error ?? "Failed to apply suggestions.");
+//                 return;
+//             }
+//             const applied = data.article;
+//             update("metaTitle", applied.metaTitle ?? "");
+//             update("metaDescription", applied.metaDescription ?? "");
+//             update("keywords", (applied.keywords ?? []).join(", "));
+//             setSuggestions(null);
+//         } finally {
+//             setApplying(false);
 //         }
-//         setSuggestions(null);
 //     }
 
 //     return (
@@ -189,7 +232,7 @@
 //                 <textarea className={`${inputClass} resize-none`} rows={2} value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} placeholder="One or two sentences shown on the articles list" />
 //             </div>
 
-//             <div className="grid md:grid-cols-3 gap-4 mb-4">
+//             <div className="grid md:grid-cols-2 gap-4 mb-4">
 //                 <div>
 //                     <label className={labelClass}>Category</label>
 //                     <select className={inputClass} value={form.category} onChange={(e) => update("category", e.target.value)}>
@@ -200,9 +243,54 @@
 //                     <label className={labelClass}>Read time (min)</label>
 //                     <input type="number" min={1} className={inputClass} value={form.readMin} onChange={(e) => update("readMin", Number(e.target.value))} />
 //                 </div>
-//                 <div>
-//                     <label className={labelClass}>Cover image path</label>
-//                     <input className={inputClass} value={form.image} onChange={(e) => update("image", e.target.value)} placeholder="/my-image.jpg" />
+//             </div>
+
+//             <div className="mb-4">
+//                 <label className={labelClass}>Cover image</label>
+//                 <div className="flex items-start gap-3">
+//                     {form.image && (
+//                         // eslint-disable-next-line @next/next/no-img-element
+//                         <img
+//                             src={form.image}
+//                             alt=""
+//                             className="w-20 h-20 rounded-xl object-cover border shrink-0"
+//                             style={{ borderColor: "#e4eee8" }}
+//                         />
+//                     )}
+//                     <div className="flex-1 min-w-0">
+//                         <div className="flex items-center gap-2">
+//                             <label
+//                                 className="text-xs font-medium px-3 py-2 rounded-lg border cursor-pointer inline-flex items-center gap-1.5"
+//                                 style={{ borderColor: "#e4eee8", color: "#3d8b8b" }}
+//                             >
+//                                 {uploading ? <Loader2 size={13} className="animate-spin" /> : <ImagePlus size={13} />}
+//                                 {uploading ? "Uploading…" : "Upload image"}
+//                                 <input
+//                                     type="file"
+//                                     accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+//                                     className="hidden"
+//                                     disabled={uploading}
+//                                     onChange={handleImageUpload}
+//                                 />
+//                             </label>
+//                             {form.image && (
+//                                 <button
+//                                     type="button"
+//                                     onClick={() => update("image", "")}
+//                                     className="text-xs font-medium text-[#b94a4f] cursor-pointer"
+//                                 >
+//                                     Remove
+//                                 </button>
+//                             )}
+//                         </div>
+//                         <input
+//                             className={`${inputClass} mt-2 text-xs`}
+//                             value={form.image}
+//                             onChange={(e) => update("image", e.target.value)}
+//                             placeholder="Or paste an image URL / /public path directly"
+//                         />
+//                         {uploadError && <p className="text-xs mt-1 text-[#b94a4f]">{uploadError}</p>}
+//                     </div>
 //                 </div>
 //             </div>
 
@@ -280,10 +368,11 @@
 //                                 <button
 //                                     type="button"
 //                                     onClick={applySuggestions}
-//                                     className="text-xs font-semibold px-3 py-1.5 rounded-full text-white cursor-pointer"
+//                                     disabled={applying}
+//                                     className="text-xs font-semibold px-3 py-1.5 rounded-full text-white cursor-pointer disabled:opacity-60"
 //                                     style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
 //                                 >
-//                                     Apply suggestions to form
+//                                     {applying ? "Saving…" : "Apply & save suggestions"}
 //                                 </button>
 //                             </div>
 //                         ) : (
@@ -332,11 +421,12 @@
 //     );
 // }
 
+
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Save, Trash2, Sparkles, Eye, EyeOff, ImagePlus } from "lucide-react";
+import { Loader2, Save, Trash2, Sparkles, Eye, EyeOff, ImagePlus, Link2 } from "lucide-react";
 import { marked } from "marked";
 
 export interface ArticleFormData {
@@ -386,6 +476,7 @@ const labelClass = "block text-xs font-medium uppercase tracking-widest mb-1.5 t
 
 export default function ArticleEditor({ initial, articleId }: { initial?: Partial<ArticleFormData>; articleId?: string }) {
     const router = useRouter();
+    const contentRef = useRef<HTMLTextAreaElement>(null);
     const [form, setForm] = useState<ArticleFormData>({ ...emptyForm, ...initial });
     const [slugTouched, setSlugTouched] = useState(!!initial?.slug);
     const [saving, setSaving] = useState(false);
@@ -397,6 +488,10 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
     const [uploadError, setUploadError] = useState("");
     const [optimizing, setOptimizing] = useState(false);
     const [applying, setApplying] = useState(false);
+    const [linkPickerOpen, setLinkPickerOpen] = useState(false);
+    const [linkSearch, setLinkSearch] = useState("");
+    const [linkableArticles, setLinkableArticles] = useState<{ title: string; slug: string; category: string }[] | null>(null);
+    const [linkLoading, setLinkLoading] = useState(false);
     const [suggestions, setSuggestions] = useState<{
         suggestedMetaTitle: string | null;
         suggestedMetaDescription: string | null;
@@ -494,6 +589,46 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
         } finally {
             setDeleting(false);
         }
+    }
+
+    async function openLinkPicker() {
+        setLinkPickerOpen(true);
+        if (linkableArticles) return; // already loaded this session
+        setLinkLoading(true);
+        try {
+            const res = await fetch("/api/admin/articles/linkable");
+            const data = await res.json();
+            if (data.success) setLinkableArticles(data.articles);
+        } finally {
+            setLinkLoading(false);
+        }
+    }
+
+    function insertArticleLink(article: { title: string; slug: string }) {
+        const markdownLink = `[${article.title}](/articles/${article.slug})`;
+        const textarea = contentRef.current;
+
+        if (textarea) {
+            const start = textarea.selectionStart ?? form.content.length;
+            const end = textarea.selectionEnd ?? form.content.length;
+            const before = form.content.slice(0, start);
+            const after = form.content.slice(end);
+            const nextContent = `${before}${markdownLink}${after}`;
+            update("content", nextContent);
+
+            // Restore focus and place the cursor right after the inserted
+            // link, so the author can keep typing without hunting for it.
+            requestAnimationFrame(() => {
+                textarea.focus();
+                const cursor = start + markdownLink.length;
+                textarea.setSelectionRange(cursor, cursor);
+            });
+        } else {
+            update("content", `${form.content} ${markdownLink}`);
+        }
+
+        setLinkPickerOpen(false);
+        setLinkSearch("");
     }
 
     async function handleOptimize() {
@@ -638,16 +773,69 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
                 </div>
             </div>
 
-            <div className="mb-2 flex items-center justify-between">
+            <div className="mb-2 flex items-center justify-between relative">
                 <label className={labelClass}>Content (Markdown)</label>
-                <button
-                    type="button"
-                    onClick={() => setPreview((p) => !p)}
-                    className="flex items-center gap-1.5 text-xs font-medium text-[#3d8b8b] hover:opacity-70 cursor-pointer"
-                >
-                    {preview ? <EyeOff size={13} /> : <Eye size={13} />}
-                    {preview ? "Edit" : "Preview"}
-                </button>
+                <div className="flex items-center gap-3">
+                    <div className="relative">
+                        <button
+                            type="button"
+                            onClick={() => (linkPickerOpen ? setLinkPickerOpen(false) : openLinkPicker())}
+                            className="flex items-center gap-1.5 text-xs font-medium text-[#3d8b8b] hover:opacity-70 cursor-pointer"
+                        >
+                            <Link2 size={13} />
+                            Insert article link
+                        </button>
+                        {linkPickerOpen && (
+                            <div
+                                className="absolute right-0 top-6 z-20 w-72 rounded-xl border bg-white shadow-lg p-2"
+                                style={{ borderColor: "#e4eee8" }}
+                            >
+                                <input
+                                    autoFocus
+                                    value={linkSearch}
+                                    onChange={(e) => setLinkSearch(e.target.value)}
+                                    placeholder="Search your articles..."
+                                    className="w-full px-2.5 py-2 rounded-lg border text-xs outline-none mb-1.5"
+                                    style={{ borderColor: "#e4eee8" }}
+                                />
+                                <div className="max-h-56 overflow-y-auto">
+                                    {linkLoading ? (
+                                        <div className="flex items-center justify-center py-4">
+                                            <Loader2 size={14} className="animate-spin text-[#a0b8ac]" />
+                                        </div>
+                                    ) : (linkableArticles ?? [])
+                                        .filter((a) => a.title.toLowerCase().includes(linkSearch.toLowerCase()))
+                                        .length === 0 ? (
+                                        <p className="text-xs text-[#a0b8ac] px-1 py-2">No matching articles.</p>
+                                    ) : (
+                                        (linkableArticles ?? [])
+                                            .filter((a) => a.title.toLowerCase().includes(linkSearch.toLowerCase()))
+                                            .slice(0, 30)
+                                            .map((a) => (
+                                                <button
+                                                    key={a.slug}
+                                                    type="button"
+                                                    onClick={() => insertArticleLink(a)}
+                                                    className="w-full text-left px-2.5 py-2 rounded-lg text-xs hover:bg-[#f7faf8] cursor-pointer"
+                                                >
+                                                    <div className="font-medium text-[#1c3a3a] truncate">{a.title}</div>
+                                                    <div className="text-[10px] text-[#a0b8ac]">{a.category} · /articles/{a.slug}</div>
+                                                </button>
+                                            ))
+                                    )}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setPreview((p) => !p)}
+                        className="flex items-center gap-1.5 text-xs font-medium text-[#3d8b8b] hover:opacity-70 cursor-pointer"
+                    >
+                        {preview ? <EyeOff size={13} /> : <Eye size={13} />}
+                        {preview ? "Edit" : "Preview"}
+                    </button>
+                </div>
             </div>
             {preview ? (
                 <div
@@ -657,11 +845,12 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
                 />
             ) : (
                 <textarea
+                    ref={contentRef}
                     className={`${inputClass} font-mono text-[13px] leading-relaxed`}
                     rows={16}
                     value={form.content}
                     onChange={(e) => update("content", e.target.value)}
-                    placeholder={"## A section heading\n\nWrite your article body in Markdown — headings, **bold**, lists, [links](/path), etc."}
+                    placeholder={"## A section heading\n\nWrite your article body in Markdown — headings, **bold**, lists, [links](/path), etc.\n\nUse \"Insert article link\" above to link to one of your other articles."}
                 />
             )}
             {errors.content && <p className="text-xs mt-1 text-[#b94a4f]">{errors.content}</p>}

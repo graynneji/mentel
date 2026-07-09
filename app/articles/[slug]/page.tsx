@@ -4,18 +4,53 @@
 // import { notFound } from "next/navigation";
 // import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
 // import { articleContent, articles } from "@/utilz/articles";
-// import { scorePageSEO } from "@/lib/seo-scoring-engine";
+// import { getAllPublishedArticles, getPublishedDbArticleBySlug } from "@/lib/articles/data";
+// import { markdownToSections } from "@/lib/articles/markdown-to-sections";
 // import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisuals";
 // import { ArticleCard } from "../../../components/ArticleCard";
 
+// // Re-fetch on every request rather than caching indefinitely — CMS
+// // articles are published dynamically and should show up immediately,
+// // not only after the next full rebuild/deploy.
+// export const dynamic = "force-dynamic";
+
 // export async function generateStaticParams() {
+//     // Static params for the legacy hard-coded articles only — DB-authored
+//     // articles are rendered on-demand.
 //     return articles.map((a) => ({ slug: a.slug }));
 // }
 
 // export async function generateMetadata({ params }: { params: { slug: string } }) {
 //     const param = await params;
 //     const article = articles.find((a) => a.slug === param.slug);
-//     if (!article) return {};
+
+//     if (!article) {
+//         const dbArticle = await getPublishedDbArticleBySlug(param.slug);
+//         if (!dbArticle) return {};
+//         return {
+//             title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
+//             description: dbArticle.metaDescription || dbArticle.excerpt,
+//             keywords: dbArticle.keywords?.join(", "),
+//             alternates: { canonical: `/articles/${dbArticle.slug}` },
+//             openGraph: {
+//                 title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
+//                 description: dbArticle.metaDescription || dbArticle.excerpt,
+//                 url: `https://www.trymentel.com/articles/${dbArticle.slug}`,
+//                 type: "article",
+//                 publishedTime: (dbArticle.publishedAt ?? dbArticle.createdAt).toISOString(),
+//                 authors: ["Mentel Clinical Team"],
+//                 tags: dbArticle.tags,
+//                 images: dbArticle.image
+//                     ? [{ url: `https://www.trymentel.com${dbArticle.image}`, width: 1200, height: 630, alt: dbArticle.title }]
+//                     : undefined,
+//             },
+//             twitter: {
+//                 card: "summary_large_image",
+//                 title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
+//                 description: dbArticle.metaDescription || dbArticle.excerpt,
+//             },
+//         };
+//     }
 
 //     return {
 //         title: `${article.title} - Mentel`,
@@ -53,18 +88,61 @@
 
 // export default async function ArticlePage({ params }: { params: { slug: string } }) {
 //     const param = await params;
-//     const article = articles.find((a) => a.slug === param.slug);
-//     if (!article) notFound();
+//     const staticArticle = articles.find((a) => a.slug === param.slug);
 
-//     const content = articleContent[article.slug];
+//     // ── Normalize both sources into one shared shape ────────────────────────
+//     // article: { slug, title, category, excerpt, date, readMin, image, tags }
+//     // content: { intro, sections: [{ heading, body, list? }], tldr?, faq? }
+//     // Whichever source it came from, everything below renders identically —
+//     // there is no separate "database article" layout.
+//     let article: {
+//         slug: string;
+//         title: string;
+//         category: string;
+//         excerpt: string;
+//         date: string;
+//         readMin: number;
+//         image: string | null;
+//         tags: string[];
+//         keywords: string[];
+//     };
+//     let content: {
+//         intro: string;
+//         sections: { heading: string; body: string; list?: { label?: string; value: string }[] }[];
+//         tldr?: string;
+//         faq?: { q: string; a: string }[];
+//     } | undefined;
+
+//     if (staticArticle) {
+//         article = staticArticle;
+//         content = articleContent[staticArticle.slug];
+//     } else {
+//         const dbArticle = await getPublishedDbArticleBySlug(param.slug);
+//         if (!dbArticle) notFound();
+
+//         article = {
+//             slug: dbArticle.slug,
+//             title: dbArticle.title,
+//             category: dbArticle.category,
+//             excerpt: dbArticle.excerpt,
+//             date: (dbArticle.publishedAt ?? dbArticle.createdAt).toISOString(),
+//             readMin: dbArticle.readMin,
+//             image: dbArticle.image,
+//             tags: dbArticle.tags,
+//             keywords: dbArticle.keywords,
+//         };
+//         content = markdownToSections(dbArticle.content);
+//     }
+
+//     const allArticles = staticArticle ? null : await getAllPublishedArticles();
 //     const articleIndex = articles.findIndex((a) => a.slug === param.slug);
-//     const prev = articles[articleIndex - 1] ?? null;
-//     const next = articles[articleIndex + 1] ?? null;
+//     const prev = staticArticle ? (articles[articleIndex - 1] ?? null) : null;
+//     const next = staticArticle ? (articles[articleIndex + 1] ?? null) : null;
 
 //     // Related: same category, excluding current article, max 3
-//     const related = articles
-//         .filter((a) => a.slug !== article.slug && a.category === article.category)
-//         .slice(0, 3);
+//     const related = staticArticle
+//         ? articles.filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3)
+//         : (allArticles ?? []).filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3);
 
 //     const style = getCategoryStyle(article.category);
 
@@ -335,7 +413,9 @@
 //     );
 // }
 
+
 // app/articles/[slug]/page.tsx
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
@@ -349,6 +429,48 @@ import { ArticleCard } from "../../../components/ArticleCard";
 // articles are published dynamically and should show up immediately,
 // not only after the next full rebuild/deploy.
 export const dynamic = "force-dynamic";
+
+// Body/intro/list text is stored as plain strings (matching the original
+// hard-coded article shape), but authors can still insert links to other
+// articles via the editor's "Insert article link" picker — those arrive
+// as literal `[text](url)` Markdown syntax. This renders that piece as a
+// real clickable link while leaving everything else as plain text, so
+// the visual output stays identical to the legacy articles except where
+// a link was deliberately added.
+function renderInlineText(text: string): ReactNode {
+    const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+    const nodes: ReactNode[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+    let key = 0;
+
+    while ((match = linkPattern.exec(text)) !== null) {
+        if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index));
+        const [, label, href] = match;
+        const isInternal = href.startsWith("/");
+        nodes.push(
+            isInternal ? (
+                <Link key={key++} href={href} className="underline underline-offset-2 hover:opacity-80" style={{ color: "var(--teal)" }}>
+                    {label}
+                </Link>
+            ) : (
+                <Link
+                    key={key++}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2 hover:opacity-80"
+                    style={{ color: "var(--teal)" }}
+                >
+                    {label}
+                </Link>
+            )
+        );
+        lastIndex = match.index + match[0].length;
+    }
+    if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
+    return nodes.length > 0 ? nodes : text;
+}
 
 export async function generateStaticParams() {
     // Static params for the legacy hard-coded articles only — DB-authored
@@ -615,7 +737,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                                 className="text-base sm:text-lg leading-relaxed font-normal mb-10"
                                 style={{ color: "var(--text)", lineHeight: "1.85" }}
                             >
-                                {content.intro}
+                                {renderInlineText(content.intro)}
                             </p>
                             <div className="space-y-10">
                                 {content.sections.map((section, i) => (
@@ -630,7 +752,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                                             className="text-sm sm:text-base leading-relaxed font-normal"
                                             style={{ color: "var(--text)", lineHeight: "1.85" }}
                                         >
-                                            {section.body}
+                                            {renderInlineText(section.body)}
                                         </p>
                                         {section.list && (
                                             <ul className="mt-4 space-y-2">
@@ -639,7 +761,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                                                         <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "var(--sage)" }} />
                                                         <span>
                                                             {item.label && <strong style={{ color: "var(--deep)" }}>{item.label}: </strong>}
-                                                            {item.value}
+                                                            {renderInlineText(item.value)}
                                                         </span>
                                                     </li>
                                                 ))}

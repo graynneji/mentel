@@ -30,6 +30,19 @@ function TikTokIcon() {
     );
 }
 
+function FacebookIcon() {
+    return (
+        <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+        >
+            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.019 4.388 11.009 10.125 11.927v-8.437H7.078V12.07h3.047V9.413c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953h-1.514c-1.491 0-1.956.929-1.956 1.881v2.258h3.328l-.532 3.493h-2.796V24C19.612 23.082 24 18.092 24 12.073z" />
+        </svg>
+    );
+}
+
 export default function Footer() {
     const year = new Date().getFullYear();
 
@@ -92,7 +105,7 @@ export default function Footer() {
                             Connect With Us
                         </h4>
                         <div className="flex gap-3 mb-6">
-                            <a
+                            <Link
                                 href="https://wa.me/254734527573"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -101,8 +114,19 @@ export default function Footer() {
                                 style={{ color: "var(--text-muted)" }}
                             >
                                 <WhatsAppIcon />
-                            </a>
-                            <a
+                            </Link>
+                            <Link
+                                href="https://www.facebook.com/profile.php?id=61589294892050"
+                                // href="https://facebook.com/mentelltd"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Facebook"
+                                className="w-9 h-9 rounded-full border border-border flex items-center justify-center transition-all hover:border-sage hover:bg-mist"
+                                style={{ color: "var(--text-muted)" }}
+                            >
+                                <FacebookIcon />
+                            </Link>
+                            <Link
                                 href="https://instagram.com/mentel_ltd"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -111,8 +135,8 @@ export default function Footer() {
                                 style={{ color: "var(--text-muted)" }}
                             >
                                 <InstagramIcon />
-                            </a>
-                            <a
+                            </Link>
+                            <Link
                                 href="https://tiktok.com/@mentelltd"
                                 target="_blank"
                                 rel="noopener noreferrer"
@@ -121,7 +145,7 @@ export default function Footer() {
                                 style={{ color: "var(--text-muted)" }}
                             >
                                 <TikTokIcon />
-                            </a>
+                            </Link>
                         </div>
                         <div className="flex flex-col gap-2">
                             <Link href="/terms" className="text-sm transition-colors hover:text-sage-dark" style={{ color: "var(--text-muted)" }}>
