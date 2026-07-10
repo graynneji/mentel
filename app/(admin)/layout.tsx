@@ -25,7 +25,7 @@
 //     { href: "/admin/analytics", icon: BarChart2, label: "Analytics" },
 //     { href: "/admin/articles", icon: FileText, label: "Articles" },
 //     { href: "/admin/seo-report", icon: Tags, label: "SEO Dashboard" },
-//     { href: "/admin/contact", icon: Inbox, label: "Contact Submissions" },
+//     { href: "/admin/contact", icon: Inbox, label: "Contact" },
 //     { href: "/admin/settings", icon: Settings, label: "Settings" },
 //     { href: "/admin/companies", icon: Building2, label: "EAP Companies" },
 // ];
@@ -73,15 +73,16 @@
 //                 </div>
 
 //                 {/* Nav links */}
-//                 <nav className="flex-1 py-4 overflow-y-auto">
+//                 <nav className="flex-1 py-4 overflow-y-auto overflow-x-hidden">
 //                     {NAV.map(({ href, icon: Icon, label }) => {
 //                         const active = path === href || (href !== "/admin" && path.startsWith(href));
 //                         return (
 //                             <Link key={href} href={href}
 //                                 onClick={() => setMobileOpen(false)}
-//                                 className={`flex items-center gap-3 mx-2 mb-0.5 rounded-xl transition-all duration-150 ${collapsed ? "justify-center px-0 py-3" : "px-3 py-2.5"} ${active ? "bg-white/15 text-white" : "text-white/55 hover:text-white/90 hover:bg-white/8"}`}>
+//                                 title={label}
+//                                 className={`flex items-center gap-3 mx-2 mb-0.5 rounded-xl transition-all duration-150 min-w-0 ${collapsed ? "justify-center px-0 py-3" : "px-3 py-2.5"} ${active ? "bg-white/15 text-white" : "text-white/55 hover:text-white/90 hover:bg-white/8"}`}>
 //                                 <Icon size={16} className="shrink-0" />
-//                                 {!collapsed && <span className="text-[13px] font-medium truncate">{label}</span>}
+//                                 {!collapsed && <span className="text-[13px] font-medium truncate min-w-0 flex-1">{label}</span>}
 //                             </Link>
 //                         );
 //                     })}
@@ -131,15 +132,13 @@
 //                 </header>
 
 //                 {/* Page content */}
-//                 <main className="flex-1 p-5 overflow-auto">
+//                 <main className="admin-main flex-1 p-5 overflow-y-auto overflow-x-hidden min-w-0">
 //                     {children}
 //                 </main>
 //             </div>
 //         </div>
 //     );
 // }
-
-
 
 "use client";
 
@@ -155,6 +154,7 @@ import {
     Building2,
     Inbox,
     FileText,
+    ShieldCheck,
 } from "lucide-react";
 
 const NAV = [
@@ -166,6 +166,7 @@ const NAV = [
     { href: "/admin/analytics", icon: BarChart2, label: "Analytics" },
     { href: "/admin/articles", icon: FileText, label: "Articles" },
     { href: "/admin/seo-report", icon: Tags, label: "SEO Dashboard" },
+    { href: "/admin/volunteer-verifications", icon: ShieldCheck, label: "Volunteer Verifications" },
     { href: "/admin/contact", icon: Inbox, label: "Contact" },
     { href: "/admin/settings", icon: Settings, label: "Settings" },
     { href: "/admin/companies", icon: Building2, label: "EAP Companies" },

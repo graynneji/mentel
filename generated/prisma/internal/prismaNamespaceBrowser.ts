@@ -61,7 +61,8 @@ export const ModelName = {
   CompanyEmployee: 'CompanyEmployee',
   EAPAssessment: 'EAPAssessment',
   EAPSession: 'EAPSession',
-  Article: 'Article'
+  Article: 'Article',
+  VolunteerVerification: 'VolunteerVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -299,6 +300,7 @@ export const ArticleScalarFieldEnum = {
   image: 'image',
   readMin: 'readMin',
   featured: 'featured',
+  tldr: 'tldr',
   content: 'content',
   metaTitle: 'metaTitle',
   metaDescription: 'metaDescription',
@@ -310,6 +312,29 @@ export const ArticleScalarFieldEnum = {
 } as const
 
 export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+export const VolunteerVerificationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  fullName: 'fullName',
+  email: 'email',
+  phone: 'phone',
+  city: 'city',
+  role: 'role',
+  isLicensedProfessional: 'isLicensedProfessional',
+  licenseBody: 'licenseBody',
+  licenseNumber: 'licenseNumber',
+  licenseDocumentUrl: 'licenseDocumentUrl',
+  ninNumber: 'ninNumber',
+  ninDocumentUrl: 'ninDocumentUrl',
+  cvDocumentUrl: 'cvDocumentUrl',
+  status: 'status',
+  adminNotes: 'adminNotes'
+} as const
+
+export type VolunteerVerificationScalarFieldEnum = (typeof VolunteerVerificationScalarFieldEnum)[keyof typeof VolunteerVerificationScalarFieldEnum]
 
 
 export const SortOrder = {

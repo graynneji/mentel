@@ -80,3 +80,17 @@ export type EAPSession = Prisma.EAPSessionModel
  * Content is stored as Markdown and rendered client-side.
  */
 export type Article = Prisma.ArticleModel
+/**
+ * Model VolunteerVerification
+ * Volunteer identity + credential verification (KYC). Separate from the
+ * simple email-only /volunteer interest form — this one collects
+ * documents (CV, license, NIN) that need a durable record for an admin
+ * to review and approve/reject, not just an email.
+ * 
+ * NIN (Nigeria's National Identification Number) is sensitive personal
+ * data. Treat this table with the same care as payment data: restrict
+ * admin access, avoid logging the raw value, and consider masking it
+ * (e.g. showing only the last 4 digits) anywhere it's displayed outside
+ * of a single detail view a reviewer explicitly opens.
+ */
+export type VolunteerVerification = Prisma.VolunteerVerificationModel

@@ -394,7 +394,8 @@ export const ModelName = {
   CompanyEmployee: 'CompanyEmployee',
   EAPAssessment: 'EAPAssessment',
   EAPSession: 'EAPSession',
-  Article: 'Article'
+  Article: 'Article',
+  VolunteerVerification: 'VolunteerVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article"
+    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    VolunteerVerification: {
+      payload: Prisma.$VolunteerVerificationPayload<ExtArgs>
+      fields: Prisma.VolunteerVerificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VolunteerVerificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VolunteerVerificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>
+        }
+        findFirst: {
+          args: Prisma.VolunteerVerificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VolunteerVerificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>
+        }
+        findMany: {
+          args: Prisma.VolunteerVerificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>[]
+        }
+        create: {
+          args: Prisma.VolunteerVerificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>
+        }
+        createMany: {
+          args: Prisma.VolunteerVerificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VolunteerVerificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>[]
+        }
+        delete: {
+          args: Prisma.VolunteerVerificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>
+        }
+        update: {
+          args: Prisma.VolunteerVerificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.VolunteerVerificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VolunteerVerificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VolunteerVerificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.VolunteerVerificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VolunteerVerificationPayload>
+        }
+        aggregate: {
+          args: Prisma.VolunteerVerificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVolunteerVerification>
+        }
+        groupBy: {
+          args: Prisma.VolunteerVerificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VolunteerVerificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VolunteerVerificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VolunteerVerificationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1486,6 +1561,7 @@ export const ArticleScalarFieldEnum = {
   image: 'image',
   readMin: 'readMin',
   featured: 'featured',
+  tldr: 'tldr',
   content: 'content',
   metaTitle: 'metaTitle',
   metaDescription: 'metaDescription',
@@ -1497,6 +1573,29 @@ export const ArticleScalarFieldEnum = {
 } as const
 
 export type ArticleScalarFieldEnum = (typeof ArticleScalarFieldEnum)[keyof typeof ArticleScalarFieldEnum]
+
+
+export const VolunteerVerificationScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  fullName: 'fullName',
+  email: 'email',
+  phone: 'phone',
+  city: 'city',
+  role: 'role',
+  isLicensedProfessional: 'isLicensedProfessional',
+  licenseBody: 'licenseBody',
+  licenseNumber: 'licenseNumber',
+  licenseDocumentUrl: 'licenseDocumentUrl',
+  ninNumber: 'ninNumber',
+  ninDocumentUrl: 'ninDocumentUrl',
+  cvDocumentUrl: 'cvDocumentUrl',
+  status: 'status',
+  adminNotes: 'adminNotes'
+} as const
+
+export type VolunteerVerificationScalarFieldEnum = (typeof VolunteerVerificationScalarFieldEnum)[keyof typeof VolunteerVerificationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1735,6 +1834,7 @@ export type GlobalOmitConfig = {
   eAPAssessment?: Prisma.EAPAssessmentOmit
   eAPSession?: Prisma.EAPSessionOmit
   article?: Prisma.ArticleOmit
+  volunteerVerification?: Prisma.VolunteerVerificationOmit
 }
 
 /* Types for Logging */

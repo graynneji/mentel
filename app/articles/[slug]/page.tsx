@@ -1,5 +1,7 @@
 
+
 // // app/articles/[slug]/page.tsx
+// import type { ReactNode } from "react";
 // import Link from "next/link";
 // import { notFound } from "next/navigation";
 // import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
@@ -13,6 +15,48 @@
 // // articles are published dynamically and should show up immediately,
 // // not only after the next full rebuild/deploy.
 // export const dynamic = "force-dynamic";
+
+// // Body/intro/list text is stored as plain strings (matching the original
+// // hard-coded article shape), but authors can still insert links to other
+// // articles via the editor's "Insert article link" picker — those arrive
+// // as literal `[text](url)` Markdown syntax. This renders that piece as a
+// // real clickable link while leaving everything else as plain text, so
+// // the visual output stays identical to the legacy articles except where
+// // a link was deliberately added.
+// function renderInlineText(text: string): ReactNode {
+//     const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+//     const nodes: ReactNode[] = [];
+//     let lastIndex = 0;
+//     let match: RegExpExecArray | null;
+//     let key = 0;
+
+//     while ((match = linkPattern.exec(text)) !== null) {
+//         if (match.index > lastIndex) nodes.push(text.slice(lastIndex, match.index));
+//         const [, label, href] = match;
+//         const isInternal = href.startsWith("/");
+//         nodes.push(
+//             isInternal ? (
+//                 <Link key={key++} href={href} className="underline underline-offset-2 hover:opacity-80" style={{ color: "var(--teal)" }}>
+//                     {label}
+//                 </Link>
+//             ) : (
+//                 <Link
+//                     key={key++}
+//                     href={href}
+//                     target="_blank"
+//                     rel="noopener noreferrer"
+//                     className="underline underline-offset-2 hover:opacity-80"
+//                     style={{ color: "var(--teal)" }}
+//                 >
+//                     {label}
+//                 </Link>
+//             )
+//         );
+//         lastIndex = match.index + match[0].length;
+//     }
+//     if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
+//     return nodes.length > 0 ? nodes : text;
+// }
 
 // export async function generateStaticParams() {
 //     // Static params for the legacy hard-coded articles only — DB-authored
@@ -279,7 +323,7 @@
 //                                 className="text-base sm:text-lg leading-relaxed font-normal mb-10"
 //                                 style={{ color: "var(--text)", lineHeight: "1.85" }}
 //                             >
-//                                 {content.intro}
+//                                 {renderInlineText(content.intro)}
 //                             </p>
 //                             <div className="space-y-10">
 //                                 {content.sections.map((section, i) => (
@@ -294,7 +338,7 @@
 //                                             className="text-sm sm:text-base leading-relaxed font-normal"
 //                                             style={{ color: "var(--text)", lineHeight: "1.85" }}
 //                                         >
-//                                             {section.body}
+//                                             {renderInlineText(section.body)}
 //                                         </p>
 //                                         {section.list && (
 //                                             <ul className="mt-4 space-y-2">
@@ -303,7 +347,7 @@
 //                                                         <span className="mt-2 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: "var(--sage)" }} />
 //                                                         <span>
 //                                                             {item.label && <strong style={{ color: "var(--deep)" }}>{item.label}: </strong>}
-//                                                             {item.value}
+//                                                             {renderInlineText(item.value)}
 //                                                         </span>
 //                                                     </li>
 //                                                 ))}
@@ -414,6 +458,7 @@
 // }
 
 
+
 // app/articles/[slug]/page.tsx
 import type { ReactNode } from "react";
 import Link from "next/link";
@@ -454,7 +499,7 @@ function renderInlineText(text: string): ReactNode {
                     {label}
                 </Link>
             ) : (
-                <Link
+                <a
                     key={key++}
                     href={href}
                     target="_blank"
@@ -463,7 +508,7 @@ function renderInlineText(text: string): ReactNode {
                     style={{ color: "var(--teal)" }}
                 >
                     {label}
-                </Link>
+                </a>
             )
         );
         lastIndex = match.index + match[0].length;
@@ -590,6 +635,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             keywords: dbArticle.keywords,
         };
         content = markdownToSections(dbArticle.content);
+        const tldr = (dbArticle as { tldr?: string }).tldr;
+        if (tldr) content.tldr = tldr;
     }
 
     const allArticles = staticArticle ? null : await getAllPublishedArticles();

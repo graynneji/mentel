@@ -49,6 +49,7 @@ export type ArticleMinAggregateOutputType = {
   image: string | null
   readMin: number | null
   featured: boolean | null
+  tldr: string | null
   content: string | null
   metaTitle: string | null
   metaDescription: string | null
@@ -70,6 +71,7 @@ export type ArticleMaxAggregateOutputType = {
   image: string | null
   readMin: number | null
   featured: boolean | null
+  tldr: string | null
   content: string | null
   metaTitle: string | null
   metaDescription: string | null
@@ -93,6 +95,7 @@ export type ArticleCountAggregateOutputType = {
   image: number
   readMin: number
   featured: number
+  tldr: number
   content: number
   metaTitle: number
   metaDescription: number
@@ -126,6 +129,7 @@ export type ArticleMinAggregateInputType = {
   image?: true
   readMin?: true
   featured?: true
+  tldr?: true
   content?: true
   metaTitle?: true
   metaDescription?: true
@@ -147,6 +151,7 @@ export type ArticleMaxAggregateInputType = {
   image?: true
   readMin?: true
   featured?: true
+  tldr?: true
   content?: true
   metaTitle?: true
   metaDescription?: true
@@ -170,6 +175,7 @@ export type ArticleCountAggregateInputType = {
   image?: true
   readMin?: true
   featured?: true
+  tldr?: true
   content?: true
   metaTitle?: true
   metaDescription?: true
@@ -280,6 +286,7 @@ export type ArticleGroupByOutputType = {
   image: string | null
   readMin: number
   featured: boolean
+  tldr: string | null
   content: string
   metaTitle: string | null
   metaDescription: string | null
@@ -326,6 +333,7 @@ export type ArticleWhereInput = {
   image?: Prisma.StringNullableFilter<"Article"> | string | null
   readMin?: Prisma.IntFilter<"Article"> | number
   featured?: Prisma.BoolFilter<"Article"> | boolean
+  tldr?: Prisma.StringNullableFilter<"Article"> | string | null
   content?: Prisma.StringFilter<"Article"> | string
   metaTitle?: Prisma.StringNullableFilter<"Article"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Article"> | string | null
@@ -349,6 +357,7 @@ export type ArticleOrderByWithRelationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   readMin?: Prisma.SortOrder
   featured?: Prisma.SortOrder
+  tldr?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   metaTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -375,6 +384,7 @@ export type ArticleWhereUniqueInput = Prisma.AtLeast<{
   image?: Prisma.StringNullableFilter<"Article"> | string | null
   readMin?: Prisma.IntFilter<"Article"> | number
   featured?: Prisma.BoolFilter<"Article"> | boolean
+  tldr?: Prisma.StringNullableFilter<"Article"> | string | null
   content?: Prisma.StringFilter<"Article"> | string
   metaTitle?: Prisma.StringNullableFilter<"Article"> | string | null
   metaDescription?: Prisma.StringNullableFilter<"Article"> | string | null
@@ -398,6 +408,7 @@ export type ArticleOrderByWithAggregationInput = {
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   readMin?: Prisma.SortOrder
   featured?: Prisma.SortOrder
+  tldr?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrder
   metaTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   metaDescription?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -429,6 +440,7 @@ export type ArticleScalarWhereWithAggregatesInput = {
   image?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
   readMin?: Prisma.IntWithAggregatesFilter<"Article"> | number
   featured?: Prisma.BoolWithAggregatesFilter<"Article"> | boolean
+  tldr?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
   content?: Prisma.StringWithAggregatesFilter<"Article"> | string
   metaTitle?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
   metaDescription?: Prisma.StringNullableWithAggregatesFilter<"Article"> | string | null
@@ -452,6 +464,7 @@ export type ArticleCreateInput = {
   image?: string | null
   readMin?: number
   featured?: boolean
+  tldr?: string | null
   content: string
   metaTitle?: string | null
   metaDescription?: string | null
@@ -475,6 +488,7 @@ export type ArticleUncheckedCreateInput = {
   image?: string | null
   readMin?: number
   featured?: boolean
+  tldr?: string | null
   content: string
   metaTitle?: string | null
   metaDescription?: string | null
@@ -498,6 +512,7 @@ export type ArticleUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readMin?: Prisma.IntFieldUpdateOperationsInput | number
   featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tldr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -521,6 +536,7 @@ export type ArticleUncheckedUpdateInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readMin?: Prisma.IntFieldUpdateOperationsInput | number
   featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tldr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -544,6 +560,7 @@ export type ArticleCreateManyInput = {
   image?: string | null
   readMin?: number
   featured?: boolean
+  tldr?: string | null
   content: string
   metaTitle?: string | null
   metaDescription?: string | null
@@ -567,6 +584,7 @@ export type ArticleUpdateManyMutationInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readMin?: Prisma.IntFieldUpdateOperationsInput | number
   featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tldr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -590,6 +608,7 @@ export type ArticleUncheckedUpdateManyInput = {
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   readMin?: Prisma.IntFieldUpdateOperationsInput | number
   featured?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tldr?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.StringFieldUpdateOperationsInput | string
   metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -613,6 +632,7 @@ export type ArticleCountOrderByAggregateInput = {
   image?: Prisma.SortOrder
   readMin?: Prisma.SortOrder
   featured?: Prisma.SortOrder
+  tldr?: Prisma.SortOrder
   content?: Prisma.SortOrder
   metaTitle?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
@@ -639,6 +659,7 @@ export type ArticleMaxOrderByAggregateInput = {
   image?: Prisma.SortOrder
   readMin?: Prisma.SortOrder
   featured?: Prisma.SortOrder
+  tldr?: Prisma.SortOrder
   content?: Prisma.SortOrder
   metaTitle?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
@@ -660,6 +681,7 @@ export type ArticleMinOrderByAggregateInput = {
   image?: Prisma.SortOrder
   readMin?: Prisma.SortOrder
   featured?: Prisma.SortOrder
+  tldr?: Prisma.SortOrder
   content?: Prisma.SortOrder
   metaTitle?: Prisma.SortOrder
   metaDescription?: Prisma.SortOrder
@@ -708,6 +730,7 @@ export type ArticleSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   image?: boolean
   readMin?: boolean
   featured?: boolean
+  tldr?: boolean
   content?: boolean
   metaTitle?: boolean
   metaDescription?: boolean
@@ -731,6 +754,7 @@ export type ArticleSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   image?: boolean
   readMin?: boolean
   featured?: boolean
+  tldr?: boolean
   content?: boolean
   metaTitle?: boolean
   metaDescription?: boolean
@@ -754,6 +778,7 @@ export type ArticleSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   image?: boolean
   readMin?: boolean
   featured?: boolean
+  tldr?: boolean
   content?: boolean
   metaTitle?: boolean
   metaDescription?: boolean
@@ -777,6 +802,7 @@ export type ArticleSelectScalar = {
   image?: boolean
   readMin?: boolean
   featured?: boolean
+  tldr?: boolean
   content?: boolean
   metaTitle?: boolean
   metaDescription?: boolean
@@ -787,7 +813,7 @@ export type ArticleSelectScalar = {
   lastIndexedAt?: boolean
 }
 
-export type ArticleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "slug" | "title" | "excerpt" | "category" | "tags" | "keywords" | "image" | "readMin" | "featured" | "content" | "metaTitle" | "metaDescription" | "status" | "publishedAt" | "seoScore" | "seoLastChecked" | "lastIndexedAt", ExtArgs["result"]["article"]>
+export type ArticleOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "slug" | "title" | "excerpt" | "category" | "tags" | "keywords" | "image" | "readMin" | "featured" | "tldr" | "content" | "metaTitle" | "metaDescription" | "status" | "publishedAt" | "seoScore" | "seoLastChecked" | "lastIndexedAt", ExtArgs["result"]["article"]>
 
 export type $ArticlePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Article"
@@ -805,6 +831,7 @@ export type $ArticlePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     image: string | null
     readMin: number
     featured: boolean
+    tldr: string | null
     content: string
     metaTitle: string | null
     metaDescription: string | null
@@ -1248,6 +1275,7 @@ export interface ArticleFieldRefs {
   readonly image: Prisma.FieldRef<"Article", 'String'>
   readonly readMin: Prisma.FieldRef<"Article", 'Int'>
   readonly featured: Prisma.FieldRef<"Article", 'Boolean'>
+  readonly tldr: Prisma.FieldRef<"Article", 'String'>
   readonly content: Prisma.FieldRef<"Article", 'String'>
   readonly metaTitle: Prisma.FieldRef<"Article", 'String'>
   readonly metaDescription: Prisma.FieldRef<"Article", 'String'>

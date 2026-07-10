@@ -368,7 +368,6 @@ model EAPSession {
   @@map("eap_sessions")
 }
 
-
 // ═══════════════════════════════════════════════════════════════════════════════
 // SECTION 3 — CONTENT (articles / blog, written from the admin CMS)
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -390,6 +389,13 @@ model Article {
   image    String? // path or URL to the cover image
   readMin  Int      @default(5) @map("read_min")
   featured Boolean  @default(false)
+
+  // Optional "key takeaways" summary shown in a highlighted box near the
+  // top of the article. Used across most of the legacy hard-coded
+  // articles — kept as a real field rather than dropped, since it's a
+  // proven, worthwhile pattern (scannable for readers, useful for search
+  // snippets). Leave blank if a given article doesn't need one.
+  tldr String? @db.Text
 
   // Full body content, written as Markdown in the admin editor.
   content String @db.Text
@@ -415,4 +421,44 @@ model Article {
   @@index([category])
   @@index([publishedAt])
   @@map("articles")
+}
+
+
+/// Volunteer identity + credential verification (KYC). Separate from the
+/// simple email-only /volunteer interest form — this one collects
+/// documents (CV, license, NIN) that need a durable record for an admin
+/// to review and approve/reject, not just an email.
+///
+/// NIN (Nigeria's National Identification Number) is sensitive personal
+/// data. Treat this table with the same care as payment data: restrict
+/// admin access, avoid logging the raw value, and consider masking it
+/// (e.g. showing only the last 4 digits) anywhere it's displayed outside
+/// of a single detail view a reviewer explicitly opens.
+model VolunteerVerification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  fullName String @map("full_name")
+  email    String
+  phone    String
+  city     String
+  role     String // area/role they're volunteering for
+
+  isLicensedProfessional Boolean @default(false) @map("is_licensed_professional")
+  licenseBody            String? @map("license_body") // e.g. AHPCN, NACP, APROCON
+  licenseNumber          String? @map("license_number")
+  licenseDocumentUrl     String? @map("license_document_url")
+
+  ninNumber      String  @map("nin_number")
+  ninDocumentUrl String? @map("nin_document_url")
+
+  cvDocumentUrl String @map("cv_document_url")
+
+  status     String  @default("pending") // pending | approved | rejected
+  adminNotes String? @db.Text @map("admin_notes")
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("volunteer_verifications")
 }

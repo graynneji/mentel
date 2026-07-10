@@ -33,8 +33,8 @@
 //         <>
 //             <AnalyticsProvider>
 //                 <BookingProvider>
-//                     <ResumeBanner />
 //                     <Navbar />
+//                     {/* <ResumeBanner /> */}
 //                     <GlobalObserver />
 //                     <main className="flex-1">{children}</main>
 //                     <Footer />
@@ -43,7 +43,6 @@
 //         </>
 //     );
 // }
-
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -52,7 +51,7 @@ import Footer from "@/components/Footer";
 import { BookingProvider } from "@/app/context/BookingContext";
 import GlobalObserver from "./GlobalObserver";
 import { AnalyticsProvider } from "./AnalyticsProvider";
-import ResumeBanner from "./personalization/ResumeBanner";
+// import ResumeBanner from "./personalization/ResumeBanner";
 
 export default function ConditionalShell({
     children,
@@ -69,8 +68,9 @@ export default function ConditionalShell({
     const isBookCall = pathname.startsWith("/book-call");
     const isBurnoutCalculator = pathname.startsWith("/burnout-calculator");
     const isMarketing = pathname.startsWith("/marketing");
+    const isVolunteerVerification = pathname.startsWith("/volunteer/verification");
 
-    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator || isMarketing) {
+    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator || isMarketing || isVolunteerVerification) {
         return <>{children}</>;
     }
 

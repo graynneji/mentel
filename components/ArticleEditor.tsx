@@ -1,9 +1,9 @@
 
 // "use client";
 
-// import { useState } from "react";
+// import { useState, useRef } from "react";
 // import { useRouter } from "next/navigation";
-// import { Loader2, Save, Trash2, Sparkles, Eye, EyeOff, ImagePlus } from "lucide-react";
+// import { Loader2, Save, Trash2, Sparkles, Eye, EyeOff, ImagePlus, Link2 } from "lucide-react";
 // import { marked } from "marked";
 
 // export interface ArticleFormData {
@@ -53,6 +53,7 @@
 
 // export default function ArticleEditor({ initial, articleId }: { initial?: Partial<ArticleFormData>; articleId?: string }) {
 //     const router = useRouter();
+//     const contentRef = useRef<HTMLTextAreaElement>(null);
 //     const [form, setForm] = useState<ArticleFormData>({ ...emptyForm, ...initial });
 //     const [slugTouched, setSlugTouched] = useState(!!initial?.slug);
 //     const [saving, setSaving] = useState(false);
@@ -64,6 +65,10 @@
 //     const [uploadError, setUploadError] = useState("");
 //     const [optimizing, setOptimizing] = useState(false);
 //     const [applying, setApplying] = useState(false);
+//     const [linkPickerOpen, setLinkPickerOpen] = useState(false);
+//     const [linkSearch, setLinkSearch] = useState("");
+//     const [linkableArticles, setLinkableArticles] = useState<{ title: string; slug: string; category: string }[] | null>(null);
+//     const [linkLoading, setLinkLoading] = useState(false);
 //     const [suggestions, setSuggestions] = useState<{
 //         suggestedMetaTitle: string | null;
 //         suggestedMetaDescription: string | null;
@@ -161,6 +166,46 @@
 //         } finally {
 //             setDeleting(false);
 //         }
+//     }
+
+//     async function openLinkPicker() {
+//         setLinkPickerOpen(true);
+//         if (linkableArticles) return; // already loaded this session
+//         setLinkLoading(true);
+//         try {
+//             const res = await fetch("/api/admin/articles/linkable");
+//             const data = await res.json();
+//             if (data.success) setLinkableArticles(data.articles);
+//         } finally {
+//             setLinkLoading(false);
+//         }
+//     }
+
+//     function insertArticleLink(article: { title: string; slug: string }) {
+//         const markdownLink = `[${article.title}](/articles/${article.slug})`;
+//         const textarea = contentRef.current;
+
+//         if (textarea) {
+//             const start = textarea.selectionStart ?? form.content.length;
+//             const end = textarea.selectionEnd ?? form.content.length;
+//             const before = form.content.slice(0, start);
+//             const after = form.content.slice(end);
+//             const nextContent = `${before}${markdownLink}${after}`;
+//             update("content", nextContent);
+
+//             // Restore focus and place the cursor right after the inserted
+//             // link, so the author can keep typing without hunting for it.
+//             requestAnimationFrame(() => {
+//                 textarea.focus();
+//                 const cursor = start + markdownLink.length;
+//                 textarea.setSelectionRange(cursor, cursor);
+//             });
+//         } else {
+//             update("content", `${form.content} ${markdownLink}`);
+//         }
+
+//         setLinkPickerOpen(false);
+//         setLinkSearch("");
 //     }
 
 //     async function handleOptimize() {
@@ -305,16 +350,69 @@
 //                 </div>
 //             </div>
 
-//             <div className="mb-2 flex items-center justify-between">
+//             <div className="mb-2 flex items-center justify-between relative">
 //                 <label className={labelClass}>Content (Markdown)</label>
-//                 <button
-//                     type="button"
-//                     onClick={() => setPreview((p) => !p)}
-//                     className="flex items-center gap-1.5 text-xs font-medium text-[#3d8b8b] hover:opacity-70 cursor-pointer"
-//                 >
-//                     {preview ? <EyeOff size={13} /> : <Eye size={13} />}
-//                     {preview ? "Edit" : "Preview"}
-//                 </button>
+//                 <div className="flex items-center gap-3">
+//                     <div className="relative">
+//                         <button
+//                             type="button"
+//                             onClick={() => (linkPickerOpen ? setLinkPickerOpen(false) : openLinkPicker())}
+//                             className="flex items-center gap-1.5 text-xs font-medium text-[#3d8b8b] hover:opacity-70 cursor-pointer"
+//                         >
+//                             <Link2 size={13} />
+//                             Insert article link
+//                         </button>
+//                         {linkPickerOpen && (
+//                             <div
+//                                 className="absolute right-0 top-6 z-20 w-72 rounded-xl border bg-white shadow-lg p-2"
+//                                 style={{ borderColor: "#e4eee8" }}
+//                             >
+//                                 <input
+//                                     autoFocus
+//                                     value={linkSearch}
+//                                     onChange={(e) => setLinkSearch(e.target.value)}
+//                                     placeholder="Search your articles..."
+//                                     className="w-full px-2.5 py-2 rounded-lg border text-xs outline-none mb-1.5"
+//                                     style={{ borderColor: "#e4eee8" }}
+//                                 />
+//                                 <div className="max-h-56 overflow-y-auto">
+//                                     {linkLoading ? (
+//                                         <div className="flex items-center justify-center py-4">
+//                                             <Loader2 size={14} className="animate-spin text-[#a0b8ac]" />
+//                                         </div>
+//                                     ) : (linkableArticles ?? [])
+//                                         .filter((a) => a.title.toLowerCase().includes(linkSearch.toLowerCase()))
+//                                         .length === 0 ? (
+//                                         <p className="text-xs text-[#a0b8ac] px-1 py-2">No matching articles.</p>
+//                                     ) : (
+//                                         (linkableArticles ?? [])
+//                                             .filter((a) => a.title.toLowerCase().includes(linkSearch.toLowerCase()))
+//                                             .slice(0, 30)
+//                                             .map((a) => (
+//                                                 <button
+//                                                     key={a.slug}
+//                                                     type="button"
+//                                                     onClick={() => insertArticleLink(a)}
+//                                                     className="w-full text-left px-2.5 py-2 rounded-lg text-xs hover:bg-[#f7faf8] cursor-pointer"
+//                                                 >
+//                                                     <div className="font-medium text-[#1c3a3a] truncate">{a.title}</div>
+//                                                     <div className="text-[10px] text-[#a0b8ac]">{a.category} · /articles/{a.slug}</div>
+//                                                 </button>
+//                                             ))
+//                                     )}
+//                                 </div>
+//                             </div>
+//                         )}
+//                     </div>
+//                     <button
+//                         type="button"
+//                         onClick={() => setPreview((p) => !p)}
+//                         className="flex items-center gap-1.5 text-xs font-medium text-[#3d8b8b] hover:opacity-70 cursor-pointer"
+//                     >
+//                         {preview ? <EyeOff size={13} /> : <Eye size={13} />}
+//                         {preview ? "Edit" : "Preview"}
+//                     </button>
+//                 </div>
 //             </div>
 //             {preview ? (
 //                 <div
@@ -324,11 +422,12 @@
 //                 />
 //             ) : (
 //                 <textarea
+//                     ref={contentRef}
 //                     className={`${inputClass} font-mono text-[13px] leading-relaxed`}
 //                     rows={16}
 //                     value={form.content}
 //                     onChange={(e) => update("content", e.target.value)}
-//                     placeholder={"## A section heading\n\nWrite your article body in Markdown — headings, **bold**, lists, [links](/path), etc."}
+//                     placeholder={"## A section heading\n\nWrite your article body in Markdown — headings, **bold**, lists, [links](/path), etc.\n\nUse \"Insert article link\" above to link to one of your other articles."}
 //                 />
 //             )}
 //             {errors.content && <p className="text-xs mt-1 text-[#b94a4f]">{errors.content}</p>}
@@ -421,7 +520,6 @@
 //     );
 // }
 
-
 "use client";
 
 import { useState, useRef } from "react";
@@ -440,6 +538,7 @@ export interface ArticleFormData {
     image: string;
     readMin: number;
     featured: boolean;
+    tldr: string;
     content: string;
     metaTitle: string;
     metaDescription: string;
@@ -456,6 +555,7 @@ const emptyForm: ArticleFormData = {
     image: "",
     readMin: 5,
     featured: false,
+    tldr: "",
     content: "",
     metaTitle: "",
     metaDescription: "",
@@ -545,6 +645,7 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
                 tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
                 keywords: form.keywords.split(",").map((k) => k.trim()).filter(Boolean),
                 image: form.image || null,
+                tldr: form.tldr || null,
                 readMin: form.readMin,
                 featured: form.featured,
                 content: form.content,
@@ -698,6 +799,17 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
             <div className="mb-4">
                 <label className={labelClass}>Excerpt</label>
                 <textarea className={`${inputClass} resize-none`} rows={2} value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} placeholder="One or two sentences shown on the articles list" />
+            </div>
+
+            <div className="mb-4">
+                <label className={labelClass}>TL;DR — key takeaways <span className="normal-case font-normal">(optional, shown in a highlighted box near the top of the article)</span></label>
+                <textarea
+                    className={`${inputClass} resize-none`}
+                    rows={2}
+                    value={form.tldr}
+                    onChange={(e) => update("tldr", e.target.value)}
+                    placeholder="A tight, scannable summary of the article's key point(s) — e.g. cost ranges, main signs, or the core takeaway. Leave blank to skip it."
+                />
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -942,3 +1054,4 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
         </div>
     );
 }
+
