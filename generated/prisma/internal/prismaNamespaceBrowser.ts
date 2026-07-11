@@ -62,7 +62,8 @@ export const ModelName = {
   EAPAssessment: 'EAPAssessment',
   EAPSession: 'EAPSession',
   Article: 'Article',
-  VolunteerVerification: 'VolunteerVerification'
+  VolunteerVerification: 'VolunteerVerification',
+  CloneAlert: 'CloneAlert'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -335,6 +336,18 @@ export const VolunteerVerificationScalarFieldEnum = {
 } as const
 
 export type VolunteerVerificationScalarFieldEnum = (typeof VolunteerVerificationScalarFieldEnum)[keyof typeof VolunteerVerificationScalarFieldEnum]
+
+
+export const CloneAlertScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  detectedHost: 'detectedHost',
+  pageUrl: 'pageUrl',
+  ip: 'ip',
+  userAgent: 'userAgent'
+} as const
+
+export type CloneAlertScalarFieldEnum = (typeof CloneAlertScalarFieldEnum)[keyof typeof CloneAlertScalarFieldEnum]
 
 
 export const SortOrder = {

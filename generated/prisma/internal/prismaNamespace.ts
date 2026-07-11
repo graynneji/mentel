@@ -395,7 +395,8 @@ export const ModelName = {
   EAPAssessment: 'EAPAssessment',
   EAPSession: 'EAPSession',
   Article: 'Article',
-  VolunteerVerification: 'VolunteerVerification'
+  VolunteerVerification: 'VolunteerVerification',
+  CloneAlert: 'CloneAlert'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification"
+    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1303,6 +1304,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CloneAlert: {
+      payload: Prisma.$CloneAlertPayload<ExtArgs>
+      fields: Prisma.CloneAlertFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CloneAlertFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CloneAlertFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>
+        }
+        findFirst: {
+          args: Prisma.CloneAlertFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CloneAlertFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>
+        }
+        findMany: {
+          args: Prisma.CloneAlertFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>[]
+        }
+        create: {
+          args: Prisma.CloneAlertCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>
+        }
+        createMany: {
+          args: Prisma.CloneAlertCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CloneAlertCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>[]
+        }
+        delete: {
+          args: Prisma.CloneAlertDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>
+        }
+        update: {
+          args: Prisma.CloneAlertUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>
+        }
+        deleteMany: {
+          args: Prisma.CloneAlertDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CloneAlertUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CloneAlertUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>[]
+        }
+        upsert: {
+          args: Prisma.CloneAlertUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CloneAlertPayload>
+        }
+        aggregate: {
+          args: Prisma.CloneAlertAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCloneAlert>
+        }
+        groupBy: {
+          args: Prisma.CloneAlertGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloneAlertGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CloneAlertCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CloneAlertCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1598,6 +1673,18 @@ export const VolunteerVerificationScalarFieldEnum = {
 export type VolunteerVerificationScalarFieldEnum = (typeof VolunteerVerificationScalarFieldEnum)[keyof typeof VolunteerVerificationScalarFieldEnum]
 
 
+export const CloneAlertScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  detectedHost: 'detectedHost',
+  pageUrl: 'pageUrl',
+  ip: 'ip',
+  userAgent: 'userAgent'
+} as const
+
+export type CloneAlertScalarFieldEnum = (typeof CloneAlertScalarFieldEnum)[keyof typeof CloneAlertScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1835,6 +1922,7 @@ export type GlobalOmitConfig = {
   eAPSession?: Prisma.EAPSessionOmit
   article?: Prisma.ArticleOmit
   volunteerVerification?: Prisma.VolunteerVerificationOmit
+  cloneAlert?: Prisma.CloneAlertOmit
 }
 
 /* Types for Logging */

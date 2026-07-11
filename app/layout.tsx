@@ -1,4 +1,5 @@
 
+
 // import type { Metadata } from "next";
 // import "./globals.css";
 // import Navbar from "@/components/Navbar";
@@ -8,6 +9,8 @@
 // import ConditionalShell from "@/components/Conditionalshell";
 // import { Analytics } from "@vercel/analytics/next";
 // import FacebookPixel from "@/components/FacebookPixel";
+// import GoogleAdsTag from "@/components/GoogleAdsTag";
+// import OneSignalInit from "@/components/OneSignalInit";
 // import WhatsAppButton from "@/components/WhatsAppButton";
 
 // const dmSans = DM_Sans({
@@ -276,6 +279,8 @@
 //           />
 //         </noscript>
 //         <FacebookPixel />
+//         <GoogleAdsTag />
+//         <OneSignalInit />
 //         <WhatsAppButton />
 //         <ConditionalShell>{children}</ConditionalShell>
 //         <Analytics />
@@ -296,6 +301,7 @@ import { Analytics } from "@vercel/analytics/next";
 import FacebookPixel from "@/components/FacebookPixel";
 import GoogleAdsTag from "@/components/GoogleAdsTag";
 import OneSignalInit from "@/components/OneSignalInit";
+import IntegrityBeacon from "@/components/IntegrityBeacon";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const dmSans = DM_Sans({
@@ -566,6 +572,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <FacebookPixel />
         <GoogleAdsTag />
         <OneSignalInit />
+        <IntegrityBeacon />
         <WhatsAppButton />
         <ConditionalShell>{children}</ConditionalShell>
         <Analytics />

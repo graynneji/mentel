@@ -1,5 +1,4 @@
 
-
 // "use client";
 
 // // app/admin/layout.tsx
@@ -14,6 +13,7 @@
 //     Building2,
 //     Inbox,
 //     FileText,
+//     ShieldCheck,
 // } from "lucide-react";
 
 // const NAV = [
@@ -25,6 +25,7 @@
 //     { href: "/admin/analytics", icon: BarChart2, label: "Analytics" },
 //     { href: "/admin/articles", icon: FileText, label: "Articles" },
 //     { href: "/admin/seo-report", icon: Tags, label: "SEO Dashboard" },
+//     { href: "/admin/volunteer-verifications", icon: ShieldCheck, label: "Volunteer Verifications" },
 //     { href: "/admin/contact", icon: Inbox, label: "Contact" },
 //     { href: "/admin/settings", icon: Settings, label: "Settings" },
 //     { href: "/admin/companies", icon: Building2, label: "EAP Companies" },
@@ -140,6 +141,7 @@
 //     );
 // }
 
+
 "use client";
 
 // app/admin/layout.tsx
@@ -147,6 +149,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import OnlineAdminsIndicator from "@/components/OnlineAdminsIndicator";
 import {
     LayoutDashboard, Users, Calendar, CreditCard,
     MessageSquare, BarChart2, Settings, ChevronLeft,
@@ -155,6 +158,7 @@ import {
     Inbox,
     FileText,
     ShieldCheck,
+    ShieldAlert,
 } from "lucide-react";
 
 const NAV = [
@@ -167,6 +171,7 @@ const NAV = [
     { href: "/admin/articles", icon: FileText, label: "Articles" },
     { href: "/admin/seo-report", icon: Tags, label: "SEO Dashboard" },
     { href: "/admin/volunteer-verifications", icon: ShieldCheck, label: "Volunteer Verifications" },
+    { href: "/admin/security", icon: ShieldAlert, label: "Security" },
     { href: "/admin/contact", icon: Inbox, label: "Contact" },
     { href: "/admin/settings", icon: Settings, label: "Settings" },
     { href: "/admin/companies", icon: Building2, label: "EAP Companies" },
@@ -232,6 +237,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                 {/* Bottom */}
                 <div className="border-t border-white/10 p-3 shrink-0">
+                    <OnlineAdminsIndicator collapsed={collapsed} />
                     {!collapsed && (
                         <div className="flex items-center gap-2.5 px-1 mb-2">
                             <div className="w-7 h-7 rounded-full bg-[#4e8c6a] flex items-center justify-center shrink-0">

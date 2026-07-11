@@ -118,3 +118,12 @@ export type Article = Prisma.ArticleModel
  * of a single detail view a reviewer explicitly opens.
  */
 export type VolunteerVerification = Prisma.VolunteerVerificationModel
+/**
+ * Model CloneAlert
+ * Detected instances of the site's own front-end code executing on a
+ * domain that isn't trymentel.com — i.e. someone copied the HTML/JS and
+ * is hosting it elsewhere. Populated by app/api/integrity-check/route.ts.
+ * See that file for exactly what this can and can't tell you (IP/host of
+ * whoever is VISITING the clone, not necessarily whoever made it).
+ */
+export type CloneAlert = Prisma.CloneAlertModel
