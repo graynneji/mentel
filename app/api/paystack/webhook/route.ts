@@ -19,6 +19,8 @@ import { NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { Resend } from "resend";
 import { withRateLimit } from "@/lib/withRateLimit";
+import { sendFbConversionEvent } from "@/lib/fbConversion";
+import { recordPayment } from "@/lib/payments/record-payment";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!; // sk_live_...
@@ -438,6 +440,15 @@ export async function POST_HANDLER(req: Request) {
     const clientPhone = getField("phone");
     const plan = getField("plan") || "Session";
     const reason = getField("reason") || "General Wellbeing";
+    // Raw numeric value for FB CAPI — Paystack amount is in kobo
+    const rawAmount = data.amount / 100;
+    // ── Meta tracking signals captured at checkout ─────────────────────────────
+    const fbp = getField("fbp");
+    const fbc = getField("fbc");
+    const clientIp = getField("client_ip");
+    const userAgent = getField("user_agent");
+
+    // Formatted display string for the emails
     const amount = formatNGN(data.amount);
     const reference = data.reference ?? "";
     const channel = data.channel ?? "card";
@@ -446,11 +457,58 @@ export async function POST_HANDLER(req: Request) {
       timeStyle: "short",
     });
 
+    // ── Fire Meta Conversions API — Purchase event ─────────────────────────────
+    try {
+      await sendFbConversionEvent({
+        eventName: "Purchase",
+        eventId: reference, // must match client-side eventID if you also fire client-side
+        email: clientEmail,
+        phone: clientPhone,
+        fbp,
+        fbc,
+        clientIp,
+        userAgent,
+        value: rawAmount,
+        currency: data.currency ?? "NGN", // Paystack sends this in data.currency
+      });
+    } catch (fbError) {
+      // Never let a Meta API failure block email delivery or the webhook ack
+      console.error("FB Conversions API error:", fbError);
+    }
+
     if (!clientEmail) {
       console.error(
         "Paystack webhook: no email on charge.success — skipping email send",
       );
       return NextResponse.json({ received: true });
+    }
+
+    // ── This is the fix: previously nothing here ever wrote to the
+    // database, so paying clients never showed up in /admin/payments or
+    // /admin/patients — the money went through, but the CRM had no idea.
+    // Also unlocks their session package (4 for Monthly, 1 otherwise) so
+    // they can log into the client portal and schedule.
+    try {
+      await recordPayment({
+        reference,
+        email: clientEmail,
+        name: clientName,
+        phone: clientPhone || undefined,
+        amountKobo: data.amount,
+        currency: data.currency ?? "NGN",
+        method: channel,
+        plan,
+        reason,
+        paidAt: new Date(data.paid_at ?? Date.now()),
+      });
+    } catch (err) {
+      // Never let a DB hiccup block the confirmation emails below — but
+      // this is exactly the kind of failure you want to know about, since
+      // it means a real payment silently didn't get recorded.
+      console.error(
+        "[Paystack webhook] recordPayment failed — payment succeeded but was NOT saved to the CRM:",
+        err,
+      );
     }
 
     const clientHtml = buildClientEmail({

@@ -63,7 +63,12 @@ export const ModelName = {
   EAPSession: 'EAPSession',
   Article: 'Article',
   VolunteerVerification: 'VolunteerVerification',
-  CloneAlert: 'CloneAlert'
+  CloneAlert: 'CloneAlert',
+  ClientAccount: 'ClientAccount',
+  ClientLoginToken: 'ClientLoginToken',
+  Package: 'Package',
+  ScheduledSession: 'ScheduledSession',
+  SmsMessage: 'SmsMessage'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -348,6 +353,76 @@ export const CloneAlertScalarFieldEnum = {
 } as const
 
 export type CloneAlertScalarFieldEnum = (typeof CloneAlertScalarFieldEnum)[keyof typeof CloneAlertScalarFieldEnum]
+
+
+export const ClientAccountScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  leadId: 'leadId',
+  email: 'email'
+} as const
+
+export type ClientAccountScalarFieldEnum = (typeof ClientAccountScalarFieldEnum)[keyof typeof ClientAccountScalarFieldEnum]
+
+
+export const ClientLoginTokenScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  clientAccountId: 'clientAccountId',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  usedAt: 'usedAt'
+} as const
+
+export type ClientLoginTokenScalarFieldEnum = (typeof ClientLoginTokenScalarFieldEnum)[keyof typeof ClientLoginTokenScalarFieldEnum]
+
+
+export const PackageScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  leadId: 'leadId',
+  paymentId: 'paymentId',
+  planType: 'planType',
+  totalSessions: 'totalSessions',
+  usedSessions: 'usedSessions',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  status: 'status'
+} as const
+
+export type PackageScalarFieldEnum = (typeof PackageScalarFieldEnum)[keyof typeof PackageScalarFieldEnum]
+
+
+export const ScheduledSessionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  packageId: 'packageId',
+  scheduledAt: 'scheduledAt',
+  status: 'status',
+  therapist: 'therapist',
+  notes: 'notes'
+} as const
+
+export type ScheduledSessionScalarFieldEnum = (typeof ScheduledSessionScalarFieldEnum)[keyof typeof ScheduledSessionScalarFieldEnum]
+
+
+export const SmsMessageScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  providerId: 'providerId',
+  senderId: 'senderId',
+  recipients: 'recipients',
+  message: 'message',
+  route: 'route',
+  segments: 'segments',
+  unitsBilled: 'unitsBilled',
+  costBilled: 'costBilled',
+  status: 'status',
+  errorMessage: 'errorMessage'
+} as const
+
+export type SmsMessageScalarFieldEnum = (typeof SmsMessageScalarFieldEnum)[keyof typeof SmsMessageScalarFieldEnum]
 
 
 export const SortOrder = {

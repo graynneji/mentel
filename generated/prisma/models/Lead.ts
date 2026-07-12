@@ -316,6 +316,8 @@ export type LeadWhereInput = {
   appointments?: Prisma.AppointmentListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
+  clientAccount?: Prisma.XOR<Prisma.ClientAccountNullableScalarRelationFilter, Prisma.ClientAccountWhereInput> | null
+  packages?: Prisma.PackageListRelationFilter
 }
 
 export type LeadOrderByWithRelationInput = {
@@ -341,6 +343,8 @@ export type LeadOrderByWithRelationInput = {
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   payments?: Prisma.PaymentOrderByRelationAggregateInput
+  clientAccount?: Prisma.ClientAccountOrderByWithRelationInput
+  packages?: Prisma.PackageOrderByRelationAggregateInput
 }
 
 export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -369,6 +373,8 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   appointments?: Prisma.AppointmentListRelationFilter
   sessions?: Prisma.SessionListRelationFilter
   payments?: Prisma.PaymentListRelationFilter
+  clientAccount?: Prisma.XOR<Prisma.ClientAccountNullableScalarRelationFilter, Prisma.ClientAccountWhereInput> | null
+  packages?: Prisma.PackageListRelationFilter
 }, "id">
 
 export type LeadOrderByWithAggregationInput = {
@@ -444,6 +450,8 @@ export type LeadCreateInput = {
   appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateInput = {
@@ -469,6 +477,8 @@ export type LeadUncheckedCreateInput = {
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountUncheckedCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUpdateInput = {
@@ -494,6 +504,8 @@ export type LeadUpdateInput = {
   appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateInput = {
@@ -519,6 +531,8 @@ export type LeadUncheckedUpdateInput = {
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUncheckedUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateManyInput = {
@@ -753,6 +767,34 @@ export type LeadUpdateOneRequiredWithoutPaymentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutPaymentsInput, Prisma.LeadUpdateWithoutPaymentsInput>, Prisma.LeadUncheckedUpdateWithoutPaymentsInput>
 }
 
+export type LeadCreateNestedOneWithoutClientAccountInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutClientAccountInput, Prisma.LeadUncheckedCreateWithoutClientAccountInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutClientAccountInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutClientAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutClientAccountInput, Prisma.LeadUncheckedCreateWithoutClientAccountInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutClientAccountInput
+  upsert?: Prisma.LeadUpsertWithoutClientAccountInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutClientAccountInput, Prisma.LeadUpdateWithoutClientAccountInput>, Prisma.LeadUncheckedUpdateWithoutClientAccountInput>
+}
+
+export type LeadCreateNestedOneWithoutPackagesInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPackagesInput, Prisma.LeadUncheckedCreateWithoutPackagesInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPackagesInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutPackagesNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPackagesInput, Prisma.LeadUncheckedCreateWithoutPackagesInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPackagesInput
+  upsert?: Prisma.LeadUpsertWithoutPackagesInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutPackagesInput, Prisma.LeadUpdateWithoutPackagesInput>, Prisma.LeadUncheckedUpdateWithoutPackagesInput>
+}
+
 export type LeadCreateWithoutMessagesInput = {
   id?: string
   createdAt?: Date | string
@@ -775,6 +817,8 @@ export type LeadCreateWithoutMessagesInput = {
   appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutMessagesInput = {
@@ -799,6 +843,8 @@ export type LeadUncheckedCreateWithoutMessagesInput = {
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountUncheckedCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutMessagesInput = {
@@ -839,6 +885,8 @@ export type LeadUpdateWithoutMessagesInput = {
   appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutMessagesInput = {
@@ -863,6 +911,8 @@ export type LeadUncheckedUpdateWithoutMessagesInput = {
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUncheckedUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutAppointmentsInput = {
@@ -887,6 +937,8 @@ export type LeadCreateWithoutAppointmentsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutAppointmentsInput = {
@@ -911,6 +963,8 @@ export type LeadUncheckedCreateWithoutAppointmentsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountUncheckedCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutAppointmentsInput = {
@@ -951,6 +1005,8 @@ export type LeadUpdateWithoutAppointmentsInput = {
   messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutAppointmentsInput = {
@@ -975,6 +1031,8 @@ export type LeadUncheckedUpdateWithoutAppointmentsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUncheckedUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutSessionsInput = {
@@ -999,6 +1057,8 @@ export type LeadCreateWithoutSessionsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutSessionsInput = {
@@ -1023,6 +1083,8 @@ export type LeadUncheckedCreateWithoutSessionsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountUncheckedCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutSessionsInput = {
@@ -1063,6 +1125,8 @@ export type LeadUpdateWithoutSessionsInput = {
   messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutSessionsInput = {
@@ -1087,6 +1151,8 @@ export type LeadUncheckedUpdateWithoutSessionsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUncheckedUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateWithoutPaymentsInput = {
@@ -1111,6 +1177,8 @@ export type LeadCreateWithoutPaymentsInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutPaymentsInput = {
@@ -1135,6 +1203,8 @@ export type LeadUncheckedCreateWithoutPaymentsInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountUncheckedCreateNestedOneWithoutLeadInput
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutPaymentsInput = {
@@ -1175,6 +1245,8 @@ export type LeadUpdateWithoutPaymentsInput = {
   messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutPaymentsInput = {
@@ -1199,6 +1271,248 @@ export type LeadUncheckedUpdateWithoutPaymentsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUncheckedUpdateOneWithoutLeadNestedInput
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadCreateWithoutClientAccountInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+  packages?: Prisma.PackageCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutClientAccountInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+  packages?: Prisma.PackageUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutClientAccountInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutClientAccountInput, Prisma.LeadUncheckedCreateWithoutClientAccountInput>
+}
+
+export type LeadUpsertWithoutClientAccountInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutClientAccountInput, Prisma.LeadUncheckedUpdateWithoutClientAccountInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutClientAccountInput, Prisma.LeadUncheckedCreateWithoutClientAccountInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutClientAccountInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutClientAccountInput, Prisma.LeadUncheckedUpdateWithoutClientAccountInput>
+}
+
+export type LeadUpdateWithoutClientAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+  packages?: Prisma.PackageUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutClientAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+  packages?: Prisma.PackageUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadCreateWithoutPackagesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountCreateNestedOneWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutPackagesInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  email: string
+  phone?: string | null
+  score: number
+  band: string
+  severity: string
+  answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: string
+  notes?: string | null
+  source?: string | null
+  therapist?: string | null
+  tags?: Prisma.LeadCreatetagsInput | string[]
+  seq1SentAt?: Date | string | null
+  seq2SentAt?: Date | string | null
+  seq3SentAt?: Date | string | null
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutLeadInput
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutLeadInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutLeadInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutLeadInput
+  clientAccount?: Prisma.ClientAccountUncheckedCreateNestedOneWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutPackagesInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutPackagesInput, Prisma.LeadUncheckedCreateWithoutPackagesInput>
+}
+
+export type LeadUpsertWithoutPackagesInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutPackagesInput, Prisma.LeadUncheckedUpdateWithoutPackagesInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutPackagesInput, Prisma.LeadUncheckedCreateWithoutPackagesInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutPackagesInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutPackagesInput, Prisma.LeadUncheckedUpdateWithoutPackagesInput>
+}
+
+export type LeadUpdateWithoutPackagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUpdateOneWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutPackagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  score?: Prisma.IntFieldUpdateOperationsInput | number
+  band?: Prisma.StringFieldUpdateOperationsInput | string
+  severity?: Prisma.StringFieldUpdateOperationsInput | string
+  answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tags?: Prisma.LeadUpdatetagsInput | string[]
+  seq1SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq2SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  seq3SentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutLeadNestedInput
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutLeadNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutLeadNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutLeadNestedInput
+  clientAccount?: Prisma.ClientAccountUncheckedUpdateOneWithoutLeadNestedInput
 }
 
 
@@ -1211,6 +1525,7 @@ export type LeadCountOutputType = {
   appointments: number
   sessions: number
   payments: number
+  packages: number
 }
 
 export type LeadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1218,6 +1533,7 @@ export type LeadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   appointments?: boolean | LeadCountOutputTypeCountAppointmentsArgs
   sessions?: boolean | LeadCountOutputTypeCountSessionsArgs
   payments?: boolean | LeadCountOutputTypeCountPaymentsArgs
+  packages?: boolean | LeadCountOutputTypeCountPackagesArgs
 }
 
 /**
@@ -1258,6 +1574,13 @@ export type LeadCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.PaymentWhereInput
 }
 
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountPackagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PackageWhereInput
+}
+
 
 export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1282,6 +1605,8 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   appointments?: boolean | Prisma.Lead$appointmentsArgs<ExtArgs>
   sessions?: boolean | Prisma.Lead$sessionsArgs<ExtArgs>
   payments?: boolean | Prisma.Lead$paymentsArgs<ExtArgs>
+  clientAccount?: boolean | Prisma.Lead$clientAccountArgs<ExtArgs>
+  packages?: boolean | Prisma.Lead$packagesArgs<ExtArgs>
   _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lead"]>
 
@@ -1354,6 +1679,8 @@ export type LeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   appointments?: boolean | Prisma.Lead$appointmentsArgs<ExtArgs>
   sessions?: boolean | Prisma.Lead$sessionsArgs<ExtArgs>
   payments?: boolean | Prisma.Lead$paymentsArgs<ExtArgs>
+  clientAccount?: boolean | Prisma.Lead$clientAccountArgs<ExtArgs>
+  packages?: boolean | Prisma.Lead$packagesArgs<ExtArgs>
   _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LeadIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1366,6 +1693,8 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     appointments: Prisma.$AppointmentPayload<ExtArgs>[]
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     payments: Prisma.$PaymentPayload<ExtArgs>[]
+    clientAccount: Prisma.$ClientAccountPayload<ExtArgs> | null
+    packages: Prisma.$PackagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1784,6 +2113,8 @@ export interface Prisma__LeadClient<T, Null = never, ExtArgs extends runtime.Typ
   appointments<T extends Prisma.Lead$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sessions<T extends Prisma.Lead$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payments<T extends Prisma.Lead$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clientAccount<T extends Prisma.Lead$clientAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$clientAccountArgs<ExtArgs>>): Prisma.Prisma__ClientAccountClient<runtime.Types.Result.GetResult<Prisma.$ClientAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  packages<T extends Prisma.Lead$packagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$packagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2317,6 +2648,49 @@ export type Lead$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
+}
+
+/**
+ * Lead.clientAccount
+ */
+export type Lead$clientAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClientAccount
+   */
+  select?: Prisma.ClientAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClientAccount
+   */
+  omit?: Prisma.ClientAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClientAccountInclude<ExtArgs> | null
+  where?: Prisma.ClientAccountWhereInput
+}
+
+/**
+ * Lead.packages
+ */
+export type Lead$packagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Package
+   */
+  select?: Prisma.PackageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Package
+   */
+  omit?: Prisma.PackageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PackageInclude<ExtArgs> | null
+  where?: Prisma.PackageWhereInput
+  orderBy?: Prisma.PackageOrderByWithRelationInput | Prisma.PackageOrderByWithRelationInput[]
+  cursor?: Prisma.PackageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PackageScalarFieldEnum | Prisma.PackageScalarFieldEnum[]
 }
 
 /**

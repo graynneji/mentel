@@ -3,6 +3,7 @@ import { useState } from "react";
 import BgBlobs from "@/components/BgBlobs";
 import { Mail, Phone, MapPin, Send, Leaf, Loader2 } from "lucide-react";
 import { FacebookIcon, InstagramIcon, TikTokIcon, WhatsAppIcon } from "./Footer";
+import Link from "next/link";
 // function WhatsAppIcon() {
 //     return (
 //         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -119,7 +120,7 @@ export default function ContactPage() {
                             </h3>
                             <div className="flex flex-col gap-4">
                                 {contactInfo.map(({ icon: Icon, label, value, href }) => (
-                                    <a
+                                    <Link
                                         key={label}
                                         href={href}
                                         className="flex items-center gap-3 group"
@@ -136,7 +137,7 @@ export default function ContactPage() {
                                                 {value}
                                             </p>
                                         </div>
-                                    </a>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

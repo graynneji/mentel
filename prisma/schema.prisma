@@ -51,6 +51,8 @@ model Lead {
   appointments Appointment[]
   sessions     Session[]
   payments     Payment[]
+  clientAccount ClientAccount?   // ← add this
+  packages      Package[]        // ← add this
 
   @@index([email])
   @@index([status])
@@ -144,6 +146,8 @@ model Payment {
   reference  String?   @unique             // Paystack / Flutterwave reference
   paidAt     DateTime? @map("paid_at")
   notes      String?
+
+  package Package?   // ← add this
 
   @@index([leadId])
   @@index([status])
@@ -480,4 +484,111 @@ model CloneAlert {
   @@index([detectedHost])
   @@index([createdAt])
   @@map("clone_alerts")
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SECTION 4 — CLIENT PORTAL (post-payment scheduling)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/// A client's login for the client portal (separate small app/project,
+/// sharing this same database). One per Lead — created the first time
+/// they successfully pay, since that's the point they become a "client"
+/// rather than just a Lead in the CRM.
+model ClientAccount {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  leadId String @unique @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  email String @unique
+
+  @@map("client_accounts")
+}
+
+/// One-time login link for the client portal (magic-link auth — no
+/// passwords to manage). Single use, short-lived.
+model ClientLoginToken {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  clientAccountId String @map("client_account_id")
+  token           String @unique
+  expiresAt       DateTime @map("expires_at")
+  usedAt          DateTime? @map("used_at")
+
+  @@index([token])
+  @@map("client_login_tokens")
+}
+
+/// A block of paid-for sessions unlocked by one Payment — e.g. the
+/// "Monthly" plan is 4 sessions over 30 days, "Single" is 1 session.
+/// The client schedules sessions against this one at a time from the
+/// client portal, rather than all four being booked automatically.
+model Package {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  leadId String @map("lead_id")
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  paymentId String  @unique @map("payment_id")
+  payment   Payment @relation(fields: [paymentId], references: [id])
+
+  planType      String   @map("plan_type") // "single" | "monthly"
+  totalSessions Int      @map("total_sessions")
+  usedSessions  Int      @default(0) @map("used_sessions")
+  periodStart   DateTime @map("period_start")
+  periodEnd     DateTime @map("period_end")
+  status        String   @default("active") // active | expired | cancelled
+
+  scheduledSessions ScheduledSession[]
+
+  @@index([leadId])
+  @@index([status])
+  @@map("packages")
+}
+
+/// One individual session the client has scheduled against their Package's
+/// remaining allowance. Kept separate from the main Appointment model —
+/// this is the client-self-service booking, distinct from the therapist/
+/// admin-managed Appointment flow, though the two could be reconciled
+/// later once the client portal picks a real therapist/slot integration.
+model ScheduledSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  packageId String  @map("package_id")
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  scheduledAt DateTime @map("scheduled_at")
+  status      String   @default("scheduled") // scheduled | completed | cancelled | no-show
+  therapist   String?
+  notes       String?
+
+  @@index([packageId])
+  @@index([scheduledAt])
+  @@map("scheduled_sessions")
+}
+
+/// A log of SMS sent from the admin dashboard via BestBulkSMS. Kept for
+/// history/audit — see lib/sms/bestbulksms.ts for the API client.
+model SmsMessage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  providerId   Int?     @map("provider_id") // BestBulkSMS's sms_message_id
+  senderId     String   @map("sender_id")
+  recipients   String[]
+  message      String   @db.Text
+  route        String   @default("standard")
+  segments     Int?
+  unitsBilled  Int?     @map("units_billed")
+  costBilled   Int?     @map("cost_billed")
+  status       String   @default("sent") // sent | failed
+  errorMessage String?  @map("error_message")
+
+  @@index([createdAt])
+  @@map("sms_messages")
 }

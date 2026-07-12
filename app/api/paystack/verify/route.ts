@@ -82,6 +82,7 @@ import { withRateLimit } from "@/lib/withRateLimit";
 import { NextResponse } from "next/server";
 import { after } from "next/server";
 import { recordEvent, ensureVisitorAndSession } from "@/lib/analytics/ingest";
+import { recordPayment } from "@/lib/payments/record-payment";
 
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!;
 
@@ -146,6 +147,28 @@ export async function GET_HANDLER(req: Request) {
       plan: getField("plan"),
       reason: getField("reason"),
     };
+
+    // Redundant with the webhook (lib/payments/record-payment.ts is
+    // idempotent on `reference`, so whichever of the two fires first wins
+    // and the other is a safe no-op) — this covers the case where the
+    // webhook is slow, misconfigured, or hasn't been set up in the
+    // Paystack dashboard yet.
+    try {
+      await recordPayment({
+        reference: payment.reference,
+        email: payment.email,
+        name: payment.name,
+        phone: payment.phone || undefined,
+        amountKobo: tx.amount,
+        currency: payment.currency,
+        method: payment.channel,
+        plan: payment.plan,
+        reason: payment.reason,
+        paidAt: new Date(payment.paidAt ?? Date.now()),
+      });
+    } catch (err) {
+      console.error("[Paystack verify] recordPayment failed:", err);
+    }
 
     // ── Analytics: fire PAYMENT_COMPLETED server-side ─────────────────────────
     // This is a browser-initiated GET (Paystack redirect), so the user's

@@ -159,6 +159,7 @@ import {
     FileText,
     ShieldCheck,
     ShieldAlert,
+    MessageSquareText,
 } from "lucide-react";
 
 const NAV = [
@@ -167,6 +168,7 @@ const NAV = [
     { href: "/admin/appointments", icon: Calendar, label: "Appointments" },
     { href: "/admin/payments", icon: CreditCard, label: "Payments" },
     { href: "/admin/communications", icon: MessageSquare, label: "Communications" },
+    { href: "/admin/sms", icon: MessageSquareText, label: "SMS" },
     { href: "/admin/analytics", icon: BarChart2, label: "Analytics" },
     { href: "/admin/articles", icon: FileText, label: "Articles" },
     { href: "/admin/seo-report", icon: Tags, label: "SEO Dashboard" },

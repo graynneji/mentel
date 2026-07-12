@@ -12,6 +12,12 @@ const PLANS: Record<string, { label: string; amountKobo: number }> = {
   monthly: { label: "Monthly Plan", amountKobo: 35_000 * 100 },
 };
 
+// ── Cookie reader for plain Request — mirrors getMentelIds pattern ────────────
+function getCookie(req: Request, name: string): string {
+  const cookieHeader = req.headers.get("cookie") ?? "";
+  return cookieHeader.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] ?? "";
+}
+
 function s(v: unknown) {
   return String(v ?? "").trim();
 }
@@ -39,6 +45,13 @@ export async function POST_HANDLER(req: Request) {
 
     const plan = PLANS[planId];
     const reference = `MENTEL-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+
+    // ── Capture Meta tracking signals from THIS request ─────────────────────
+    const fbp = getCookie(req, "_fbp");
+    const fbc = getCookie(req, "_fbc");
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "";
+    const userAgent = req.headers.get("user-agent") ?? "";
 
     // ── Call Paystack Initialize Transaction ──────────────────────────────────
     const paystackRes = await fetch(
@@ -74,6 +87,18 @@ export async function POST_HANDLER(req: Request) {
                 display_name: "Plan",
                 variable_name: "plan",
                 value: plan.label,
+              },
+              { display_name: "FBP", variable_name: "fbp", value: fbp },
+              { display_name: "FBC", variable_name: "fbc", value: fbc },
+              {
+                display_name: "Client IP",
+                variable_name: "client_ip",
+                value: clientIp,
+              },
+              {
+                display_name: "User Agent",
+                variable_name: "user_agent",
+                value: userAgent,
               },
             ],
           },

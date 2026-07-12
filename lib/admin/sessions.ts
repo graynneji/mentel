@@ -34,12 +34,23 @@ function sessionKey(id: string) {
   return `admin_session:${id}`;
 }
 
-export async function registerSession(ip: string, userAgent: string): Promise<string> {
+export async function registerSession(
+  ip: string,
+  userAgent: string,
+): Promise<string> {
   const sessionId = crypto.randomUUID();
   const now = Date.now();
-  const info: AdminSessionInfo = { sessionId, createdAt: now, lastSeenAt: now, ip, userAgent };
+  const info: AdminSessionInfo = {
+    sessionId,
+    createdAt: now,
+    lastSeenAt: now,
+    ip,
+    userAgent,
+  };
 
-  await redis.set(sessionKey(sessionId), JSON.stringify(info), { ex: SESSION_TTL_SECONDS });
+  await redis.set(sessionKey(sessionId), JSON.stringify(info), {
+    ex: SESSION_TTL_SECONDS,
+  });
   await redis.sadd(INDEX_KEY, sessionId);
 
   return sessionId;
@@ -52,9 +63,14 @@ export async function touchSession(sessionId: string): Promise<void> {
     // (heartbeat route) re-registers a fresh one in this case.
     return;
   }
-  const info: AdminSessionInfo = typeof raw === "string" ? JSON.parse(raw) : (raw as unknown as AdminSessionInfo);
+  const info: AdminSessionInfo =
+    typeof raw === "string"
+      ? JSON.parse(raw)
+      : (raw as unknown as AdminSessionInfo);
   info.lastSeenAt = Date.now();
-  await redis.set(sessionKey(sessionId), JSON.stringify(info), { ex: SESSION_TTL_SECONDS });
+  await redis.set(sessionKey(sessionId), JSON.stringify(info), {
+    ex: SESSION_TTL_SECONDS,
+  });
 }
 
 export async function removeSession(sessionId: string): Promise<void> {
@@ -76,7 +92,11 @@ export async function listActiveSessions(): Promise<AdminSessionInfo[]> {
       staleIds.push(id); // expired in Redis but index still references it
       continue;
     }
-    results.push(typeof raw === "string" ? JSON.parse(raw) : (raw as unknown as AdminSessionInfo));
+    results.push(
+      typeof raw === "string"
+        ? JSON.parse(raw)
+        : (raw as unknown as AdminSessionInfo),
+    );
   }
 
   if (staleIds.length > 0) {

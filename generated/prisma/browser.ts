@@ -103,3 +103,40 @@ export type VolunteerVerification = Prisma.VolunteerVerificationModel
  * whoever is VISITING the clone, not necessarily whoever made it).
  */
 export type CloneAlert = Prisma.CloneAlertModel
+/**
+ * Model ClientAccount
+ * A client's login for the client portal (separate small app/project,
+ * sharing this same database). One per Lead — created the first time
+ * they successfully pay, since that's the point they become a "client"
+ * rather than just a Lead in the CRM.
+ */
+export type ClientAccount = Prisma.ClientAccountModel
+/**
+ * Model ClientLoginToken
+ * One-time login link for the client portal (magic-link auth — no
+ * passwords to manage). Single use, short-lived.
+ */
+export type ClientLoginToken = Prisma.ClientLoginTokenModel
+/**
+ * Model Package
+ * A block of paid-for sessions unlocked by one Payment — e.g. the
+ * "Monthly" plan is 4 sessions over 30 days, "Single" is 1 session.
+ * The client schedules sessions against this one at a time from the
+ * client portal, rather than all four being booked automatically.
+ */
+export type Package = Prisma.PackageModel
+/**
+ * Model ScheduledSession
+ * One individual session the client has scheduled against their Package's
+ * remaining allowance. Kept separate from the main Appointment model —
+ * this is the client-self-service booking, distinct from the therapist/
+ * admin-managed Appointment flow, though the two could be reconciled
+ * later once the client portal picks a real therapist/slot integration.
+ */
+export type ScheduledSession = Prisma.ScheduledSessionModel
+/**
+ * Model SmsMessage
+ * A log of SMS sent from the admin dashboard via BestBulkSMS. Kept for
+ * history/audit — see lib/sms/bestbulksms.ts for the API client.
+ */
+export type SmsMessage = Prisma.SmsMessageModel
