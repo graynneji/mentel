@@ -1,5 +1,4 @@
 
-// // app/verify/page.tsx
 
 // "use client";
 // import { Suspense, useEffect, useState } from "react";
@@ -7,6 +6,8 @@
 // import Link from "next/link";
 // import { CheckCircle, XCircle, Loader2, ArrowRight } from "lucide-react";
 // import BgBlobs from "@/components/BgBlobs";
+// import { fireConversion } from "@/lib/tracking/pixels";
+// import { markBooked } from "@/lib/personalization/profile";
 
 // type State = "loading" | "success" | "failed";
 
@@ -123,29 +124,21 @@
 //                 setPayment(data.payment);
 //                 setState("success");
 
-//                 // if (typeof window !== "undefined" && window.ttq) {
-//                 //     window.ttq.track("CompletePayment", { value: data.payment.amount, currency: "NGN" });
-//                 //     window.ttq.track("Schedule");
-//                 //     window.ttq.track("CompleteRegistration");
-//                 // }
+//                 // Personalization: the booking is now confirmed server-side —
+//                 // mark it booked and clear resume state so returning visitors
+//                 // aren't shown a stale "continue booking" prompt.
+//                 markBooked();
 
-//                 // Dedupe pixel firing per reference. Without this, a refresh, the
-//                 // back button, someone re-opening the confirmation link, or React's
-//                 // Strict Mode double-invoke in dev all re-fire Purchase/Lead events
-//                 // for the same payment, inflating Meta's conversion numbers.
-//                 if (typeof window !== "undefined" && (window as any).fbq) {
-//                     const trackedKey = `fb_purchase_tracked_${data.payment.reference}`;
-//                     if (!sessionStorage.getItem(trackedKey)) {
-//                         // (window as any).fbq("track", "pageView");
-//                         // (window as any).fbq("track", "Lead");
-//                         (window as any).fbq("track", "Purchase", {
-//                             value: data.payment.amount,
-//                             currency: "NGN",
-//                             transaction_id: data.payment.reference,
-//                         });
-//                         sessionStorage.setItem(trackedKey, "1");
-//                     }
-//                 }
+//                 // Fires Meta Pixel + Google Ads + TikTok in one call, each
+//                 // deduped per payment reference so a refresh, the back
+//                 // button, or React Strict Mode's double-invoke in dev never
+//                 // double-counts the same conversion.
+//                 fireConversion("Purchase", {
+//                     value: data.payment.amount,
+//                     currency: "NGN",
+//                     transactionId: data.payment.reference,
+//                     dedupeKey: data.payment.reference,
+//                 });
 //             } else {
 //                 setErrorMsg(data.error ?? "Payment could not be verified.");
 //                 setState("failed");
@@ -319,6 +312,7 @@
 // }
 
 
+
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -375,8 +369,8 @@ async function verifyWithRetry(
     reference: string,
     attempts = 3,
     delayMs = 1200
-): Promise<{ success: boolean; payment?: Payment; error?: string; status?: string }> {
-    let lastData: { success: boolean; payment?: Payment; error?: string; status?: string } = {
+): Promise<{ success: boolean; payment?: Payment; error?: string; status?: string; portalLoginUrl?: string }> {
+    let lastData: { success: boolean; payment?: Payment; error?: string; status?: string; portalLoginUrl?: string } = {
         success: false,
         error: "Payment could not be verified.",
     };
@@ -424,6 +418,7 @@ function VerifyContent() {
 
     const [state, setState] = useState<State>("loading");
     const [payment, setPayment] = useState<Payment | null>(null);
+    const [portalLoginUrl, setPortalLoginUrl] = useState<string>("https://app.trymentel.com/login");
     const [errorMsg, setErrorMsg] = useState("");
 
     useEffect(() => {
@@ -441,6 +436,7 @@ function VerifyContent() {
 
             if (data.success && data.payment) {
                 setPayment(data.payment);
+                if (data.portalLoginUrl) setPortalLoginUrl(data.portalLoginUrl);
                 setState("success");
 
                 // Personalization: the booking is now confirmed server-side —
@@ -554,29 +550,18 @@ function VerifyContent() {
                             </div>
                         </div>
 
-                        <div className="w-full">
-                            {/* <div className="flex flex-col sm:flex-row gap-3"> */}
-                            {/* <Link href="/"
-                                className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-white px-6 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200"
-                                style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}>
-                                Back to Home <ArrowRight size={15} />
-                            </Link>
-                            <Link href="/services"
-                                className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium px-6 py-3.5 rounded-full border transition-all hover:-translate-y-0.5 hover:shadow-sm duration-200"
-                                style={{ borderColor: "var(--border)", color: "var(--sage-dark)" }}>
-                                View our services
-                            </Link> */}
-                            <Link
-                                // href={whatsappUrl}
-                                href="/book-call?from=verify"
-                                // target="_blank"
-                                rel="noopener noreferrer"
+                        <div className="w-full flex flex-col gap-3">
+                            <a
+                                href={portalLoginUrl}
                                 className="cta-btn flex items-center justify-center gap-2.5 py-[17px] px-7 rounded-full text-white text-[15px] font-medium font-['DM_Sans',sans-serif] no-underline"
                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                             >
-                                Schedule your session
+                                Go to Your Client Portal
                                 <ArrowRight size={15} strokeWidth={2} />
-                            </Link>
+                            </a>
+                            <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
+                                Schedule your session{payment.plan?.toLowerCase().includes("month") ? "s" : ""} and manage your plan there.
+                            </p>
                         </div>
 
                     </div>

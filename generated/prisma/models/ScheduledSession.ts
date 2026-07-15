@@ -36,6 +36,7 @@ export type ScheduledSessionMinAggregateOutputType = {
   status: string | null
   therapist: string | null
   notes: string | null
+  calBookingUid: string | null
 }
 
 export type ScheduledSessionMaxAggregateOutputType = {
@@ -46,6 +47,7 @@ export type ScheduledSessionMaxAggregateOutputType = {
   status: string | null
   therapist: string | null
   notes: string | null
+  calBookingUid: string | null
 }
 
 export type ScheduledSessionCountAggregateOutputType = {
@@ -56,6 +58,7 @@ export type ScheduledSessionCountAggregateOutputType = {
   status: number
   therapist: number
   notes: number
+  calBookingUid: number
   _all: number
 }
 
@@ -68,6 +71,7 @@ export type ScheduledSessionMinAggregateInputType = {
   status?: true
   therapist?: true
   notes?: true
+  calBookingUid?: true
 }
 
 export type ScheduledSessionMaxAggregateInputType = {
@@ -78,6 +82,7 @@ export type ScheduledSessionMaxAggregateInputType = {
   status?: true
   therapist?: true
   notes?: true
+  calBookingUid?: true
 }
 
 export type ScheduledSessionCountAggregateInputType = {
@@ -88,6 +93,7 @@ export type ScheduledSessionCountAggregateInputType = {
   status?: true
   therapist?: true
   notes?: true
+  calBookingUid?: true
   _all?: true
 }
 
@@ -171,6 +177,7 @@ export type ScheduledSessionGroupByOutputType = {
   status: string
   therapist: string | null
   notes: string | null
+  calBookingUid: string | null
   _count: ScheduledSessionCountAggregateOutputType | null
   _min: ScheduledSessionMinAggregateOutputType | null
   _max: ScheduledSessionMaxAggregateOutputType | null
@@ -202,6 +209,7 @@ export type ScheduledSessionWhereInput = {
   status?: Prisma.StringFilter<"ScheduledSession"> | string
   therapist?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  calBookingUid?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   package?: Prisma.XOR<Prisma.PackageScalarRelationFilter, Prisma.PackageWhereInput>
 }
 
@@ -213,6 +221,7 @@ export type ScheduledSessionOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   therapist?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  calBookingUid?: Prisma.SortOrderInput | Prisma.SortOrder
   package?: Prisma.PackageOrderByWithRelationInput
 }
 
@@ -227,6 +236,7 @@ export type ScheduledSessionWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"ScheduledSession"> | string
   therapist?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  calBookingUid?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   package?: Prisma.XOR<Prisma.PackageScalarRelationFilter, Prisma.PackageWhereInput>
 }, "id">
 
@@ -238,6 +248,7 @@ export type ScheduledSessionOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   therapist?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  calBookingUid?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ScheduledSessionCountOrderByAggregateInput
   _max?: Prisma.ScheduledSessionMaxOrderByAggregateInput
   _min?: Prisma.ScheduledSessionMinOrderByAggregateInput
@@ -254,6 +265,7 @@ export type ScheduledSessionScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"ScheduledSession"> | string
   therapist?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
+  calBookingUid?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
 }
 
 export type ScheduledSessionCreateInput = {
@@ -263,6 +275,7 @@ export type ScheduledSessionCreateInput = {
   status?: string
   therapist?: string | null
   notes?: string | null
+  calBookingUid?: string | null
   package: Prisma.PackageCreateNestedOneWithoutScheduledSessionsInput
 }
 
@@ -274,6 +287,7 @@ export type ScheduledSessionUncheckedCreateInput = {
   status?: string
   therapist?: string | null
   notes?: string | null
+  calBookingUid?: string | null
 }
 
 export type ScheduledSessionUpdateInput = {
@@ -283,6 +297,7 @@ export type ScheduledSessionUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   package?: Prisma.PackageUpdateOneRequiredWithoutScheduledSessionsNestedInput
 }
 
@@ -294,6 +309,7 @@ export type ScheduledSessionUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduledSessionCreateManyInput = {
@@ -304,6 +320,7 @@ export type ScheduledSessionCreateManyInput = {
   status?: string
   therapist?: string | null
   notes?: string | null
+  calBookingUid?: string | null
 }
 
 export type ScheduledSessionUpdateManyMutationInput = {
@@ -313,6 +330,7 @@ export type ScheduledSessionUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduledSessionUncheckedUpdateManyInput = {
@@ -323,6 +341,7 @@ export type ScheduledSessionUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduledSessionListRelationFilter = {
@@ -343,6 +362,7 @@ export type ScheduledSessionCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   therapist?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  calBookingUid?: Prisma.SortOrder
 }
 
 export type ScheduledSessionMaxOrderByAggregateInput = {
@@ -353,6 +373,7 @@ export type ScheduledSessionMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   therapist?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  calBookingUid?: Prisma.SortOrder
 }
 
 export type ScheduledSessionMinOrderByAggregateInput = {
@@ -363,6 +384,7 @@ export type ScheduledSessionMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   therapist?: Prisma.SortOrder
   notes?: Prisma.SortOrder
+  calBookingUid?: Prisma.SortOrder
 }
 
 export type ScheduledSessionCreateNestedManyWithoutPackageInput = {
@@ -414,6 +436,7 @@ export type ScheduledSessionCreateWithoutPackageInput = {
   status?: string
   therapist?: string | null
   notes?: string | null
+  calBookingUid?: string | null
 }
 
 export type ScheduledSessionUncheckedCreateWithoutPackageInput = {
@@ -423,6 +446,7 @@ export type ScheduledSessionUncheckedCreateWithoutPackageInput = {
   status?: string
   therapist?: string | null
   notes?: string | null
+  calBookingUid?: string | null
 }
 
 export type ScheduledSessionCreateOrConnectWithoutPackageInput = {
@@ -462,6 +486,7 @@ export type ScheduledSessionScalarWhereInput = {
   status?: Prisma.StringFilter<"ScheduledSession"> | string
   therapist?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  calBookingUid?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
 }
 
 export type ScheduledSessionCreateManyPackageInput = {
@@ -471,6 +496,7 @@ export type ScheduledSessionCreateManyPackageInput = {
   status?: string
   therapist?: string | null
   notes?: string | null
+  calBookingUid?: string | null
 }
 
 export type ScheduledSessionUpdateWithoutPackageInput = {
@@ -480,6 +506,7 @@ export type ScheduledSessionUpdateWithoutPackageInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduledSessionUncheckedUpdateWithoutPackageInput = {
@@ -489,6 +516,7 @@ export type ScheduledSessionUncheckedUpdateWithoutPackageInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ScheduledSessionUncheckedUpdateManyWithoutPackageInput = {
@@ -498,6 +526,7 @@ export type ScheduledSessionUncheckedUpdateManyWithoutPackageInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -510,6 +539,7 @@ export type ScheduledSessionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   status?: boolean
   therapist?: boolean
   notes?: boolean
+  calBookingUid?: boolean
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduledSession"]>
 
@@ -521,6 +551,7 @@ export type ScheduledSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   status?: boolean
   therapist?: boolean
   notes?: boolean
+  calBookingUid?: boolean
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduledSession"]>
 
@@ -532,6 +563,7 @@ export type ScheduledSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   status?: boolean
   therapist?: boolean
   notes?: boolean
+  calBookingUid?: boolean
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduledSession"]>
 
@@ -543,9 +575,10 @@ export type ScheduledSessionSelectScalar = {
   status?: boolean
   therapist?: boolean
   notes?: boolean
+  calBookingUid?: boolean
 }
 
-export type ScheduledSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "packageId" | "scheduledAt" | "status" | "therapist" | "notes", ExtArgs["result"]["scheduledSession"]>
+export type ScheduledSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "packageId" | "scheduledAt" | "status" | "therapist" | "notes" | "calBookingUid", ExtArgs["result"]["scheduledSession"]>
 export type ScheduledSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }
@@ -569,6 +602,7 @@ export type $ScheduledSessionPayload<ExtArgs extends runtime.Types.Extensions.In
     status: string
     therapist: string | null
     notes: string | null
+    calBookingUid: string | null
   }, ExtArgs["result"]["scheduledSession"]>
   composites: {}
 }
@@ -1000,6 +1034,7 @@ export interface ScheduledSessionFieldRefs {
   readonly status: Prisma.FieldRef<"ScheduledSession", 'String'>
   readonly therapist: Prisma.FieldRef<"ScheduledSession", 'String'>
   readonly notes: Prisma.FieldRef<"ScheduledSession", 'String'>
+  readonly calBookingUid: Prisma.FieldRef<"ScheduledSession", 'String'>
 }
     
 

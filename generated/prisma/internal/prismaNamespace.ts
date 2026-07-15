@@ -2106,7 +2106,8 @@ export const ScheduledSessionScalarFieldEnum = {
   scheduledAt: 'scheduledAt',
   status: 'status',
   therapist: 'therapist',
-  notes: 'notes'
+  notes: 'notes',
+  calBookingUid: 'calBookingUid'
 } as const
 
 export type ScheduledSessionScalarFieldEnum = (typeof ScheduledSessionScalarFieldEnum)[keyof typeof ScheduledSessionScalarFieldEnum]

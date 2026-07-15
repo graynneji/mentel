@@ -51,8 +51,8 @@ model Lead {
   appointments Appointment[]
   sessions     Session[]
   payments     Payment[]
-  clientAccount ClientAccount?   // ← add this
-  packages      Package[]        // ← add this
+  clientAccount ClientAccount?
+  packages      Package[]
 
   @@index([email])
   @@index([status])
@@ -147,7 +147,7 @@ model Payment {
   paidAt     DateTime? @map("paid_at")
   notes      String?
 
-  package Package?   // ← add this
+  package Package?
 
   @@index([leadId])
   @@index([status])
@@ -566,6 +566,7 @@ model ScheduledSession {
   status      String   @default("scheduled") // scheduled | completed | cancelled | no-show
   therapist   String?
   notes       String?
+  calBookingUid String? @map("cal_booking_uid") // Cal.com booking UID, for cancellation/lookup
 
   @@index([packageId])
   @@index([scheduledAt])

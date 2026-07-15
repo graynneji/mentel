@@ -12,52 +12,73 @@ function requireAdmin(req: NextRequest): boolean {
 function normalizeNumber(raw: string): string | null {
   const digits = raw.replace(/\D/g, "");
   if (digits.startsWith("234") && digits.length === 13) return digits;
-  if (digits.startsWith("0") && digits.length === 11) return `234${digits.slice(1)}`;
+  if (digits.startsWith("0") && digits.length === 11)
+    return `234${digits.slice(1)}`;
   if (digits.length === 10) return `234${digits}`;
   return null;
 }
 
 export async function POST(req: Request) {
   const nextReq = req as NextRequest;
-  if (!requireAdmin(nextReq)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!requireAdmin(nextReq))
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
     const body = await nextReq.json();
-    const rawRecipients: string[] = Array.isArray(body.to) ? body.to : [body.to];
+    const rawRecipients: string[] = Array.isArray(body.to)
+      ? body.to
+      : [body.to];
     const message = String(body.message ?? "").trim();
     const senderId = body.senderId ? String(body.senderId).trim() : undefined;
     const route = body.route ? String(body.route) : undefined;
 
     if (!message) {
-      return NextResponse.json({ success: false, error: "Message is required." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: "Message is required." },
+        { status: 400 },
+      );
     }
 
-    const normalized = rawRecipients.map((r) => normalizeNumber(String(r))).filter(Boolean) as string[];
+    const normalized = rawRecipients
+      .map((r) => normalizeNumber(String(r)))
+      .filter(Boolean) as string[];
     if (normalized.length === 0) {
-      return NextResponse.json({ success: false, error: "No valid phone numbers provided." }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: "No valid phone numbers provided." },
+        { status: 400 },
+      );
     }
 
     const result = await sendSms({ to: normalized, message, senderId, route });
 
     // Log every attempt — successes and failures — so /admin/sms has a
     // real history instead of relying on BestBulkSMS's own dashboard.
-    await db.smsMessage.create({
-      data: {
-        providerId: result.smsMessageId ?? null,
-        senderId: senderId ?? "BESTBULKSMS",
-        recipients: normalized,
-        message,
-        route: route ?? "standard",
-        segments: result.segments ?? null,
-        unitsBilled: result.unitsBilled ?? null,
-        costBilled: result.costBilled ?? null,
-        status: result.success ? "sent" : "failed",
-        errorMessage: result.success ? null : result.error ?? "Unknown error",
-      },
-    }).catch((err: unknown) => console.error("[SMS send] failed to log message", err));
+    await db.smsMessage
+      .create({
+        data: {
+          providerId: result.smsMessageId ?? null,
+          senderId: senderId ?? "BESTBULKSMS",
+          recipients: normalized,
+          message,
+          route: route ?? "standard",
+          segments: result.segments ?? null,
+          unitsBilled: result.unitsBilled ?? null,
+          costBilled: result.costBilled ?? null,
+          status: result.success ? "sent" : "failed",
+          errorMessage: result.success
+            ? null
+            : (result.error ?? "Unknown error"),
+        },
+      })
+      .catch((err: unknown) =>
+        console.error("[SMS send] failed to log message", err),
+      );
 
     if (!result.success) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 502 });
+      return NextResponse.json(
+        { success: false, error: result.error },
+        { status: 502 },
+      );
     }
 
     return NextResponse.json({
@@ -70,6 +91,9 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("[Admin SMS Send]", err);
-    return NextResponse.json({ success: false, error: "Failed to send SMS." }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Failed to send SMS." },
+      { status: 500 },
+    );
   }
 }
