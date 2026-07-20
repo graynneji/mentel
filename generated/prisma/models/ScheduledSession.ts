@@ -37,6 +37,11 @@ export type ScheduledSessionMinAggregateOutputType = {
   therapist: string | null
   notes: string | null
   calBookingUid: string | null
+  reminder24hSentAt: Date | null
+  reminder1hSentAt: Date | null
+  cancelledBy: string | null
+  cancelReason: string | null
+  rescheduledFrom: Date | null
 }
 
 export type ScheduledSessionMaxAggregateOutputType = {
@@ -48,6 +53,11 @@ export type ScheduledSessionMaxAggregateOutputType = {
   therapist: string | null
   notes: string | null
   calBookingUid: string | null
+  reminder24hSentAt: Date | null
+  reminder1hSentAt: Date | null
+  cancelledBy: string | null
+  cancelReason: string | null
+  rescheduledFrom: Date | null
 }
 
 export type ScheduledSessionCountAggregateOutputType = {
@@ -59,6 +69,11 @@ export type ScheduledSessionCountAggregateOutputType = {
   therapist: number
   notes: number
   calBookingUid: number
+  reminder24hSentAt: number
+  reminder1hSentAt: number
+  cancelledBy: number
+  cancelReason: number
+  rescheduledFrom: number
   _all: number
 }
 
@@ -72,6 +87,11 @@ export type ScheduledSessionMinAggregateInputType = {
   therapist?: true
   notes?: true
   calBookingUid?: true
+  reminder24hSentAt?: true
+  reminder1hSentAt?: true
+  cancelledBy?: true
+  cancelReason?: true
+  rescheduledFrom?: true
 }
 
 export type ScheduledSessionMaxAggregateInputType = {
@@ -83,6 +103,11 @@ export type ScheduledSessionMaxAggregateInputType = {
   therapist?: true
   notes?: true
   calBookingUid?: true
+  reminder24hSentAt?: true
+  reminder1hSentAt?: true
+  cancelledBy?: true
+  cancelReason?: true
+  rescheduledFrom?: true
 }
 
 export type ScheduledSessionCountAggregateInputType = {
@@ -94,6 +119,11 @@ export type ScheduledSessionCountAggregateInputType = {
   therapist?: true
   notes?: true
   calBookingUid?: true
+  reminder24hSentAt?: true
+  reminder1hSentAt?: true
+  cancelledBy?: true
+  cancelReason?: true
+  rescheduledFrom?: true
   _all?: true
 }
 
@@ -178,6 +208,11 @@ export type ScheduledSessionGroupByOutputType = {
   therapist: string | null
   notes: string | null
   calBookingUid: string | null
+  reminder24hSentAt: Date | null
+  reminder1hSentAt: Date | null
+  cancelledBy: string | null
+  cancelReason: string | null
+  rescheduledFrom: Date | null
   _count: ScheduledSessionCountAggregateOutputType | null
   _min: ScheduledSessionMinAggregateOutputType | null
   _max: ScheduledSessionMaxAggregateOutputType | null
@@ -210,6 +245,11 @@ export type ScheduledSessionWhereInput = {
   therapist?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   calBookingUid?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  reminder24hSentAt?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
+  reminder1hSentAt?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
+  cancelledBy?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  cancelReason?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  rescheduledFrom?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
   package?: Prisma.XOR<Prisma.PackageScalarRelationFilter, Prisma.PackageWhereInput>
 }
 
@@ -222,6 +262,11 @@ export type ScheduledSessionOrderByWithRelationInput = {
   therapist?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   calBookingUid?: Prisma.SortOrderInput | Prisma.SortOrder
+  reminder24hSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reminder1hSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduledFrom?: Prisma.SortOrderInput | Prisma.SortOrder
   package?: Prisma.PackageOrderByWithRelationInput
 }
 
@@ -237,6 +282,11 @@ export type ScheduledSessionWhereUniqueInput = Prisma.AtLeast<{
   therapist?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   calBookingUid?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  reminder24hSentAt?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
+  reminder1hSentAt?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
+  cancelledBy?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  cancelReason?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  rescheduledFrom?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
   package?: Prisma.XOR<Prisma.PackageScalarRelationFilter, Prisma.PackageWhereInput>
 }, "id">
 
@@ -249,6 +299,11 @@ export type ScheduledSessionOrderByWithAggregationInput = {
   therapist?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   calBookingUid?: Prisma.SortOrderInput | Prisma.SortOrder
+  reminder24hSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  reminder1hSentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelledBy?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  rescheduledFrom?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ScheduledSessionCountOrderByAggregateInput
   _max?: Prisma.ScheduledSessionMaxOrderByAggregateInput
   _min?: Prisma.ScheduledSessionMinOrderByAggregateInput
@@ -266,6 +321,11 @@ export type ScheduledSessionScalarWhereWithAggregatesInput = {
   therapist?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
   calBookingUid?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
+  reminder24hSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ScheduledSession"> | Date | string | null
+  reminder1hSentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ScheduledSession"> | Date | string | null
+  cancelledBy?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
+  cancelReason?: Prisma.StringNullableWithAggregatesFilter<"ScheduledSession"> | string | null
+  rescheduledFrom?: Prisma.DateTimeNullableWithAggregatesFilter<"ScheduledSession"> | Date | string | null
 }
 
 export type ScheduledSessionCreateInput = {
@@ -276,6 +336,11 @@ export type ScheduledSessionCreateInput = {
   therapist?: string | null
   notes?: string | null
   calBookingUid?: string | null
+  reminder24hSentAt?: Date | string | null
+  reminder1hSentAt?: Date | string | null
+  cancelledBy?: string | null
+  cancelReason?: string | null
+  rescheduledFrom?: Date | string | null
   package: Prisma.PackageCreateNestedOneWithoutScheduledSessionsInput
 }
 
@@ -288,6 +353,11 @@ export type ScheduledSessionUncheckedCreateInput = {
   therapist?: string | null
   notes?: string | null
   calBookingUid?: string | null
+  reminder24hSentAt?: Date | string | null
+  reminder1hSentAt?: Date | string | null
+  cancelledBy?: string | null
+  cancelReason?: string | null
+  rescheduledFrom?: Date | string | null
 }
 
 export type ScheduledSessionUpdateInput = {
@@ -298,6 +368,11 @@ export type ScheduledSessionUpdateInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   package?: Prisma.PackageUpdateOneRequiredWithoutScheduledSessionsNestedInput
 }
 
@@ -310,6 +385,11 @@ export type ScheduledSessionUncheckedUpdateInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ScheduledSessionCreateManyInput = {
@@ -321,6 +401,11 @@ export type ScheduledSessionCreateManyInput = {
   therapist?: string | null
   notes?: string | null
   calBookingUid?: string | null
+  reminder24hSentAt?: Date | string | null
+  reminder1hSentAt?: Date | string | null
+  cancelledBy?: string | null
+  cancelReason?: string | null
+  rescheduledFrom?: Date | string | null
 }
 
 export type ScheduledSessionUpdateManyMutationInput = {
@@ -331,6 +416,11 @@ export type ScheduledSessionUpdateManyMutationInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ScheduledSessionUncheckedUpdateManyInput = {
@@ -342,6 +432,11 @@ export type ScheduledSessionUncheckedUpdateManyInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ScheduledSessionListRelationFilter = {
@@ -363,6 +458,11 @@ export type ScheduledSessionCountOrderByAggregateInput = {
   therapist?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   calBookingUid?: Prisma.SortOrder
+  reminder24hSentAt?: Prisma.SortOrder
+  reminder1hSentAt?: Prisma.SortOrder
+  cancelledBy?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  rescheduledFrom?: Prisma.SortOrder
 }
 
 export type ScheduledSessionMaxOrderByAggregateInput = {
@@ -374,6 +474,11 @@ export type ScheduledSessionMaxOrderByAggregateInput = {
   therapist?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   calBookingUid?: Prisma.SortOrder
+  reminder24hSentAt?: Prisma.SortOrder
+  reminder1hSentAt?: Prisma.SortOrder
+  cancelledBy?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  rescheduledFrom?: Prisma.SortOrder
 }
 
 export type ScheduledSessionMinOrderByAggregateInput = {
@@ -385,6 +490,11 @@ export type ScheduledSessionMinOrderByAggregateInput = {
   therapist?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   calBookingUid?: Prisma.SortOrder
+  reminder24hSentAt?: Prisma.SortOrder
+  reminder1hSentAt?: Prisma.SortOrder
+  cancelledBy?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  rescheduledFrom?: Prisma.SortOrder
 }
 
 export type ScheduledSessionCreateNestedManyWithoutPackageInput = {
@@ -437,6 +547,11 @@ export type ScheduledSessionCreateWithoutPackageInput = {
   therapist?: string | null
   notes?: string | null
   calBookingUid?: string | null
+  reminder24hSentAt?: Date | string | null
+  reminder1hSentAt?: Date | string | null
+  cancelledBy?: string | null
+  cancelReason?: string | null
+  rescheduledFrom?: Date | string | null
 }
 
 export type ScheduledSessionUncheckedCreateWithoutPackageInput = {
@@ -447,6 +562,11 @@ export type ScheduledSessionUncheckedCreateWithoutPackageInput = {
   therapist?: string | null
   notes?: string | null
   calBookingUid?: string | null
+  reminder24hSentAt?: Date | string | null
+  reminder1hSentAt?: Date | string | null
+  cancelledBy?: string | null
+  cancelReason?: string | null
+  rescheduledFrom?: Date | string | null
 }
 
 export type ScheduledSessionCreateOrConnectWithoutPackageInput = {
@@ -487,6 +607,11 @@ export type ScheduledSessionScalarWhereInput = {
   therapist?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   notes?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
   calBookingUid?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  reminder24hSentAt?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
+  reminder1hSentAt?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
+  cancelledBy?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  cancelReason?: Prisma.StringNullableFilter<"ScheduledSession"> | string | null
+  rescheduledFrom?: Prisma.DateTimeNullableFilter<"ScheduledSession"> | Date | string | null
 }
 
 export type ScheduledSessionCreateManyPackageInput = {
@@ -497,6 +622,11 @@ export type ScheduledSessionCreateManyPackageInput = {
   therapist?: string | null
   notes?: string | null
   calBookingUid?: string | null
+  reminder24hSentAt?: Date | string | null
+  reminder1hSentAt?: Date | string | null
+  cancelledBy?: string | null
+  cancelReason?: string | null
+  rescheduledFrom?: Date | string | null
 }
 
 export type ScheduledSessionUpdateWithoutPackageInput = {
@@ -507,6 +637,11 @@ export type ScheduledSessionUpdateWithoutPackageInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ScheduledSessionUncheckedUpdateWithoutPackageInput = {
@@ -517,6 +652,11 @@ export type ScheduledSessionUncheckedUpdateWithoutPackageInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type ScheduledSessionUncheckedUpdateManyWithoutPackageInput = {
@@ -527,6 +667,11 @@ export type ScheduledSessionUncheckedUpdateManyWithoutPackageInput = {
   therapist?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   calBookingUid?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reminder24hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  reminder1hSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cancelledBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rescheduledFrom?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -540,6 +685,11 @@ export type ScheduledSessionSelect<ExtArgs extends runtime.Types.Extensions.Inte
   therapist?: boolean
   notes?: boolean
   calBookingUid?: boolean
+  reminder24hSentAt?: boolean
+  reminder1hSentAt?: boolean
+  cancelledBy?: boolean
+  cancelReason?: boolean
+  rescheduledFrom?: boolean
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduledSession"]>
 
@@ -552,6 +702,11 @@ export type ScheduledSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   therapist?: boolean
   notes?: boolean
   calBookingUid?: boolean
+  reminder24hSentAt?: boolean
+  reminder1hSentAt?: boolean
+  cancelledBy?: boolean
+  cancelReason?: boolean
+  rescheduledFrom?: boolean
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduledSession"]>
 
@@ -564,6 +719,11 @@ export type ScheduledSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   therapist?: boolean
   notes?: boolean
   calBookingUid?: boolean
+  reminder24hSentAt?: boolean
+  reminder1hSentAt?: boolean
+  cancelledBy?: boolean
+  cancelReason?: boolean
+  rescheduledFrom?: boolean
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["scheduledSession"]>
 
@@ -576,9 +736,14 @@ export type ScheduledSessionSelectScalar = {
   therapist?: boolean
   notes?: boolean
   calBookingUid?: boolean
+  reminder24hSentAt?: boolean
+  reminder1hSentAt?: boolean
+  cancelledBy?: boolean
+  cancelReason?: boolean
+  rescheduledFrom?: boolean
 }
 
-export type ScheduledSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "packageId" | "scheduledAt" | "status" | "therapist" | "notes" | "calBookingUid", ExtArgs["result"]["scheduledSession"]>
+export type ScheduledSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "packageId" | "scheduledAt" | "status" | "therapist" | "notes" | "calBookingUid" | "reminder24hSentAt" | "reminder1hSentAt" | "cancelledBy" | "cancelReason" | "rescheduledFrom", ExtArgs["result"]["scheduledSession"]>
 export type ScheduledSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   package?: boolean | Prisma.PackageDefaultArgs<ExtArgs>
 }
@@ -603,6 +768,11 @@ export type $ScheduledSessionPayload<ExtArgs extends runtime.Types.Extensions.In
     therapist: string | null
     notes: string | null
     calBookingUid: string | null
+    reminder24hSentAt: Date | null
+    reminder1hSentAt: Date | null
+    cancelledBy: string | null
+    cancelReason: string | null
+    rescheduledFrom: Date | null
   }, ExtArgs["result"]["scheduledSession"]>
   composites: {}
 }
@@ -1035,6 +1205,11 @@ export interface ScheduledSessionFieldRefs {
   readonly therapist: Prisma.FieldRef<"ScheduledSession", 'String'>
   readonly notes: Prisma.FieldRef<"ScheduledSession", 'String'>
   readonly calBookingUid: Prisma.FieldRef<"ScheduledSession", 'String'>
+  readonly reminder24hSentAt: Prisma.FieldRef<"ScheduledSession", 'DateTime'>
+  readonly reminder1hSentAt: Prisma.FieldRef<"ScheduledSession", 'DateTime'>
+  readonly cancelledBy: Prisma.FieldRef<"ScheduledSession", 'String'>
+  readonly cancelReason: Prisma.FieldRef<"ScheduledSession", 'String'>
+  readonly rescheduledFrom: Prisma.FieldRef<"ScheduledSession", 'DateTime'>
 }
     
 

@@ -402,7 +402,12 @@ export const ScheduledSessionScalarFieldEnum = {
   status: 'status',
   therapist: 'therapist',
   notes: 'notes',
-  calBookingUid: 'calBookingUid'
+  calBookingUid: 'calBookingUid',
+  reminder24hSentAt: 'reminder24hSentAt',
+  reminder1hSentAt: 'reminder1hSentAt',
+  cancelledBy: 'cancelledBy',
+  cancelReason: 'cancelReason',
+  rescheduledFrom: 'rescheduledFrom'
 } as const
 
 export type ScheduledSessionScalarFieldEnum = (typeof ScheduledSessionScalarFieldEnum)[keyof typeof ScheduledSessionScalarFieldEnum]

@@ -220,7 +220,7 @@ export type PackageGroupByOutputType = {
   id: string
   createdAt: Date
   leadId: string
-  paymentId: string
+  paymentId: string | null
   planType: string
   totalSessions: number
   usedSessions: number
@@ -256,7 +256,7 @@ export type PackageWhereInput = {
   id?: Prisma.StringFilter<"Package"> | string
   createdAt?: Prisma.DateTimeFilter<"Package"> | Date | string
   leadId?: Prisma.StringFilter<"Package"> | string
-  paymentId?: Prisma.StringFilter<"Package"> | string
+  paymentId?: Prisma.StringNullableFilter<"Package"> | string | null
   planType?: Prisma.StringFilter<"Package"> | string
   totalSessions?: Prisma.IntFilter<"Package"> | number
   usedSessions?: Prisma.IntFilter<"Package"> | number
@@ -264,7 +264,7 @@ export type PackageWhereInput = {
   periodEnd?: Prisma.DateTimeFilter<"Package"> | Date | string
   status?: Prisma.StringFilter<"Package"> | string
   lead?: Prisma.XOR<Prisma.LeadScalarRelationFilter, Prisma.LeadWhereInput>
-  payment?: Prisma.XOR<Prisma.PaymentScalarRelationFilter, Prisma.PaymentWhereInput>
+  payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   scheduledSessions?: Prisma.ScheduledSessionListRelationFilter
 }
 
@@ -272,7 +272,7 @@ export type PackageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
-  paymentId?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   planType?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   usedSessions?: Prisma.SortOrder
@@ -299,7 +299,7 @@ export type PackageWhereUniqueInput = Prisma.AtLeast<{
   periodEnd?: Prisma.DateTimeFilter<"Package"> | Date | string
   status?: Prisma.StringFilter<"Package"> | string
   lead?: Prisma.XOR<Prisma.LeadScalarRelationFilter, Prisma.LeadWhereInput>
-  payment?: Prisma.XOR<Prisma.PaymentScalarRelationFilter, Prisma.PaymentWhereInput>
+  payment?: Prisma.XOR<Prisma.PaymentNullableScalarRelationFilter, Prisma.PaymentWhereInput> | null
   scheduledSessions?: Prisma.ScheduledSessionListRelationFilter
 }, "id" | "paymentId">
 
@@ -307,7 +307,7 @@ export type PackageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   leadId?: Prisma.SortOrder
-  paymentId?: Prisma.SortOrder
+  paymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   planType?: Prisma.SortOrder
   totalSessions?: Prisma.SortOrder
   usedSessions?: Prisma.SortOrder
@@ -328,7 +328,7 @@ export type PackageScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Package"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Package"> | Date | string
   leadId?: Prisma.StringWithAggregatesFilter<"Package"> | string
-  paymentId?: Prisma.StringWithAggregatesFilter<"Package"> | string
+  paymentId?: Prisma.StringNullableWithAggregatesFilter<"Package"> | string | null
   planType?: Prisma.StringWithAggregatesFilter<"Package"> | string
   totalSessions?: Prisma.IntWithAggregatesFilter<"Package"> | number
   usedSessions?: Prisma.IntWithAggregatesFilter<"Package"> | number
@@ -347,7 +347,7 @@ export type PackageCreateInput = {
   periodEnd: Date | string
   status?: string
   lead: Prisma.LeadCreateNestedOneWithoutPackagesInput
-  payment: Prisma.PaymentCreateNestedOneWithoutPackageInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutPackageInput
   scheduledSessions?: Prisma.ScheduledSessionCreateNestedManyWithoutPackageInput
 }
 
@@ -355,7 +355,7 @@ export type PackageUncheckedCreateInput = {
   id?: string
   createdAt?: Date | string
   leadId: string
-  paymentId: string
+  paymentId?: string | null
   planType: string
   totalSessions: number
   usedSessions?: number
@@ -375,7 +375,7 @@ export type PackageUpdateInput = {
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   lead?: Prisma.LeadUpdateOneRequiredWithoutPackagesNestedInput
-  payment?: Prisma.PaymentUpdateOneRequiredWithoutPackageNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutPackageNestedInput
   scheduledSessions?: Prisma.ScheduledSessionUpdateManyWithoutPackageNestedInput
 }
 
@@ -383,7 +383,7 @@ export type PackageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   planType?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -397,7 +397,7 @@ export type PackageCreateManyInput = {
   id?: string
   createdAt?: Date | string
   leadId: string
-  paymentId: string
+  paymentId?: string | null
   planType: string
   totalSessions: number
   usedSessions?: number
@@ -421,7 +421,7 @@ export type PackageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   planType?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -596,14 +596,14 @@ export type PackageCreateWithoutLeadInput = {
   periodStart: Date | string
   periodEnd: Date | string
   status?: string
-  payment: Prisma.PaymentCreateNestedOneWithoutPackageInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutPackageInput
   scheduledSessions?: Prisma.ScheduledSessionCreateNestedManyWithoutPackageInput
 }
 
 export type PackageUncheckedCreateWithoutLeadInput = {
   id?: string
   createdAt?: Date | string
-  paymentId: string
+  paymentId?: string | null
   planType: string
   totalSessions: number
   usedSessions?: number
@@ -646,7 +646,7 @@ export type PackageScalarWhereInput = {
   id?: Prisma.StringFilter<"Package"> | string
   createdAt?: Prisma.DateTimeFilter<"Package"> | Date | string
   leadId?: Prisma.StringFilter<"Package"> | string
-  paymentId?: Prisma.StringFilter<"Package"> | string
+  paymentId?: Prisma.StringNullableFilter<"Package"> | string | null
   planType?: Prisma.StringFilter<"Package"> | string
   totalSessions?: Prisma.IntFilter<"Package"> | number
   usedSessions?: Prisma.IntFilter<"Package"> | number
@@ -733,14 +733,14 @@ export type PackageCreateWithoutScheduledSessionsInput = {
   periodEnd: Date | string
   status?: string
   lead: Prisma.LeadCreateNestedOneWithoutPackagesInput
-  payment: Prisma.PaymentCreateNestedOneWithoutPackageInput
+  payment?: Prisma.PaymentCreateNestedOneWithoutPackageInput
 }
 
 export type PackageUncheckedCreateWithoutScheduledSessionsInput = {
   id?: string
   createdAt?: Date | string
   leadId: string
-  paymentId: string
+  paymentId?: string | null
   planType: string
   totalSessions: number
   usedSessions?: number
@@ -775,14 +775,14 @@ export type PackageUpdateWithoutScheduledSessionsInput = {
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   lead?: Prisma.LeadUpdateOneRequiredWithoutPackagesNestedInput
-  payment?: Prisma.PaymentUpdateOneRequiredWithoutPackageNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutPackageNestedInput
 }
 
 export type PackageUncheckedUpdateWithoutScheduledSessionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   leadId?: Prisma.StringFieldUpdateOperationsInput | string
-  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   planType?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -794,7 +794,7 @@ export type PackageUncheckedUpdateWithoutScheduledSessionsInput = {
 export type PackageCreateManyLeadInput = {
   id?: string
   createdAt?: Date | string
-  paymentId: string
+  paymentId?: string | null
   planType: string
   totalSessions: number
   usedSessions?: number
@@ -812,14 +812,14 @@ export type PackageUpdateWithoutLeadInput = {
   periodStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   periodEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
-  payment?: Prisma.PaymentUpdateOneRequiredWithoutPackageNestedInput
+  payment?: Prisma.PaymentUpdateOneWithoutPackageNestedInput
   scheduledSessions?: Prisma.ScheduledSessionUpdateManyWithoutPackageNestedInput
 }
 
 export type PackageUncheckedUpdateWithoutLeadInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   planType?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -832,7 +832,7 @@ export type PackageUncheckedUpdateWithoutLeadInput = {
 export type PackageUncheckedUpdateManyWithoutLeadInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  paymentId?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   planType?: Prisma.StringFieldUpdateOperationsInput | string
   totalSessions?: Prisma.IntFieldUpdateOperationsInput | number
   usedSessions?: Prisma.IntFieldUpdateOperationsInput | number
@@ -884,7 +884,7 @@ export type PackageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   periodEnd?: boolean
   status?: boolean
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
-  payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Package$paymentArgs<ExtArgs>
   scheduledSessions?: boolean | Prisma.Package$scheduledSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.PackageCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["package"]>
@@ -901,7 +901,7 @@ export type PackageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   periodEnd?: boolean
   status?: boolean
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
-  payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Package$paymentArgs<ExtArgs>
 }, ExtArgs["result"]["package"]>
 
 export type PackageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -916,7 +916,7 @@ export type PackageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   periodEnd?: boolean
   status?: boolean
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
-  payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Package$paymentArgs<ExtArgs>
 }, ExtArgs["result"]["package"]>
 
 export type PackageSelectScalar = {
@@ -935,31 +935,31 @@ export type PackageSelectScalar = {
 export type PackageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "leadId" | "paymentId" | "planType" | "totalSessions" | "usedSessions" | "periodStart" | "periodEnd" | "status", ExtArgs["result"]["package"]>
 export type PackageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
-  payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Package$paymentArgs<ExtArgs>
   scheduledSessions?: boolean | Prisma.Package$scheduledSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.PackageCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PackageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
-  payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Package$paymentArgs<ExtArgs>
 }
 export type PackageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lead?: boolean | Prisma.LeadDefaultArgs<ExtArgs>
-  payment?: boolean | Prisma.PaymentDefaultArgs<ExtArgs>
+  payment?: boolean | Prisma.Package$paymentArgs<ExtArgs>
 }
 
 export type $PackagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Package"
   objects: {
     lead: Prisma.$LeadPayload<ExtArgs>
-    payment: Prisma.$PaymentPayload<ExtArgs>
+    payment: Prisma.$PaymentPayload<ExtArgs> | null
     scheduledSessions: Prisma.$ScheduledSessionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     createdAt: Date
     leadId: string
-    paymentId: string
+    paymentId: string | null
     planType: string
     totalSessions: number
     usedSessions: number
@@ -1361,7 +1361,7 @@ readonly fields: PackageFieldRefs;
 export interface Prisma__PackageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   lead<T extends Prisma.LeadDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LeadDefaultArgs<ExtArgs>>): Prisma.Prisma__LeadClient<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  payment<T extends Prisma.PaymentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PaymentDefaultArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  payment<T extends Prisma.Package$paymentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Package$paymentArgs<ExtArgs>>): Prisma.Prisma__PaymentClient<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   scheduledSessions<T extends Prisma.Package$scheduledSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Package$scheduledSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScheduledSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1800,6 +1800,25 @@ export type PackageDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Packages to delete.
    */
   limit?: number
+}
+
+/**
+ * Package.payment
+ */
+export type Package$paymentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
 }
 
 /**

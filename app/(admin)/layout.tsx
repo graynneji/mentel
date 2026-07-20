@@ -160,12 +160,14 @@ import {
     ShieldCheck,
     ShieldAlert,
     MessageSquareText,
+    CalendarClock,
 } from "lucide-react";
 
 const NAV = [
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/admin/patients", icon: Users, label: "Patients" },
     { href: "/admin/appointments", icon: Calendar, label: "Appointments" },
+    { href: "/admin/scheduled-sessions", icon: CalendarClock, label: "Scheduled Sessions" },
     { href: "/admin/payments", icon: CreditCard, label: "Payments" },
     { href: "/admin/communications", icon: MessageSquare, label: "Communications" },
     { href: "/admin/sms", icon: MessageSquareText, label: "SMS" },

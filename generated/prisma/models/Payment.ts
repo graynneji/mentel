@@ -507,11 +507,6 @@ export type PaymentSumOrderByAggregateInput = {
   amountKobo?: Prisma.SortOrder
 }
 
-export type PaymentScalarRelationFilter = {
-  is?: Prisma.PaymentWhereInput
-  isNot?: Prisma.PaymentWhereInput
-}
-
 export type PaymentCreateNestedManyWithoutLeadInput = {
   create?: Prisma.XOR<Prisma.PaymentCreateWithoutLeadInput, Prisma.PaymentUncheckedCreateWithoutLeadInput> | Prisma.PaymentCreateWithoutLeadInput[] | Prisma.PaymentUncheckedCreateWithoutLeadInput[]
   connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutLeadInput | Prisma.PaymentCreateOrConnectWithoutLeadInput[]
@@ -592,10 +587,12 @@ export type PaymentCreateNestedOneWithoutPackageInput = {
   connect?: Prisma.PaymentWhereUniqueInput
 }
 
-export type PaymentUpdateOneRequiredWithoutPackageNestedInput = {
+export type PaymentUpdateOneWithoutPackageNestedInput = {
   create?: Prisma.XOR<Prisma.PaymentCreateWithoutPackageInput, Prisma.PaymentUncheckedCreateWithoutPackageInput>
   connectOrCreate?: Prisma.PaymentCreateOrConnectWithoutPackageInput
   upsert?: Prisma.PaymentUpsertWithoutPackageInput
+  disconnect?: Prisma.PaymentWhereInput | boolean
+  delete?: Prisma.PaymentWhereInput | boolean
   connect?: Prisma.PaymentWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.PaymentUpdateToOneWithWhereWithoutPackageInput, Prisma.PaymentUpdateWithoutPackageInput>, Prisma.PaymentUncheckedUpdateWithoutPackageInput>
 }

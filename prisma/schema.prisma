@@ -533,10 +533,10 @@ model Package {
   leadId String @map("lead_id")
   lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
-  paymentId String  @unique @map("payment_id")
-  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId String?  @unique @map("payment_id") // nullable — bonus/goodwill sessions (see /admin/sessions "Grant free session") have no real payment
+  payment   Payment? @relation(fields: [paymentId], references: [id])
 
-  planType      String   @map("plan_type") // "single" | "monthly"
+  planType      String   @map("plan_type") // "single" | "monthly" | "bonus"
   totalSessions Int      @map("total_sessions")
   usedSessions  Int      @default(0) @map("used_sessions")
   periodStart   DateTime @map("period_start")
@@ -567,6 +567,18 @@ model ScheduledSession {
   therapist   String?
   notes       String?
   calBookingUid String? @map("cal_booking_uid") // Cal.com booking UID, for cancellation/lookup
+
+  // Reminder tracking — set once each reminder actually goes out, so the
+  // cron job never sends the same one twice.
+  reminder24hSentAt DateTime? @map("reminder_24h_sent_at")
+  reminder1hSentAt  DateTime? @map("reminder_1h_sent_at")
+
+  // Who cancelled it and why — matters for "was this our fault" tracking
+  // (e.g. deciding whether to grant a free session) and for the client
+  // notification email's wording.
+  cancelledBy     String?   @map("cancelled_by") // "admin" | "client"
+  cancelReason    String?   @map("cancel_reason")
+  rescheduledFrom DateTime? @map("rescheduled_from") // previous scheduledAt, kept for history when admin reschedules
 
   @@index([packageId])
   @@index([scheduledAt])
