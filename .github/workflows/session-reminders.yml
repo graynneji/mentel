@@ -1,0 +1,16 @@
+name: Session Reminders
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  trigger-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call reminder endpoint
+        run: |
+          curl -sf -X GET "https://trymentel.com/api/cron/session-reminders" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 30
