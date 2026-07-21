@@ -950,12 +950,16 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "Is online therapy as effective as in-person?",
-    a: "Yes, research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
+    q: "What is Mentel?",
+    // q: "Is online therapy as effective as in-person?",
+    // a: "Yes, research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
+    a: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
   },
   {
-    q: "How does the ₦8,500 single session work?",
-    a: "You book and pay online, then your matched therapist contacts you within 24 hours to schedule your 50-minute session via secure video call. It's a one-time charge with no commitment required.",
+    q: "Is online therapy available in Nigeria?",
+    // q: "How does the ₦8,500 single session work?",
+    a: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
+    // a: "You book and pay online, then your matched therapist contacts you within 24 hours to schedule your 50-minute session via secure video call. It's a one-time charge with no commitment required.",
   },
   {
     q: "Are your therapists licensed and qualified?",
@@ -1043,6 +1047,19 @@ const trustBadges = [
 //     },
 //   ],
 // };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: f.a,
+    },
+  })),
+};
 
 // const localBusinessSchema = {
 //   "@context": "https://schema.org",
