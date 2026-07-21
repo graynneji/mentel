@@ -708,9 +708,9 @@ import {
 
 /* ─── SEO metadata ─────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: "Mentel - Online Therapy & Mental Health Support",
+  title: "Mentel | Online Professional Therapy & Mental Health Support",
   description:
-    "Book a licensed therapist in Nigeria from ₦8,500. Confidential online therapy for anxiety, burnout, depression & more. NDPR-compliant. Lagos, Abuja, Port Harcourt.",
+    "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, relationships, trauma, burnout, and personal growth.",
   keywords: [
     "online therapy Nigeria",
     "mental health therapist Lagos",
@@ -737,9 +737,9 @@ export const metadata: Metadata = {
     "how to overcome anxiety",
   ],
   openGraph: {
-    title: "Mentel - Online Therapy & Mental Health Support",
+    title: "Mentel | Online Professional Therapy & Mental Health Support",
     description:
-      "Connect with a licensed therapist in Nigeria. Confidential, affordable, evidence-based care from ₦8,500.",
+      "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, trauma, burnout, relationships, and personal growth.",
     url: "https://www.trymentel.com",
     siteName: "Mentel",
     locale: "en_NG",
@@ -1000,75 +1000,75 @@ const trustBadges = [
   { name: "T", gradient: "linear-gradient(135deg, #8b5e7a, #c08fa4)" }, // soft plum
 ];
 /* ─── Structured data ───────────────────────────────────────── */
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    ...faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-    {
-      "@type": "Question",
-      name: "What is Mentel?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is online therapy available in Nigeria?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How do I book a therapy session in Nigeria?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I get a free mental health assessment?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
-      },
-    },
-  ],
-};
+// const faqSchema = {
+//   "@context": "https://schema.org",
+//   "@type": "FAQPage",
+//   mainEntity: [
+//     ...faqs.map((f) => ({
+//       "@type": "Question",
+//       name: f.q,
+//       acceptedAnswer: { "@type": "Answer", text: f.a },
+//     })),
+//     {
+//       "@type": "Question",
+//       name: "What is Mentel?",
+//       acceptedAnswer: {
+//         "@type": "Answer",
+//         text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
+//       },
+//     },
+//     {
+//       "@type": "Question",
+//       name: "Is online therapy available in Nigeria?",
+//       acceptedAnswer: {
+//         "@type": "Answer",
+//         text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
+//       },
+//     },
+//     {
+//       "@type": "Question",
+//       name: "How do I book a therapy session in Nigeria?",
+//       acceptedAnswer: {
+//         "@type": "Answer",
+//         text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
+//       },
+//     },
+//     {
+//       "@type": "Question",
+//       name: "Can I get a free mental health assessment?",
+//       acceptedAnswer: {
+//         "@type": "Answer",
+//         text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
+//       },
+//     },
+//   ],
+// };
 
-const localBusinessSchema = {
-  "@context": "https://schema.org",
-  "@type": "MedicalBusiness",
-  name: "Mentel",
-  url: "https://www.trymentel.com",
-  description:
-    "Online therapy and mental health support for individuals and teams in Nigeria.",
-  address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
-  areaServed: "Nigeria",
-  medicalSpecialty: "Psychiatry",
-  priceRange: "₦₦",
-};
+// const localBusinessSchema = {
+//   "@context": "https://schema.org",
+//   "@type": "MedicalBusiness",
+//   name: "Mentel",
+//   url: "https://www.trymentel.com",
+//   description:
+//     "Online therapy and mental health support for individuals and teams in Nigeria.",
+//   address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
+//   areaServed: "Nigeria",
+//   medicalSpecialty: "Psychiatry",
+//   priceRange: "₦₦",
+// };
 
 /* ─── Component ─────────────────────────────────────────────── */
 export default function HomePage() {
   return (
     <>
-      <script
+      {/* <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
+      /> */}
+      {/* <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
+      /> */}
 
       <div className="relative overflow-x-hidden">
         {/* <BgBlobs /> */}
@@ -1267,7 +1267,7 @@ export default function HomePage() {
                   <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg">
                     <Image
                       src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=900&q=80&auto=format&fit=crop"
-                      alt="A warm, professional therapist ready for an online session"
+                      alt="Licensed therapist providing confidential online therapy"
                       width={900}
                       height={640}
                       className="w-full object-cover"

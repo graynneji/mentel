@@ -320,12 +320,12 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mentel - Mental Health & Therapy Services",
+    default: "Mentel | Online Professional Therapy & Mental Health Support",
     template: "%s - Mentel",
   },
   applicationName: "Mentel",
   description:
-    "Mentel connects you with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
+    "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, relationships, trauma, burnout, and personal growth.",
   keywords: [
     "online therapy Nigeria",
     "licensed therapist Nigeria",
@@ -353,16 +353,16 @@ export const metadata: Metadata = {
   publisher: "Mentel",
   metadataBase: new URL("https://www.trymentel.com"),
   alternates: {
-    canonical: "/",
+    canonical: "https://www.trymentel.com",
   },
   openGraph: {
     type: "website",
     locale: "en_NG",
     url: "https://www.trymentel.com",
     siteName: "Mentel",
-    title: "Mentel - Mental Health & Therapy Services",
+    title: "Mentel | Online Professional Therapy & Mental Health Support",
     description:
-      "Find licensed therapists in Nigeria for anxiety, depression, trauma, burnout, stress, and relationship challenges. Secure online therapy sessions from ₦8,500.",
+      "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, trauma, burnout, relationships, and personal growth.",
     images: [
       {
         url: "https://www.trymentel.com/og-image.jpg",
@@ -375,9 +375,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mentel - Mental Health & Therapy Services",
+    title: "Mentel | Online Professional Therapy & Mental Health Support",
     description:
-      "Connect with licensed therapists who genuinely listen. Evidence-based therapy for anxiety, depression, relationships, and more.",
+      "Confidential, evidence-based online therapy with licensed therapists for anxiety, depression, trauma, burnout, relationships, and personal growth.",
     images: ["https://www.trymentel.com/og-image.jpg"],
     // images: ["/og-image.png"],
     creator: "@mentel",
@@ -418,34 +418,44 @@ const structuredData = {
       "@type": "WebSite",
       "@id": "https://www.trymentel.com/#website",
       name: "Mentel",
-      alternateName: ["Mentel", "Mentel - Mental Health & Therapy Services", "Mentel Ltd"], // Crucial for Google Site Name mapping
+      alternateName: ["Mentel", "Mentel | Online Professional Therapy & Mental Health Support", "Mentel Ltd"], // Crucial for Google Site Name mapping
       url: "https://www.trymentel.com",
       inLanguage: "en-NG",
       description:
-        "Nigeria's online therapy platform. Licensed therapists from ₦8,500 per session.",
+        "Online therapy platform connecting people with licensed therapists for confidential, evidence-based mental health support.",
       publisher: {
         "@id": "https://www.trymentel.com/#organization",
       },
-      potentialAction: {
-        "@type": "SearchAction",
-        target: {
-          "@type": "EntryPoint",
-          urlTemplate: "https://www.trymentel.com/?q={search_term_string}",
-        },
-        "query-input": "required name=search_term_string",
-      },
+      // potentialAction: {
+      //   "@type": "SearchAction",
+      //   target: {
+      //     "@type": "EntryPoint",
+      //     urlTemplate: "https://www.trymentel.com/?q={search_term_string}",
+      //   },
+      //   "query-input": "required name=search_term_string",
+      // },
     },
     {
       "@type": ["MedicalBusiness", "Organization"], // Unified types
       "@id": "https://www.trymentel.com/#organization",
       name: "Mentel",
-      alternateName: "Mentel - Mental Health & Therapy Services",
+      alternateName: "Mentel | Online Professional Therapy & Mental Health Support",
       url: "https://www.trymentel.com",
       logo: "https://www.trymentel.com/logo.png",
       description:
-        "Licensed online therapy and mental health services for Nigerians. Evidence-based care for anxiety, depression, relationships, trauma, burnout, and more. Sessions from ₦5,500.",
+        "Confidential online therapy with licensed therapists. Evidence-based support for anxiety, depression, trauma, burnout, relationships, stress, and emotional wellbeing.",
       foundingDate: "2024",
+      foundingLocation: {
+        "@type": "Place",
+        name: "Lagos",
+      },
       email: "hello@mail.trymentel.com",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "Customer Support",
+        email: "hello@mail.trymentel.com",
+        availableLanguage: ["English"],
+      },
       address: {
         "@type": "PostalAddress",
         addressLocality: "Lagos",
@@ -459,7 +469,7 @@ const structuredData = {
       sameAs: [
         "https://instagram.com/mentel_ltd",
         "https://tiktok.com/@mentelltd",
-        "https://wa.me/254734527573",
+        "https://wa.me/2347031362034",
       ],
       priceRange: "₦₦",
       currenciesAccepted: "NGN",
@@ -478,7 +488,7 @@ const structuredData = {
           "@type": "MedicalTherapy",
           name: "Individual Therapy",
           description:
-            "One-on-one sessions with a licensed therapist via secure video call. From ₦8,500 per session.",
+            "One-on-one sessions with a licensed therapist via secure video call.",
         },
         {
           "@type": "MedicalTherapy",
@@ -512,18 +522,18 @@ const structuredData = {
         },
       ],
     },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://www.trymentel.com/#breadcrumb",
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trymentel.com" },
-        { "@type": "ListItem", position: 2, name: "Articles", item: "https://www.trymentel.com/articles" },
-        { "@type": "ListItem", position: 3, name: "About", item: "https://www.trymentel.com/about" },
-        { "@type": "ListItem", position: 4, name: "Services", item: "https://www.trymentel.com/services" },
-        { "@type": "ListItem", position: 5, name: "Contact", item: "https://www.trymentel.com/contact" },
-        { "@type": "ListItem", position: 6, name: "Book a Session", item: "https://www.trymentel.com/#book" },
-      ],
-    },
+    // {
+    //   "@type": "BreadcrumbList",
+    //   "@id": "https://www.trymentel.com/#breadcrumb",
+    //   itemListElement: [
+    //     { "@type": "ListItem", position: 1, name: "Home", item: "https://www.trymentel.com" },
+    //     { "@type": "ListItem", position: 2, name: "Articles", item: "https://www.trymentel.com/articles" },
+    //     { "@type": "ListItem", position: 3, name: "About", item: "https://www.trymentel.com/about" },
+    //     { "@type": "ListItem", position: 4, name: "Services", item: "https://www.trymentel.com/services" },
+    //     { "@type": "ListItem", position: 5, name: "Contact", item: "https://www.trymentel.com/contact" },
+    //     { "@type": "ListItem", position: 6, name: "Book a Session", item: "https://www.trymentel.com/book" },
+    //   ],
+    // },
   ],
 };
 
