@@ -950,16 +950,16 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "What is Mentel?",
-    // q: "Is online therapy as effective as in-person?",
-    // a: "Yes, research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
-    a: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
+    // q: "What is Mentel?",
+    q: "Is online therapy as effective as in-person?",
+    a: "Yes, research consistently shows online therapy produces outcomes equivalent to in-person sessions for most conditions including anxiety, depression, and relationship issues. Many clients find the privacy and convenience of online therapy actually helps them open up more.",
+    // a: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
   },
   {
-    q: "Is online therapy available in Nigeria?",
-    // q: "How does the ₦8,500 single session work?",
-    a: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
-    // a: "You book and pay online, then your matched therapist contacts you within 24 hours to schedule your 50-minute session via secure video call. It's a one-time charge with no commitment required.",
+    // q: "Is online therapy available in Nigeria?",
+    q: "How does the session work?",
+    // a: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
+    a: "You book and pay online, then your matched therapist contacts you within 24 hours to schedule your 50-minute session via secure video call. It's a one-time charge with no commitment required.",
   },
   {
     q: "Are your therapists licensed and qualified?",
@@ -1004,62 +1004,62 @@ const trustBadges = [
   { name: "T", gradient: "linear-gradient(135deg, #8b5e7a, #c08fa4)" }, // soft plum
 ];
 /* ─── Structured data ───────────────────────────────────────── */
-// const faqSchema = {
-//   "@context": "https://schema.org",
-//   "@type": "FAQPage",
-//   mainEntity: [
-//     ...faqs.map((f) => ({
-//       "@type": "Question",
-//       name: f.q,
-//       acceptedAnswer: { "@type": "Answer", text: f.a },
-//     })),
-//     {
-//       "@type": "Question",
-//       name: "What is Mentel?",
-//       acceptedAnswer: {
-//         "@type": "Answer",
-//         text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
-//       },
-//     },
-//     {
-//       "@type": "Question",
-//       name: "Is online therapy available in Nigeria?",
-//       acceptedAnswer: {
-//         "@type": "Answer",
-//         text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
-//       },
-//     },
-//     {
-//       "@type": "Question",
-//       name: "How do I book a therapy session in Nigeria?",
-//       acceptedAnswer: {
-//         "@type": "Answer",
-//         text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
-//       },
-//     },
-//     {
-//       "@type": "Question",
-//       name: "Can I get a free mental health assessment?",
-//       acceptedAnswer: {
-//         "@type": "Answer",
-//         text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
-//       },
-//     },
-//   ],
-// };
-
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: faqs.map((f) => ({
-    "@type": "Question",
-    name: f.q,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: f.a,
+  mainEntity: [
+    ...faqs.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+    {
+      "@type": "Question",
+      name: "What is Mentel?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
+      },
     },
-  })),
+    {
+      "@type": "Question",
+      name: "Is online therapy available in Nigeria?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I book a therapy session in Nigeria?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I get a free mental health assessment?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
+      },
+    },
+  ],
 };
+
+// const faqSchema = {
+//   "@context": "https://schema.org",
+//   "@type": "FAQPage",
+//   mainEntity: faqs.map((f) => ({
+//     "@type": "Question",
+//     name: f.q,
+//     acceptedAnswer: {
+//       "@type": "Answer",
+//       text: f.a,
+//     },
+//   })),
+// };
 
 // const localBusinessSchema = {
 //   "@context": "https://schema.org",
