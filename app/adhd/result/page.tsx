@@ -589,6 +589,7 @@ import RadarChart from "@/components/adhd/RadarChart";
 import ReportPreviewMock from "@/components/adhd/ReportPreviewMock";
 import { Testimonials } from "@/components/adhd/TrustAndProof";
 import { testimonials } from "@/lib/adhd/social-proof-config";
+import { Suspense } from "react";
 
 interface StoredResult {
     name: string;
@@ -617,7 +618,7 @@ const RADAR_DOMAINS: { domain: Domain; label: string }[] = [
     { domain: "hyperactivity", label: "Hyperactivity" },
 ];
 
-export default function AdhdResultPage() {
+function AdhdResultContent() {
     const searchParams = useSearchParams();
     const txRef = searchParams.get("tx_ref");
     const [stored, setStored] = useState<StoredResult | null>(null);
@@ -1108,7 +1109,7 @@ function UnlockedReport({ stored, txRef, compact = false }: { stored: StoredResu
     );
 }
 
-function PageShell({ children }: { children: React.ReactNode }) {
+function PageShell({ children }: { children?: React.ReactNode }) {
     return (
         <div className="min-h-screen bg-[#faf9f6] font-['DM_Sans',sans-serif]">
             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:bg-white focus:text-[#1c2820] focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg">
@@ -1137,5 +1138,14 @@ function PageShell({ children }: { children: React.ReactNode }) {
       `}</style>
             {children}
         </div>
+    );
+}
+
+
+export default function AdhdResultPage() {
+    return (
+        <Suspense fallback={<PageShell />}>
+            <AdhdResultContent />
+        </Suspense>
     );
 }
