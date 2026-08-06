@@ -1,4 +1,5 @@
 
+
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@
 // import ReportPreviewMock from "@/components/adhd/ReportPreviewMock";
 // import { Testimonials } from "@/components/adhd/TrustAndProof";
 // import { testimonials } from "@/lib/adhd/social-proof-config";
+// import { Suspense } from "react";
 
 // interface StoredResult {
 //     name: string;
@@ -43,7 +45,7 @@
 //     { domain: "hyperactivity", label: "Hyperactivity" },
 // ];
 
-// export default function AdhdResultPage() {
+// function AdhdResultContent() {
 //     const searchParams = useSearchParams();
 //     const txRef = searchParams.get("tx_ref");
 //     const [stored, setStored] = useState<StoredResult | null>(null);
@@ -51,7 +53,10 @@
 //     const [notFound, setNotFound] = useState(false);
 //     const [unlocked, setUnlocked] = useState(false);
 //     const [verifying, setVerifying] = useState(!!txRef);
-//     const [showMobileBar, setShowMobileBar] = useState(false);
+//     // Show immediately rather than gating behind a scroll threshold: the
+//     // point of this bar is that pricing is visible without having to
+//     // scroll to find it, gating it behind scrollY defeated that.
+//     const [showMobileBar, setShowMobileBar] = useState(true);
 //     const [mobileBarDismissed, setMobileBarDismissed] = useState(false);
 
 //     useEffect(() => {
@@ -115,15 +120,6 @@
 //             .then((data) => setUnlocked(!!data?.success))
 //             .finally(() => setVerifying(false));
 //     }, [txRef]);
-
-//     // Reveal the mobile sticky pricing bar once the visitor has scrolled past
-//     // the hero, so there's always a near-at-hand path to checkout without
-//     // needing to scroll all the way to the bottom on small screens.
-//     useEffect(() => {
-//         const onScroll = () => setShowMobileBar(window.scrollY > 520);
-//         window.addEventListener("scroll", onScroll, { passive: true });
-//         return () => window.removeEventListener("scroll", onScroll);
-//     }, []);
 
 //     if (recovering) {
 //         return (
@@ -540,7 +536,7 @@
 //     );
 // }
 
-// function PageShell({ children }: { children: React.ReactNode }) {
+// function PageShell({ children }: { children?: React.ReactNode }) {
 //     return (
 //         <div className="min-h-screen bg-[#faf9f6] font-['DM_Sans',sans-serif]">
 //             <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:bg-white focus:text-[#1c2820] focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg">
@@ -573,9 +569,17 @@
 // }
 
 
+// export default function AdhdResultPage() {
+//     return (
+//         <Suspense fallback={<PageShell />}>
+//             <AdhdResultContent />
+//         </Suspense>
+//     );
+// }
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -589,7 +593,6 @@ import RadarChart from "@/components/adhd/RadarChart";
 import ReportPreviewMock from "@/components/adhd/ReportPreviewMock";
 import { Testimonials } from "@/components/adhd/TrustAndProof";
 import { testimonials } from "@/lib/adhd/social-proof-config";
-import { Suspense } from "react";
 
 interface StoredResult {
     name: string;
@@ -625,6 +628,7 @@ function AdhdResultContent() {
     const [recovering, setRecovering] = useState(!!txRef);
     const [notFound, setNotFound] = useState(false);
     const [unlocked, setUnlocked] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [verifying, setVerifying] = useState(!!txRef);
     // Show immediately rather than gating behind a scroll threshold: the
     // point of this bar is that pricing is visible without having to
@@ -694,6 +698,21 @@ function AdhdResultContent() {
             .finally(() => setVerifying(false));
     }, [txRef]);
 
+    // Called from PricingCard the moment Flutterwave confirms payment.
+    // Deliberately separate from the mount-time verify effect above: that
+    // effect also sets `unlocked`, but for someone reloading a link to a
+    // report they already paid for, which shouldn't re-trigger a "payment
+    // successful!" celebration. This handler is only ever called right
+    // after an actual just-completed checkout, which is exactly when the
+    // person needs an unmissable confirmation, previously the only signal
+    // was a small "Confirming your payment…" line inside the pricing card
+    // itself, easy to miss if they'd scrolled away from it or the card was
+    // off-screen (the sidebar on desktop, for instance).
+    function handlePaymentSuccess() {
+        setUnlocked(true);
+        setShowSuccessModal(true);
+    }
+
     if (recovering) {
         return (
             <PageShell>
@@ -761,19 +780,23 @@ function AdhdResultContent() {
                         </div>
                     </section>
 
-                    {/* ── Strengths ──────────────────────────────────────────────── */}
-                    <section className="py-6">
-                        <div className="bg-gradient-to-br from-[#f2f7f3] to-white rounded-3xl border border-[#d5e5da] p-8 text-center">
-                            <p className="text-[15px] text-[#3a4a3e] mb-5">Your responses also suggest strengths.</p>
-                            <div className="flex flex-wrap justify-center gap-2.5">
-                                {result.strengths.map((s) => (
-                                    <span key={s.domain} className="text-[13px] font-medium text-[#2d7a5a] bg-white border border-[#d5e5da] px-4 py-2 rounded-full">
-                                        {strengthsPool[s.domain]}
-                                    </span>
-                                ))}
+                    {/* ── Strengths, only rendered if any domain actually
+                        qualifies as minimal/mild, otherwise this would show
+                        the heading with nothing underneath it ── */}
+                    {result.strengths.length > 0 && (
+                        <section className="py-6">
+                            <div className="bg-gradient-to-br from-[#f2f7f3] to-white rounded-3xl border border-[#d5e5da] p-8 text-center">
+                                <p className="text-[15px] text-[#3a4a3e] mb-5">Your responses also suggest strengths.</p>
+                                <div className="flex flex-wrap justify-center gap-2.5">
+                                    {result.strengths.map((s) => (
+                                        <span key={s.domain} className="text-[13px] font-medium text-[#2d7a5a] bg-white border border-[#d5e5da] px-4 py-2 rounded-full">
+                                            {strengthsPool[s.domain]}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    )}
 
                     {/* ── What this means, collapsible to keep the page scannable ── */}
                     <section className="py-4">
@@ -811,7 +834,7 @@ function AdhdResultContent() {
                                     <h2 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(24px,4.5vw,30px)] font-light text-[#1c2820] mb-8">
                                         Unlock your complete personalized report
                                     </h2>
-                                    <ReportPreviewMock name={firstName} />
+                                    <ReportPreviewMock name={firstName} result={result} />
                                     <div className="grid sm:grid-cols-2 gap-2.5 mt-9 text-left max-w-[440px] mx-auto">
                                         {[
                                             "18+ pages",
@@ -834,7 +857,7 @@ function AdhdResultContent() {
 
                             {/* Pricing, mobile/tablet inline, desktop shows it in the sticky sidebar instead */}
                             <section id="pricing-anchor" className="py-8 lg:hidden">
-                                <PricingCard stored={stored} verifying={verifying} onSuccess={() => setUnlocked(true)} />
+                                <PricingCard stored={stored} verifying={verifying} onSuccess={handlePaymentSuccess} />
                             </section>
 
                             {/* ── FAQ ─────────────────────────────────────────────────── */}
@@ -869,7 +892,7 @@ function AdhdResultContent() {
                     {unlocked ? (
                         <UnlockedReport stored={stored} txRef={txRef} compact />
                     ) : (
-                        <PricingCard stored={stored} verifying={verifying} onSuccess={() => setUnlocked(true)} compact />
+                        <PricingCard stored={stored} verifying={verifying} onSuccess={handlePaymentSuccess} compact />
                     )}
                 </aside>
             </div>
@@ -891,7 +914,77 @@ function AdhdResultContent() {
                     </button>
                 </div>
             )}
+
+            {/* ── Payment success modal: fixed overlay, so it's visible the
+                instant payment completes regardless of scroll position.
+                Previously the only confirmation was a small "Confirming
+                your payment…" line inside the pricing card itself, easy to
+                miss entirely if that card was scrolled out of view (e.g.
+                the sidebar on desktop, or the mobile inline card after
+                they've scrolled past it). ── */}
+            {showSuccessModal && stored && (
+                <PaymentSuccessModal
+                    email={stored.email}
+                    txRef={txRef}
+                    onClose={() => setShowSuccessModal(false)}
+                />
+            )}
         </PageShell>
+    );
+}
+
+function PaymentSuccessModal({ email, txRef, onClose }: { email: string; txRef: string | null; onClose: () => void }) {
+    const downloadHref = `/api/adhd/report/pdf?tx_ref=${encodeURIComponent(txRef ?? "")}`;
+    return (
+        <div
+            className="fixed inset-0 z-[200] bg-[#0E5C3D]/40 backdrop-blur-[2px] flex items-center justify-center p-5"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="payment-success-title"
+        >
+            <div className="relative bg-white rounded-[28px] max-w-[420px] w-full p-8 text-center shadow-[0_30px_90px_rgba(14,92,61,0.3)] fade-up-modal">
+                <button
+                    onClick={onClose}
+                    aria-label="Close"
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-[#4a5a52] hover:bg-[#f5f5f2]"
+                >
+                    <XIcon size={16} />
+                </button>
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] inline-flex items-center justify-center mb-5">
+                    <CheckCircle2 size={30} color="white" aria-hidden="true" />
+                </div>
+                <h2 id="payment-success-title" className="font-['Cormorant_Garamond',Georgia,serif] text-[26px] font-light text-[#1c2820] mb-2.5">
+                    Payment successful
+                </h2>
+                <p className="text-[14px] text-[#3a4a3e] leading-[1.65] mb-1">
+                    Your full report has been sent to
+                </p>
+                <p className="text-[14px] font-semibold text-[#1c2820] mb-6">{email}</p>
+                <a
+                    href={downloadHref}
+                    className="cta-btn w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] text-white rounded-full text-[14px] font-medium no-underline mb-3"
+                >
+                    <FileText size={15} aria-hidden="true" /> Download your report now
+                </a>
+                <button
+                    onClick={() => {
+                        onClose();
+                        // Give the modal a moment to unmount before scrolling,
+                        // otherwise the scroll target's position is measured
+                        // while the modal (and its scroll-lock-adjacent
+                        // layout) is still in the DOM.
+                        setTimeout(() => document.getElementById("pricing-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+                    }}
+                    className="text-[13px] text-[#4a5a52] hover:text-[#1c2820] py-1"
+                >
+                    View my results page
+                </button>
+                <p className="text-[11px] text-[#4a5a52] mt-5 leading-[1.5]">
+                    Didn't get the email? Check spam, or use the download button above, your report is also always
+                    available from this page.
+                </p>
+            </div>
+        </div>
     );
 }
 
@@ -1130,6 +1223,8 @@ function PageShell({ children }: { children?: React.ReactNode }) {
         body { font-family: 'DM Sans', -apple-system, sans-serif; background: #faf9f6; -webkit-font-smoothing: antialiased; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .fade-up { animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+        @keyframes fadeUpModal { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .fade-up-modal { animation: fadeUpModal 0.35s cubic-bezier(0.22,1,0.36,1) both; }
         .cta-btn { transition: all 0.25s cubic-bezier(0.22,1,0.36,1); }
         .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(30,107,107,0.38) !important; }
         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

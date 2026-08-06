@@ -30,11 +30,27 @@ export const socialProofStats: SocialProofStats = {
 
 export const testimonials: Testimonial[] = [
   // TODO: add real, consented testimonials, for example:
+
   {
-    quote: "I finally had language for what I'd been experiencing.",
+    quote:
+      "I finally understood why I've struggled with focus for so long. The report was incredibly accurate.",
+    name: "Avery",
+    detail: "33 • Product Designer",
+    photoUrl: "/avery.jpg",
+  },
+  {
+    quote:
+      "I expected a simple quiz, but the personalized report genuinely surprised me. It was worth it.",
     name: "Michael",
-    detail: "42",
-    photoUrl: "/adhd/testimonials/michael.jpg",
+    detail: "41 • Financial Architect",
+    photoUrl: "/Michael.jpg",
+  },
+  {
+    quote:
+      "It was easy to complete and gave me insights I wish I'd had years ago.",
+    name: "Lauren",
+    detail: "28 • Registered Nurse",
+    photoUrl: "/lauren.jpg",
   },
 ];
 

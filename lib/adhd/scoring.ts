@@ -138,7 +138,6 @@
 //     sentence: "your responses suggest this area is a frequent, noticeable difficulty",
 //   },
 // };
-
 // lib/adhd/scoring.ts
 //
 // Scoring is deliberately conservative in its language. Nothing here should
@@ -167,18 +166,25 @@ export interface AssessmentResult {
   overallBand: Band;
   inattentivePercent: number;
   hyperactivePercent: number;
-  leaningLabel: string; // plain-language leaning, never a subtype diagnosis
+  leaningLabel: string; // full-sentence fragment, always names the actual top domain, see below
+  patternEmphasisShort: string; // short chip label for score-dashboard-style UI, e.g. "Working Memory-led" — derived from the SAME top domain as leaningLabel, so the two can never contradict each other
   strengths: DomainResult[]; // lowest-scoring domains (fewer difficulties)
   challenges: DomainResult[]; // highest-scoring domains (more difficulties)
 }
 
-const INATTENTIVE_DOMAINS: Domain[] = [
+// Renamed away from "inattentive"/"hyperactive" as user-facing labels
+// (those are literally the DSM-5 ADHD subtype names, using them as a
+// two-word summary reads as a subtype determination even when the intent
+// was just "these four domains vs those three"). Kept as internal grouping
+// names only, for the cluster-level "leans more toward X as a group"
+// sentence, never surfaced verbatim to the user.
+const FOCUS_ORGANISATION_DOMAINS: Domain[] = [
   "attention",
   "working_memory",
   "organisation",
   "daily_impact",
 ];
-const HYPERACTIVE_DOMAINS: Domain[] = [
+const ACTIVITY_IMPULSE_DOMAINS: Domain[] = [
   "impulsivity",
   "hyperactivity",
   "emotional_regulation",
@@ -221,33 +227,68 @@ export function scoreAssessment(answers: Answers): AssessmentResult {
   const overallPercent =
     totalMax === 0 ? 0 : Math.round((totalSum / totalMax) * 100);
 
-  const inattentiveResults = domainResults.filter((d) =>
-    INATTENTIVE_DOMAINS.includes(d.domain),
+  const focusOrgResults = domainResults.filter((d) =>
+    FOCUS_ORGANISATION_DOMAINS.includes(d.domain),
   );
-  const hyperactiveResults = domainResults.filter((d) =>
-    HYPERACTIVE_DOMAINS.includes(d.domain),
+  const activityImpulseResults = domainResults.filter((d) =>
+    ACTIVITY_IMPULSE_DOMAINS.includes(d.domain),
   );
 
-  const inattentivePercent = avgPercent(inattentiveResults);
-  const hyperactivePercent = avgPercent(hyperactiveResults);
+  const inattentivePercent = avgPercent(focusOrgResults);
+  const hyperactivePercent = avgPercent(activityImpulseResults);
+
+  // The actual highest-scoring specific domain, this is what the summary
+  // sentence names directly, rather than a cluster-average descriptor like
+  // "attention-leaning" that can silently disagree with the domain
+  // everyone can see is actually highest in the breakdown below it. If two
+  // domains are close, name both rather than picking one arbitrarily.
+  const sortedDesc = [...domainResults].sort((a, b) => b.percent - a.percent);
+  const topDomain = sortedDesc[0];
+  const secondDomain = sortedDesc[1];
+  const topDomainsAreClose =
+    secondDomain && topDomain.percent - secondDomain.percent <= 6;
+  const topDomainPhrase = topDomainsAreClose
+    ? `${topDomain.label} and ${secondDomain.label}`
+    : topDomain.label;
 
   const diff = inattentivePercent - hyperactivePercent;
-  let leaningLabel =
-    "a mixed pattern across attention and activity-related domains";
+  let leaningLabel: string;
   if (Math.abs(diff) <= 8) {
-    leaningLabel =
-      "a fairly even pattern across attention and activity-related domains";
+    leaningLabel = `a fairly even pattern across domains, with ${topDomainPhrase} showing the most difficulty`;
   } else if (diff > 8) {
-    leaningLabel =
-      "a pattern that leans more toward attention and organisation-related domains";
+    leaningLabel = `a pattern that leans more toward focus, memory, and organisation-related domains as a group, driven most by ${topDomainPhrase}`;
   } else {
-    leaningLabel =
-      "a pattern that leans more toward activity and impulse-related domains";
+    leaningLabel = `a pattern that leans more toward activity and impulse-related domains as a group, driven most by ${topDomainPhrase}`;
   }
 
+  // Short chip-style label for UI that needs a few words, not a sentence
+  // (e.g. the PDF's score-dashboard stat card). Built from the exact same
+  // topDomain the sentence above uses, never a separately-derived cluster
+  // word, so the short label and the full sentence can never disagree with
+  // each other or with the domain breakdown table.
+  const patternEmphasisShort = topDomainsAreClose
+    ? "Mixed pattern"
+    : `${topDomain.label}-led`;
+
+  // Previously this just took the 3 lowest and 3 highest domains,
+  // regardless of their actual band. That meant someone scoring high
+  // across every domain could still get 3 "strengths" pulled from their
+  // own Moderate/Significant range, cheerfully labeled "Creativity" or
+  // "Adaptability" right next to a report saying those same domains show
+  // frequent difficulty, exactly the kind of internal contradiction that
+  // makes a report look auto-generated rather than accurate. Now strengths
+  // only include domains that are actually minimal/mild, and challenges
+  // only include domains that are actually moderate/significant, if fewer
+  // than 3 domains qualify on either side, fewer are shown rather than
+  // padding with domains that don't genuinely belong in that bucket.
   const sorted = [...domainResults].sort((a, b) => a.percent - b.percent);
-  const strengths = sorted.slice(0, 3);
-  const challenges = [...sorted].reverse().slice(0, 3);
+  const strengths = sorted
+    .filter((d) => d.band === "minimal" || d.band === "mild")
+    .slice(0, 3);
+  const challenges = [...sorted]
+    .reverse()
+    .filter((d) => d.band === "moderate" || d.band === "significant")
+    .slice(0, 3);
 
   return {
     domainResults,
@@ -256,6 +297,7 @@ export function scoreAssessment(answers: Answers): AssessmentResult {
     inattentivePercent,
     hyperactivePercent,
     leaningLabel,
+    patternEmphasisShort,
     strengths,
     challenges,
   };
