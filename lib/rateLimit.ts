@@ -18,15 +18,15 @@ export const landingLimit = new Ratelimit({
 
 export const apiLimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(120, "1 m"),
+  limiter: Ratelimit.slidingWindow(180, "1 m"),
 });
 
 export const assessmentLimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(120, "1 m"),
+  limiter: Ratelimit.slidingWindow(180, "1 m"),
 });
 
 export const adminLimit = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(60, "1 m"),
+  limiter: Ratelimit.slidingWindow(120, "1 m"),
 });

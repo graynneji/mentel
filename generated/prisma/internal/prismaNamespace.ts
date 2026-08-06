@@ -401,7 +401,8 @@ export const ModelName = {
   ClientLoginToken: 'ClientLoginToken',
   Package: 'Package',
   ScheduledSession: 'ScheduledSession',
-  SmsMessage: 'SmsMessage'
+  SmsMessage: 'SmsMessage',
+  AdhdAssessmentLead: 'AdhdAssessmentLead'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert" | "clientAccount" | "clientLoginToken" | "package" | "scheduledSession" | "smsMessage"
+    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert" | "clientAccount" | "clientLoginToken" | "package" | "scheduledSession" | "smsMessage" | "adhdAssessmentLead"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1753,6 +1754,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AdhdAssessmentLead: {
+      payload: Prisma.$AdhdAssessmentLeadPayload<ExtArgs>
+      fields: Prisma.AdhdAssessmentLeadFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdhdAssessmentLeadFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdhdAssessmentLeadFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>
+        }
+        findFirst: {
+          args: Prisma.AdhdAssessmentLeadFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdhdAssessmentLeadFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>
+        }
+        findMany: {
+          args: Prisma.AdhdAssessmentLeadFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>[]
+        }
+        create: {
+          args: Prisma.AdhdAssessmentLeadCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>
+        }
+        createMany: {
+          args: Prisma.AdhdAssessmentLeadCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AdhdAssessmentLeadCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>[]
+        }
+        delete: {
+          args: Prisma.AdhdAssessmentLeadDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>
+        }
+        update: {
+          args: Prisma.AdhdAssessmentLeadUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdhdAssessmentLeadDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdhdAssessmentLeadUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AdhdAssessmentLeadUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>[]
+        }
+        upsert: {
+          args: Prisma.AdhdAssessmentLeadUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdhdAssessmentLeadPayload>
+        }
+        aggregate: {
+          args: Prisma.AdhdAssessmentLeadAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdhdAssessmentLead>
+        }
+        groupBy: {
+          args: Prisma.AdhdAssessmentLeadGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdhdAssessmentLeadGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdhdAssessmentLeadCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdhdAssessmentLeadCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2136,6 +2211,28 @@ export const SmsMessageScalarFieldEnum = {
 export type SmsMessageScalarFieldEnum = (typeof SmsMessageScalarFieldEnum)[keyof typeof SmsMessageScalarFieldEnum]
 
 
+export const AdhdAssessmentLeadScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  answers: 'answers',
+  overallPercent: 'overallPercent',
+  overallBand: 'overallBand',
+  txRef: 'txRef',
+  planKey: 'planKey',
+  amountCents: 'amountCents',
+  currency: 'currency',
+  status: 'status',
+  paidAt: 'paidAt',
+  reportSentAt: 'reportSentAt'
+} as const
+
+export type AdhdAssessmentLeadScalarFieldEnum = (typeof AdhdAssessmentLeadScalarFieldEnum)[keyof typeof AdhdAssessmentLeadScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2379,6 +2476,7 @@ export type GlobalOmitConfig = {
   package?: Prisma.PackageOmit
   scheduledSession?: Prisma.ScheduledSessionOmit
   smsMessage?: Prisma.SmsMessageOmit
+  adhdAssessmentLead?: Prisma.AdhdAssessmentLeadOmit
 }
 
 /* Types for Logging */

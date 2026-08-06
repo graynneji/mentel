@@ -18,6 +18,11 @@
 // // or whether both fire.
 
 // import { db } from "@/lib/db";
+// import { randomBytes } from "crypto";
+
+// const CLIENT_PORTAL_URL =
+//   process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL ?? "https://app.trymentel.com";
+// const LOGIN_TOKEN_TTL_MINUTES = 60 * 24 * 3; // 3 days — this link sits in an email, give it more room than the in-app "send me a link" flow (15 min)
 
 // export interface RecordPaymentInput {
 //   reference: string;
@@ -37,26 +42,47 @@
 //   paymentId: string;
 //   leadId: string;
 //   packageId: string | null;
+//   portalLoginUrl: string; // one-click link straight into the client portal dashboard
 // }
 
 // function isMonthlyPlan(plan: string): boolean {
 //   return plan.toLowerCase().includes("month");
 // }
 
-// export async function recordPayment(input: RecordPaymentInput): Promise<RecordPaymentResult> {
+// /** Creates a fresh single-use login token and returns the full magic-link URL into the client portal. */
+// async function createPortalLoginLink(clientAccountId: string): Promise<string> {
+//   const token = randomBytes(32).toString("hex");
+//   const expiresAt = new Date(Date.now() + LOGIN_TOKEN_TTL_MINUTES * 60 * 1000);
+//   await db.clientLoginToken.create({
+//     data: { clientAccountId, token, expiresAt },
+//   });
+//   return `${CLIENT_PORTAL_URL}/api/auth/verify?token=${token}`;
+// }
+
+// export async function recordPayment(
+//   input: RecordPaymentInput,
+// ): Promise<RecordPaymentResult> {
 //   // Idempotency guard — the webhook and the browser-redirect verify route
 //   // can both call this for the same payment; only the first should do
-//   // anything.
+//   // anything (beyond generating a fresh login link either way, which is
+//   // harmless and cheap to do twice).
 //   const existing = await db.payment.findUnique({
 //     where: { reference: input.reference },
 //     include: { package: true },
 //   });
 //   if (existing) {
+//     const account = await db.clientAccount.findUnique({
+//       where: { leadId: existing.leadId },
+//     });
+//     const portalLoginUrl = account
+//       ? await createPortalLoginLink(account.id)
+//       : `${CLIENT_PORTAL_URL}/login`;
 //     return {
 //       created: false,
 //       paymentId: existing.id,
 //       leadId: existing.leadId,
 //       packageId: existing.package?.id ?? null,
+//       portalLoginUrl,
 //     };
 //   }
 
@@ -81,7 +107,10 @@
 //       },
 //     });
 //   } else if (lead.status === "new" || lead.status === "contacted") {
-//     await db.lead.update({ where: { id: lead.id }, data: { status: "active" } });
+//     await db.lead.update({
+//       where: { id: lead.id },
+//       data: { status: "active" },
+//     });
 //   }
 
 //   const payment = await db.payment.create({
@@ -93,7 +122,9 @@
 //       method: input.method || "card",
 //       reference: input.reference,
 //       paidAt: input.paidAt,
-//       notes: input.reason ? `Plan: ${input.plan} — ${input.reason}` : `Plan: ${input.plan}`,
+//       notes: input.reason
+//         ? `Plan: ${input.plan} — ${input.reason}`
+//         : `Plan: ${input.plan}`,
 //     },
 //   });
 
@@ -120,13 +151,21 @@
 
 //   // Ensure a client-portal login exists for this lead, so they can log in
 //   // to schedule sessions/renew without any separate signup step.
-//   await db.clientAccount.upsert({
+//   const account = await db.clientAccount.upsert({
 //     where: { leadId: lead.id },
 //     create: { leadId: lead.id, email: input.email },
 //     update: {},
 //   });
 
-//   return { created: true, paymentId: payment.id, leadId: lead.id, packageId: pkg.id };
+//   const portalLoginUrl = await createPortalLoginLink(account.id);
+
+//   return {
+//     created: true,
+//     paymentId: payment.id,
+//     leadId: lead.id,
+//     packageId: pkg.id,
+//     portalLoginUrl,
+//   };
 // }
 
 // lib/payments/record-payment.ts
@@ -150,6 +189,7 @@
 
 import { db } from "@/lib/db";
 import { randomBytes } from "crypto";
+import { sessionsForPlanLabel, planTypeForLabel } from "@/lib/payments/plans";
 
 const CLIENT_PORTAL_URL =
   process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL ?? "https://app.trymentel.com";
@@ -174,10 +214,6 @@ export interface RecordPaymentResult {
   leadId: string;
   packageId: string | null;
   portalLoginUrl: string; // one-click link straight into the client portal dashboard
-}
-
-function isMonthlyPlan(plan: string): boolean {
-  return plan.toLowerCase().includes("month");
 }
 
 /** Creates a fresh single-use login token and returns the full magic-link URL into the client portal. */
@@ -259,10 +295,12 @@ export async function recordPayment(
     },
   });
 
-  // Unlock the session package this payment pays for. "Monthly" = 4
-  // sessions over 30 days; anything else = a single session. Adjust here
-  // if you introduce more plan tiers later.
-  const totalSessions = isMonthlyPlan(input.plan) ? 4 : 1;
+  // Unlock the session package this payment pays for. Session count and
+  // plan type come from lib/payments/plans.ts (the single source of
+  // truth for pricing) — matched against the plan label rather than a
+  // fuzzy "does it say month" guess, since there are now two monthly
+  // tiers (Care = 4 sessions, Plus = 8) that need telling apart.
+  const totalSessions = sessionsForPlanLabel(input.plan);
   const periodStart = input.paidAt;
   const periodEnd = new Date(periodStart);
   periodEnd.setDate(periodEnd.getDate() + 30);
@@ -271,7 +309,7 @@ export async function recordPayment(
     data: {
       leadId: lead.id,
       paymentId: payment.id,
-      planType: isMonthlyPlan(input.plan) ? "monthly" : "single",
+      planType: planTypeForLabel(input.plan),
       totalSessions,
       usedSessions: 0,
       periodStart,

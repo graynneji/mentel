@@ -68,7 +68,8 @@ export const ModelName = {
   ClientLoginToken: 'ClientLoginToken',
   Package: 'Package',
   ScheduledSession: 'ScheduledSession',
-  SmsMessage: 'SmsMessage'
+  SmsMessage: 'SmsMessage',
+  AdhdAssessmentLead: 'AdhdAssessmentLead'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -429,6 +430,28 @@ export const SmsMessageScalarFieldEnum = {
 } as const
 
 export type SmsMessageScalarFieldEnum = (typeof SmsMessageScalarFieldEnum)[keyof typeof SmsMessageScalarFieldEnum]
+
+
+export const AdhdAssessmentLeadScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  answers: 'answers',
+  overallPercent: 'overallPercent',
+  overallBand: 'overallBand',
+  txRef: 'txRef',
+  planKey: 'planKey',
+  amountCents: 'amountCents',
+  currency: 'currency',
+  status: 'status',
+  paidAt: 'paidAt',
+  reportSentAt: 'reportSentAt'
+} as const
+
+export type AdhdAssessmentLeadScalarFieldEnum = (typeof AdhdAssessmentLeadScalarFieldEnum)[keyof typeof AdhdAssessmentLeadScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -164,3 +164,8 @@ export type ScheduledSession = Prisma.ScheduledSessionModel
  * history/audit — see lib/sms/bestbulksms.ts for the API client.
  */
 export type SmsMessage = Prisma.SmsMessageModel
+/**
+ * Model AdhdAssessmentLead
+ * 
+ */
+export type AdhdAssessmentLead = Prisma.AdhdAssessmentLeadModel

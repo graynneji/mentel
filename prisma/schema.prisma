@@ -605,3 +605,35 @@ model SmsMessage {
   @@index([createdAt])
   @@map("sms_messages")
 }
+
+model AdhdAssessmentLead {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Identity, captured at the email-capture step
+  name  String
+  email String
+  phone String?
+
+  // Full scored result, stored as JSON so the PDF/admin view can render the
+  // complete domain breakdown without recomputing anything.
+  answers        Json
+  overallPercent Int    @map("overall_percent")
+  overallBand    String @map("overall_band") // minimal | mild | moderate | significant
+
+  // Payment / unlock tracking, filled in as the visitor proceeds to checkout
+  txRef        String?   @unique @map("tx_ref")
+  planKey      String?   @map("plan_key") // "report" | "toolkit", see lib/payments/adhd-plans.ts
+  amountCents  Int?      @map("amount_cents")
+  currency     String?   @default("USD")
+  status       String    @default("lead") // lead | pending_payment | paid | failed
+  paidAt       DateTime? @map("paid_at")
+  reportSentAt DateTime? @map("report_sent_at")
+
+  @@index([email])
+  @@index([txRef])
+  @@index([status])
+  @@index([createdAt])
+  @@map("adhd_assessment_leads")
+}

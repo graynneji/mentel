@@ -19,14 +19,12 @@
 // import { createHmac } from "crypto";
 // import { Resend } from "resend";
 // import { withRateLimit } from "@/lib/withRateLimit";
-// import { sendFbConversionEvent } from "@/lib/fbConversion";
 // import { recordPayment } from "@/lib/payments/record-payment";
 
 // const resend = new Resend(process.env.RESEND_API_KEY);
 // const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!; // sk_live_...
 // const ADMIN_EMAIL = "hello@mail.trymentel.com";
 // const FROM_EMAIL = "Mentel <hello@mail.trymentel.com>";
-// const BOOKING_URL = "https://trymentel.com/#book";
 
 // // ── HTML sanitizer ─────────────────────────────────────────────────────────────
 // function s(str: unknown): string {
@@ -55,8 +53,9 @@
 //   amount: string;
 //   reference: string;
 //   date: string;
+//   portalLoginUrl: string;
 // }): string {
-//   const { name, plan, reason, amount, reference, date } = data;
+//   const { name, plan, reason, amount, reference, date, portalLoginUrl } = data;
 //   const firstName = name.split(" ")[0] || name;
 //   const isMonthly = plan.toLowerCase().includes("monthly");
 
@@ -210,10 +209,15 @@
 //             <!-- CTA -->
 //             <table width="100%" cellpadding="0" cellspacing="0">
 //               <tr><td align="center">
-//                 <a href="${BOOKING_URL}"
+//                 <a href="${portalLoginUrl}"
 //                   style="display:inline-block;background:linear-gradient(135deg,#4e7a5e,#3d8b8b);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 36px;border-radius:99px;font-family:Georgia,serif;">
-//                   View Our Services &rarr;
+//                   Go to Your Client Portal &rarr;
 //                 </a>
+//               </td></tr>
+//             </table>
+//             <table width="100%" cellpadding="0" cellspacing="0">
+//               <tr><td align="center" style="padding-top:10px;">
+//                 <span style="font-size:11px;color:#a3bcae;">Schedule your session${plan.toLowerCase().includes("month") ? "s" : ""} and manage your plan there.</span>
 //               </td></tr>
 //             </table>
 
@@ -440,15 +444,6 @@
 //     const clientPhone = getField("phone");
 //     const plan = getField("plan") || "Session";
 //     const reason = getField("reason") || "General Wellbeing";
-//     // Raw numeric value for FB CAPI — Paystack amount is in kobo
-//     const rawAmount = data.amount / 100;
-//     // ── Meta tracking signals captured at checkout ─────────────────────────────
-//     const fbp = getField("fbp");
-//     const fbc = getField("fbc");
-//     const clientIp = getField("client_ip");
-//     const userAgent = getField("user_agent");
-
-//     // Formatted display string for the emails
 //     const amount = formatNGN(data.amount);
 //     const reference = data.reference ?? "";
 //     const channel = data.channel ?? "card";
@@ -456,25 +451,6 @@
 //       dateStyle: "full",
 //       timeStyle: "short",
 //     });
-
-//     // ── Fire Meta Conversions API — Purchase event ─────────────────────────────
-//     try {
-//       await sendFbConversionEvent({
-//         eventName: "Purchase",
-//         eventId: reference, // must match client-side eventID if you also fire client-side
-//         email: clientEmail,
-//         phone: clientPhone,
-//         fbp,
-//         fbc,
-//         clientIp,
-//         userAgent,
-//         value: rawAmount,
-//         currency: data.currency ?? "NGN", // Paystack sends this in data.currency
-//       });
-//     } catch (fbError) {
-//       // Never let a Meta API failure block email delivery or the webhook ack
-//       console.error("FB Conversions API error:", fbError);
-//     }
 
 //     if (!clientEmail) {
 //       console.error(
@@ -487,9 +463,11 @@
 //     // database, so paying clients never showed up in /admin/payments or
 //     // /admin/patients — the money went through, but the CRM had no idea.
 //     // Also unlocks their session package (4 for Monthly, 1 otherwise) so
-//     // they can log into the client portal and schedule.
+//     // they can log into the client portal and schedule, and generates a
+//     // one-click login link straight into it for the confirmation email.
+//     let portalLoginUrl = "https://app.trymentel.com/login";
 //     try {
-//       await recordPayment({
+//       const result = await recordPayment({
 //         reference,
 //         email: clientEmail,
 //         name: clientName,
@@ -501,6 +479,7 @@
 //         reason,
 //         paidAt: new Date(data.paid_at ?? Date.now()),
 //       });
+//       portalLoginUrl = result.portalLoginUrl;
 //     } catch (err) {
 //       // Never let a DB hiccup block the confirmation emails below — but
 //       // this is exactly the kind of failure you want to know about, since
@@ -512,6 +491,7 @@
 //     }
 
 //     const clientHtml = buildClientEmail({
+//       portalLoginUrl,
 //       name: clientName,
 //       email: clientEmail,
 //       plan,
@@ -587,6 +567,7 @@ import { createHmac } from "crypto";
 import { Resend } from "resend";
 import { withRateLimit } from "@/lib/withRateLimit";
 import { recordPayment } from "@/lib/payments/record-payment";
+import { PLANS } from "@/lib/payments/plans";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET_KEY!; // sk_live_...
@@ -624,21 +605,20 @@ function buildClientEmail(data: {
 }): string {
   const { name, plan, reason, amount, reference, date, portalLoginUrl } = data;
   const firstName = name.split(" ")[0] || name;
-  const isMonthly = plan.toLowerCase().includes("monthly");
 
-  const perks = isMonthly
-    ? [
-        "4 therapy sessions this month",
-        "Priority therapist matching",
-        "Dedicated support channel",
-        "Progress tracking",
-      ]
-    : [
-        "1 full therapy session",
-        "Licensed & verified therapist",
-        "Response within 24 hours",
-        "Confidential & judgment-free",
-      ];
+  // Perks shown in the confirmation email — pulled from the plan's real
+  // feature list (lib/payments/plans.ts) rather than a hardcoded
+  // monthly/single split, since there are now three tiers with different
+  // features (One Session, Mentel Care, Mentel Plus).
+  const matchedPlan = Object.values(PLANS).find(
+    (p) => p.label.toLowerCase() === plan.toLowerCase(),
+  );
+  const perks = matchedPlan?.features ?? [
+    "1 full therapy session",
+    "Licensed & verified therapist",
+    "Response within 24 hours",
+    "Confidential & judgment-free",
+  ];
 
   const perkRows = perks
     .map(
@@ -784,7 +764,7 @@ function buildClientEmail(data: {
             </table>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr><td align="center" style="padding-top:10px;">
-                <span style="font-size:11px;color:#a3bcae;">Schedule your session${plan.toLowerCase().includes("month") ? "s" : ""} and manage your plan there.</span>
+                <span style="font-size:11px;color:#a3bcae;">Schedule your session${(matchedPlan?.sessions ?? 1) > 1 ? "s" : ""} and manage your plan there.</span>
               </td></tr>
             </table>
 

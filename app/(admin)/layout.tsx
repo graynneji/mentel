@@ -161,11 +161,13 @@ import {
     ShieldAlert,
     MessageSquareText,
     CalendarClock,
+    Brain,
 } from "lucide-react";
 
 const NAV = [
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/admin/patients", icon: Users, label: "Patients" },
+    { href: "/admin/adhd-assessments", icon: Brain, label: "ADHD Assessments" },
     { href: "/admin/appointments", icon: Calendar, label: "Appointments" },
     { href: "/admin/scheduled-sessions", icon: CalendarClock, label: "Scheduled Sessions" },
     { href: "/admin/payments", icon: CreditCard, label: "Payments" },
