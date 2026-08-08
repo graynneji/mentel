@@ -173,6 +173,18 @@
 //             const paymentOptions = await resolvePaymentOptions(platform);
 //             const publicKey = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY;
 
+//             // Flags this tx_ref as "checkout in progress" so the result page
+//             // can tell the difference between "I was just redirected back
+//             // here after actually paying" (show the success confirmation)
+//             // and "I'm reloading/revisiting a link to a report I paid for
+//             // days ago" (don't re-show a celebration for that). Needed
+//             // because some payment methods (3D Secure, bank transfer)
+//             // complete via a full-page redirect rather than the in-page
+//             // `callback` below, which means this component's own JS never
+//             // runs again to say "hey, this one just succeeded", the result
+//             // page has to figure that out itself on remount.
+//             try { window.sessionStorage.setItem("mentel_adhd_pending_tx_ref", init.txRef); } catch { /* best effort */ }
+
 //             window.FlutterwaveCheckout({
 //                 public_key: publicKey,
 //                 tx_ref: init.txRef,
@@ -211,6 +223,7 @@
 //                         // it can actually reach this server, see the .env
 //                         // notes) is the backstop that marks it paid.
 //                     }
+//                     try { window.sessionStorage.removeItem("mentel_adhd_pending_tx_ref"); } catch { /* best effort */ }
 //                     onSuccess(init.txRef);
 //                 },
 //                 onclose: () => {
@@ -245,6 +258,8 @@
 //     );
 // }
 
+
+
 "use client";
 
 // components/payments/FlutterwaveCheckout.tsx
@@ -255,6 +270,27 @@
 // card + bank options everywhere else — including laptops/desktops, or
 // any device where the wallet API isn't actually available). Card is
 // always included as a guaranteed fallback.
+//
+// IMPORTANT LIMITATION, confirmed against Flutterwave's own docs, not a
+// bug in this file: `payment_options` (below) controls which payment
+// methods are AVAILABLE inside Flutterwave's modal, it does not control
+// which one is shown by default when the modal opens. Flutterwave's modal
+// defaults to Card regardless of the order methods are listed in
+// `payment_options`. There is no documented parameter to force it to open
+// directly on Apple Pay or Google Pay, the visitor has to switch tabs
+// inside the modal themselves ("change payment method"). Because of this,
+// the button below deliberately says "$X · Apple Pay available" rather
+// than "Pay with Apple Pay", the latter would promise a direct action this
+// button can't actually guarantee. If Flutterwave ships a way to set the
+// default tab in the future, update both the button copy and this comment.
+//
+// Also worth knowing: per Flutterwave's docs, Apple Pay only works in
+// Safari specifically, not just "any iOS browser" (Chrome/Firefox on iOS
+// are WebKit wrappers but Apple deliberately doesn't expose the
+// ApplePaySession API to them). The detection below already accounts for
+// this correctly (window.ApplePaySession is Safari-only), but it's worth
+// knowing if testing shows Apple Pay "not available" on an iPhone, check
+// which browser was actually used.
 //
 // Amounts are resolved server-side from lib/payments/adhd-plans.ts — this
 // component only ever sends a plan `key`, never a client-computed price.
@@ -445,7 +481,7 @@ export default function FlutterwaveCheckout({
                 customizations: {
                     title: "Mentel — ADHD Report",
                     description: label,
-                    logo: `${window.location.origin}/hr-logo.png`,
+                    logo: `${window.location.origin}/logo-assessment.png`,
                 },
                 callback: async (response: { status?: string; transaction_id?: string | number }) => {
                     if (response?.status !== "successful" && response?.status !== "completed") return;
@@ -496,7 +532,11 @@ export default function FlutterwaveCheckout({
             )}
             {children ?? (
                 <span>
-                    {loading ? "Opening secure checkout…" : `Pay $${amountUSD.toLocaleString()}${walletLabel ? ` with ${walletLabel}` : ""}`}
+                    {loading
+                        ? "Opening secure checkout…"
+                        : walletLabel
+                            ? `Pay $${amountUSD.toLocaleString()} · ${walletLabel} available`
+                            : `Pay $${amountUSD.toLocaleString()}`}
                 </span>
             )}
         </button>
