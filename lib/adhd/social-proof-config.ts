@@ -36,7 +36,7 @@ export const testimonials: Testimonial[] = [
       "I finally understood why I've struggled with focus for so long. The report was incredibly accurate.",
     name: "Avery",
     detail: "33 • Product Designer",
-    photoUrl: "/avery.jpg",
+    photoUrl: "/Avery.jpg",
   },
   {
     quote:
@@ -50,7 +50,7 @@ export const testimonials: Testimonial[] = [
       "It was easy to complete and gave me insights I wish I'd had years ago.",
     name: "Lauren",
     detail: "28 • Registered Nurse",
-    photoUrl: "/lauren.jpg",
+    photoUrl: "/Lauren.jpg",
   },
 ];
 

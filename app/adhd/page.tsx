@@ -2152,9 +2152,18 @@ export default function AdhdAssessmentPage() {
 
                         {/* Social proof: renders an honest trust-pill row until real stats/testimonials exist.
                             Pass real numbers here once you're tracking them, see TrustAndProof.tsx. */}
+                        <div className="flex flex-wrap items-center justify-center gap-x-9 gap-y-4 py-6">
+                            <Image
+                                src="/HIPAA.svg"
+                                alt="HIPAA Compliant"
+                                width={143}
+                                height={33}
+                                className="w-[135px] sm:w-[143px] text-center h-auto object-contain"
+                            />
+                        </div>
                         <SocialProofBar stats={socialProofStats} />
-                        <ClinicalTrustBar clinicallyReviewed={clinicallyReviewed} hipaaAligned={hipaaAligned} />
-                        <AsSeenOn outlets={pressOutlets} />
+                        {/* <ClinicalTrustBar clinicallyReviewed={clinicallyReviewed} hipaaAligned={hipaaAligned} /> */}
+                        {/* <AsSeenOn outlets={pressOutlets} /> */}
 
                         <div className="h-px bg-[#e4e9e5] my-8 max-w-[200px] mx-auto" />
 
