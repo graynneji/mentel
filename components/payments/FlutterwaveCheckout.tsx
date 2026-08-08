@@ -188,12 +188,30 @@
 //                 customizations: {
 //                     title: "Mentel — ADHD Report",
 //                     description: label,
-//                     logo: `${window.location.origin}/logo-assessment.png`,
+//                     logo: `${window.location.origin}/hr-logo.png`,
 //                 },
-//                 callback: (response: { status?: string; transaction_id?: string | number }) => {
-//                     if (response?.status === "successful" || response?.status === "completed") {
-//                         onSuccess(init.txRef);
+//                 callback: async (response: { status?: string; transaction_id?: string | number }) => {
+//                     if (response?.status !== "successful" && response?.status !== "completed") return;
+//                     // This in-modal callback is the common path for card
+//                     // payments, Flutterwave completes them without ever
+//                     // navigating the browser away, so the redirect_url above
+//                     // (and whatever page it points at) never actually fires.
+//                     // Previously this just called onSuccess() locally, which
+//                     // only updated this component's own UI state, nothing
+//                     // server-side ever learned the payment happened: the lead
+//                     // row stayed "pending_payment" forever, and no email went
+//                     // out, since sending the report email is wired into the
+//                     // verify step, not into this callback. Calling verify
+//                     // directly here closes that gap regardless of whether a
+//                     // redirect ever happens.
+//                     try {
+//                         await fetch(`/api/flutterwave/verify?tx_ref=${encodeURIComponent(init.txRef)}`);
+//                     } catch {
+//                         // Even if this network call fails, the webhook (once
+//                         // it can actually reach this server, see the .env
+//                         // notes) is the backstop that marks it paid.
 //                     }
+//                     onSuccess(init.txRef);
 //                 },
 //                 onclose: () => {
 //                     setLoading(false);
@@ -226,7 +244,6 @@
 //         </button>
 //     );
 // }
-
 
 "use client";
 
@@ -401,6 +418,18 @@ export default function FlutterwaveCheckout({
             const paymentOptions = await resolvePaymentOptions(platform);
             const publicKey = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY;
 
+            // Flags this tx_ref as "checkout in progress" so the result page
+            // can tell the difference between "I was just redirected back
+            // here after actually paying" (show the success confirmation)
+            // and "I'm reloading/revisiting a link to a report I paid for
+            // days ago" (don't re-show a celebration for that). Needed
+            // because some payment methods (3D Secure, bank transfer)
+            // complete via a full-page redirect rather than the in-page
+            // `callback` below, which means this component's own JS never
+            // runs again to say "hey, this one just succeeded", the result
+            // page has to figure that out itself on remount.
+            try { window.sessionStorage.setItem("mentel_adhd_pending_tx_ref", init.txRef); } catch { /* best effort */ }
+
             window.FlutterwaveCheckout({
                 public_key: publicKey,
                 tx_ref: init.txRef,
@@ -439,6 +468,7 @@ export default function FlutterwaveCheckout({
                         // it can actually reach this server, see the .env
                         // notes) is the backstop that marks it paid.
                     }
+                    try { window.sessionStorage.removeItem("mentel_adhd_pending_tx_ref"); } catch { /* best effort */ }
                     onSuccess(init.txRef);
                 },
                 onclose: () => {

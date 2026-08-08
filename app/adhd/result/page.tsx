@@ -1,8 +1,7 @@
 
-
 // "use client";
 
-// import { useEffect, useState } from "react";
+// import { useEffect, useState, Suspense } from "react";
 // import { useSearchParams } from "next/navigation";
 // import Link from "next/link";
 // import Image from "next/image";
@@ -16,7 +15,6 @@
 // import ReportPreviewMock from "@/components/adhd/ReportPreviewMock";
 // import { Testimonials } from "@/components/adhd/TrustAndProof";
 // import { testimonials } from "@/lib/adhd/social-proof-config";
-// import { Suspense } from "react";
 
 // interface StoredResult {
 //     name: string;
@@ -52,12 +50,14 @@
 //     const [recovering, setRecovering] = useState(!!txRef);
 //     const [notFound, setNotFound] = useState(false);
 //     const [unlocked, setUnlocked] = useState(false);
+//     const [showSuccessModal, setShowSuccessModal] = useState(false);
 //     const [verifying, setVerifying] = useState(!!txRef);
 //     // Show immediately rather than gating behind a scroll threshold: the
 //     // point of this bar is that pricing is visible without having to
 //     // scroll to find it, gating it behind scrollY defeated that.
 //     const [showMobileBar, setShowMobileBar] = useState(true);
 //     const [mobileBarDismissed, setMobileBarDismissed] = useState(false);
+//     const [successBarDismissed, setSuccessBarDismissed] = useState(false);
 
 //     useEffect(() => {
 //         // Primary path: the assessment flow wrote this to sessionStorage right
@@ -117,9 +117,44 @@
 //         if (!txRef) return;
 //         fetch(`/api/flutterwave/verify?tx_ref=${encodeURIComponent(txRef)}`)
 //             .then((r) => r.json())
-//             .then((data) => setUnlocked(!!data?.success))
+//             .then((data) => {
+//                 const success = !!data?.success;
+//                 setUnlocked(success);
+//                 if (!success) return;
+
+//                 // If this tx_ref matches one we flagged as "checkout in
+//                 // progress" right before opening Flutterwave's modal (see
+//                 // components/payments/FlutterwaveCheckout.tsx), this is a
+//                 // genuine just-completed payment landing back here via
+//                 // redirect, not someone revisiting an old paid link, show
+//                 // the same success confirmation the in-page callback path
+//                 // shows. Clear the flag either way so a later reload of
+//                 // this same URL doesn't re-trigger it.
+//                 try {
+//                     const pending = window.sessionStorage.getItem("mentel_adhd_pending_tx_ref");
+//                     if (pending && pending === txRef) {
+//                         setShowSuccessModal(true);
+//                         window.sessionStorage.removeItem("mentel_adhd_pending_tx_ref");
+//                     }
+//                 } catch { /* best effort */ }
+//             })
 //             .finally(() => setVerifying(false));
 //     }, [txRef]);
+
+//     // Called from PricingCard the moment Flutterwave confirms payment.
+//     // Deliberately separate from the mount-time verify effect above: that
+//     // effect also sets `unlocked`, but for someone reloading a link to a
+//     // report they already paid for, which shouldn't re-trigger a "payment
+//     // successful!" celebration. This handler is only ever called right
+//     // after an actual just-completed checkout, which is exactly when the
+//     // person needs an unmissable confirmation, previously the only signal
+//     // was a small "Confirming your payment…" line inside the pricing card
+//     // itself, easy to miss if they'd scrolled away from it or the card was
+//     // off-screen (the sidebar on desktop, for instance).
+//     function handlePaymentSuccess() {
+//         setUnlocked(true);
+//         setShowSuccessModal(true);
+//     }
 
 //     if (recovering) {
 //         return (
@@ -188,19 +223,23 @@
 //                         </div>
 //                     </section>
 
-//                     {/* ── Strengths ──────────────────────────────────────────────── */}
-//                     <section className="py-6">
-//                         <div className="bg-gradient-to-br from-[#f2f7f3] to-white rounded-3xl border border-[#d5e5da] p-8 text-center">
-//                             <p className="text-[15px] text-[#3a4a3e] mb-5">Your responses also suggest strengths.</p>
-//                             <div className="flex flex-wrap justify-center gap-2.5">
-//                                 {result.strengths.map((s) => (
-//                                     <span key={s.domain} className="text-[13px] font-medium text-[#2d7a5a] bg-white border border-[#d5e5da] px-4 py-2 rounded-full">
-//                                         {strengthsPool[s.domain]}
-//                                     </span>
-//                                 ))}
+//                     {/* ── Strengths, only rendered if any domain actually
+//                         qualifies as minimal/mild, otherwise this would show
+//                         the heading with nothing underneath it ── */}
+//                     {result.strengths.length > 0 && (
+//                         <section className="py-6">
+//                             <div className="bg-gradient-to-br from-[#f2f7f3] to-white rounded-3xl border border-[#d5e5da] p-8 text-center">
+//                                 <p className="text-[15px] text-[#3a4a3e] mb-5">Your responses also suggest strengths.</p>
+//                                 <div className="flex flex-wrap justify-center gap-2.5">
+//                                     {result.strengths.map((s) => (
+//                                         <span key={s.domain} className="text-[13px] font-medium text-[#2d7a5a] bg-white border border-[#d5e5da] px-4 py-2 rounded-full">
+//                                             {strengthsPool[s.domain]}
+//                                         </span>
+//                                     ))}
+//                                 </div>
 //                             </div>
-//                         </div>
-//                     </section>
+//                         </section>
+//                     )}
 
 //                     {/* ── What this means, collapsible to keep the page scannable ── */}
 //                     <section className="py-4">
@@ -238,7 +277,7 @@
 //                                     <h2 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(24px,4.5vw,30px)] font-light text-[#1c2820] mb-8">
 //                                         Unlock your complete personalized report
 //                                     </h2>
-//                                     <ReportPreviewMock name={firstName} />
+//                                     <ReportPreviewMock name={firstName} result={result} />
 //                                     <div className="grid sm:grid-cols-2 gap-2.5 mt-9 text-left max-w-[440px] mx-auto">
 //                                         {[
 //                                             "18+ pages",
@@ -261,7 +300,7 @@
 
 //                             {/* Pricing, mobile/tablet inline, desktop shows it in the sticky sidebar instead */}
 //                             <section id="pricing-anchor" className="py-8 lg:hidden">
-//                                 <PricingCard stored={stored} verifying={verifying} onSuccess={() => setUnlocked(true)} />
+//                                 <PricingCard stored={stored} verifying={verifying} onSuccess={handlePaymentSuccess} />
 //                             </section>
 
 //                             {/* ── FAQ ─────────────────────────────────────────────────── */}
@@ -296,12 +335,19 @@
 //                     {unlocked ? (
 //                         <UnlockedReport stored={stored} txRef={txRef} compact />
 //                     ) : (
-//                         <PricingCard stored={stored} verifying={verifying} onSuccess={() => setUnlocked(true)} compact />
+//                         <PricingCard stored={stored} verifying={verifying} onSuccess={handlePaymentSuccess} compact />
 //                     )}
 //                 </aside>
 //             </div>
 
-//             {/* ── Mobile sticky pricing bar ─────────────────────────────────────── */}
+//             {/* ── Mobile sticky bar: pricing prompt before payment, a
+//                 persistent success confirmation after. Previously this bar
+//                 just vanished entirely once `unlocked` became true, meaning
+//                 a mobile visitor who dismissed or missed the success modal
+//                 had zero on-screen confirmation their payment went through
+//                 or that the report was emailed, without scrolling all the
+//                 way down to the report card. Now it flips to a success
+//                 state instead of disappearing. ── */}
 //             {!unlocked && showMobileBar && !mobileBarDismissed && (
 //                 <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-white border-t border-[#e4e9e5] shadow-[0_-8px_30px_rgba(28,40,36,0.1)] px-4 py-3 flex items-center gap-3">
 //                     <div className="flex-1 min-w-0">
@@ -318,7 +364,100 @@
 //                     </button>
 //                 </div>
 //             )}
+
+//             {unlocked && stored && !successBarDismissed && (
+//                 <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-[#0E5C3D] shadow-[0_-8px_30px_rgba(14,92,61,0.25)] px-4 py-3 flex items-center gap-3">
+//                     <CheckCircle2 size={20} color="white" className="flex-shrink-0" aria-hidden="true" />
+//                     <div className="flex-1 min-w-0">
+//                         <p className="text-[13px] font-semibold text-white leading-tight">Paid, sent to your email</p>
+//                         <p className="text-[10.5px] text-white/70 truncate">{stored.email}</p>
+//                     </div>
+//                     <a
+//                         href={`/api/adhd/report/pdf?tx_ref=${encodeURIComponent(txRef ?? "")}`}
+//                         className="flex-shrink-0 inline-flex items-center gap-1.5 py-2 px-4 bg-white text-[#0E5C3D] rounded-full text-[12.5px] font-semibold no-underline"
+//                     >
+//                         <FileText size={13} aria-hidden="true" /> Download
+//                     </a>
+//                     <button
+//                         onClick={() => setSuccessBarDismissed(true)}
+//                         aria-label="Dismiss"
+//                         className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full text-white/70 hover:bg-white/10"
+//                     >
+//                         <XIcon size={15} />
+//                     </button>
+//                 </div>
+//             )}
+
+//             {/* ── Payment success modal: fixed overlay, so it's visible the
+//                 instant payment completes regardless of scroll position.
+//                 Previously the only confirmation was a small "Confirming
+//                 your payment…" line inside the pricing card itself, easy to
+//                 miss entirely if that card was scrolled out of view (e.g.
+//                 the sidebar on desktop, or the mobile inline card after
+//                 they've scrolled past it). ── */}
+//             {showSuccessModal && stored && (
+//                 <PaymentSuccessModal
+//                     email={stored.email}
+//                     txRef={txRef}
+//                     onClose={() => setShowSuccessModal(false)}
+//                 />
+//             )}
 //         </PageShell>
+//     );
+// }
+
+// function PaymentSuccessModal({ email, txRef, onClose }: { email: string; txRef: string | null; onClose: () => void }) {
+//     const downloadHref = `/api/adhd/report/pdf?tx_ref=${encodeURIComponent(txRef ?? "")}`;
+//     return (
+//         <div
+//             className="fixed inset-0 z-[200] bg-[#0E5C3D]/40 backdrop-blur-[2px] flex items-center justify-center p-5"
+//             role="dialog"
+//             aria-modal="true"
+//             aria-labelledby="payment-success-title"
+//         >
+//             <div className="relative bg-white rounded-[28px] max-w-[420px] w-full p-8 text-center shadow-[0_30px_90px_rgba(14,92,61,0.3)] fade-up-modal">
+//                 <button
+//                     onClick={onClose}
+//                     aria-label="Close"
+//                     className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-[#4a5a52] hover:bg-[#f5f5f2]"
+//                 >
+//                     <XIcon size={16} />
+//                 </button>
+//                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] inline-flex items-center justify-center mb-5">
+//                     <CheckCircle2 size={30} color="white" aria-hidden="true" />
+//                 </div>
+//                 <h2 id="payment-success-title" className="font-['Cormorant_Garamond',Georgia,serif] text-[26px] font-light text-[#1c2820] mb-2.5">
+//                     Payment successful
+//                 </h2>
+//                 <p className="text-[14px] text-[#3a4a3e] leading-[1.65] mb-1">
+//                     Your full report has been sent to
+//                 </p>
+//                 <p className="text-[14px] font-semibold text-[#1c2820] mb-6">{email}</p>
+//                 <a
+//                     href={downloadHref}
+//                     className="cta-btn w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-gradient-to-br from-[#2d7a5a] to-[#1e6b6b] text-white rounded-full text-[14px] font-medium no-underline mb-3"
+//                 >
+//                     <FileText size={15} aria-hidden="true" /> Download your report now
+//                 </a>
+//                 <button
+//                     onClick={() => {
+//                         onClose();
+//                         // Give the modal a moment to unmount before scrolling,
+//                         // otherwise the scroll target's position is measured
+//                         // while the modal (and its scroll-lock-adjacent
+//                         // layout) is still in the DOM.
+//                         setTimeout(() => document.getElementById("pricing-anchor")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+//                     }}
+//                     className="text-[13px] text-[#4a5a52] hover:text-[#1c2820] py-1"
+//                 >
+//                     View my results page
+//                 </button>
+//                 <p className="text-[11px] text-[#4a5a52] mt-5 leading-[1.5]">
+//                     Didn't get the email? Check spam, or use the download button above, your report is also always
+//                     available from this page.
+//                 </p>
+//             </div>
+//         </div>
 //     );
 // }
 
@@ -557,6 +696,8 @@
 //         body { font-family: 'DM Sans', -apple-system, sans-serif; background: #faf9f6; -webkit-font-smoothing: antialiased; }
 //         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 //         .fade-up { animation: fadeUp 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+//         @keyframes fadeUpModal { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+//         .fade-up-modal { animation: fadeUpModal 0.35s cubic-bezier(0.22,1,0.36,1) both; }
 //         .cta-btn { transition: all 0.25s cubic-bezier(0.22,1,0.36,1); }
 //         .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(30,107,107,0.38) !important; }
 //         .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -579,7 +720,7 @@
 
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -593,6 +734,7 @@ import RadarChart from "@/components/adhd/RadarChart";
 import ReportPreviewMock from "@/components/adhd/ReportPreviewMock";
 import { Testimonials } from "@/components/adhd/TrustAndProof";
 import { testimonials } from "@/lib/adhd/social-proof-config";
+import { CompletedPointer, loadCompletedPointer, persistCompletedPointer } from "../page";
 
 interface StoredResult {
     name: string;
@@ -624,10 +766,21 @@ const RADAR_DOMAINS: { domain: Domain; label: string }[] = [
 function AdhdResultContent() {
     const searchParams = useSearchParams();
     const txRef = searchParams.get("tx_ref");
+    const leadIdParam = searchParams.get("leadId");
+    const transactionId = searchParams.get("transaction_id");
+    const paymentStatus = searchParams.get("status");
     const [stored, setStored] = useState<StoredResult | null>(null);
-    const [recovering, setRecovering] = useState(!!txRef);
+    const [recovering, setRecovering] = useState(!!txRef || !!leadIdParam);
     const [notFound, setNotFound] = useState(false);
     const [unlocked, setUnlocked] = useState(false);
+    // Holds the tx_ref discovered via a leadId-only recovery (see below),
+    // for when someone arrives at /adhd/result?leadId=... having already
+    // paid on a previous visit, there's no tx_ref in *this* URL, but the
+    // download link and the unlocked-report UI both need one. Everywhere
+    // that needs "the tx_ref for this visit" should use effectiveTxRef,
+    // not the raw txRef URL param, below.
+    const [recoveredTxRef, setRecoveredTxRef] = useState<string | null>(null);
+    const effectiveTxRef = txRef ?? recoveredTxRef;
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [verifying, setVerifying] = useState(!!txRef);
     // Show immediately rather than gating behind a scroll threshold: the
@@ -635,6 +788,7 @@ function AdhdResultContent() {
     // scroll to find it, gating it behind scrollY defeated that.
     const [showMobileBar, setShowMobileBar] = useState(true);
     const [mobileBarDismissed, setMobileBarDismissed] = useState(false);
+    const [successBarDismissed, setSuccessBarDismissed] = useState(false);
 
     useEffect(() => {
         // Primary path: the assessment flow wrote this to sessionStorage right
@@ -655,18 +809,25 @@ function AdhdResultContent() {
         }
 
         // Recovery path: sessionStorage can legitimately be gone by the time
-        // we land back here, some payment methods route through a redirect
-        // (3D Secure, bank transfer, USSD) that can involve a fresh tab or
-        // navigation context depending on the browser, which doesn't always
-        // preserve the original tab's sessionStorage. If we have a tx_ref in
-        // the URL, that's proof a checkout was actually started, so look the
-        // lead up server-side instead of showing "we couldn't find a recent
-        // result" for something that's really just a client storage quirk.
-        if (!txRef) {
+        // we land back here. Two different reasons someone might arrive
+        // this way, both handled by the same server lookup:
+        //   - tx_ref in the URL: some payment methods (3D Secure, bank
+        //     transfer, USSD) route through a redirect that can involve a
+        //     fresh tab or navigation context depending on the browser,
+        //     which doesn't always preserve the original tab's
+        //     sessionStorage.
+        //   - leadId in the URL: someone who completed the free assessment,
+        //     never paid, closed the tab, and came back later via the
+        //     "welcome back, view results" banner on the intro page (see
+        //     app/adhd/page.tsx's completedAvailable flow). sessionStorage
+        //     from that original visit is long gone by design in this case,
+        //     that's the whole point of that flow existing.
+        const recoveryKey = txRef ? `txRef=${encodeURIComponent(txRef)}` : leadIdParam ? `leadId=${encodeURIComponent(leadIdParam)}` : null;
+        if (!recoveryKey) {
             setRecovering(false);
             return;
         }
-        fetch(`/api/adhd/lead?txRef=${encodeURIComponent(txRef)}`)
+        fetch(`/api/adhd/lead?${recoveryKey}`)
             .then((r) => r.json())
             .then((data) => {
                 if (!data?.success) { setNotFound(true); return; }
@@ -678,10 +839,29 @@ function AdhdResultContent() {
                     phone: data.phone ?? "",
                     answers,
                     result,
-                    leadId: null, // not needed again, this lead already has a tx_ref attached
+                    leadId: data.leadId ?? null,
                     completedAt: Date.now(),
                 };
                 setStored(recovered);
+
+                // The actual fix for "reload /adhd, still asks me to pay
+                // even though I already did": previously this branch never
+                // looked at payment status at all, unlocked only ever got
+                // set by the separate verify effect below, which requires a
+                // tx_ref in *this* URL. Arriving via leadId (e.g. from the
+                // intro page's "welcome back" banner, which links to
+                // /adhd/result?leadId=... with no tx_ref) meant unlocked
+                // could never become true no matter what the database said.
+                // Trusting `status` here directly (no second round-trip to
+                // Flutterwave) is safe: this data came from our own
+                // database, which only ever gets marked "paid" after a real
+                // verified Flutterwave transaction, see
+                // lib/payments/flutterwave-verify.ts.
+                if (data.status === "paid" && data.txRef) {
+                    setUnlocked(true);
+                    setRecoveredTxRef(data.txRef);
+                    setVerifying(false);
+                }
                 // Re-seed sessionStorage so the rest of this visit behaves
                 // exactly like the normal (non-recovery) path.
                 try { window.sessionStorage.setItem("mentel_adhd_result", JSON.stringify(recovered)); } catch { /* best effort */ }
@@ -694,9 +874,46 @@ function AdhdResultContent() {
         if (!txRef) return;
         fetch(`/api/flutterwave/verify?tx_ref=${encodeURIComponent(txRef)}`)
             .then((r) => r.json())
-            .then((data) => setUnlocked(!!data?.success))
+            .then((data) => {
+                const success = !!data?.success;
+                setUnlocked(success);
+                if (!success) return;
+
+
+                // Payment has been genuinely verified by our server.
+                // Update the existing completed pointer with the payment details.
+                try {
+                    const completed = loadCompletedPointer();
+
+                    persistCompletedPointer({
+                        ...(completed ?? {}),
+                        txRef,
+                        status: paymentStatus ?? "successful",
+                        transactionId,
+                        completedAt: Date.now(),
+                    });
+                } catch {
+                    /* best effort */
+                }
+
+                // If this tx_ref matches one we flagged as "checkout in
+                // progress" right before opening Flutterwave's modal (see
+                // components/payments/FlutterwaveCheckout.tsx), this is a
+                // genuine just-completed payment landing back here via
+                // redirect, not someone revisiting an old paid link, show
+                // the same success confirmation the in-page callback path
+                // shows. Clear the flag either way so a later reload of
+                // this same URL doesn't re-trigger it.
+                try {
+                    const pending = window.sessionStorage.getItem("mentel_adhd_pending_tx_ref");
+                    if (pending && pending === txRef) {
+                        setShowSuccessModal(true);
+                        window.sessionStorage.removeItem("mentel_adhd_pending_tx_ref");
+                    }
+                } catch { /* best effort */ }
+            })
             .finally(() => setVerifying(false));
-    }, [txRef]);
+    }, [txRef, paymentStatus, transactionId]);
 
     // Called from PricingCard the moment Flutterwave confirms payment.
     // Deliberately separate from the mount-time verify effect above: that
@@ -719,6 +936,27 @@ function AdhdResultContent() {
                 <div className="max-w-[400px] mx-auto text-center pt-32 px-6">
                     <div className="w-9 h-9 border-[2.5px] border-[#2d7a5a]/20 border-t-[#2d7a5a] rounded-full mx-auto animate-spin mb-5" />
                     <p className="text-[13.5px] text-[#4a5a52]">Loading your results…</p>
+                </div>
+            </PageShell>
+        );
+    }
+
+    // Previously the only sign that a payment was being confirmed was a
+    // small "Confirming your payment…" line inside the pricing card, easy
+    // to miss (the card might be scrolled out of view), and the free
+    // result content rendered normally underneath it regardless, which
+    // could read as "did my payment even register?" Now, landing here with
+    // a tx_ref shows a dedicated, unmissable verifying screen instead of
+    // the page underneath, until we actually know whether it succeeded.
+    if (txRef && verifying && !unlocked) {
+        return (
+            <PageShell>
+                <div className="max-w-[400px] mx-auto text-center pt-32 px-6">
+                    <div className="w-12 h-12 border-[3px] border-[#2d7a5a]/20 border-t-[#2d7a5a] rounded-full mx-auto animate-spin mb-6" />
+                    <h1 className="font-['Cormorant_Garamond',Georgia,serif] text-[24px] font-light text-[#1c2820] mb-2">
+                        Verifying your payment
+                    </h1>
+                    <p className="text-[13.5px] text-[#4a5a52]">This only takes a moment, please don't close this page.</p>
                 </div>
             </PageShell>
         );
@@ -761,7 +999,7 @@ function AdhdResultContent() {
                                 <CheckCircle2 size={12} aria-hidden="true" /> Assessment complete
                             </div>
                             <h1 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(28px,5.5vw,40px)] font-light text-[#1c2820] leading-[1.16] mb-3">
-                                Here's what stood out, {firstName}.
+                                Here's what stood out, <span className="text-[#2d7a5a] font-bold">{firstName}</span>.
                             </h1>
                             <p className="text-[15px] text-[#3a4a3e] leading-[1.7] max-w-[560px]">
                                 Your responses suggest a {bandCopy[result.overallBand].label.toLowerCase()} pattern, more in some areas
@@ -823,7 +1061,7 @@ function AdhdResultContent() {
 
                     {unlocked ? (
                         <section id="pricing-anchor" className="py-8">
-                            <UnlockedReport stored={stored} txRef={txRef} />
+                            <UnlockedReport stored={stored} txRef={effectiveTxRef} />
                         </section>
                     ) : (
                         <>
@@ -890,14 +1128,21 @@ function AdhdResultContent() {
                         <RadarChart points={radarPoints(result)} size={230} />
                     </div>
                     {unlocked ? (
-                        <UnlockedReport stored={stored} txRef={txRef} compact />
+                        <UnlockedReport stored={stored} txRef={effectiveTxRef} compact />
                     ) : (
                         <PricingCard stored={stored} verifying={verifying} onSuccess={handlePaymentSuccess} compact />
                     )}
                 </aside>
             </div>
 
-            {/* ── Mobile sticky pricing bar ─────────────────────────────────────── */}
+            {/* ── Mobile sticky bar: pricing prompt before payment, a
+                persistent success confirmation after. Previously this bar
+                just vanished entirely once `unlocked` became true, meaning
+                a mobile visitor who dismissed or missed the success modal
+                had zero on-screen confirmation their payment went through
+                or that the report was emailed, without scrolling all the
+                way down to the report card. Now it flips to a success
+                state instead of disappearing. ── */}
             {!unlocked && showMobileBar && !mobileBarDismissed && (
                 <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-white border-t border-[#e4e9e5] shadow-[0_-8px_30px_rgba(28,40,36,0.1)] px-4 py-3 flex items-center gap-3">
                     <div className="flex-1 min-w-0">
@@ -915,6 +1160,29 @@ function AdhdResultContent() {
                 </div>
             )}
 
+            {unlocked && stored && !successBarDismissed && (
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[90] bg-[#0E5C3D] shadow-[0_-8px_30px_rgba(14,92,61,0.25)] px-4 py-3 flex items-center gap-3">
+                    <CheckCircle2 size={20} color="white" className="flex-shrink-0" aria-hidden="true" />
+                    <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-semibold text-white leading-tight">Paid, sent to your email</p>
+                        <p className="text-[10.5px] text-white/70 truncate">{stored.email}</p>
+                    </div>
+                    <a
+                        href={`/api/adhd/report/pdf?tx_ref=${encodeURIComponent(effectiveTxRef ?? "")}`}
+                        className="flex-shrink-0 inline-flex items-center gap-1.5 py-2 px-4 bg-white text-[#0E5C3D] rounded-full text-[12.5px] font-semibold no-underline"
+                    >
+                        <FileText size={13} aria-hidden="true" /> Download
+                    </a>
+                    <button
+                        onClick={() => setSuccessBarDismissed(true)}
+                        aria-label="Dismiss"
+                        className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-full text-white/70 hover:bg-white/10"
+                    >
+                        <XIcon size={15} />
+                    </button>
+                </div>
+            )}
+
             {/* ── Payment success modal: fixed overlay, so it's visible the
                 instant payment completes regardless of scroll position.
                 Previously the only confirmation was a small "Confirming
@@ -925,7 +1193,7 @@ function AdhdResultContent() {
             {showSuccessModal && stored && (
                 <PaymentSuccessModal
                     email={stored.email}
-                    txRef={txRef}
+                    txRef={effectiveTxRef}
                     onClose={() => setShowSuccessModal(false)}
                 />
             )}

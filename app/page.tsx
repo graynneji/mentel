@@ -1112,12 +1112,12 @@ export default function HomePage() {
                   fontSize: "clamp(36px, 11vw, 80px)", lineHeight: 1.08,
                   letterSpacing: "-0.02em", color: "#1c2820"
                 }}>
-                Online therapy in Nigeria,{" "}
+                Online therapy,{" "}
                 <em className="italic" style={{ color: "#2d7a5a" }}>built for real life</em>.
               </h1>
 
               {/* Subhead */}
-              <p className="font-light mx-auto mb-8 sm:mb-9 w-full px-2"
+              {/* <p className="font-light mx-auto mb-8 sm:mb-9 w-full px-2"
                 style={{
                   fontSize: "clamp(14px, 3.5vw, 18px)", lineHeight: 1.75,
                   color: "var(--text-muted)", maxWidth: 680
@@ -1130,6 +1130,22 @@ export default function HomePage() {
                 who genuinely listens. Culturally grounded care from{" "}
                 <strong className="font-medium" style={{ color: "#1c2820" }}>₦8,500</strong>.
                 No waitlists.
+              </p> */}
+              <p
+                className="font-light mx-auto mb-8 sm:mb-9 w-full px-2"
+                style={{
+                  fontSize: "clamp(14px, 3.5vw, 18px)",
+                  lineHeight: 1.75,
+                  color: "var(--text-muted)",
+                  maxWidth: 680
+                }}
+              >
+                Connect with a{" "}
+                <strong className="font-medium" style={{ color: "#1c2820" }}>
+                  licensed therapist
+                </strong>{" "}
+                online for anxiety, burnout, relationship challenges, and more. Private,
+                personalized support designed around your needs.
               </p>
 
               {/* CTAs */}
@@ -1158,8 +1174,11 @@ export default function HomePage() {
                     Free mental health check
                   </Link>
                 </div>
-                <p className="text-xs font-light text-center px-4" style={{ color: "var(--text-muted)" }}>
+                {/* <p className="text-xs font-light text-center px-4" style={{ color: "var(--text-muted)" }}>
                   Sessions from ₦8,500 · No commitment · Response within 24 hrs
+                </p> */}
+                <p className="text-xs font-light text-center px-4" style={{ color: "var(--text-muted)" }}>
+                  Licensed therapists · Private and secure · No long-term commitment
                 </p>
               </div>
 
@@ -1212,7 +1231,7 @@ export default function HomePage() {
                       // <Star key={i} size={11} fill="var(--sage)" style={{ color: "var(--sage)" }} />
                     ))}
                   </div>
-                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Trusted by 500+ clients across Nigeria</p>
+                  <p className="text-xs" style={{ color: "var(--text-muted)" }}>Trusted by 500+ clients across globally</p>
                 </div>
               </div>
             </div>

@@ -67,4 +67,16 @@ export const pressOutlets: string[] = [
 // by Mentel's clinical team, this drives the "Reviewed by Mentel's
 // clinical team" trust badge on the landing page.
 export const clinicallyReviewed = true;
-// export const clinicallyReviewed = false;
+
+// Flip to true once you're ready to show the "HIPAA-aligned practices"
+// badge on the landing page. Worth having actual documentation to back
+// this, since it's still a specific claim even worded carefully (see the
+// comment in components/adhd/TrustAndProof.tsx for why it says "aligned"
+// rather than "compliant" or "certified"): signed BAAs with every vendor
+// that touches this data (your email provider, your database host),
+// encryption at rest and in transit, access controls, audit logging, and
+// a documented risk assessment. A short Privacy & Security page on the
+// site describing your actual practices in your own words is the more
+// durable version of this claim, worth having either way, the icon alone
+// isn't a substitute for it.
+export const hipaaAligned = true;
