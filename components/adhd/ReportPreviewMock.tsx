@@ -185,7 +185,11 @@ export default function ReportPreviewMock({ name, result }: { name: string; resu
                 className="relative rounded-2xl overflow-hidden shadow-[0_24px_70px_rgba(28,40,36,0.18)] border border-[#e4e9e5] bg-white"
                 style={{ zIndex: 20, aspectRatio: "0.72" }}
             >
-                <div className="h-full w-full p-6 flex flex-col">
+                <div className="h-full w-full p-6 flex flex-col"
+                    style={{
+                        filter: "blur(1.5px)",
+                        transform: "scale(1.015)",
+                    }}>
                     <p className="text-[7.5px] font-semibold tracking-[0.14em] uppercase text-[#0E5C3D] mb-1">Domain Analysis</p>
                     <p className="font-['Cormorant_Garamond',Georgia,serif] text-[17px] font-light text-[#1c2820] mb-4">
                         Symptom domain overview

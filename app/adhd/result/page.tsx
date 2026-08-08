@@ -1964,7 +1964,7 @@ function AdhdResultContent() {
                                 <div className="bg-white border border-[#e4e9e5] rounded-3xl p-8 lg:p-10 text-center">
                                     <p className="text-[11px] font-semibold tracking-[0.1em] uppercase text-[#2d7a5a] mb-3">Your complete report</p>
                                     <h2 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(24px,4.5vw,30px)] font-light text-[#1c2820] mb-8">
-                                        Unlock your complete personalized report
+                                        Unlock your complete personalized 18+ pages report
                                     </h2>
                                     <ReportPreviewMock name={firstName} result={result} />
                                     <div className="grid sm:grid-cols-2 gap-2.5 mt-9 text-left max-w-[440px] mx-auto">

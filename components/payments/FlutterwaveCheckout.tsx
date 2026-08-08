@@ -251,7 +251,8 @@ export default function FlutterwaveCheckout({
             )}
             {children ?? (
                 <span>
-                    {loading ? "Opening secure checkout…" : `Pay $${amountUSD.toLocaleString()}${walletLabel ? ` with ${walletLabel}` : ""}`}
+                    {loading ? "Opening secure checkout…" : `Pay $${amountUSD.toLocaleString()}`}
+                    {/* {loading ? "Opening secure checkout…" : `Pay $${amountUSD.toLocaleString()}${walletLabel ? ` with ${walletLabel}` : ""}`} */}
                 </span>
             )}
         </button>
