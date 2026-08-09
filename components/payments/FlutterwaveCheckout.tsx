@@ -16,6 +16,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Loader2, Lock } from "lucide-react";
+import { fireConversion } from "@/lib/tracking/pixels";
 
 declare global {
     interface Window {
@@ -156,6 +157,7 @@ export default function FlutterwaveCheckout({
     async function handlePay() {
         if (!window.FlutterwaveCheckout || loading) return;
         setLoading(true);
+        fireConversion("InitiateCheckout", { contentName: label });
         try {
             // Ask our own API to mint a tx_ref and confirm the authoritative
             // amount server-side — never trust amountUSD from props for the
@@ -217,7 +219,18 @@ export default function FlutterwaveCheckout({
                     // directly here closes that gap regardless of whether a
                     // redirect ever happens.
                     try {
-                        await fetch(`/api/flutterwave/verify?tx_ref=${encodeURIComponent(init.txRef)}`);
+                        const verifyRes = await fetch(`/api/flutterwave/verify?tx_ref=${encodeURIComponent(init.txRef)}`);
+                        const result = await verifyRes.json();
+
+                        if (verifyRes.ok && result.success) {
+                            fireConversion("Purchase", {
+                                value: init.amountUSD,
+                                currency: "USD",
+                                transactionId: init.txRef,
+                                dedupeKey: init.txRef,
+                                contentName: label,
+                            });
+                        }
                     } catch {
                         // Even if this network call fails, the webhook (once
                         // it can actually reach this server, see the .env

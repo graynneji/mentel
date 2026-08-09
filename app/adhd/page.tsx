@@ -1634,6 +1634,7 @@ import { questions, domainMeta, TOTAL_QUESTIONS } from "@/lib/adhd/questions";
 import { scoreAssessment } from "@/lib/adhd/scoring";
 import { SocialProofBar, AsSeenOn, ClinicalTrustBar, TrustSection, Testimonials } from "@/components/adhd/TrustAndProof";
 import { socialProofStats, testimonials, pressOutlets, clinicallyReviewed, hipaaAligned } from "@/lib/adhd/social-proof-config";
+import { analytics } from "@/lib/analytics/client";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -2005,6 +2006,9 @@ export default function AdhdAssessmentPage() {
         setStep("quiz");
     }
 
+    useEffect(() => {
+        analytics.track("ASSESSMENT_PAGE_VIEWED");
+    }, []);
 
     // tx_ref=MENTEL-ADHD-1786182813268-85JQ8&status=successful&tx_ref=MENTEL-ADHD-1786182813268-85JQ8&transaction_id=10419725
 
@@ -2035,6 +2039,14 @@ export default function AdhdAssessmentPage() {
         setErrors(next);
         return Object.keys(next).length === 0;
     }
+
+
+    useEffect(() => {
+        if (current === 1) {
+            analytics.track("ASSESSMENT_STARTED");
+        }
+    }, [current]);
+
 
     async function handleContactSubmit(e: React.FormEvent) {
         e.preventDefault();

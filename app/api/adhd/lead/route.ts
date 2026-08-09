@@ -110,9 +110,12 @@
 // tab), and offers "continue to your results" instead of making them redo
 // the 20-question quiz.
 
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { withRateLimit } from "@/lib/withRateLimit";
 import { db } from "@/lib/db";
+import { EVENTS, getMentelIds } from "@/utilz";
+import { logger } from "@/lib/logger";
+import { ensureVisitorAndSession, recordEvent } from "@/lib/analytics/ingest";
 
 export async function POST_HANDLER(req: Request) {
   try {
@@ -166,6 +169,61 @@ export async function GET_HANDLER(req: Request) {
       return NextResponse.json(
         { success: false, error: "Not found." },
         { status: 404 },
+      );
+    }
+
+    logger.business(EVENTS.LEAD_CAPTURED, {
+      meta: {
+        email: lead.email,
+        name: lead.name,
+        answers: lead.answers,
+        status: lead.status,
+      },
+    });
+
+    logger.business(EVENTS.ASSESSMENT_COMPLETED, {
+      meta: {
+        email: lead.email,
+        name: lead.name,
+        answers: lead.answers,
+        status: lead.status,
+      },
+    });
+
+    logger.business(EVENTS.ASSESSMENT_COMPLETED, {
+      meta: {
+        email: lead.email,
+        name: lead.name,
+        answers: lead.answers,
+        status: lead.status,
+      },
+    });
+
+    // ── Analytics event — fire and forget, never blocks the response ──────────
+    const { visitorId, sessionId } = getMentelIds(req);
+    if (visitorId && sessionId) {
+      after(
+        (async () => {
+          const ctx = {
+            visitorId,
+            sessionId,
+            userId: null,
+            isNewSession: false,
+            utm: {},
+            referrer: req.headers.get("referer"),
+            landingPage: null,
+          };
+          await ensureVisitorAndSession(req.headers, ctx);
+          await recordEvent(
+            {
+              event: "ASSESSMENT_COMPLETED",
+              properties: { answers: lead.answers, status: lead.status },
+            },
+            ctx,
+          );
+        })().catch((err) =>
+          console.error("[analytics] ASSESSMENT_COMPLETED failed:", err),
+        ),
       );
     }
 

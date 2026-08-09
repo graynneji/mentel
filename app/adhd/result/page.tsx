@@ -1685,6 +1685,12 @@ function AdhdResultContent() {
     const [successBarDismissed, setSuccessBarDismissed] = useState(false);
 
     useEffect(() => {
+        if (typeof window !== "undefined" && (window as any).fbq) {
+            (window as any).fbq('track', 'PageView');;
+        }
+    }, []);
+
+    useEffect(() => {
         // Primary path: the assessment flow wrote this to sessionStorage right
         // before redirecting here (see app/adhd/page.tsx). Fast, no network
         // round trip, works for the vast majority of visits.
