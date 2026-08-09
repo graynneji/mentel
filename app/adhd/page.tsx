@@ -2363,7 +2363,7 @@ export default function AdhdAssessmentPage() {
                                     </div>
                                     <div>
                                         <label htmlFor="a-phone" className="block text-[11px] font-semibold tracking-[0.1em] uppercase text-[#4a6a56] mb-2">Phone Number</label>
-                                        <input id="a-phone" type="tel" placeholder="+234 000 000 0000" value={phone} autoComplete="tel"
+                                        <input id="a-phone" type="tel" placeholder="+1 555 555 5555" value={phone} autoComplete="tel"
                                             onChange={(e) => setPhone(e.target.value)} className={`form-input${errors.phone ? " error" : ""}`} aria-invalid={!!errors.phone} />
                                         {errors.phone && <p className="text-[12px] text-[#c0392b] mt-1.5">{errors.phone}</p>}
                                     </div>
