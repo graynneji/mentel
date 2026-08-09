@@ -128,7 +128,7 @@ const DEFAULT_MESSAGE = "Hi, I'd like to know more about booking a session with 
 // A prefix deny-list means new marketing pages just work automatically —
 // you only need to remember to add a prefix here if you add a new
 // internal area, not every time you add a new public page.
-const BLOCKED_PREFIXES = ["/admin", "/assessment", "/book", "/marketing"];
+const BLOCKED_PREFIXES = ["/admin", "/assessment", "/book", "/marketing", "/adhd"];
 
 export default function WhatsAppButton() {
     const pathname = usePathname();

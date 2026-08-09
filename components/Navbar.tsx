@@ -1,12 +1,347 @@
+// "use client";
+// import { useState, useEffect, useRef } from "react";
+// import Link from "next/link";
+// import { usePathname, useRouter } from "next/navigation";
+// import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock } from "lucide-react";
+// import Image from "next/image";
+// import { useBooking } from "@/app/context/BookingContext";
+// import CrisisBar from "./CrisisBar";
+// import BgBlobs from "./BgBlobs";
+
+// const now = new Date();
+// const DEADLINE = new Date(now);
+// DEADLINE.setSeconds(59);
+// DEADLINE.setMilliseconds(999);
+
+// const navLinks = [
+//     { href: "/", label: "Home" },
+//     { href: "/about", label: "About" },
+//     { href: "/eap", label: "For Teams" },
+//     { href: "/articles", label: "Articles" },
+//     { href: "/services", label: "Services" },
+//     { href: "/contact", label: "Contact" },
+// ];
+
+// function getTimeLeft() {
+//     const diff =
+//         new Date(
+//             new Date().setMinutes(new Date().getMinutes() < 30 ? 30 : 60, 0, 0)
+//         ).getTime() - Date.now();
+//     if (diff <= 0) return null;
+//     return {
+//         hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+//         mins: Math.floor((diff / (1000 * 60)) % 60),
+//         secs: Math.floor((diff / 1000) % 60),
+//     };
+// }
+
+// function pad(n: number) {
+//     return String(n).padStart(2, "0");
+// }
+
+// export default function Navbar() {
+//     const [open, setOpen] = useState(false);
+//     const [scrolled, setScrolled] = useState(false);
+//     const [timeLeft, setTimeLeft] = useState<ReturnType<typeof getTimeLeft>>(null);
+//     const [bannerDismissed, setBannerDismissed] = useState(true);
+//     const [mounted, setMounted] = useState(false);
+//     const wrapperRef = useRef<HTMLDivElement>(null);
+//     const pathname = usePathname();
+//     const router = useRouter()
+//     const { openBooking } = useBooking();
+
+//     useEffect(() => {
+//         function updateHeight() {
+//             if (wrapperRef.current) {
+//                 const h = wrapperRef.current.offsetHeight;
+//                 const extra = Math.max(0, h - 64);
+//                 document.documentElement.style.setProperty("--navbar-h", `${extra}px`);
+//             }
+//         }
+//         updateHeight();
+//         const ro = new ResizeObserver(updateHeight);
+//         if (wrapperRef.current) ro.observe(wrapperRef.current);
+//         return () => ro.disconnect();
+//     }, []);
+
+//     useEffect(() => {
+//         const onScroll = () => setScrolled(window.scrollY > 20);
+//         window.addEventListener("scroll", onScroll);
+//         return () => window.removeEventListener("scroll", onScroll);
+//     }, []);
+
+//     useEffect(() => { setOpen(false); }, [pathname]);
+
+//     // useEffect(() => {
+//     //     setMounted(true);
+//     //     if (sessionStorage.getItem("promo-banner-dismissed") === "true") {
+//     //         setBannerDismissed(true);
+//     //         return;
+//     //     }
+//     //     setBannerDismissed(false);
+//     //     setTimeLeft(getTimeLeft());
+//     //     const interval = setInterval(() => {
+//     //         const t = getTimeLeft();
+//     //         setTimeLeft(t);
+//     //         if (!t) clearInterval(interval);
+//     //     }, 1000);
+//     //     return () => clearInterval(interval);
+//     // }, []);
+
+
+//     useEffect(() => {
+//         setMounted(true);
+//         if (sessionStorage.getItem("promo-banner-dismissed") === "true") {
+//             setBannerDismissed(true);
+//             return;
+//         }
+//         setBannerDismissed(false);
+
+//         // Persist deadline so countdown doesn't reset on page navigation
+//         const STORAGE_KEY = "promo-deadline";
+//         let deadline = Number(sessionStorage.getItem(STORAGE_KEY));
+//         if (!deadline || deadline < Date.now()) {
+//             // Set a 30-minute deadline from first visit
+//             deadline = Date.now() + 30 * 60 * 1000;
+//             sessionStorage.setItem(STORAGE_KEY, String(deadline));
+//         }
+
+//         function getTimeLeftFromDeadline() {
+//             const diff = deadline - Date.now();
+//             if (diff <= 0) return null;
+//             return {
+//                 hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+//                 mins: Math.floor((diff / (1000 * 60)) % 60),
+//                 secs: Math.floor((diff / 1000) % 60),
+//             };
+//         }
+
+//         setTimeLeft(getTimeLeftFromDeadline());
+//         const interval = setInterval(() => {
+//             const t = getTimeLeftFromDeadline();
+//             setTimeLeft(t);
+//             if (!t) clearInterval(interval);
+//         }, 1000);
+//         return () => clearInterval(interval);
+//     }, []);
+
+
+//     function handleDismiss() {
+//         setBannerDismissed(true);
+//         sessionStorage.setItem("promo-banner-dismissed", "true");
+//     }
+
+//     // Close mobile menu and open booking panel
+//     function handleBookNow() {
+//         setOpen(false);
+//         openBooking();
+//         router.push("/book");
+//     }
+
+//     const showBanner = mounted && !bannerDismissed && !!timeLeft;
+
+//     return (
+//         <>
+//             <div ref={wrapperRef} className="fixed top-0 left-0 right-0 z-50">
+
+
+//                 {/* ── Promo Banner ── */}
+//                 {showBanner && (
+//                     <div
+//                         className="relative w-full overflow-hidden"
+//                         style={{ background: "linear-gradient(135deg, var(--deep) 0%, #1a4a4a 60%, var(--teal) 100%)" }}
+//                     >
+//                         <div
+//                             className="absolute inset-0 pointer-events-none"
+//                             style={{ background: "repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.04) 60px, rgba(255,255,255,0.04) 61px)" }}
+//                         />
+
+//                         {/* Mobile banner */}
+//                         <div className="flex sm:hidden items-center justify-between px-4 py-2 gap-2">
+//                             <div className="flex items-center gap-1.5 min-w-0">
+//                                 <Zap size={11} className="text-white opacity-80 flex-shrink-0" fill="currentColor" />
+//                                 <span className="text-white text-xs font-medium truncate">
+//                                     Single session -{" "}
+//                                     <span className="line-through opacity-40 font-normal">₦35k</span>{" "}
+//                                     <span className="font-bold">₦8,500</span>
+//                                 </span>
+//                             </div>
+//                             <div className="flex items-center gap-1 flex-shrink-0 text-white text-xs tabular-nums opacity-80">
+//                                 <Clock size={10} className="opacity-60" />
+//                                 <span>{pad(timeLeft!.hours)}h {pad(timeLeft!.mins)}m {pad(timeLeft!.secs)}s</span>
+//                             </div>
+//                             <div className="flex items-center gap-2 flex-shrink-0">
+//                                 <button
+//                                     onClick={handleBookNow}
+//                                     className="text-xs font-semibold text-white bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full transition-all whitespace-nowrap cursor-pointer"
+//                                 >
+//                                     Book now
+//                                 </button>
+//                                 <button onClick={handleDismiss} className="text-white opacity-50 hover:opacity-100 transition-opacity p-0.5" aria-label="Dismiss">
+//                                     <X size={13} />
+//                                 </button>
+//                             </div>
+//                         </div>
+
+//                         {/* Desktop banner */}
+//                         <div className="hidden sm:flex items-center justify-center gap-5 px-12 py-2.5 text-white text-sm">
+//                             <div className="flex items-center gap-2">
+//                                 <Zap size={13} fill="currentColor" className="opacity-80" />
+//                                 <span className="font-light opacity-80">Introductory offer </span>
+//                                 <span className="font-medium">
+//                                     Book a single session for{" "}
+//                                     <span className="line-through opacity-40 font-normal">₦35,000</span>{" "}
+//                                     <span className="font-bold text-white text-base">₦8,500</span>
+//                                 </span>
+//                             </div>
+//                             <div className="w-px h-4 bg-white opacity-20" />
+//                             <div className="flex items-center gap-2 font-light">
+//                                 <Clock size={13} className="opacity-60" />
+//                                 <span className="opacity-70 text-xs">Offer ends in</span>
+//                                 <div className="flex items-center gap-1">
+//                                     <span className="font-cormorant text-lg font-semibold tabular-nums">{pad(timeLeft!.hours)}</span>
+//                                     <span className="text-xs opacity-60 mr-1">h</span>
+//                                     <span className="font-cormorant text-lg font-semibold tabular-nums">{pad(timeLeft!.mins)}</span>
+//                                     <span className="text-xs opacity-60 mr-1">m</span>
+//                                     <span className="font-cormorant text-lg font-semibold tabular-nums">{pad(timeLeft!.secs)}</span>
+//                                     <span className="text-xs opacity-60">s</span>
+//                                 </div>
+//                             </div>
+//                             <div className="w-px h-4 bg-white opacity-20" />
+//                             {/* Banner CTA — calls openBooking */}
+//                             <button
+//                                 onClick={handleBookNow}
+//                                 className="flex items-center gap-1.5 text-xs font-semibold bg-white/15 hover:bg-white/25 border border-white/20 px-4 py-1.5 rounded-full transition-all duration-200 hover:-translate-y-0.5 cursor-pointer"
+//                             >
+//                                 Claim offer
+//                                 <ArrowRight size={11} />
+//                             </button>
+//                         </div>
+
+//                         <button
+//                             onClick={handleDismiss}
+//                             className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 text-white opacity-40 hover:opacity-100 transition-opacity p-1.5 rounded-full hover:bg-white/10"
+//                             aria-label="Dismiss banner"
+//                         >
+//                             <X size={13} />
+//                         </button>
+//                     </div>
+//                 )}
+//                 <CrisisBar />
+//                 {/* Moved CrisisBar inside Navbar to ensure it appears above the promo banner when both are visible */}
+//                 {/* ── Navbar ── */}
+//                 <header
+//                     className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
+//                     style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
+//                 >
+//                     {/* <header
+//                     className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
+//                     style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
+//                 > */}
+//                     <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+//                         {/* <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between"> */}
+//                         <Link href="/" className="flex items-center gap-2.5">
+
+//                             <Image src="/logo.png" alt="Mentel" width={108} height={61} className="object-contain" priority />
+
+//                         </Link>
+
+//                         {/* Desktop nav */}
+//                         <div className="hidden md:flex items-center gap-8">
+
+//                             {navLinks.map((link) => (
+//                                 <Link
+//                                     key={link.href}
+//                                     href={link.href}
+//                                     className={`text-sm transition-colors duration-200 ${pathname === link.href ? "font-medium" : "hover:opacity-70"}`}
+//                                     style={{ color: pathname === link.href ? "var(--sage-dark)" : "var(--text-muted)" }}
+//                                 >
+//                                     {link.label}
+//                                 </Link>
+//                             ))}
+//                             <div className="flex items-center gap-2">
+//                                 <Link
+//                                     href="/assessment"
+//                                     className="flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-full border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-sm"
+//                                     style={{ borderColor: "rgba(123,169,139,0.45)", color: "var(--sage-dark)", background: "rgba(123,169,139,0.07)" }}
+//                                 >
+//                                     <ClipboardCheck size={13} />
+//                                     Free Check
+//                                 </Link>
+//                                 {/* Book Now — triggers context instead of anchor */}
+//                                 <button
+//                                     onClick={handleBookNow}
+//                                     className="text-sm font-medium text-white px-5 py-2 rounded-full transition-all duration-200 hover:opacity-90 hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
+//                                     style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+//                                 >
+//                                     Book Now
+//                                 </button>
+//                             </div>
+//                         </div>
+
+//                         <button
+//                             className="md:hidden p-2 rounded-lg"
+//                             style={{ color: "var(--deep)" }}
+//                             onClick={() => setOpen(!open)}
+//                             aria-label="Toggle menu"
+//                         >
+//                             {open ? <X size={20} /> : <Menu size={20} />}
+//                         </button>
+//                     </nav>
+
+//                     {/* Mobile menu */}
+//                     {open && (
+//                         <div className="md:hidden bg-white border-t px-6 py-4 flex flex-col gap-4 shadow-lg" style={{ borderColor: "var(--border)" }}>
+//                             {navLinks.map((link) => (
+//                                 <Link
+//                                     key={link.href}
+//                                     href={link.href}
+//                                     className={`text-sm py-1 ${pathname === link.href ? "font-medium" : ""}`}
+//                                     style={{ color: pathname === link.href ? "var(--sage-dark)" : "var(--text-muted)" }}
+//                                 >
+//                                     {link.label}
+//                                 </Link>
+//                             ))}
+//                             <Link
+//                                 href="/assessment"
+//                                 className={`text-sm py-1 flex items-center gap-2 ${pathname === "/assessment" ? "font-medium" : ""}`}
+//                                 style={{ color: pathname === "/assessment" ? "var(--sage-dark)" : "var(--text-muted)" }}
+//                             >
+//                                 <ClipboardCheck size={13} style={{ color: "var(--sage)" }} />
+//                                 Free Assessment
+//                             </Link>
+//                             {/* Mobile Book Now — calls handleBookNow */}
+//                             <button
+//                                 onClick={handleBookNow}
+//                                 className="text-sm font-medium text-white px-5 py-2.5 rounded-full text-center mt-1 cursor-pointer"
+//                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
+//                             >
+//                                 Book Now - ₦8,500
+//                             </button>
+//                         </div>
+//                     )}
+//                 </header>
+//             </div>
+
+//             <div style={{ height: "var(--navbar-h, 0px)" }} aria-hidden="true" />
+//         </>
+//     );
+// }
+
+
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock } from "lucide-react";
+import { Menu, X, ClipboardCheck, ArrowRight, Zap, Clock, ShieldCheck, UserCheck, MapPin } from "lucide-react";
 import Image from "next/image";
 import { useBooking } from "@/app/context/BookingContext";
 import CrisisBar from "./CrisisBar";
 import BgBlobs from "./BgBlobs";
+
+// Set to true to bring the promo countdown banner back. Left in place (not deleted)
+// so the offer can be re-enabled for a future campaign without rebuilding it.
+const ENABLE_PROMO_BANNER = false;
 
 const now = new Date();
 const DEADLINE = new Date(now);
@@ -72,24 +407,9 @@ export default function Navbar() {
 
     useEffect(() => { setOpen(false); }, [pathname]);
 
-    // useEffect(() => {
-    //     setMounted(true);
-    //     if (sessionStorage.getItem("promo-banner-dismissed") === "true") {
-    //         setBannerDismissed(true);
-    //         return;
-    //     }
-    //     setBannerDismissed(false);
-    //     setTimeLeft(getTimeLeft());
-    //     const interval = setInterval(() => {
-    //         const t = getTimeLeft();
-    //         setTimeLeft(t);
-    //         if (!t) clearInterval(interval);
-    //     }, 1000);
-    //     return () => clearInterval(interval);
-    // }, []);
-
-
     useEffect(() => {
+        if (!ENABLE_PROMO_BANNER) return;
+
         setMounted(true);
         if (sessionStorage.getItem("promo-banner-dismissed") === "true") {
             setBannerDismissed(true);
@@ -125,7 +445,6 @@ export default function Navbar() {
         return () => clearInterval(interval);
     }, []);
 
-
     function handleDismiss() {
         setBannerDismissed(true);
         sessionStorage.setItem("promo-banner-dismissed", "true");
@@ -138,14 +457,13 @@ export default function Navbar() {
         router.push("/book");
     }
 
-    const showBanner = mounted && !bannerDismissed && !!timeLeft;
+    const showBanner = ENABLE_PROMO_BANNER && mounted && !bannerDismissed && !!timeLeft;
 
     return (
         <>
             <div ref={wrapperRef} className="fixed top-0 left-0 right-0 z-50">
 
-
-                {/* ── Promo Banner ── */}
+                {/* ── Promo Banner (disabled, kept for future campaigns) ── */}
                 {showBanner && (
                     <div
                         className="relative w-full overflow-hidden"
@@ -163,7 +481,7 @@ export default function Navbar() {
                                 <span className="text-white text-xs font-medium truncate">
                                     Single session -{" "}
                                     <span className="line-through opacity-40 font-normal">₦35k</span>{" "}
-                                    <span className="font-bold">₦8,500</span>
+                                    <span className="font-bold">20% Discount</span>
                                 </span>
                             </div>
                             <div className="flex items-center gap-1 flex-shrink-0 text-white text-xs tabular-nums opacity-80">
@@ -227,18 +545,54 @@ export default function Navbar() {
                         </button>
                     </div>
                 )}
-                {/* <CrisisBar />  Moved CrisisBar inside Navbar to ensure it appears above the promo banner when both are visible */}
+
+                {/* ── Trust Strip — sits where the promo banner used to live ── */}
+                {!showBanner && (
+                    <div
+                        className="relative w-full overflow-hidden"
+                        style={{ background: "linear-gradient(135deg, var(--deep) 0%, #1a4a4a 60%, var(--teal) 100%)" }}
+                    >
+                        <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{ background: "repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,255,255,0.04) 60px, rgba(255,255,255,0.04) 61px)" }}
+                        />
+
+                        {/* Mobile — single condensed line */}
+                        <div className="flex sm:hidden items-center justify-center gap-1.5 px-4 py-2">
+                            <ShieldCheck size={12} className="text-white opacity-80 flex-shrink-0" />
+                            <span className="text-white text-[11px] font-medium tracking-wide text-center">
+                                Confidential · Licensed clinical team · Real support anywhere
+                            </span>
+                        </div>
+
+                        {/* Desktop — three signals separated by dividers */}
+                        <div className="hidden sm:flex items-center justify-center gap-5 px-12 py-2.5 text-white text-sm">
+                            <div className="flex items-center gap-2">
+                                <ShieldCheck size={13} className="opacity-80" />
+                                <span className="font-light opacity-90">Confidential, judgment-free support</span>
+                            </div>
+                            <div className="w-px h-4 bg-white opacity-20" />
+                            <div className="flex items-center gap-2">
+                                <UserCheck size={13} className="opacity-80" />
+                                <span className="font-light opacity-90">Reviewed by our licensed clinical team</span>
+                            </div>
+                            <div className="w-px h-4 bg-white opacity-20" />
+                            <div className="flex items-center gap-2">
+                                <MapPin size={13} className="opacity-80" />
+                                <span className="font-light opacity-90">Support that meets you where you are</span>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* <CrisisBar /> */}
+                {/* Moved CrisisBar inside Navbar to ensure it appears above the promo banner when both are visible */}
                 {/* ── Navbar ── */}
                 <header
                     className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
                     style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
                 >
-                    {/* <header
-                    className={`w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-b shadow-sm" : "bg-white/80 backdrop-blur-sm"}`}
-                    style={{ borderColor: scrolled ? "var(--border)" : "transparent" }}
-                > */}
                     <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-                        {/* <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between"> */}
                         <Link href="/" className="flex items-center gap-2.5">
 
                             <Image src="/logo.png" alt="Mentel" width={108} height={61} className="object-contain" priority />
@@ -315,7 +669,8 @@ export default function Navbar() {
                                 className="text-sm font-medium text-white px-5 py-2.5 rounded-full text-center mt-1 cursor-pointer"
                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                             >
-                                Book Now - ₦8,500
+                                Book Now
+                                {/* Book Now - ₦8,500 */}
                             </button>
                         </div>
                     )}

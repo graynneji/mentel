@@ -967,7 +967,8 @@ const faqs = [
   },
   {
     q: "Is everything I share kept confidential?",
-    a: "Absolutely. Your sessions are protected by professional confidentiality and our platform is fully NDPR-compliant. We never share your information with third parties.",
+    a: "Absolutely. Your sessions are protected by professional confidentiality and our platform is fully HIPAA-compliant. We never share your information with third parties.",
+    // a: "Absolutely. Your sessions are protected by professional confidentiality and our platform is fully NDPR-compliant. We never share your information with third parties.",
   },
   {
     q: "What if I'm not happy with my therapist?",
@@ -1102,7 +1103,8 @@ export default function HomePage() {
                   style={{ background: "#2d7a5a" }} />
                 <span className="font-semibold uppercase tracking-widest text-center"
                   style={{ color: "#2d7a5a", fontSize: "clamp(9px, 2.6vw, 12px)", letterSpacing: "0.12em" }}>
-                  Certified · Confidential · NDPR-Compliant
+                  Certified · Confidential · HIPAA-Compliant
+                  {/* Certified · Confidential · NDPR-Compliant */}
                 </span>
               </div>
 
@@ -1189,7 +1191,8 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row w-full rounded-2xl border overflow-hidden mb-8 sm:mb-9 divide-y sm:divide-y-0 sm:divide-x"
                 style={{ background: "white", borderColor: "rgba(28,40,36,0.09)" }}>
                 {[
-                  { icon: Lock, label: "Fully confidential", desc: "NDPR-compliant. Never shared." },
+                  { icon: Lock, label: "Fully confidential", desc: "HIPAA-compliant. Never shared." },
+                  // { icon: Lock, label: "Fully confidential", desc: "NDPR-compliant. Never shared." },
                   { icon: Users, label: "35+ licensed therapists", desc: "Individually vetted." },
                   { icon: Clock, label: "24 hr response", desc: "Book today, matched tomorrow." },
                 ].map(({ icon: Icon, label, desc }) => (
