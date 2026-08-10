@@ -323,7 +323,7 @@ export default async function ArticlesPage() {
                                     explained.
                                 </em>
                             </h1>
-                            <p className="text-sm sm:text-base font-normal max-w-md" style={{ color: "var(--text-muted)" }}>
+                            <p className="text-sm sm:text-base font-normal max-w-xl" style={{ color: "var(--text-muted)" }}>
                                 Evidence-based guides written by clinicians. Real talk about anxiety, depression, relationships, and healing in a Nigerian context.
                             </p>
                         </div>
