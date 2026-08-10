@@ -2087,6 +2087,7 @@ export const ArticleScalarFieldEnum = {
   readMin: 'readMin',
   featured: 'featured',
   tldr: 'tldr',
+  faq: 'faq',
   content: 'content',
   metaTitle: 'metaTitle',
   metaDescription: 'metaDescription',
