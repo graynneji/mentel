@@ -17,6 +17,7 @@
 //     image: string;
 //     readMin: number;
 //     featured: boolean;
+//     tldr: string;
 //     content: string;
 //     metaTitle: string;
 //     metaDescription: string;
@@ -33,6 +34,7 @@
 //     image: "",
 //     readMin: 5,
 //     featured: false,
+//     tldr: "",
 //     content: "",
 //     metaTitle: "",
 //     metaDescription: "",
@@ -122,6 +124,7 @@
 //                 tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
 //                 keywords: form.keywords.split(",").map((k) => k.trim()).filter(Boolean),
 //                 image: form.image || null,
+//                 tldr: form.tldr || null,
 //                 readMin: form.readMin,
 //                 featured: form.featured,
 //                 content: form.content,
@@ -275,6 +278,17 @@
 //             <div className="mb-4">
 //                 <label className={labelClass}>Excerpt</label>
 //                 <textarea className={`${inputClass} resize-none`} rows={2} value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} placeholder="One or two sentences shown on the articles list" />
+//             </div>
+
+//             <div className="mb-4">
+//                 <label className={labelClass}>TL;DR — key takeaways <span className="normal-case font-normal">(optional, shown in a highlighted box near the top of the article)</span></label>
+//                 <textarea
+//                     className={`${inputClass} resize-none`}
+//                     rows={2}
+//                     value={form.tldr}
+//                     onChange={(e) => update("tldr", e.target.value)}
+//                     placeholder="A tight, scannable summary of the article's key point(s) — e.g. cost ranges, main signs, or the core takeaway. Leave blank to skip it."
+//                 />
 //             </div>
 
 //             <div className="grid md:grid-cols-2 gap-4 mb-4">
@@ -520,6 +534,7 @@
 //     );
 // }
 
+
 "use client";
 
 import { useState, useRef } from "react";
@@ -539,6 +554,7 @@ export interface ArticleFormData {
     readMin: number;
     featured: boolean;
     tldr: string;
+    faq: { q: string; a: string }[];
     content: string;
     metaTitle: string;
     metaDescription: string;
@@ -556,6 +572,7 @@ const emptyForm: ArticleFormData = {
     readMin: 5,
     featured: false,
     tldr: "",
+    faq: [],
     content: "",
     metaTitle: "",
     metaDescription: "",
@@ -646,6 +663,7 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
                 keywords: form.keywords.split(",").map((k) => k.trim()).filter(Boolean),
                 image: form.image || null,
                 tldr: form.tldr || null,
+                faq: form.faq.filter((item) => item.q.trim() && item.a.trim()),
                 readMin: form.readMin,
                 featured: form.featured,
                 content: form.content,
@@ -810,6 +828,58 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
                     onChange={(e) => update("tldr", e.target.value)}
                     placeholder="A tight, scannable summary of the article's key point(s) — e.g. cost ranges, main signs, or the core takeaway. Leave blank to skip it."
                 />
+            </div>
+
+            <div className="mb-4">
+                <label className={labelClass}>
+                    FAQ <span className="normal-case font-normal">(optional, shown as a "Frequently asked questions" section near the end of the article, and marked up for Google's FAQ rich results)</span>
+                </label>
+                <div className="flex flex-col gap-3">
+                    {form.faq.map((item, i) => (
+                        <div key={i} className="rounded-xl border p-3.5" style={{ borderColor: "var(--border)" }}>
+                            <div className="flex items-start gap-2 mb-2">
+                                <input
+                                    className={`${inputClass} flex-1`}
+                                    value={item.q}
+                                    onChange={(e) => {
+                                        const next = [...form.faq];
+                                        next[i] = { ...next[i], q: e.target.value };
+                                        update("faq", next);
+                                    }}
+                                    placeholder="Question"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => update("faq", form.faq.filter((_, idx) => idx !== i))}
+                                    aria-label="Remove this FAQ item"
+                                    className="flex-shrink-0 w-9 h-9 rounded-lg border flex items-center justify-center text-[#a05a5a] hover:bg-[#faf0f0]"
+                                    style={{ borderColor: "var(--border)" }}
+                                >
+                                    <Trash2 size={15} />
+                                </button>
+                            </div>
+                            <textarea
+                                className={`${inputClass} resize-none`}
+                                rows={2}
+                                value={item.a}
+                                onChange={(e) => {
+                                    const next = [...form.faq];
+                                    next[i] = { ...next[i], a: e.target.value };
+                                    update("faq", next);
+                                }}
+                                placeholder="Answer"
+                            />
+                        </div>
+                    ))}
+                    <button
+                        type="button"
+                        onClick={() => update("faq", [...form.faq, { q: "", a: "" }])}
+                        className="self-start text-xs font-medium px-3.5 py-2 rounded-full border hover:bg-[rgba(123,169,139,0.08)] transition-colors"
+                        style={{ borderColor: "var(--sage)", color: "var(--sage-dark)" }}
+                    >
+                        + Add FAQ item
+                    </button>
+                </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4 mb-4">

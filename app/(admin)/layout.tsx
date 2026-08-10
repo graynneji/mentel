@@ -243,7 +243,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
                 {/* Bottom */}
                 <div className="border-t border-white/10 p-3 shrink-0">
-                    <OnlineAdminsIndicator collapsed={collapsed} />
+                    {/* <OnlineAdminsIndicator collapsed={collapsed} /> */}
                     {!collapsed && (
                         <div className="flex items-center gap-2.5 px-1 mb-2">
                             <div className="w-7 h-7 rounded-full bg-[#4e8c6a] flex items-center justify-center shrink-0">

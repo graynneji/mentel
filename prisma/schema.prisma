@@ -401,6 +401,8 @@ model Article {
   // snippets). Leave blank if a given article doesn't need one.
   tldr String? @db.Text
 
+ faq  Json?   // array of { q: string; a: string } — see components/ArticleEditor.tsx for the editor UI, app/articles/[slug]/page.tsx for rendering + JSON-LD
+
   // Full body content, written as Markdown in the admin editor.
   content String @db.Text
 

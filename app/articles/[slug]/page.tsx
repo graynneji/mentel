@@ -40,7 +40,7 @@
 //                     {label}
 //                 </Link>
 //             ) : (
-//                 <Link
+//                 <a
 //                     key={key++}
 //                     href={href}
 //                     target="_blank"
@@ -49,7 +49,7 @@
 //                     style={{ color: "var(--teal)" }}
 //                 >
 //                     {label}
-//                 </Link>
+//                 </a>
 //             )
 //         );
 //         lastIndex = match.index + match[0].length;
@@ -176,6 +176,8 @@
 //             keywords: dbArticle.keywords,
 //         };
 //         content = markdownToSections(dbArticle.content);
+//         const tldr = (dbArticle as { tldr?: string }).tldr;
+//         if (tldr) content.tldr = tldr;
 //     }
 
 //     const allArticles = staticArticle ? null : await getAllPublishedArticles();
@@ -459,6 +461,7 @@
 
 
 
+
 // app/articles/[slug]/page.tsx
 import type { ReactNode } from "react";
 import Link from "next/link";
@@ -469,6 +472,7 @@ import { getAllPublishedArticles, getPublishedDbArticleBySlug } from "@/lib/arti
 import { markdownToSections } from "@/lib/articles/markdown-to-sections";
 import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisuals";
 import { ArticleCard } from "../../../components/ArticleCard";
+import { AdhdTestBanner } from "@/components/AdhdTestBanner";
 
 // Re-fetch on every request rather than caching indefinitely — CMS
 // articles are published dynamically and should show up immediately,
@@ -637,6 +641,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         content = markdownToSections(dbArticle.content);
         const tldr = (dbArticle as { tldr?: string }).tldr;
         if (tldr) content.tldr = tldr;
+        const faq = (dbArticle as { faq?: { q: string; a: string }[] }).faq;
+        if (Array.isArray(faq) && faq.length > 0) content.faq = faq;
     }
 
     const allArticles = staticArticle ? null : await getAllPublishedArticles();
@@ -756,26 +762,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         </div>
                     )}
 
-                    {content && content.sections.length >= 5 && (
-                        <nav className="mb-10 rounded-xl p-5 border" style={{ borderColor: "var(--border)", background: "white" }} aria-label="Table of contents">
-                            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "var(--sage-dark)" }}>
-                                In this article
-                            </p>
-                            <ol className="space-y-2">
-                                {content.sections.map((section, i) => (
-                                    <li key={i}>
-                                        <Link
-                                            href={`#section-${i}`}
-                                            className="text-sm hover:text-[var(--teal)] transition-colors"
-                                            style={{ color: "var(--text-muted)" }}
-                                        >
-                                            {i + 1}. {section.heading}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ol>
-                        </nav>
-                    )}
+                    <AdhdTestBanner />
 
                     {/* Article body — unchanged */}
                     {content && (
@@ -833,24 +820,44 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         ))}
                     </div>
 
-                    {/* FAQ — unchanged */}
+                    {/* FAQ — unchanged, plus FAQPage structured data added
+                        for Google's FAQ rich results, since this content
+                        exists and is genuinely user-facing Q&A, ideal
+                        candidate for it. */}
                     {content?.faq && content.faq.length > 0 && (
-                        <div className="mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
-                            <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--sage-dark)" }}>
-                                Quick answers
-                            </p>
-                            <h2 className="font-cormorant text-2xl sm:text-3xl font-normal mb-6" style={{ color: "var(--deep)" }}>
-                                Frequently asked questions
-                            </h2>
-                            <div className="space-y-4">
-                                {content.faq.map(({ q, a }) => (
-                                    <div key={q} className="rounded-xl p-5 border" style={{ borderColor: "var(--border)", background: "white" }}>
-                                        <p className="text-sm font-semibold mb-2" style={{ color: "var(--deep)" }}>{q}</p>
-                                        <p className="text-sm font-normal leading-relaxed" style={{ color: "var(--text-muted)" }}>{a}</p>
-                                    </div>
-                                ))}
+                        <>
+                            <script
+                                type="application/ld+json"
+                                // eslint-disable-next-line react/no-danger
+                                dangerouslySetInnerHTML={{
+                                    __html: JSON.stringify({
+                                        "@context": "https://schema.org",
+                                        "@type": "FAQPage",
+                                        mainEntity: content.faq.map(({ q, a }) => ({
+                                            "@type": "Question",
+                                            name: q,
+                                            acceptedAnswer: { "@type": "Answer", text: a },
+                                        })),
+                                    }),
+                                }}
+                            />
+                            <div className="mt-12 pt-8 border-t" style={{ borderColor: "var(--border)" }}>
+                                <p className="text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--sage-dark)" }}>
+                                    Quick answers
+                                </p>
+                                <h2 className="font-cormorant text-2xl sm:text-3xl font-normal mb-6" style={{ color: "var(--deep)" }}>
+                                    Frequently asked questions
+                                </h2>
+                                <div className="space-y-4">
+                                    {content.faq.map(({ q, a }) => (
+                                        <div key={q} className="rounded-xl p-5 border" style={{ borderColor: "var(--border)", background: "white" }}>
+                                            <p className="text-sm font-semibold mb-2" style={{ color: "var(--deep)" }}>{q}</p>
+                                            <p className="text-sm font-normal leading-relaxed" style={{ color: "var(--text-muted)" }}>{a}</p>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        </>
                     )}
 
                     {/* CTA box — unchanged */}

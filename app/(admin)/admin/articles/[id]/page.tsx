@@ -1,3 +1,4 @@
+
 // "use client";
 
 // import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@
 //     image: string | null;
 //     readMin: number;
 //     featured: boolean;
+//     tldr: string | null;
 //     content: string;
 //     metaTitle: string | null;
 //     metaDescription: string | null;
@@ -48,6 +50,7 @@
 //                     image: a.image ?? "",
 //                     readMin: a.readMin,
 //                     featured: a.featured,
+//                     tldr: a.tldr ?? "",
 //                     content: a.content,
 //                     metaTitle: a.metaTitle ?? "",
 //                     metaDescription: a.metaDescription ?? "",
@@ -83,6 +86,8 @@
 // }
 
 
+
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -102,6 +107,7 @@ interface DbArticle {
     readMin: number;
     featured: boolean;
     tldr: string | null;
+    faq: { q: string; a: string }[] | null;
     content: string;
     metaTitle: string | null;
     metaDescription: string | null;
@@ -135,6 +141,7 @@ export default function EditArticlePage() {
                     readMin: a.readMin,
                     featured: a.featured,
                     tldr: a.tldr ?? "",
+                    faq: a.faq ?? [],
                     content: a.content,
                     metaTitle: a.metaTitle ?? "",
                     metaDescription: a.metaDescription ?? "",
