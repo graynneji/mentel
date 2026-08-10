@@ -135,6 +135,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { withRateLimit } from "@/lib/withRateLimit";
 import { sanitizeFaq } from "@/lib/articles/faq";
+import { Prisma } from "@/generated/prisma/client";
 
 function requireAdmin(req: NextRequest): boolean {
   const session = req.cookies.get("mentel_admin_session")?.value;
@@ -237,8 +238,10 @@ async function POST_HANDLER(req: Request) {
           ? body.keywords.filter((k: unknown) => typeof k === "string")
           : [],
         image: body.image ? String(body.image).trim() : null,
+        // tldr: body.tldr ? String(body.tldr).trim() : null,
+        // faq: sanitizeFaq(body.faq),
         tldr: body.tldr ? String(body.tldr).trim() : null,
-        faq: sanitizeFaq(body.faq),
+        faq: sanitizeFaq(body.faq) as unknown as Prisma.InputJsonValue,
         readMin: Number.isFinite(body.readMin)
           ? Math.max(1, Math.round(body.readMin))
           : Math.max(1, Math.round(content.split(/\s+/).length / 200)),

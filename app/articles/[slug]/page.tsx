@@ -641,7 +641,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         content = markdownToSections(dbArticle.content);
         const tldr = (dbArticle as { tldr?: string }).tldr;
         if (tldr) content.tldr = tldr;
-        const faq = (dbArticle as { faq?: { q: string; a: string }[] }).faq;
+        const faq = (dbArticle as unknown as { faq?: { q: string; a: string }[] }).faq;
         if (Array.isArray(faq) && faq.length > 0) content.faq = faq;
     }
 
