@@ -503,7 +503,7 @@ function renderInlineText(text: string): ReactNode {
                     {label}
                 </Link>
             ) : (
-                <a
+                <Link
                     key={key++}
                     href={href}
                     target="_blank"
@@ -512,7 +512,7 @@ function renderInlineText(text: string): ReactNode {
                     style={{ color: "var(--teal)" }}
                 >
                     {label}
-                </a>
+                </Link>
             )
         );
         lastIndex = match.index + match[0].length;
