@@ -48,7 +48,8 @@ import { captureFbcFromUrl } from "@/lib/captureFbc";
 // const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID ?? "1701195157569863";
 // const FB_PIXEL_ID = "1058478683507783";
 // const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID ?? "1058478683507783";
-const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID ?? "1619503176308371";
+// const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID ?? "1619503176308371";
+const FB_PIXEL_ID = process.env.FB_PIXEL_ID ?? "1619503176308371";
 
 export default function FacebookPixel() {
   const pathname = usePathname();

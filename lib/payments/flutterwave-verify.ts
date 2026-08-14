@@ -14,6 +14,7 @@
 
 // import { ADHD_PLANS } from "./adhd-plans";
 // import { db } from "@/lib/db";
+// import { sendAdhdReportEmail } from "@/lib/adhd/report-email";
 
 // const FLW_SECRET = process.env.FLUTTERWAVE_SECRET_KEY!;
 
@@ -86,22 +87,47 @@
 
 //   // Mark the lead as paid, idempotent by design (an update, not a create),
 //   // so it's safe for this to run from both the webhook and this
-//   // redirect-verify path without creating duplicate records.
+//   // redirect-verify path without creating duplicate records. The updateMany
+//   // count is also what guards the email below: it's only > 0 the *first*
+//   // time this transaction gets marked paid, whichever caller (webhook or
+//   // client-triggered verify) gets there first sends the email, the other
+//   // is a no-op.
+//   let justMarkedPaid = false;
 //   try {
-//     const trnx = await db.adhdAssessmentLead.updateMany({
+//     const updated = await db.adhdAssessmentLead.updateMany({
 //       where: { txRef: tx.tx_ref, status: { not: "paid" } },
 //       data: { status: "paid", paidAt: new Date() },
 //     });
-//     console.log(
-//       "successfully marked ADHD lead as paid for tx_ref:",
-//       tx.tx_ref,
-//       trnx,
-//     );
+//     justMarkedPaid = updated.count > 0;
 //   } catch (dbError) {
-//     console.log("Could not mark ADHD lead as paid:", dbError);
 //     console.error("Could not mark ADHD lead as paid:", dbError);
 //     // Don't fail verification over a logging-table write, the payment is
 //     // real either way, surface success and let the admin log catch up.
+//   }
+
+//   if (justMarkedPaid) {
+//     try {
+//       const lead = await db.adhdAssessmentLead.findUnique({
+//         where: { txRef: tx.tx_ref },
+//       });
+//       if (lead) {
+//         await sendAdhdReportEmail({
+//           email: lead.email,
+//           name: lead.name,
+//           answers: lead.answers as Record<string, number>,
+//           completionDate: lead.createdAt,
+//         });
+//         await db.adhdAssessmentLead.update({
+//           where: { txRef: tx.tx_ref },
+//           data: { reportSentAt: new Date() },
+//         });
+//       }
+//     } catch (emailError) {
+//       // The payment and the DB update both already succeeded above, a
+//       // failed email shouldn't turn into a failed verification, the report
+//       // is also downloadable directly from the result page as a fallback.
+//       console.error("Could not send ADHD report email:", emailError);
+//     }
 //   }
 
 //   return {
@@ -129,6 +155,7 @@
 import { ADHD_PLANS } from "./adhd-plans";
 import { db } from "@/lib/db";
 import { sendAdhdReportEmail } from "@/lib/adhd/report-email";
+import { sendFbConversionEvent } from "@/lib/fbConversion";
 
 const FLW_SECRET = process.env.FLUTTERWAVE_SECRET_KEY!;
 
@@ -235,6 +262,24 @@ export async function verifyFlutterwaveTransaction(opts: {
           where: { txRef: tx.tx_ref },
           data: { reportSentAt: new Date() },
         });
+
+        // Server-side Purchase, the authoritative tracking call for this
+        // funnel: fires exactly once (guarded by justMarkedPaid, same as
+        // the email above), regardless of ad blockers, browser privacy
+        // settings, or whether payment completed via the in-page callback
+        // or a redirect. The client-side Pixel fire in
+        // app/adhd/result/page.tsx is a nice-to-have for real-time ads
+        // optimization signals, this is the one that's actually reliable.
+        // Same eventId (tx_ref) as that client fire, so Meta dedupes them
+        // into one Purchase rather than double-counting revenue.
+        sendFbConversionEvent({
+          eventName: "Purchase",
+          eventId: tx.tx_ref,
+          email: lead.email,
+          phone: lead.phone ?? undefined,
+          value: matchedPlan.amountUSD,
+          currency: "USD",
+        }).catch((err) => console.error("FB CAPI Purchase event error:", err));
       }
     } catch (emailError) {
       // The payment and the DB update both already succeeded above, a
