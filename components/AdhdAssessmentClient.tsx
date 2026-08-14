@@ -1251,8 +1251,8 @@ export default function AdhdAssessmentPage() {
         const status = completedAvailable.status ?? "";
         const transactionId = completedAvailable.transactionId ?? "";
         if (!leadId) return;
-        router.push(`/adhd/result?leadId=${encodeURIComponent(leadId)}&tx_ref=${encodeURIComponent(txRef)}&status=${encodeURIComponent(status)}&tx_ref=${encodeURIComponent(txRef)}&transaction_id=${encodeURIComponent(transactionId)}`);
-        // router.push(`/adhd/result?leadId=${encodeURIComponent(completedAvailable.leadId)}&tx_ref=${txRef}&status=successful&transaction_id=${transactionId}`);
+        router.push(`/adhd-assessment/result?leadId=${encodeURIComponent(leadId)}&tx_ref=${encodeURIComponent(txRef)}&status=${encodeURIComponent(status)}&tx_ref=${encodeURIComponent(txRef)}&transaction_id=${encodeURIComponent(transactionId)}`);
+        // router.push(`/adhd-assessment/result?leadId=${encodeURIComponent(completedAvailable.leadId)}&tx_ref=${txRef}&status=successful&transaction_id=${transactionId}`);
     }
 
 

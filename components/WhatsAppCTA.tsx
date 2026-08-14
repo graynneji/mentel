@@ -19,6 +19,7 @@
 
 import { MessageCircle, ArrowRight } from "lucide-react";
 
+
 const WA_NUMBER = "254734527573"; // ← replace with real number
 
 const OPTIONS = [

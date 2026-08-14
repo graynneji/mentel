@@ -110,46 +110,169 @@
 //     );
 // }
 
-// components/WhatsAppButton.tsx
+// // components/WhatsAppButton.tsx
+// "use client";
+
+// import { usePathname } from "next/navigation";
+// import { MessageCircle } from "lucide-react";
+// import { markClickedWhatsApp } from "@/lib/personalization/profile";
+// import { fireConversion } from "@/lib/tracking/pixels";
+
+// // Set this in your .env file:
+// // NEXT_PUBLIC_WHATSAPP_NUMBER=2348012345678   (no + or leading zeros, country code first)
+// const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+// const DEFAULT_MESSAGE = "Hi, I'd like to know more about booking a session with Mentel.";
+
+// // Hide the button on internal/admin/app routes; show it everywhere else
+// // (landing page, /about, /contact, /articles/*, /services, etc.).
+// // A prefix deny-list means new marketing pages just work automatically —
+// // you only need to remember to add a prefix here if you add a new
+// // internal area, not every time you add a new public page.
+// const BLOCKED_PREFIXES = ["/admin", "/assessment", "/book", "/marketing", "/adhd"];
+
+// export default function WhatsAppButton() {
+//     const pathname = usePathname();
+//     const isBlocked = BLOCKED_PREFIXES.some(
+//         (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+//     );
+//     if (isBlocked) {
+//         return null;
+//     }
+
+//     if (!WHATSAPP_NUMBER) {
+//         // Fails loudly in dev instead of silently rendering a dead button.
+//         if (process.env.NODE_ENV !== "production") {
+//             console.warn(
+//                 "WhatsAppButton: NEXT_PUBLIC_WHATSAPP_NUMBER is not set. Add it to your .env file."
+//             );
+//         }
+//         return null;
+//     }
+
+//     const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(DEFAULT_MESSAGE)}`;
+
+//     return (
+//         <a
+//             href={href}
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             aria-label="Chat with us on WhatsApp"
+//             className="whatsapp-fab"
+//             onClick={() => {
+//                 markClickedWhatsApp();
+//                 fireConversion("Contact", { contentName: "whatsapp_fab" });
+//             }}
+//         >
+//             <span className="whatsapp-fab-ring" aria-hidden="true" />
+//             <MessageCircle size={26} color="white" strokeWidth={2} />
+
+//             <style jsx>{`
+//                 .whatsapp-fab {
+//                     position: fixed;
+//                     bottom: 24px;
+//                     right: 24px;
+//                     z-index: 50;
+//                     width: 56px;
+//                     height: 56px;
+//                     border-radius: 9999px;
+//                     display: flex;
+//                     align-items: center;
+//                     justify-content: center;
+//                     background: linear-gradient(135deg, var(--sage-dark), var(--teal));
+//                     box-shadow: 0 6px 24px rgba(61, 139, 139, 0.35);
+//                     text-decoration: none;
+//                     transition: transform 0.2s ease, box-shadow 0.2s ease;
+//                 }
+//                 .whatsapp-fab:hover {
+//                     transform: translateY(-2px);
+//                     box-shadow: 0 10px 28px rgba(61, 139, 139, 0.42);
+//                 }
+//                 .whatsapp-fab-ring {
+//                     position: absolute;
+//                     inset: 0;
+//                     border-radius: 9999px;
+//                     background: var(--sage);
+//                     opacity: 0.5;
+//                     animation: whatsapp-pulse 2.4s ease-out infinite;
+//                 }
+//                 @keyframes whatsapp-pulse {
+//                     0% {
+//                         transform: scale(1);
+//                         opacity: 0.45;
+//                     }
+//                     70% {
+//                         transform: scale(1.6);
+//                         opacity: 0;
+//                     }
+//                     100% {
+//                         transform: scale(1.6);
+//                         opacity: 0;
+//                     }
+//                 }
+//                 @media (prefers-reduced-motion: reduce) {
+//                     .whatsapp-fab-ring {
+//                         animation: none;
+//                         display: none;
+//                     }
+//                 }
+//                 @media (max-width: 480px) {
+//                     .whatsapp-fab {
+//                         bottom: 16px;
+//                         right: 16px;
+//                         width: 52px;
+//                         height: 52px;
+//                     }
+//                 }
+//             `}</style>
+//         </a>
+//     );
+// }
+
+
+
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { MessageCircle } from "lucide-react";
 import { markClickedWhatsApp } from "@/lib/personalization/profile";
 import { fireConversion } from "@/lib/tracking/pixels";
+import Link from "next/link";
 
-// Set this in your .env file:
-// NEXT_PUBLIC_WHATSAPP_NUMBER=2348012345678   (no + or leading zeros, country code first)
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+const NG_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NG ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+const KE_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_KE ?? NG_NUMBER;
+
 const DEFAULT_MESSAGE = "Hi, I'd like to know more about booking a session with Mentel.";
-
-// Hide the button on internal/admin/app routes; show it everywhere else
-// (landing page, /about, /contact, /articles/*, /services, etc.).
-// A prefix deny-list means new marketing pages just work automatically —
-// you only need to remember to add a prefix here if you add a new
-// internal area, not every time you add a new public page.
-const BLOCKED_PREFIXES = ["/admin", "/assessment", "/book", "/marketing", "/adhd"];
+const BLOCKED_PREFIXES = ["/admin", "/assessment", "/book", "/marketing", "/adhd-assessment"];
 
 export default function WhatsAppButton() {
     const pathname = usePathname();
+    const [whatsappNumber, setWhatsappNumber] = useState<string>(NG_NUMBER);
+
+    useEffect(() => {
+        // Read country code set via middleware/headers or default to fallback logic
+        const getCountry = () => {
+            const match = document.cookie.match(/(?:^|; )vercel_country=([^;]*)/);
+            return match ? decodeURIComponent(match[1]) : null;
+        };
+
+        const country = getCountry();
+
+        // If location is defined and NOT "NG", fallback to Kenya number
+        if (country && country !== "NG") {
+            setWhatsappNumber(KE_NUMBER);
+        }
+    }, []);
+
     const isBlocked = BLOCKED_PREFIXES.some(
         (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
     );
-    if (isBlocked) {
+
+    if (isBlocked || !whatsappNumber) {
         return null;
     }
 
-    if (!WHATSAPP_NUMBER) {
-        // Fails loudly in dev instead of silently rendering a dead button.
-        if (process.env.NODE_ENV !== "production") {
-            console.warn(
-                "WhatsAppButton: NEXT_PUBLIC_WHATSAPP_NUMBER is not set. Add it to your .env file."
-            );
-        }
-        return null;
-    }
-
-    const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(DEFAULT_MESSAGE)}`;
+    const href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(DEFAULT_MESSAGE)}`;
 
     return (
         <a
