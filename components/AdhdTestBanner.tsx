@@ -52,6 +52,14 @@
 // --text-muted) rather than the ADHD flow's own palette constants, since
 // this renders inside the general articles template, keeping it visually
 // consistent with the page it's embedded in.
+//
+// Mobile note: the icon + heading used to sit side-by-side (flex-row) at
+// every screen size, which looked clustered on narrow phones — a 48px
+// icon squeezed against a two-line heading with only 16px of gap and 24px
+// of card padding left barely any breathing room. Below `sm:` it now
+// stacks icon-above-text instead, centered, with more generous spacing,
+// and only switches to the side-by-side layout once there's actually
+// enough width for it.
 
 import Link from "next/link";
 import { Brain, ArrowRight, Clock } from "lucide-react";
@@ -60,13 +68,13 @@ export function AdhdTestBanner() {
     return (
         <Link
             href="/adhd"
-            className="group mb-10 block rounded-2xl p-6 sm:p-7 no-underline transition-all hover:-translate-y-0.5"
+            className="group mb-10 block rounded-2xl p-5 sm:p-7 no-underline transition-all hover:-translate-y-0.5"
             style={{
                 background: "linear-gradient(135deg, rgba(123,169,139,0.1) 0%, rgba(90,140,160,0.08) 100%)",
                 border: "1px solid rgba(123,169,139,0.25)",
             }}
         >
-            <div className="flex items-start gap-4">
+            <div className="flex flex-col items-center text-center gap-3 sm:flex-row sm:items-start sm:text-left sm:gap-4">
                 <div
                     className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                     style={{ background: "var(--sage)" }}
@@ -82,7 +90,7 @@ export function AdhdTestBanner() {
                         Free self-assessment
                     </p>
                     <h3
-                        className="font-cormorant text-xl sm:text-2xl font-semibold mb-1.5 leading-snug"
+                        className="font-cormorant text-lg sm:text-2xl font-semibold mb-1.5 leading-snug"
                         style={{ color: "var(--deep)" }}
                     >
                         Constantly distracted, restless, or forgetting things that matter?
@@ -92,7 +100,7 @@ export function AdhdTestBanner() {
                         attention, memory, and focus patterns, not just a guess.
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-4">
+                    <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:flex-wrap">
                         <span
                             className="inline-flex items-center gap-2 text-sm font-medium text-white px-5 py-2.5 rounded-full transition-transform group-hover:translate-x-0.5"
                             style={{ background: "var(--deep)" }}
