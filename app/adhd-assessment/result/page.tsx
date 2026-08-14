@@ -1721,7 +1721,7 @@ import ReportPreviewMock from "@/components/adhd/ReportPreviewMock";
 import { Testimonials } from "@/components/adhd/TrustAndProof";
 import { testimonials } from "@/lib/adhd/social-proof-config";
 import { fireConversion } from "@/lib/tracking/pixels";
-import { CompletedPointer, loadCompletedPointer, persistCompletedPointer } from "../page";
+import { CompletedPointer, loadCompletedPointer, persistCompletedPointer } from "@/components/AdhdAssessmentClient";
 
 interface StoredResult {
     name: string;

@@ -77,15 +77,15 @@ export default function ConditionalShell({
 
     return (
         <>
-            {/* <AnalyticsProvider> */}
-            <BookingProvider>
-                <Navbar />
-                {/* <ResumeBanner /> */}
-                <GlobalObserver />
-                <main className="flex-1">{children}</main>
-                <Footer />
-            </BookingProvider>
-            {/* </AnalyticsProvider> */}
+            <AnalyticsProvider>
+                <BookingProvider>
+                    <Navbar />
+                    {/* <ResumeBanner /> */}
+                    <GlobalObserver />
+                    <main className="flex-1">{children}</main>
+                    <Footer />
+                </BookingProvider>
+            </AnalyticsProvider>
         </>
     );
 }

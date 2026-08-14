@@ -503,7 +503,7 @@ export default function FlutterwaveCheckout({
                 customizations: {
                     title: "Mentel — ADHD Report",
                     description: label,
-                    logo: `${window.location.origin}/logo-assessment.png`,
+                    logo: `${window.location.origin}/hr-logo.png`,
                 },
                 callback: async (response: { status?: string; transaction_id?: string | number }) => {
                     if (response?.status !== "successful" && response?.status !== "completed") return;
