@@ -494,7 +494,7 @@ export default function FlutterwaveCheckout({
                 amount: init.amountUSD,
                 currency: "USD",
                 payment_options: paymentOptions,
-                redirect_url: `${window.location.origin}/adhd/result?tx_ref=${encodeURIComponent(init.txRef)}`,
+                redirect_url: `${window.location.origin}/adhd-assessment/result?tx_ref=${encodeURIComponent(init.txRef)}`,
                 customer: {
                     email: customer.email,
                     name: customer.name,

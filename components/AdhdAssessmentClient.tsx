@@ -1180,7 +1180,7 @@ export default function AdhdAssessmentPage() {
         );
         const finalTimer = setTimeout(() => {
             clearSaved();
-            router.push("/adhd/result");
+            router.push("/adhd-assessment/result");
         }, analysingSteps.length * stepDurationMs + 900);
         return () => { timers.forEach(clearTimeout); clearTimeout(finalTimer); };
     }, [step, router]);
