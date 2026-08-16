@@ -172,6 +172,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
+      url: "https://www.trymentel.com/adhd-assessment",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: "https://www.trymentel.com/book",
       lastModified: new Date(),
       changeFrequency: "weekly",
