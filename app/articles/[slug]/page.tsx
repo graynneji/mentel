@@ -869,7 +869,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                             Ready to take the first step?
                         </p>
                         <p className="text-sm font-normal mb-5" style={{ color: "var(--text-muted)" }}>
-                            Book a session with a licensed therapist from ₦8,500. No commitment. Fully confidential.
+                            Not sure where to start? Take our free 2-minute assessment, or book a session with a licensed therapist. Fully confidential.
                         </p>
                         <div className="flex flex-wrap gap-3">
                             <Link
