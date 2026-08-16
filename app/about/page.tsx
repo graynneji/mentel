@@ -45,7 +45,7 @@ import { Heart, Award, Users, Leaf, ShieldCheck, Globe2, ArrowRight } from "luci
 const SITE_URL = "https://trymentel.com";
 
 export const metadata: Metadata = {
-    title: "About Mentel | Online Therapy & Mental Wellness in Nigeria",
+    title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
     description:
         "Mentel LTD is a Nigerian mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy. Learn our story, mission and approach.",
     keywords: [
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     ],
     alternates: { canonical: `${SITE_URL}/about` },
     openGraph: {
-        title: "About Mentel | Online Therapy & Mental Wellness in Nigeria",
+        title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
         description:
             "Mentel LTD is a Nigerian mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy.",
         url: `${SITE_URL}/about`,

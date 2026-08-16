@@ -3,16 +3,16 @@ import { Metadata } from "next";
 import Contact from "@/components/ContactPage";
 
 export const metadata: Metadata = {
-    title: "Contact Us",
+    title: "Contact Mentel if you have questions, concerns, ideas, or feedback about our mental health services, therapy, assessments, or your experience with our platform.",
     description:
-        "Get in touch with the Mentel team. We respond within one business day, reach us by email, phone, or send a message directly.",
+        "Get in touch with the Mentel team. We respond within one business day. Reach us by email, phone, or send us a message directly.",
     alternates: {
         canonical: "/contact",
     },
     openGraph: {
-        title: "Contact Us - Mentel",
+        title: "Contact Mentel if you have questions, concerns, ideas, or feedback about our mental health services, therapy, assessments, or your experience with our platform.",
         description:
-            "Have a question before booking? Reach out to Mentel and our team will respond within one business day.",
+            "Get in touch with the Mentel team. We respond within one business day. Reach us by email, phone, or send us a message directly.",
         url: "https://www.trymentel.com/contact",
         images: [
             {
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Contact Us - Mentel",
+        title: "Contact Mentel if you have questions, concerns, ideas, or feedback about our mental health services, therapy, assessments, or your experience with our platform.",
         description:
-            "Have a question before booking? Reach out to Mentel and our team will respond within one business day.",
+            "Get in touch with the Mentel team. We respond within one business day. Reach us by email, phone, or send us a message directly.",
         images: ["/og-image.png"],
     },
 };

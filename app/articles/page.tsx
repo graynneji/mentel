@@ -188,16 +188,16 @@ import { FeaturedCard } from "@/components/ArticleCard";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-    title: "Mental Health Articles & Resources - Mentel",
+    title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
     description:
-        "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+        "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
     alternates: {
         canonical: "/articles",
     },
     openGraph: {
-        title: "Mental Health Articles & Resources - Mentel",
+        title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
         description:
-            "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+            "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
         url: "https://www.trymentel.com/articles",
         images: [
             {
@@ -211,9 +211,9 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Mental Health Articles & Resources - Mentel",
+        title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
         description:
-            "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+            "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
         images: ["/og-image.png"],
     },
 };

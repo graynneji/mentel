@@ -3,16 +3,16 @@ import Services from "@/components/ServicesPage";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Our Services",
+    title: "Explore Mentel's Mental Health Services, Therapy, and Personalized Support Options for Your Well-Being.",
     description:
-        "Explore Mentel's therapy services, individual counseling, couples therapy, anxiety treatment, depression support, and more. Evidence-based care from licensed therapists.",
+        "Explore Mentel's mental health services, including online therapy, assessments, and personalized support designed to help you understand and improve your mental well-being.",
     alternates: {
         canonical: "/services",
     },
     openGraph: {
-        title: "Our Services - Mentel",
+        title: "Explore Mentel's Mental Health Services, Therapy, and Personalized Support Options for Your Well-Being.",
         description:
-            "From anxiety and depression to relationships and burnout, explore evidence-based therapy services tailored to your needs.",
+            "Explore Mentel's mental health services, including online therapy, assessments, and personalized support designed to help you understand and improve your mental well-being.",
         url: "https://www.trymentel.com/services",
         images: [
             {
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Our Services - Mentel",
+        title: "Explore Mentel’s Mental Health Services, Therapy, and Personalized Support Options for Your Well-Being.",
         description:
-            "From anxiety and depression to relationships and burnout, explore evidence-based therapy services tailored to your needs.",
+            "Explore Mentel’s mental health services, including online therapy, assessments, and personalized support designed to help you understand and improve your mental well-being.",
         images: ["/og-image.png"],
     },
 };
