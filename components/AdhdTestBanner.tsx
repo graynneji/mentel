@@ -67,7 +67,7 @@ import { Brain, ArrowRight, Clock } from "lucide-react";
 export function AdhdTestBanner() {
     return (
         <Link
-            href="/adhd"
+            href="/adhd-assessment"
             className="group mb-10 block rounded-2xl p-5 sm:p-7 no-underline transition-all hover:-translate-y-0.5"
             style={{
                 background: "linear-gradient(135deg, rgba(123,169,139,0.1) 0%, rgba(90,140,160,0.08) 100%)",
