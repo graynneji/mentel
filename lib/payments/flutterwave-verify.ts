@@ -171,8 +171,25 @@ export interface VerifyResult {
 export async function verifyFlutterwaveTransaction(opts: {
   txRef?: string | null;
   transactionId?: string | null;
+
+  // Meta CAPI browser matching data
+  fbp?: string;
+  fbc?: string;
+  clientIp?: string;
+  userAgent?: string;
+  eventSourceUrl?: string;
 }): Promise<VerifyResult> {
-  const { txRef, transactionId } = opts;
+  const {
+    txRef,
+    transactionId,
+
+    // Meta CAPI browser matching data
+    fbp,
+    fbc,
+    clientIp,
+    userAgent,
+    eventSourceUrl,
+  } = opts;
   if (!txRef && !transactionId) {
     return {
       success: false,
@@ -279,6 +296,12 @@ export async function verifyFlutterwaveTransaction(opts: {
           phone: lead.phone ?? undefined,
           value: matchedPlan.amountUSD,
           currency: "USD",
+          // Meta CAPI matching data
+          fbp,
+          fbc,
+          clientIp,
+          userAgent,
+          eventSourceUrl,
         }).catch((err) => console.error("FB CAPI Purchase event error:", err));
       }
     } catch (emailError) {

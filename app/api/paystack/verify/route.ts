@@ -217,6 +217,12 @@ export async function GET_HANDLER(req: Request) {
       reason: getField("reason"),
     };
 
+    const cookieHeader = req.headers.get("cookie") ?? "";
+    const getCookie = (name: string) =>
+      cookieHeader.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] ?? null;
+
+    const eventSourceUrl =
+      req.headers.get("referer") ?? req.headers.get("origin") ?? undefined;
     // Redundant with the webhook (lib/payments/record-payment.ts is
     // idempotent on `reference`, so whichever of the two fires first wins
     // and the other is a safe no-op) — this covers the case where the
@@ -235,6 +241,11 @@ export async function GET_HANDLER(req: Request) {
         plan: payment.plan,
         reason: payment.reason,
         paidAt: new Date(payment.paidAt ?? Date.now()),
+        fbp: getCookie("_fbp") ?? undefined,
+        fbc: getCookie("_fbc") ?? undefined,
+        clientIp: req.headers.get("x-forwarded-for") ?? undefined,
+        userAgent: req.headers.get("user-agent") ?? undefined,
+        eventSourceUrl,
       });
       portalLoginUrl = result.portalLoginUrl;
     } catch (err) {
@@ -245,9 +256,6 @@ export async function GET_HANDLER(req: Request) {
     // This is a browser-initiated GET (Paystack redirect), so the user's
     // mentel_vid / mentel_sid cookies are present on the request.
     // Fire-and-forget via after() so it never delays the response.
-    const cookieHeader = req.headers.get("cookie") ?? "";
-    const getCookie = (name: string) =>
-      cookieHeader.match(new RegExp(`(?:^|; )${name}=([^;]*)`))?.[1] ?? null;
 
     const visitorId = getCookie("mentel_vid");
     const sessionId = getCookie("mentel_sid");

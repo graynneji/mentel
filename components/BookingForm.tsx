@@ -903,9 +903,28 @@ export default function BookingForm() {
 
     // Silently capture lead on step 1 → 2 transition; fire-and-forget, never blocks the user.
     // Uses source "other" which maps to the valid "Other" category in the admin CRM.
-    const captureLeadSilently = () => {
+    // const captureLeadSilently = () => {
+    //     try {
+    //         fetch("/api/contact", {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json" },
+    //             body: JSON.stringify({
+    //                 name: form.name,
+    //                 email: form.email,
+    //                 phone: form.phone,
+    //                 message: `[Booking drop-off capture] User completed Step 1 and advanced to payment method selection. Reason for consultation: ${form.reason}`,
+    //                 source: "payment_initiated",
+    //             }),
+    //         }).catch(() => { /* silent — never surface errors to user */ });
+
+    //     } catch {
+    //         // intentionally silent
+    //     }
+    // };
+
+    const captureLeadSilently = async () => {
         try {
-            fetch("/api/contact", {
+            const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -915,9 +934,21 @@ export default function BookingForm() {
                     message: `[Booking drop-off capture] User completed Step 1 and advanced to payment method selection. Reason for consultation: ${form.reason}`,
                     source: "payment_initiated",
                 }),
-            }).catch(() => { /* silent — never surface errors to user */ });
+            });
+
+            if (!res.ok) return;
+
+            const data = await res.json();
+
+            if (data?.success && data?.leadId) {
+                fireConversion("Lead", {
+                    contentName: "booking_step1",
+                    dedupeKey: data.leadId,
+                    eventId: data.leadId,
+                });
+            }
         } catch {
-            // intentionally silent
+            // Intentionally silent. Lead capture must never interrupt booking.
         }
     };
 

@@ -190,6 +190,7 @@
 import { db } from "@/lib/db";
 import { randomBytes } from "crypto";
 import { sessionsForPlanLabel, planTypeForLabel } from "@/lib/payments/plans";
+import { sendFbConversionEvent } from "@/lib/fbConversion";
 
 const CLIENT_PORTAL_URL =
   process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL ?? "https://app.trymentel.com";
@@ -206,6 +207,12 @@ export interface RecordPaymentInput {
   plan: string; // "Monthly" | "Single session" | whatever your metadata sends
   reason?: string; // what they're seeking support for, if collected
   paidAt: Date;
+  // Meta Conversions API matching parameters
+  fbp?: string;
+  fbc?: string;
+  clientIp?: string;
+  userAgent?: string;
+  eventSourceUrl?: string;
 }
 
 export interface RecordPaymentResult {
@@ -294,6 +301,24 @@ export async function recordPayment(
         : `Plan: ${input.plan}`,
     },
   });
+
+  // Server-side Meta Purchase event.
+  // This runs only after a new payment record has been created.
+  // If the webhook and /verify both call recordPayment(), the
+  // existing-payment guard above prevents a second Purchase event.
+  sendFbConversionEvent({
+    eventName: "Purchase",
+    eventId: input.reference,
+    email: input.email,
+    phone: input.phone || undefined,
+    value: input.amountKobo / 100,
+    currency: input.currency,
+    fbp: input.fbp,
+    fbc: input.fbc,
+    clientIp: input.clientIp,
+    userAgent: input.userAgent,
+    eventSourceUrl: input.eventSourceUrl,
+  }).catch((err) => console.error("[FB CAPI] Purchase event error:", err));
 
   // Unlock the session package this payment pays for. Session count and
   // plan type come from lib/payments/plans.ts (the single source of

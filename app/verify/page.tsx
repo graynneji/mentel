@@ -449,10 +449,12 @@ function VerifyContent() {
                 // button, or React Strict Mode's double-invoke in dev never
                 // double-counts the same conversion.
                 fireConversion("Purchase", {
+                    contentName: "booked",
                     value: data.payment.amount,
                     currency: "NGN",
                     transactionId: data.payment.reference,
                     dedupeKey: data.payment.reference,
+                    eventId: data.payment.reference
                 });
             } else {
                 setErrorMsg(data.error ?? "Payment could not be verified.");

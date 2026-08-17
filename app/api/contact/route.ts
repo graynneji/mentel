@@ -36,6 +36,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { Resend } from "resend";
 import { withRateLimit } from "@/lib/withRateLimit";
+import { sendFbConversionEvent } from "@/lib/fbConversion";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -138,6 +139,23 @@ export async function POST_HANDLER(req: Request) {
         tags: [category],
       },
     });
+
+    const cookieHeader = nextReq.headers.get("cookie") ?? "";
+
+    const getCookie = (name: string) =>
+      cookieHeader.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`))?.[1];
+
+    sendFbConversionEvent({
+      eventName: "Lead",
+      eventId: lead.id,
+      email: lead.email,
+      phone: lead.phone ?? undefined,
+      fbp: getCookie("_fbp"),
+      fbc: getCookie("_fbc"),
+      clientIp: nextReq.headers.get("x-forwarded-for") ?? undefined,
+      userAgent: nextReq.headers.get("user-agent") ?? undefined,
+      eventSourceUrl: nextReq.headers.get("referer") ?? undefined,
+    }).catch((err) => console.error("[FB CAPI] Booking Lead error:", err));
 
     // Save the message body as a linked Message record
     await db.message.create({
