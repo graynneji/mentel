@@ -533,6 +533,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
     if (!article) {
         const dbArticle = await getPublishedDbArticleBySlug(param.slug);
+        console.log("article images ", dbArticle?.image, dbArticle);
         if (!dbArticle) return {};
         return {
             title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
@@ -548,13 +549,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
                 authors: ["Mentel Clinical Team"],
                 tags: dbArticle.tags,
                 images: dbArticle.image
-                    ? [{ url: `https://www.trymentel.com${dbArticle.image}`, width: 1200, height: 630, alt: dbArticle.title }]
+                    ? [{ url: dbArticle.image, width: 1200, height: 630, alt: dbArticle.title }]
                     : undefined,
             },
             twitter: {
                 card: "summary_large_image",
                 title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
                 description: dbArticle.metaDescription || dbArticle.excerpt,
+                images: dbArticle.image ? [dbArticle.image] : undefined,
             },
         };
     }
@@ -576,7 +578,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             tags: article.tags,
             images: [
                 {
-                    url: `https://www.trymentel.com${article.image}`,
+                    url: article.image,
                     width: 1200,
                     height: 630,
                     alt: article.title,
@@ -587,7 +589,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             card: "summary_large_image",
             title: `${article.title} - Mentel`,
             description: article.excerpt,
-            images: [`https://www.trymentel.com${article.image}`],
+            images: [article.image],
         },
     };
 }
