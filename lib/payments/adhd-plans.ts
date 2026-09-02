@@ -65,7 +65,8 @@ export const ADHD_PLANS: Record<string, AdhdPlanDefinition> = {
   report: {
     key: "report",
     label: "ADHD Full Report",
-    amountUSD: 19,
+    amountUSD: 5, // ≈ $19 self-guided tier — adjust to live FX as needed
+    // amountUSD: 19,
     description: "Your full personalised report",
     features: [
       "Complete domain-by-domain breakdown",
@@ -77,7 +78,8 @@ export const ADHD_PLANS: Record<string, AdhdPlanDefinition> = {
   toolkit: {
     key: "toolkit",
     label: "ADHD Report + Toolkit",
-    amountUSD: 47,
+    amountUSD: 19, // ≈ $47 comprehensive tier
+    // amountUSD: 47,
     description: "Full report plus planning toolkit",
     features: [
       "Everything in the Full Report",
