@@ -60,8 +60,8 @@ export async function sendSms(input: SendSmsInput): Promise<SendSmsResult> {
     });
 
     const data = await res.json();
-
-    if (!res.ok || data.status !== "success") {
+    console.log("Send SMS response:", data);
+    if (!res.ok || data.status !== "sent") {
       return {
         success: false,
         error: data.message || data.error || `Request failed (${res.status})`,
@@ -100,8 +100,8 @@ export async function checkBalance(): Promise<BalanceResult> {
       cache: "no-store",
     });
     const data = await res.json();
-    console.log("Balance check response:", data);
-    if (!res.ok || data.status !== "success") {
+
+    if (!res.ok || data.status !== "sent") {
       return {
         success: false,
         error: data.message || `Request failed (${res.status})`,
@@ -144,13 +144,13 @@ export async function getMessageStatus(
       },
     );
     const data = await res.json();
-    if (!res.ok || data.status !== "success") {
+    if (!res.ok || data.status !== "sent") {
       return {
         success: false,
         error: data.message || `Request failed (${res.status})`,
       };
     }
-    console.log("Message status response:", data);
+
     return {
       success: true,
       status: data.data?.message_status,
