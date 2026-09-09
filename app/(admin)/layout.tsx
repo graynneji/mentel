@@ -213,8 +213,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className={`flex items-center h-[60px] border-b border-white/10 shrink-0 ${collapsed ? "justify-center px-2" : "px-5"}`}>
                     {!collapsed ? (
                         <div className="flex items-center gap-2 min-w-0">
-                            <div className="w-7 h-7 rounded-lg bg-[#4e8c6a] flex items-center justify-center shrink-0">
-                                <span className="text-white text-[11px] font-bold">M</span>
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden"
+                                style={{ background: "linear-gradient(135deg, #4e8c6a, #3d8b8b)" }}>
+                                <Image
+                                    src="/hr-logo.png"
+                                    alt="Mentel logo"
+                                    width={28}
+                                    height={28}
+                                    style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                                />
                             </div>
                             <span className="text-white font-semibold text-[15px] tracking-tight truncate">Mentel Admin</span>
                         </div>

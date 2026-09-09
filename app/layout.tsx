@@ -609,7 +609,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         <FacebookPixel />
         <GoogleAdsTag />
-        <OneSignalInit />
+        {/* <OneSignalInit /> */}
         <IntegrityBeacon />
         <WhatsAppButton />
         <ConditionalShell>{children}</ConditionalShell>
