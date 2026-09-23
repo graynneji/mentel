@@ -1,10 +1,35 @@
 import { Metadata } from "next";
 import BookingPage from "@/components/BookingPage";
 
+
+
 export const metadata: Metadata = {
     title: "Book a Therapy Session - Mentel",
     description:
         "Book a 50-minute session with a licensed Nigerian therapist from ₦8,500. Matched to your needs within 24 hours. Confidential, evidence-based care. No commitment required.",
+    keywords: [
+        "book online therapy",
+        "book a therapist online",
+        "online therapy booking",
+        "book therapy session",
+        "book an online therapist",
+        "schedule online therapy",
+        "schedule a therapy session",
+        "online therapist appointment",
+        "therapy appointment online",
+        "book counseling online",
+        "book counselling online",
+        "online counseling appointment",
+        "online counselling appointment",
+        "private online therapy",
+        "confidential online therapy",
+        "licensed therapist online",
+        "online therapy UK",
+        "online counselling UK",
+        "online therapy USA",
+        "online counseling USA",
+        "online therapy Nigeria",
+    ],
     alternates: {
         canonical: "/book",
     },

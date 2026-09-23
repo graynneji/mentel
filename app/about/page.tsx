@@ -48,11 +48,24 @@ export const metadata: Metadata = {
     title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
     description:
         "Mentel LTD is a Nigerian mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy. Learn our story, mission and approach.",
+    // keywords: [
+    //     "about Mentel",
+    //     "mental health company Nigeria",
+    //     "online therapy Nigeria",
+    //     "licensed therapists Lagos",
+    // ],
     keywords: [
         "about Mentel",
-        "mental health company Nigeria",
+        "Mentel mental health",
+        "Mentel online therapy",
+        "online therapy company",
+        "mental health company",
+        "mental health platform",
+        "online therapy platform",
+        "licensed therapists",
         "online therapy Nigeria",
-        "licensed therapists Lagos",
+        "mental health company Nigeria",
+        "mental health support Nigeria",
     ],
     alternates: { canonical: `${SITE_URL}/about` },
     openGraph: {
