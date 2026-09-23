@@ -473,6 +473,7 @@ import { markdownToSections } from "@/lib/articles/markdown-to-sections";
 import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisuals";
 import { ArticleCard } from "../../../components/ArticleCard";
 import { AdhdTestBanner } from "@/components/AdhdTestBanner";
+import { BookingBanner } from "@/components/BookingBanner";
 
 // Re-fetch on every request rather than caching indefinitely — CMS
 // articles are published dynamically and should show up immediately,
@@ -764,7 +765,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         </div>
                     )}
 
-                    <AdhdTestBanner />
+                    {/* <AdhdTestBanner /> */}
+                    <BookingBanner />
 
                     {/* Article body — unchanged */}
                     {content && (
