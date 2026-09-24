@@ -47,7 +47,7 @@ const SITE_URL = "https://trymentel.com";
 export const metadata: Metadata = {
     title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
     description:
-        "Mentel LTD is a Nigerian mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy. Learn our story, mission and approach.",
+        "Mentel mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy. Learn our story, mission and approach.",
     // keywords: [
     //     "about Mentel",
     //     "mental health company Nigeria",
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
         description:
-            "Mentel LTD is a Nigerian mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy.",
+            "Mentel mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy.",
         url: `${SITE_URL}/about`,
         siteName: "Mentel",
         type: "website",

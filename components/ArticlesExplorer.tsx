@@ -1,25 +1,158 @@
-"use client";
+// "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
+// import Link from "next/link";
+// import { Clock, TrendingUp } from "lucide-react";
+// import type { articles as ArticlesType } from "@/utilz/articles";
+// import { ArticleCard } from "./ArticleCard";
+// import { ArticleCover, getCategoryStyle } from "./ArticleVisuals";
+
+// type Article = (typeof ArticlesType)[number];
+
+// export default function ArticlesExplorer({
+//     rest,
+//     trending,
+//     categories,
+// }: {
+//     rest: Article[];
+//     trending: Article[];
+//     categories: string[];
+// }) {
+//     const [active, setActive] = useState("All");
+//     const filtered = active === "All" ? rest : rest.filter((a) => a.category === active);
+
+//     return (
+//         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8 lg:gap-10">
+//             {/* Main column */}
+//             <div>
+//                 {/* Category pills */}
+//                 <div className="flex gap-2 overflow-x-auto pb-1 mb-6 -mx-1 px-1" style={{ scrollbarWidth: "none" }}>
+//                     {["All", ...categories].map((cat) => {
+//                         const isActive = active === cat;
+//                         return (
+//                             <button
+//                                 key={cat}
+//                                 onClick={() => setActive(cat)}
+//                                 className="text-xs px-3.5 py-1.5 rounded-full border font-medium whitespace-nowrap transition-all flex-shrink-0"
+//                                 style={
+//                                     isActive
+//                                         ? { background: "var(--sage-dark)", borderColor: "var(--sage-dark)", color: "white" }
+//                                         : { borderColor: "var(--border)", color: "var(--text-muted)", background: "white" }
+//                                 }
+//                             >
+//                                 {cat}
+//                             </button>
+//                         );
+//                     })}
+//                 </div>
+
+//                 {/* Grid */}
+//                 {filtered.length > 0 ? (
+//                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+//                         {filtered.map((article) => (
+//                             <ArticleCard key={article.slug} article={article} />
+//                         ))}
+//                     </div>
+//                 ) : (
+//                     <p className="text-sm py-12 text-center" style={{ color: "var(--text-muted)" }}>
+//                         No articles in this category yet.
+//                     </p>
+//                 )}
+//             </div>
+
+//             {/* Trending sidebar */}
+//             <aside className="lg:sticky lg:top-24 self-start">
+//                 <div className="rounded-2xl border p-5" style={{ background: "white", borderColor: "var(--border)" }}>
+//                     <p
+//                         className="text-xs font-medium uppercase tracking-widest mb-4 flex items-center gap-1.5"
+//                         style={{ color: "var(--sage-dark)" }}
+//                     >
+//                         <TrendingUp size={12} />
+//                         Most read
+//                     </p>
+//                     <div className="flex flex-col gap-4">
+//                         {trending.map((article, i) => {
+//                             const style = getCategoryStyle(article.category);
+//                             return (
+//                                 <Link
+//                                     key={article.slug}
+//                                     href={`/articles/${article.slug}`}
+//                                     className="group flex items-start gap-3"
+//                                 >
+//                                     <span
+//                                         className="font-cormorant font-semibold text-xl leading-none flex-shrink-0 w-6 pt-0.5"
+//                                         style={{ color: style.accent }}
+//                                     >
+//                                         {i + 1}
+//                                     </span>
+//                                     <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+//                                         <ArticleCover image={article.image} category={article.category} title={article.title} iconSize={32} />
+//                                     </div>
+//                                     <div className="flex-1 min-w-0">
+//                                         <p
+//                                             className="text-sm font-medium leading-snug line-clamp-2 transition-colors duration-200 group-hover:text-[var(--teal)]"
+//                                             style={{ color: "var(--deep)" }}
+//                                         >
+//                                             {article.title}
+//                                         </p>
+//                                         <span className="flex items-center gap-1 text-xs mt-1" style={{ color: "var(--text-muted)" }}>
+//                                             <Clock size={10} />
+//                                             {article.readMin} min read
+//                                         </span>
+//                                     </div>
+//                                 </Link>
+//                             );
+//                         })}
+//                     </div>
+//                 </div>
+//             </aside>
+//         </div>
+//     );
+// }
+
+
+// components/ArticlesExplorer.tsx
+
 import Link from "next/link";
-import { Clock, TrendingUp } from "lucide-react";
-import type { articles as ArticlesType } from "@/utilz/articles";
+import { Clock, TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
+import type { ArticleSummary } from "@/lib/articles/data";
 import { ArticleCard } from "./ArticleCard";
 import { ArticleCover, getCategoryStyle } from "./ArticleVisuals";
 
-type Article = (typeof ArticlesType)[number];
+function buildHref(category: string, page: number) {
+    const params = new URLSearchParams();
+    if (category !== "All") params.set("category", category);
+    if (page > 1) params.set("page", String(page));
+    const qs = params.toString();
+    return qs ? `/articles?${qs}` : "/articles";
+}
 
 export default function ArticlesExplorer({
-    rest,
+    articles,
     trending,
     categories,
+    activeCategory,
+    currentPage,
+    totalPages,
 }: {
-    rest: Article[];
-    trending: Article[];
+    articles: ArticleSummary[];
+    trending: ArticleSummary[];
     categories: string[];
+    activeCategory: string;
+    currentPage: number;
+    totalPages: number;
 }) {
-    const [active, setActive] = useState("All");
-    const filtered = active === "All" ? rest : rest.filter((a) => a.category === active);
+    const pageNumbers = (() => {
+        const pages: (number | "...")[] = [];
+        for (let p = 1; p <= totalPages; p++) {
+            if (p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1) {
+                pages.push(p);
+            } else if (pages[pages.length - 1] !== "...") {
+                pages.push("...");
+            }
+        }
+        return pages;
+    })();
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8 lg:gap-10">
@@ -28,11 +161,12 @@ export default function ArticlesExplorer({
                 {/* Category pills */}
                 <div className="flex gap-2 overflow-x-auto pb-1 mb-6 -mx-1 px-1" style={{ scrollbarWidth: "none" }}>
                     {["All", ...categories].map((cat) => {
-                        const isActive = active === cat;
+                        const isActive = activeCategory === cat;
                         return (
-                            <button
+                            <Link
                                 key={cat}
-                                onClick={() => setActive(cat)}
+                                href={buildHref(cat, 1)}
+                                scroll={false}
                                 className="text-xs px-3.5 py-1.5 rounded-full border font-medium whitespace-nowrap transition-all flex-shrink-0"
                                 style={
                                     isActive
@@ -41,18 +175,77 @@ export default function ArticlesExplorer({
                                 }
                             >
                                 {cat}
-                            </button>
+                            </Link>
                         );
                     })}
                 </div>
 
                 {/* Grid */}
-                {filtered.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        {filtered.map((article) => (
-                            <ArticleCard key={article.slug} article={article} />
-                        ))}
-                    </div>
+                {articles.length > 0 ? (
+                    <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            {articles.map((article) => (
+                                <ArticleCard key={article.slug} article={article} />
+                            ))}
+                        </div>
+
+                        {/* Pagination controls */}
+                        {totalPages > 1 && (
+                            <div className="flex items-center justify-center gap-1.5 mt-8 pt-6 border-t" style={{ borderColor: "var(--border)" }}>
+                                {currentPage > 1 ? (
+                                    <Link
+                                        href={buildHref(activeCategory, currentPage - 1)}
+                                        aria-label="Previous page"
+                                        className="w-8 h-8 flex items-center justify-center rounded-full border transition-all"
+                                        style={{ borderColor: "var(--border)", color: "var(--text-muted)", background: "white" }}
+                                    >
+                                        <ChevronLeft size={14} />
+                                    </Link>
+                                ) : (
+                                    <span className="w-8 h-8 flex items-center justify-center rounded-full border opacity-35 cursor-not-allowed" style={{ borderColor: "var(--border)", color: "var(--text-muted)", background: "white" }}>
+                                        <ChevronLeft size={14} />
+                                    </span>
+                                )}
+
+                                {pageNumbers.map((p, i) =>
+                                    p === "..." ? (
+                                        <span key={`ellipsis-${i}`} className="w-8 h-8 flex items-center justify-center text-xs" style={{ color: "var(--text-muted)" }}>
+                                            …
+                                        </span>
+                                    ) : (
+                                        <Link
+                                            key={p}
+                                            href={buildHref(activeCategory, p)}
+                                            aria-current={p === currentPage ? "page" : undefined}
+                                            className="w-8 h-8 flex items-center justify-center rounded-full border text-xs font-medium transition-all"
+                                            style={
+                                                p === currentPage
+                                                    ? { background: "var(--sage-dark)", borderColor: "var(--sage-dark)", color: "white" }
+                                                    : { borderColor: "var(--border)", color: "var(--text-muted)", background: "white" }
+                                            }
+                                        >
+                                            {p}
+                                        </Link>
+                                    )
+                                )}
+
+                                {currentPage < totalPages ? (
+                                    <Link
+                                        href={buildHref(activeCategory, currentPage + 1)}
+                                        aria-label="Next page"
+                                        className="w-8 h-8 flex items-center justify-center rounded-full border transition-all"
+                                        style={{ borderColor: "var(--border)", color: "var(--text-muted)", background: "white" }}
+                                    >
+                                        <ChevronRight size={14} />
+                                    </Link>
+                                ) : (
+                                    <span className="w-8 h-8 flex items-center justify-center rounded-full border opacity-35 cursor-not-allowed" style={{ borderColor: "var(--border)", color: "var(--text-muted)", background: "white" }}>
+                                        <ChevronRight size={14} />
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    </>
                 ) : (
                     <p className="text-sm py-12 text-center" style={{ color: "var(--text-muted)" }}>
                         No articles in this category yet.

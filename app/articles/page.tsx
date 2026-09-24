@@ -1,21 +1,28 @@
+
 // // app/articles/page.tsx
 // import Link from "next/link";
 // import { ArrowRight, Clock, Leaf, BookOpen, TrendingUp } from "lucide-react";
 // import { articles } from "@/utilz/articles";
+// import { getAllPublishedArticles } from "@/lib/articles/data";
 // import ArticlesExplorer from "@/components/ArticlesExplorer";
 // import { FeaturedCard } from "@/components/ArticleCard";
 
+// // Re-query on every request — this list includes CMS-published articles,
+// // which should appear as soon as they're published, not only after the
+// // next full rebuild/deploy.
+// export const dynamic = "force-dynamic";
+
 // export const metadata = {
-//     title: "Mental Health Articles & Resources - Mentel",
+//     title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
 //     description:
-//         "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+//         "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
 //     alternates: {
 //         canonical: "/articles",
 //     },
 //     openGraph: {
-//         title: "Mental Health Articles & Resources - Mentel",
+//         title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
 //         description:
-//             "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+//             "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
 //         url: "https://www.trymentel.com/articles",
 //         images: [
 //             {
@@ -29,9 +36,9 @@
 //     },
 //     twitter: {
 //         card: "summary_large_image",
-//         title: "Mental Health Articles & Resources - Mentel",
+//         title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
 //         description:
-//             "Expert-written guides on anxiety, depression, therapy in Nigeria, relationships, and wellbeing. Evidence-based mental health content for Nigerians.",
+//             "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
 //         images: ["/og-image.png"],
 //     },
 // };
@@ -112,10 +119,11 @@
 // }
 
 
-// export default function ArticlesPage() {
-//     const [featured, ...rest] = articles;
-//     const categories = Array.from(new Set(articles.map((a) => a.category)));
-//     const trending = articles.slice(0, 5);
+// export default async function ArticlesPage() {
+//     const allArticles = await getAllPublishedArticles();
+//     const [featured, ...rest] = allArticles;
+//     const categories = Array.from(new Set(allArticles.map((a) => a.category)));
+//     const trending = allArticles.slice(0, 5);
 
 //     return (
 //         <div className="relative overflow-x-hidden">
@@ -140,13 +148,13 @@
 //                                     explained.
 //                                 </em>
 //                             </h1>
-//                             <p className="text-sm sm:text-base font-normal max-w-md" style={{ color: "var(--text-muted)" }}>
+//                             <p className="text-sm sm:text-base font-normal max-w-xl" style={{ color: "var(--text-muted)" }}>
 //                                 Evidence-based guides written by clinicians. Real talk about anxiety, depression, relationships, and healing in a Nigerian context.
 //                             </p>
 //                         </div>
 //                         <div className="flex items-center gap-2 text-xs" style={{ color: "var(--text-muted)" }}>
 //                             <TrendingUp size={14} style={{ color: "var(--sage-dark)" }} />
-//                             {articles.length} articles published
+//                             {allArticles.length} articles published
 //                         </div>
 //                     </div>
 //                 </div>
@@ -174,17 +182,21 @@
 //         </div>
 //     );
 // }
+
+
 // app/articles/page.tsx
+
 import Link from "next/link";
 import { ArrowRight, Clock, Leaf, BookOpen, TrendingUp } from "lucide-react";
 import { articles } from "@/utilz/articles";
-import { getAllPublishedArticles } from "@/lib/articles/data";
+import {
+    getPublishedArticlesPage,
+    getFeaturedAndTrending,
+    getArticleCategories,
+} from "@/lib/articles/data";
 import ArticlesExplorer from "@/components/ArticlesExplorer";
 import { FeaturedCard } from "@/components/ArticleCard";
 
-// Re-query on every request — this list includes CMS-published articles,
-// which should appear as soon as they're published, not only after the
-// next full rebuild/deploy.
 export const dynamic = "force-dynamic";
 
 export const metadata = {
@@ -205,7 +217,6 @@ export const metadata = {
                 width: 1200,
                 height: 630,
                 alt: "Mental Health Articles & Resources - Mentel",
-                // alt: "Mental Health Articles & Resources — Mentel",
             },
         ],
     },
@@ -218,87 +229,26 @@ export const metadata = {
     },
 };
 
+const PAGE_SIZE = 8;
 
+export default async function ArticlesPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ page?: string; category?: string }>;
+}) {
+    const params = await searchParams;
+    const currentPage = Math.max(1, parseInt(params.page ?? "1", 10) || 1);
+    const activeCategory = params.category ?? "All";
 
+    const [{ articles: pageArticles, total, totalPages }, topArticles, categories] =
+        await Promise.all([
+            getPublishedArticlesPage({ page: currentPage, pageSize: PAGE_SIZE, category: activeCategory }),
+            getFeaturedAndTrending(6),
+            getArticleCategories(),
+        ]);
 
-const categoryColors: Record<string, string> = {
-    "Access to Care": "rgba(61,139,139,0.10)",
-    "Getting Started": "rgba(123,169,139,0.12)",
-    Anxiety: "rgba(168,196,176,0.18)",
-    Depression: "rgba(78,122,94,0.10)",
-    Relationships: "rgba(111,184,184,0.12)",
-    Burnout: "rgba(28,58,58,0.08)",
-    Trauma: "rgba(200,221,210,0.25)",
-};
-
-function ArticleCard({ article, large = false }: { article: (typeof articles)[0]; large?: boolean }) {
-    return (
-        <Link
-            href={`/articles/${article.slug}`}
-            className={`group block rounded-2xl border overflow-hidden transition-all hover:-translate-y-1 hover:shadow-lg duration-300 ${large ? "sm:col-span-2 lg:col-span-2" : ""}`}
-            style={{ background: "white", borderColor: "var(--border)" }}
-        >
-            {/* Colour-block top accent */}
-            <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, var(--sage-dark), var(--teal))" }} />
-
-            <div className={`p-5 sm:p-6 ${large ? "sm:p-8" : ""} flex flex-col h-full`}>
-                {/* Category pill */}
-                <div className="flex items-center gap-2 mb-3">
-                    <span
-                        className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full"
-                        style={{
-                            background: categoryColors[article.category] ?? "rgba(123,169,139,0.10)",
-                            color: "var(--sage-dark)",
-                        }}
-                    >
-                        <Leaf size={9} />
-                        {article.category}
-                    </span>
-                </div>
-
-                <h2
-                    className={`font-cormorant font-semibold leading-snug mb-3 transition-colors duration-200 group-hover:text-[var(--teal)] ${large ? "text-2xl sm:text-3xl" : "text-xl"}`}
-                    style={{ color: "var(--deep)" }}
-                >
-                    {article.title}
-                </h2>
-
-                <p
-                    className="text-sm leading-relaxed font-normal flex-1"
-                    style={{ color: "var(--text-muted)" }}
-                >
-                    {article.excerpt}
-                </p>
-
-                <div className="flex items-center justify-between mt-5 pt-4 border-t" style={{ borderColor: "var(--border)" }}>
-                    <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1 text-xs" style={{ color: "var(--text-muted)" }}>
-                            <Clock size={11} />
-                            {article.readMin} min read
-                        </span>
-                        <span className="text-xs" style={{ color: "var(--text-muted)" }}>
-                            {new Date(article.date).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" })}
-                        </span>
-                    </div>
-                    <span
-                        className="inline-flex items-center gap-1 text-xs font-medium transition-colors duration-200"
-                        style={{ color: "var(--sage-dark)" }}
-                    >
-                        Read
-                        <ArrowRight size={12} className="transition-transform duration-200 group-hover:translate-x-1" />
-                    </span>
-                </div>
-            </div>
-        </Link>
-    );
-}
-
-
-export default async function ArticlesPage() {
-    const allArticles = await getAllPublishedArticles();
-    const [featured, ...rest] = allArticles;
-    const categories = Array.from(new Set(allArticles.map((a) => a.category)));
-    const trending = allArticles.slice(0, 5);
+    const featured = topArticles[0];
+    const trending = topArticles.slice(0, 5);
 
     return (
         <div className="relative overflow-x-hidden">
@@ -329,21 +279,23 @@ export default async function ArticlesPage() {
                         </div>
                         <div className="flex items-center gap-2 text-xs" style={{ color: "var(--text-muted)" }}>
                             <TrendingUp size={14} style={{ color: "var(--sage-dark)" }} />
-                            {allArticles.length} articles published
+                            {total} article{total === 1 ? "" : "s"} published
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Featured hero */}
-            <section className="relative z-10 py-10 sm:py-12">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: "var(--sage-dark)" }}>
-                        Featured
-                    </p>
-                    <FeaturedCard article={featured} />
-                </div>
-            </section>
+            {/* Featured hero — only on page 1, unfiltered */}
+            {currentPage === 1 && activeCategory === "All" && featured && (
+                <section className="relative z-10 py-10 sm:py-12">
+                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <p className="text-xs font-medium uppercase tracking-widest mb-4" style={{ color: "var(--sage-dark)" }}>
+                            Featured
+                        </p>
+                        <FeaturedCard article={featured} />
+                    </div>
+                </section>
+            )}
 
             {/* Explorer: filters + grid + trending */}
             <section className="relative z-10 pb-16 sm:pb-20 border-t" style={{ borderColor: "var(--border)" }}>
@@ -351,7 +303,14 @@ export default async function ArticlesPage() {
                     <p className="text-xs font-medium uppercase tracking-widest mb-6" style={{ color: "var(--sage-dark)" }}>
                         All Articles
                     </p>
-                    <ArticlesExplorer rest={rest} trending={trending} categories={categories} />
+                    <ArticlesExplorer
+                        articles={pageArticles}
+                        trending={trending}
+                        categories={categories}
+                        activeCategory={activeCategory}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                    />
                 </div>
             </section>
         </div>

@@ -3,14 +3,28 @@ import { ArrowRight, Clock, Leaf } from "lucide-react";
 import type { articles } from "@/utilz/articles";
 import { ArticleCover, getCategoryStyle } from "./ArticleVisuals";
 
-type Article = (typeof articles)[number];
+// type Article = (typeof articles)[number];
+
+interface CardArticle {
+    slug: string;
+    title: string;
+    category: string;
+    excerpt: string;
+    readMin: number;
+    date: string;
+    image: string | null;
+}
 
 function formatDate(date: string) {
     return new Date(date).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" });
 }
 
+// function formatDate(date: string) {
+//     return new Date(date).toLocaleDateString("en-NG", { day: "numeric", month: "short", year: "numeric" });
+// }
+
 /* ── Standard grid card — image-led ── */
-export function ArticleCard({ article }: { article: Article }) {
+export function ArticleCard({ article }: { article: CardArticle }) {
     const style = getCategoryStyle(article.category);
     return (
         <Link
@@ -58,7 +72,7 @@ export function ArticleCard({ article }: { article: Article }) {
 }
 
 /* ── Featured hero card — Apple-News-style image lead with overlay text ── */
-export function FeaturedCard({ article }: { article: Article }) {
+export function FeaturedCard({ article }: { article: CardArticle }) {
     const style = getCategoryStyle(article.category);
     return (
         <Link

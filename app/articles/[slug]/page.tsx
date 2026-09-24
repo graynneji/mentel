@@ -468,7 +468,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
 import { articleContent, articles } from "@/utilz/articles";
-import { getAllPublishedArticles, getPublishedDbArticleBySlug } from "@/lib/articles/data";
+// import { getAllPublishedArticles, getPublishedDbArticleBySlug } from "@/lib/articles/data";
+import { getPublishedDbArticleBySlug, getRelatedArticles } from "@/lib/articles/data";
 import { markdownToSections } from "@/lib/articles/markdown-to-sections";
 import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisuals";
 import { ArticleCard } from "../../../components/ArticleCard";
@@ -648,15 +649,22 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         if (Array.isArray(faq) && faq.length > 0) content.faq = faq;
     }
 
-    const allArticles = staticArticle ? null : await getAllPublishedArticles();
+    // const allArticles = staticArticle ? null : await getAllPublishedArticles();
+    // const articleIndex = articles.findIndex((a) => a.slug === param.slug);
+    // const prev = staticArticle ? (articles[articleIndex - 1] ?? null) : null;
+    // const next = staticArticle ? (articles[articleIndex + 1] ?? null) : null;
+
+    // // Related: same category, excluding current article, max 3
+    // const related = staticArticle
+    //     ? articles.filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3)
+    //     : (allArticles ?? []).filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3);
     const articleIndex = articles.findIndex((a) => a.slug === param.slug);
     const prev = staticArticle ? (articles[articleIndex - 1] ?? null) : null;
     const next = staticArticle ? (articles[articleIndex + 1] ?? null) : null;
 
-    // Related: same category, excluding current article, max 3
     const related = staticArticle
         ? articles.filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3)
-        : (allArticles ?? []).filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3);
+        : await getRelatedArticles(article.category, article.slug, 3);
 
     const style = getCategoryStyle(article.category);
 
