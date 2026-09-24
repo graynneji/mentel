@@ -382,7 +382,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_NG",
+    locale: "en",
     url: "https://www.trymentel.com",
     siteName: "Mentel",
     title: "Mentel | Online Professional Therapy & Mental Health Support",
@@ -491,6 +491,11 @@ const structuredData = {
       //   "@type": "Country",
       //   name: "Nigeria",
       // },
+      areaServed: [
+        { "@type": "Country", name: "Nigeria" },
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "United Kingdom" },
+      ],
       sameAs: [
         "https://instagram.com/mentel_ltd",
         "https://tiktok.com/@mentelltd",
@@ -498,6 +503,8 @@ const structuredData = {
       ],
       // priceRange: "₦₦",
       // currenciesAccepted: "NGN",
+      priceRange: "$$",
+      currenciesAccepted: "USD, NGN, GBP",
       paymentAccepted: "Credit Card, Bank Transfer",
       medicalSpecialty: [
         "Psychiatry",

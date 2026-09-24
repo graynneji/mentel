@@ -780,18 +780,22 @@ export const metadata: Metadata = {
     "therapist Nigeria",
     "therapy Lagos",
     "therapy Abuja",
-    // "How much does therapy cost",
+    "How much does therapy cost",
     "cheap therapy services Nigeria",
     "affordable marriage counselling",
     "marriage counselling Nigeria",
     "mental health support Nigeria",
-    // "online therapy for couples Nigeria",
+    "online therapy for couples Nigeria",
     "relationship counselling Nigeria",
     "therapy for trauma Nigeria",
     "mental health therapist Lagos",
     "anxiety counselling Nigeria",
     "employee mental health Nigeria",
     "cognitive behavioral therapy Nigeria",
+    "how to overcome anxiety",
+    "mindfulness therapy Nigeria",
+    "self-esteem therapy Nigeria",
+
   ],
   openGraph: {
     title: "Mentel | Online Professional Therapy & Mental Health Support",
@@ -799,7 +803,7 @@ export const metadata: Metadata = {
       "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, trauma, burnout, relationships, and personal growth.",
     url: "https://www.trymentel.com",
     siteName: "Mentel",
-    locale: "en_NG",
+    locale: "en",
     type: "website",
   },
   alternates: { canonical: "https://www.trymentel.com" },
@@ -1065,45 +1069,50 @@ const trustBadges = [
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: [
-    ...faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-    {
-      "@type": "Question",
-      name: "What is Mentel?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is online therapy available in Nigeria?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How do I book a therapy session in Nigeria?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Can I get a free mental health assessment?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
-      },
-    },
-  ],
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+  // mainEntity: [
+  //   ...faqs.map((f) => ({
+  //     "@type": "Question",
+  //     name: f.q,
+  //     acceptedAnswer: { "@type": "Answer", text: f.a },
+  //   })),
+  //   {
+  //     "@type": "Question",
+  //     name: "What is Mentel?",
+  //     acceptedAnswer: {
+  //       "@type": "Answer",
+  //       text: "Mentel is a Nigerian online therapy platform that connects people with licensed, vetted therapists via secure video call. Sessions start from ₦8,500. Mentel provides evidence-based care for anxiety, depression, burnout, trauma, couples issues, and more.",
+  //     },
+  //   },
+  //   {
+  //     "@type": "Question",
+  //     name: "Is online therapy available in Nigeria?",
+  //     acceptedAnswer: {
+  //       "@type": "Answer",
+  //       text: "Yes. Mentel provides online therapy across Nigeria, including Lagos, Abuja, Port Harcourt, and all other states.",
+  //     },
+  //   },
+  //   {
+  //     "@type": "Question",
+  //     name: "How do I book a therapy session in Nigeria?",
+  //     acceptedAnswer: {
+  //       "@type": "Answer",
+  //       text: "Visit trymentel.com, complete the intake form, and receive a therapist match within 24 hours. You can also take a free 2-minute mental health assessment before booking.",
+  //     },
+  //   },
+  //   {
+  //     "@type": "Question",
+  //     name: "Can I get a free mental health assessment?",
+  //     acceptedAnswer: {
+  //       "@type": "Answer",
+  //       text: "Yes. Mentel offers a free 2-minute mental health check-in at trymentel.com/assessment. It is confidential and gives you a clear picture of what kind of support might help.",
+  //     },
+  //   },
+  // ],
 };
 
 // const faqSchema = {
