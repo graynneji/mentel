@@ -606,6 +606,7 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
     const [optimizing, setOptimizing] = useState(false);
     const [applying, setApplying] = useState(false);
     const [linkPickerOpen, setLinkPickerOpen] = useState(false);
+    const [linkableCategory, setLinkableCategory] = useState<string | null>(null);
     const [linkSearch, setLinkSearch] = useState("");
     const [linkableArticles, setLinkableArticles] = useState<{ title: string; slug: string; category: string }[] | null>(null);
     const [linkLoading, setLinkLoading] = useState(false);
@@ -710,14 +711,43 @@ export default function ArticleEditor({ initial, articleId }: { initial?: Partia
         }
     }
 
+    // async function openLinkPicker() {
+    //     setLinkPickerOpen(true);
+    //     if (linkableArticles) return; // already loaded this session
+    //     setLinkLoading(true);
+    //     try {
+    //         const res = await fetch(
+    //             `/api/admin/articles/linkable?category=${encodeURIComponent(form.category)}`
+    //         );
+    //         // const res = await fetch("/api/admin/articles/linkable");
+    //         const data = await res.json();
+    //         if (data.success) setLinkableArticles(data.articles);
+    //     } finally {
+    //         setLinkLoading(false);
+    //     }
+    // }
+
     async function openLinkPicker() {
         setLinkPickerOpen(true);
-        if (linkableArticles) return; // already loaded this session
+
+        // Already loaded articles for this category
+        if (linkableArticles && linkableCategory === form.category) {
+            return;
+        }
+
         setLinkLoading(true);
+
         try {
-            const res = await fetch("/api/admin/articles/linkable");
+            const res = await fetch(
+                `/api/admin/articles/linkable?category=${encodeURIComponent(form.category)}`
+            );
+
             const data = await res.json();
-            if (data.success) setLinkableArticles(data.articles);
+
+            if (data.success) {
+                setLinkableArticles(data.articles);
+                setLinkableCategory(form.category);
+            }
         } finally {
             setLinkLoading(false);
         }

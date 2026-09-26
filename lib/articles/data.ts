@@ -186,6 +186,43 @@ function staticToSummary(a: (typeof staticArticles)[number]): ArticleSummary {
   };
 }
 
+export async function getLinkablePublishedArticles(category: string) {
+  let dbArticles: {
+    title: string;
+    slug: string;
+    category: string;
+  }[] = [];
+
+  try {
+    dbArticles = await db.article.findMany({
+      where: {
+        status: "published",
+        category,
+      },
+      orderBy: {
+        publishedAt: "desc",
+      },
+      select: {
+        title: true,
+        slug: true,
+        category: true,
+      },
+    });
+  } catch (err) {
+    console.error("[getLinkablePublishedArticles] DB unavailable", err);
+  }
+
+  const staticMatches = staticArticles
+    .filter((a) => a.category === category)
+    .map((a) => ({
+      title: a.title,
+      slug: a.slug,
+      category: a.category,
+    }));
+
+  return [...dbArticles, ...staticMatches];
+}
+
 /**
  * One page of published articles, newest first, optionally filtered by category.
  *
