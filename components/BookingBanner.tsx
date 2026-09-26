@@ -151,7 +151,7 @@ export function BookingBanner() {
                             <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
                         </Link>
                         <Link
-                            href="/adhd-assessment"
+                            href="/assessment"
                             className="inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full no-underline transition-colors hover:bg-white/10"
                             style={{ color: "white", border: "1px solid rgba(255,255,255,0.35)" }}
                         >

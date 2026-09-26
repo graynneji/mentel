@@ -245,52 +245,79 @@ export default function AdminArticlesPage() {
             ) : (
                 <div className="rounded-2xl border bg-white overflow-hidden" style={{ borderColor: "#e4eee8" }}>
                     {articles.map((a) => (
-                        <Link
+                        <div
                             key={a.id}
-                            href={`/admin/articles/${a.id}`}
                             className="flex items-center gap-4 px-5 py-4 border-b last:border-b-0 hover:bg-[#f7faf8] transition-colors"
                             style={{ borderColor: "#eef3f0" }}
                         >
-                            <div className="min-w-0 flex-1">
+                            <Link
+                                href={`/admin/articles/${a.id}`}
+                                className="min-w-0 flex-1"
+                            >
                                 <div className="flex items-center gap-2 min-w-0">
-                                    {a.featured && <Star size={12} className="text-[#cf9f5e] fill-[#cf9f5e] shrink-0" />}
-                                    <span className="text-sm font-medium text-[#1c3a3a] truncate min-w-0 flex-1">{a.title}</span>
+                                    {a.featured && (
+                                        <Star
+                                            size={12}
+                                            className="text-[#cf9f5e] fill-[#cf9f5e] shrink-0"
+                                        />
+                                    )}
+
+                                    <span className="text-sm font-medium text-[#1c3a3a] truncate min-w-0">
+                                        {a.title}
+                                    </span>
                                 </div>
+
                                 <div className="flex items-center gap-2 mt-1 text-xs text-[#a0b8ac] min-w-0">
                                     <span className="shrink-0">{a.category}</span>
                                     <span className="shrink-0">·</span>
                                     <span className="truncate min-w-0">/{a.slug}</span>
                                 </div>
-                            </div>
+                            </Link>
+
                             <span
                                 className="text-xs font-medium px-2.5 py-1 rounded-full capitalize shrink-0"
                                 style={{
-                                    background: a.status === "published" ? "rgba(78,140,106,0.1)" : "rgba(150,150,150,0.1)",
-                                    color: a.status === "published" ? "#4e8c6a" : "#888",
+                                    background:
+                                        a.status === "published"
+                                            ? "rgba(78,140,106,0.1)"
+                                            : "rgba(150,150,150,0.1)",
+                                    color:
+                                        a.status === "published"
+                                            ? "#4e8c6a"
+                                            : "#888",
                                 }}
                             >
                                 {a.status}
                             </span>
+
                             {a.seoScore !== null && (
                                 <span
                                     className="text-xs font-semibold shrink-0"
-                                    style={{ color: a.seoScore >= 80 ? "#4e8c6a" : a.seoScore >= 60 ? "#cf9f5e" : "#b94a4f" }}
+                                    style={{
+                                        color:
+                                            a.seoScore >= 80
+                                                ? "#4e8c6a"
+                                                : a.seoScore >= 60
+                                                    ? "#cf9f5e"
+                                                    : "#b94a4f",
+                                    }}
                                 >
                                     {a.seoScore}
                                 </span>
                             )}
+
                             {a.status === "published" && (
                                 <Link
                                     href={`/articles/${a.slug}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    onClick={(e) => e.stopPropagation()}
                                     className="text-[#a0b8ac] hover:text-[#3d8b8b] shrink-0"
+                                    aria-label={`Open ${a.title}`}
                                 >
                                     <ExternalLink size={14} />
                                 </Link>
                             )}
-                        </Link>
+                        </div>
                     ))}
                 </div>
             )}
