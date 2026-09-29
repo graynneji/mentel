@@ -466,7 +466,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Clock, Leaf, Share2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight, Clock, Leaf, Share2 } from "lucide-react";
 import { articleContent, articles } from "@/utilz/articles";
 // import { getAllPublishedArticles, getPublishedDbArticleBySlug } from "@/lib/articles/data";
 import { getPublishedDbArticleBySlug, getRelatedArticles } from "@/lib/articles/data";
@@ -475,6 +475,7 @@ import { ArticleCover, getCategoryStyle } from "../../../components/ArticleVisua
 import { ArticleCard } from "../../../components/ArticleCard";
 import { AdhdTestBanner } from "@/components/AdhdTestBanner";
 import { BookingBanner } from "@/components/BookingBanner";
+import Image from "next/image";
 
 // Re-fetch on every request rather than caching indefinitely — CMS
 // articles are published dynamically and should show up immediately,
@@ -505,7 +506,17 @@ function renderInlineText(text: string): ReactNode {
                     {label}
                 </Link>
             ) : (
-                <Link
+                // <Link
+                //     key={key++}
+                //     href={href}
+                //     target="_blank"
+                //     rel="noopener noreferrer"
+                //     className="underline underline-offset-2 hover:opacity-80"
+                //     style={{ color: "var(--teal)" }}
+                // >
+                //     {label}
+                // </Link>
+                <a
                     key={key++}
                     href={href}
                     target="_blank"
@@ -514,7 +525,7 @@ function renderInlineText(text: string): ReactNode {
                     style={{ color: "var(--teal)" }}
                 >
                     {label}
-                </Link>
+                </a>
             )
         );
         lastIndex = match.index + match[0].length;
@@ -535,7 +546,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
     if (!article) {
         const dbArticle = await getPublishedDbArticleBySlug(param.slug);
-        console.log("article images ", dbArticle?.image, dbArticle);
         if (!dbArticle) return {};
         return {
             title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
@@ -548,7 +558,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
                 url: `https://www.trymentel.com/articles/${dbArticle.slug}`,
                 type: "article",
                 publishedTime: (dbArticle.publishedAt ?? dbArticle.createdAt).toISOString(),
-                authors: ["Mentel Clinical Team"],
+                authors: ["Gray Ukaegbu"],
                 tags: dbArticle.tags,
                 images: dbArticle.image
                     ? [{ url: dbArticle.image, width: 1200, height: 630, alt: dbArticle.title }]
@@ -576,7 +586,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             url: `https://www.trymentel.com/articles/${article.slug}`,
             type: "article",
             publishedTime: article.date,
-            authors: ["Mentel Clinical Team"],
+            authors: ["Gray Ukaegbu"],
             tags: article.tags,
             images: [
                 {
@@ -670,21 +680,125 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
     /* ...articleSchema, seoScore, faqSchema unchanged... */
 
+    const articleUrl = `https://www.trymentel.com/articles/${article.slug}`;
+
+    const breadcrumbJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+            {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: "https://www.trymentel.com",
+            },
+            {
+                "@type": "ListItem",
+                position: 2,
+                name: "Articles",
+                item: "https://www.trymentel.com/articles",
+            },
+            {
+                "@type": "ListItem",
+                position: 3,
+                name: article.title,
+                item: articleUrl,
+            },
+        ],
+    };
+
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": `${articleUrl}#article`,
+        headline: article.title,
+        description: article.excerpt,
+        url: articleUrl,
+        image: article.image
+            ? [article.image]
+            : undefined,
+        datePublished: article.date,
+        dateModified: article.date,
+        author: {
+            "@type": "Organization",
+            name: "Gray Ukaegbu",
+            url: "https://www.trymentel.com",
+        },
+        publisher: {
+            "@type": "Organization",
+            name: "Mentel",
+            url: "https://www.trymentel.com",
+        },
+        articleSection: article.category,
+        keywords: article.keywords,
+        isPartOf: {
+            "@type": "WebSite",
+            "@id": "https://www.trymentel.com/#website",
+            name: "Mentel",
+            url: "https://www.trymentel.com",
+        },
+    };
     return (
         <>
             {/* JSON-LD scripts unchanged */}
+            {/* Article structured data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(articleSchema),
+                }}
+            />
+
+            {/* Breadcrumb structured data */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(breadcrumbJsonLd),
+                }}
+            />
 
             <div className="relative overflow-x-hidden">
                 {/* Back nav */}
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24">
-                    <Link
+                    {/* <Link
                         href="/articles"
                         className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:text-[var(--teal)]"
                         style={{ color: "var(--text-muted)" }}
                     >
                         <ArrowLeft size={14} />
                         All Articles
-                    </Link>
+                    </Link> */}
+                    <nav
+                        aria-label="Breadcrumb"
+                        className="flex items-center gap-1.5 text-xs font-medium"
+                        style={{ color: "var(--text-muted)" }}
+                    >
+                        <Link
+                            href="/"
+                            className="hover:opacity-70 transition-opacity"
+                        >
+                            Home
+                        </Link>
+
+                        <ChevronRight size={13} />
+
+                        <Link
+                            href="/articles"
+                            className="hover:opacity-70 transition-opacity"
+                        >
+                            Articles
+                        </Link>
+
+                        <ChevronRight size={13} />
+
+                        <span
+                            aria-current="page"
+                            className="line-clamp-1"
+                            style={{ color: "var(--sage-dark)" }}
+                        >
+                            {article.title}
+                        </span>
+                    </nav>
                 </div>
 
                 <article className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16 sm:pb-20">
@@ -712,15 +826,22 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
                         <div className="flex items-center justify-between pb-6 border-b" style={{ borderColor: "var(--border)" }}>
                             <div className="flex items-center gap-4">
-                                <div
+                                {/* <div
                                     className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold text-white"
                                     style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
                                 >
-                                    M
-                                </div>
+                                    G
+                                </div> */}
+                                <Image
+                                    src="/gray-ukaegbu.png"
+                                    alt="Gray Ukaegbu"
+                                    width={36}
+                                    height={36}
+                                    className="w-9 h-9 rounded-full object-cover"
+                                />
                                 <div>
                                     <p className="text-sm font-medium" style={{ color: "var(--deep)" }}>
-                                        Mentel Clinical Team
+                                        Gray Ukaegbu
                                     </p>
                                     <div className="flex items-center gap-3 text-xs" style={{ color: "var(--text-muted)" }}>
                                         <span>

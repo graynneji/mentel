@@ -408,7 +408,7 @@ export default async function ServiceDetailPage({
                 <nav
                     aria-label="Breadcrumb"
                     className="flex items-center gap-1.5 text-xs font-medium mb-8"
-                    style={{ color: "var(--sage-dark)" }}
+                    style={{ color: "var(--text-muted)" }}
                 >
                     <Link
                         href="/"
@@ -422,7 +422,6 @@ export default async function ServiceDetailPage({
                     <Link
                         href="/services"
                         className="transition-colors hover:opacity-70"
-                        style={{ color: "var(--sage-dark)" }}
                     >
                         Services
                     </Link>
@@ -431,8 +430,7 @@ export default async function ServiceDetailPage({
 
                     <span
                         aria-current="page"
-
-                        style={{ color: "var(--text-muted)" }}
+                        style={{ color: "var(--sage-dark)" }}
                     >
                         {service.shortTitle}
                     </span>
