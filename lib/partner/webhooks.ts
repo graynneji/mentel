@@ -12,6 +12,7 @@
 
 import crypto from "crypto";
 import { db } from "@/lib/db";
+import { Prisma } from "@/generated/prisma/client";
 
 export const MAX_WEBHOOK_ATTEMPTS = 6;
 
@@ -59,10 +60,10 @@ async function attemptDelivery(
 export async function dispatchWebhookEvent(
   partnerId: string,
   eventType: PartnerEventType,
-  payload: Record<string, unknown>,
+  payload: Prisma.InputJsonValue,
 ): Promise<void> {
   const event = await db.partnerWebhookEvent.create({
-    data: { partnerId, eventType, payload },
+    data: { partnerId, eventType, payload: payload },
   });
 
   const partner = await db.partner.findUnique({ where: { id: partnerId } });
