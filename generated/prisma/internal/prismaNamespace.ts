@@ -402,7 +402,13 @@ export const ModelName = {
   Package: 'Package',
   ScheduledSession: 'ScheduledSession',
   SmsMessage: 'SmsMessage',
-  AdhdAssessmentLead: 'AdhdAssessmentLead'
+  AdhdAssessmentLead: 'AdhdAssessmentLead',
+  Partner: 'Partner',
+  PartnerBeneficiary: 'PartnerBeneficiary',
+  PartnerAssessment: 'PartnerAssessment',
+  PartnerSession: 'PartnerSession',
+  PartnerWebhookEvent: 'PartnerWebhookEvent',
+  PartnerIdempotencyKey: 'PartnerIdempotencyKey'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert" | "clientAccount" | "clientLoginToken" | "package" | "scheduledSession" | "smsMessage" | "adhdAssessmentLead"
+    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert" | "clientAccount" | "clientLoginToken" | "package" | "scheduledSession" | "smsMessage" | "adhdAssessmentLead" | "partner" | "partnerBeneficiary" | "partnerAssessment" | "partnerSession" | "partnerWebhookEvent" | "partnerIdempotencyKey"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1828,6 +1834,450 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Partner: {
+      payload: Prisma.$PartnerPayload<ExtArgs>
+      fields: Prisma.PartnerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>
+        }
+        update: {
+          args: Prisma.PartnerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartner>
+        }
+        groupBy: {
+          args: Prisma.PartnerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerCountAggregateOutputType> | number
+        }
+      }
+    }
+    PartnerBeneficiary: {
+      payload: Prisma.$PartnerBeneficiaryPayload<ExtArgs>
+      fields: Prisma.PartnerBeneficiaryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerBeneficiaryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerBeneficiaryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerBeneficiaryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerBeneficiaryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerBeneficiaryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerBeneficiaryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerBeneficiaryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerBeneficiaryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerBeneficiaryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>
+        }
+        update: {
+          args: Prisma.PartnerBeneficiaryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerBeneficiaryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerBeneficiaryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerBeneficiaryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerBeneficiaryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerBeneficiaryPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerBeneficiaryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartnerBeneficiary>
+        }
+        groupBy: {
+          args: Prisma.PartnerBeneficiaryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerBeneficiaryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerBeneficiaryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerBeneficiaryCountAggregateOutputType> | number
+        }
+      }
+    }
+    PartnerAssessment: {
+      payload: Prisma.$PartnerAssessmentPayload<ExtArgs>
+      fields: Prisma.PartnerAssessmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerAssessmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerAssessmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerAssessmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerAssessmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerAssessmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerAssessmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerAssessmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerAssessmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerAssessmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>
+        }
+        update: {
+          args: Prisma.PartnerAssessmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerAssessmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerAssessmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerAssessmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerAssessmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerAssessmentPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerAssessmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartnerAssessment>
+        }
+        groupBy: {
+          args: Prisma.PartnerAssessmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerAssessmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerAssessmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerAssessmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    PartnerSession: {
+      payload: Prisma.$PartnerSessionPayload<ExtArgs>
+      fields: Prisma.PartnerSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>
+        }
+        update: {
+          args: Prisma.PartnerSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartnerSession>
+        }
+        groupBy: {
+          args: Prisma.PartnerSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerSessionCountAggregateOutputType> | number
+        }
+      }
+    }
+    PartnerWebhookEvent: {
+      payload: Prisma.$PartnerWebhookEventPayload<ExtArgs>
+      fields: Prisma.PartnerWebhookEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerWebhookEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerWebhookEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerWebhookEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerWebhookEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerWebhookEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerWebhookEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerWebhookEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerWebhookEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerWebhookEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>
+        }
+        update: {
+          args: Prisma.PartnerWebhookEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerWebhookEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerWebhookEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerWebhookEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerWebhookEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerWebhookEventPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerWebhookEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartnerWebhookEvent>
+        }
+        groupBy: {
+          args: Prisma.PartnerWebhookEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerWebhookEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerWebhookEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerWebhookEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    PartnerIdempotencyKey: {
+      payload: Prisma.$PartnerIdempotencyKeyPayload<ExtArgs>
+      fields: Prisma.PartnerIdempotencyKeyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerIdempotencyKeyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerIdempotencyKeyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerIdempotencyKeyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerIdempotencyKeyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerIdempotencyKeyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerIdempotencyKeyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerIdempotencyKeyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerIdempotencyKeyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerIdempotencyKeyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>
+        }
+        update: {
+          args: Prisma.PartnerIdempotencyKeyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerIdempotencyKeyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerIdempotencyKeyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerIdempotencyKeyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerIdempotencyKeyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerIdempotencyKeyPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerIdempotencyKeyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartnerIdempotencyKey>
+        }
+        groupBy: {
+          args: Prisma.PartnerIdempotencyKeyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerIdempotencyKeyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerIdempotencyKeyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerIdempotencyKeyCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2234,6 +2684,118 @@ export const AdhdAssessmentLeadScalarFieldEnum = {
 export type AdhdAssessmentLeadScalarFieldEnum = (typeof AdhdAssessmentLeadScalarFieldEnum)[keyof typeof AdhdAssessmentLeadScalarFieldEnum]
 
 
+export const PartnerScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  slug: 'slug',
+  contactName: 'contactName',
+  contactEmail: 'contactEmail',
+  keyPrefix: 'keyPrefix',
+  keyHash: 'keyHash',
+  keyRevokedAt: 'keyRevokedAt',
+  webhookUrl: 'webhookUrl',
+  webhookSecret: 'webhookSecret',
+  sessionCap: 'sessionCap',
+  status: 'status'
+} as const
+
+export type PartnerScalarFieldEnum = (typeof PartnerScalarFieldEnum)[keyof typeof PartnerScalarFieldEnum]
+
+
+export const PartnerBeneficiaryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  partnerId: 'partnerId',
+  externalRef: 'externalRef',
+  name: 'name',
+  email: 'email',
+  emailHash: 'emailHash',
+  phone: 'phone',
+  anonymous: 'anonymous',
+  status: 'status',
+  sessionsUsed: 'sessionsUsed',
+  riskBand: 'riskBand',
+  overallScore: 'overallScore',
+  baselineScore: 'baselineScore',
+  baselineAssessmentId: 'baselineAssessmentId',
+  lastAssessmentAt: 'lastAssessmentAt'
+} as const
+
+export type PartnerBeneficiaryScalarFieldEnum = (typeof PartnerBeneficiaryScalarFieldEnum)[keyof typeof PartnerBeneficiaryScalarFieldEnum]
+
+
+export const PartnerAssessmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  beneficiaryId: 'beneficiaryId',
+  answers: 'answers',
+  stressScore: 'stressScore',
+  anxietyScore: 'anxietyScore',
+  depressionScore: 'depressionScore',
+  burnoutScore: 'burnoutScore',
+  sleepScore: 'sleepScore',
+  relationshipScore: 'relationshipScore',
+  selfEsteemScore: 'selfEsteemScore',
+  totalScore: 'totalScore',
+  riskBand: 'riskBand',
+  flags: 'flags',
+  recommendations: 'recommendations'
+} as const
+
+export type PartnerAssessmentScalarFieldEnum = (typeof PartnerAssessmentScalarFieldEnum)[keyof typeof PartnerAssessmentScalarFieldEnum]
+
+
+export const PartnerSessionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  partnerId: 'partnerId',
+  beneficiaryId: 'beneficiaryId',
+  scheduledAt: 'scheduledAt',
+  therapist: 'therapist',
+  type: 'type',
+  modality: 'modality',
+  status: 'status',
+  calBookingUid: 'calBookingUid',
+  notes: 'notes'
+} as const
+
+export type PartnerSessionScalarFieldEnum = (typeof PartnerSessionScalarFieldEnum)[keyof typeof PartnerSessionScalarFieldEnum]
+
+
+export const PartnerWebhookEventScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  partnerId: 'partnerId',
+  eventType: 'eventType',
+  payload: 'payload',
+  status: 'status',
+  attempts: 'attempts',
+  lastAttemptAt: 'lastAttemptAt',
+  deliveredAt: 'deliveredAt',
+  responseStatus: 'responseStatus',
+  lastError: 'lastError'
+} as const
+
+export type PartnerWebhookEventScalarFieldEnum = (typeof PartnerWebhookEventScalarFieldEnum)[keyof typeof PartnerWebhookEventScalarFieldEnum]
+
+
+export const PartnerIdempotencyKeyScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  partnerId: 'partnerId',
+  key: 'key',
+  requestHash: 'requestHash',
+  statusCode: 'statusCode',
+  responseBody: 'responseBody'
+} as const
+
+export type PartnerIdempotencyKeyScalarFieldEnum = (typeof PartnerIdempotencyKeyScalarFieldEnum)[keyof typeof PartnerIdempotencyKeyScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2478,6 +3040,12 @@ export type GlobalOmitConfig = {
   scheduledSession?: Prisma.ScheduledSessionOmit
   smsMessage?: Prisma.SmsMessageOmit
   adhdAssessmentLead?: Prisma.AdhdAssessmentLeadOmit
+  partner?: Prisma.PartnerOmit
+  partnerBeneficiary?: Prisma.PartnerBeneficiaryOmit
+  partnerAssessment?: Prisma.PartnerAssessmentOmit
+  partnerSession?: Prisma.PartnerSessionOmit
+  partnerWebhookEvent?: Prisma.PartnerWebhookEventOmit
+  partnerIdempotencyKey?: Prisma.PartnerIdempotencyKeyOmit
 }
 
 /* Types for Logging */

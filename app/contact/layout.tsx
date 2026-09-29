@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const SITE_URL = "https://trymentel.com";
+const SITE_URL = "https://www.trymentel.com"; // matches metadataBase in app/layout.tsx — was non-www, conflicting with the sitemap and canonicalization sitewide
 
 export const metadata: Metadata = {
     title: "Contact Mentel | Online Therapy in Nigeria",

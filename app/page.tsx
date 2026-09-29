@@ -705,10 +705,11 @@ import {
   Flame, Sun, Users, Sparkles, Quote, ChevronDown, Star, Clock, Shield,
   CheckCircle2, Calendar, Lock
 } from "lucide-react";
+import { getAudience } from "@/lib/location/geolocation";
 
 /* ─── SEO metadata ─────────────────────────────────────────── */
 export const metadata: Metadata = {
-  title: "Mentel | Online Professional Therapy & Mental Health Support",
+  title: "Online Therapy with Licensed Therapists | Mentel",
   description:
     "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, relationships, trauma, burnout, and personal growth.",
   // keywords: [
@@ -753,19 +754,19 @@ export const metadata: Metadata = {
     "talk to a therapist online",
     "private online therapy",
     "confidential online therapy",
-    "affordable marriage counselling",
-    "affordable marriage counseling",
+    // "affordable marriage counselling",
+    // "affordable marriage counseling",
 
     // Therapy needs
-    "anxiety therapy",
-    "depression therapy",
-    "trauma therapy",
-    "PTSD therapy",
-    "relationship therapy",
-    "couples therapy",
-    "burnout therapy",
-    "CBT therapy",
-    "stress therapy",
+    // "anxiety therapy",
+    // "depression therapy",
+    // "trauma therapy",
+    // "PTSD therapy",
+    // "relationship therapy",
+    // "couples therapy",
+    // "burnout therapy",
+    // "CBT therapy",
+    // "stress therapy",
 
     // International location intent
     "online therapy UK",
@@ -782,7 +783,7 @@ export const metadata: Metadata = {
     "therapy Abuja",
     "How much does therapy cost",
     "cheap therapy services Nigeria",
-    "affordable marriage counselling",
+    // "affordable marriage counselling",
     "marriage counselling Nigeria",
     "mental health support Nigeria",
     "online therapy for couples Nigeria",
@@ -790,7 +791,7 @@ export const metadata: Metadata = {
     "therapy for trauma Nigeria",
     "mental health therapist Lagos",
     "anxiety counselling Nigeria",
-    "employee mental health Nigeria",
+    // "employee mental health Nigeria",
     "cognitive behavioral therapy Nigeria",
     "how to overcome anxiety",
     "mindfulness therapy Nigeria",
@@ -798,7 +799,7 @@ export const metadata: Metadata = {
 
   ],
   openGraph: {
-    title: "Mentel | Online Professional Therapy & Mental Health Support",
+    title: "Online Therapy with Licensed Therapists | Mentel",
     description:
       "Get matched with a licensed therapist who genuinely listen. Confidential, evidence-based online therapy for anxiety, depression, trauma, burnout, relationships, and personal growth.",
     url: "https://www.trymentel.com",
@@ -1142,7 +1143,9 @@ const faqSchema = {
 // };
 
 /* ─── Component ─────────────────────────────────────────────── */
-export default function HomePage() {
+export default async function HomePage() {
+  const { country } = await getAudience();
+  console.log(country)
   return (
     <>
       <script
@@ -1169,8 +1172,8 @@ export default function HomePage() {
                   style={{ background: "#2d7a5a" }} />
                 <span className="font-semibold uppercase tracking-widest text-center"
                   style={{ color: "#2d7a5a", fontSize: "clamp(9px, 2.6vw, 12px)", letterSpacing: "0.12em" }}>
-                  Certified · Confidential · HIPAA-Compliant
-                  {/* Certified · Confidential · NDPR-Compliant */}
+                  {country != "NG" ? "Certified · Confidential · HIPAA-Compliant" :
+                    "Certified · Confidential · NDPR-Compliant"}
                 </span>
               </div>
 

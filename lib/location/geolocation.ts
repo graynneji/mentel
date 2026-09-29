@@ -8,8 +8,10 @@ export async function getAudience() {
   const country = headersList.get("x-vercel-ip-country");
 
   //   return country === "NG" ? "local" : "global";
+  console.log(country);
   return {
     headers: headersList,
+    // country: "US",
     country: country,
   };
 }

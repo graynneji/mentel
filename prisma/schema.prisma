@@ -639,3 +639,194 @@ model AdhdAssessmentLead {
   @@index([createdAt])
   @@map("adhd_assessment_leads")
 }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Partner API (external companies integrating programmatically — e.g. an
+// insurer or consortium that manages its own beneficiaries and just needs
+// enrolment, session-cap tracking, and crisis escalation over HTTP).
+//
+// Deliberately separate from Company/CompanyEmployee: those model a single
+// employer's HR-portal-login EAP programme. A Partner is API-key authenticated
+// (machine-to-machine, no portal), references beneficiaries by the partner's
+// OWN id (externalRef), and can serve many downstream individuals under one
+// contract. Phase 1 (this migration): enrolment, assessments, session-cap
+// tracking, crisis webhooks. Phase 2: Cal.com-backed self-service booking on
+// PartnerSession (fields already present, just unused by phase-1 routes).
+// ═══════════════════════════════════════════════════════════════════════════
+
+
+
+model Partner {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  name         String
+  slug         String  @unique
+  contactName  String  @map("contact_name")
+  contactEmail String  @map("contact_email")
+
+  // ── API key ───────────────────────────────────────────────────────────────
+  // Full key (e.g. "mtl_live_9fQ2k...") is shown to the partner exactly once,
+  // at creation. We store a non-secret lookup prefix (fast indexed lookup)
+  // plus a bcrypt hash of the full key (verified after lookup) — the same
+  // split Stripe/GitHub use so the DB never holds a usable credential.
+  keyPrefix String @unique @map("key_prefix")
+  keyHash   String @map("key_hash")
+  keyRevokedAt DateTime? @map("key_revoked_at")
+
+  // ── Crisis / lifecycle webhooks ──────────────────────────────────────────
+  webhookUrl    String? @map("webhook_url")
+  webhookSecret String? @map("webhook_secret") // HMAC-signs outbound payloads
+
+  // ── Programme terms ──────────────────────────────────────────────────────
+  sessionCap Int    @default(6)      @map("session_cap") // included sessions / beneficiary
+  status     String @default("active") // active | suspended | revoked
+
+  beneficiaries  PartnerBeneficiary[]
+  sessions       PartnerSession[]
+  webhookEvents  PartnerWebhookEvent[]
+  idempotencyKeys PartnerIdempotencyKey[]
+
+  @@index([status])
+  @@index([keyPrefix])
+  @@map("partners")
+}
+
+model PartnerBeneficiary {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  partnerId String  @map("partner_id")
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  externalRef String  @map("external_ref") // partner's own beneficiary/user ID
+  name        String?
+  email       String?
+  emailHash   String? @map("email_hash")
+  phone       String?
+  anonymous   Boolean @default(false)
+
+  status String @default("active") // active | inactive
+
+  sessionsUsed      Int @default(0) @map("sessions_used")
+
+  riskBand             String?   @map("risk_band")
+  overallScore         Int?      @map("overall_score")
+  baselineScore        Int?      @map("baseline_score")
+  baselineAssessmentId String?   @map("baseline_assessment_id")
+  lastAssessmentAt     DateTime? @map("last_assessment_at")
+
+  assessments PartnerAssessment[]
+  eapSessions PartnerSession[]
+
+  @@unique([partnerId, externalRef])
+  @@index([partnerId])
+  @@index([riskBand])
+  @@index([status])
+  @@map("partner_beneficiaries")
+}
+
+model PartnerAssessment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  beneficiaryId String             @map("beneficiary_id")
+  beneficiary   PartnerBeneficiary @relation(fields: [beneficiaryId], references: [id], onDelete: Cascade)
+
+  answers Json
+
+  stressScore       Int? @map("stress_score")
+  anxietyScore      Int? @map("anxiety_score")
+  depressionScore   Int? @map("depression_score")
+  burnoutScore      Int? @map("burnout_score")
+  sleepScore        Int? @map("sleep_score")
+  relationshipScore Int? @map("relationship_score")
+  selfEsteemScore   Int? @map("self_esteem_score")
+
+  totalScore Int      @map("total_score")
+  riskBand   String   @map("risk_band")
+  flags      String[] @default([])
+
+  recommendations Json? @default("[]")
+
+  @@index([beneficiaryId])
+  @@index([riskBand])
+  @@index([createdAt])
+  @@map("partner_assessments")
+}
+
+model PartnerSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  partnerId String  @map("partner_id")
+  partner   Partner @relation(fields: [partnerId], references: [id])
+
+  beneficiaryId String             @map("beneficiary_id")
+  beneficiary   PartnerBeneficiary @relation(fields: [beneficiaryId], references: [id], onDelete: Cascade)
+
+  // scheduledAt/therapist/modality/calBookingUid unused by phase-1 routes —
+  // reserved for phase-2 Cal.com-backed self-service booking.
+  scheduledAt   DateTime?
+  therapist     String?
+  type          String    @default("individual") // individual | couples | group | coaching | crisis
+  modality      String    @default("video")       // video | phone | in-person
+  status        String    @default("logged")      // logged | scheduled | completed | cancelled | no-show
+  calBookingUid String?   @map("cal_booking_uid")
+  notes         String?
+
+  @@index([partnerId])
+  @@index([beneficiaryId])
+  @@index([status])
+  @@map("partner_sessions")
+}
+
+model PartnerWebhookEvent {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  partnerId String  @map("partner_id")
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  eventType String @map("event_type") // crisis.detected | session.logged | session.cancelled
+  payload   Json
+
+  status         String    @default("pending") @map("status") // pending | delivered | failed
+  attempts       Int       @default(0)
+  lastAttemptAt  DateTime? @map("last_attempt_at")
+  deliveredAt    DateTime? @map("delivered_at")
+  responseStatus Int?      @map("response_status")
+  lastError      String?   @map("last_error")
+
+  @@index([partnerId])
+  @@index([status])
+  @@map("partner_webhook_events")
+}
+
+model PartnerIdempotencyKey {
+  // Standard partner-API practice: a partner's own retry logic (network
+  // blip, timeout, lambda re-invocation) must not double-book a calendar
+  // slot or double-consume a session cap. Client sends an `Idempotency-Key`
+  // header on POST /sessions; the first response for a given key is cached
+  // and replayed verbatim for any repeat with the SAME key + body. A repeat
+  // with the same key but a DIFFERENT body is rejected (422) rather than
+  // silently executed, so a partner bug can't accidentally reuse a key
+  // across two different sessions.
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  partnerId String  @map("partner_id")
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  key          String
+  requestHash  String @map("request_hash")
+  statusCode   Int    @map("status_code")
+  responseBody Json   @map("response_body")
+
+  @@unique([partnerId, key])
+  @@index([partnerId])
+  @@map("partner_idempotency_keys")
+}

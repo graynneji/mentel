@@ -1,55 +1,55 @@
-// import BgBlobs from "@/components/BgBlobs";
-// import Link from "next/link";
-// import { Brain, Heart, Users, Flame, Sun, Anchor, ArrowRight, Leaf, ClipboardCheck } from "lucide-react";
 
-// const services = [
-//     {
-//         icon: Brain,
-//         title: "Anxiety & Stress",
-//         desc: "Learn practical, evidence-based tools to manage racing thoughts, worry, and the physical toll of chronic stress.",
-//         tags: ["CBT", "Mindfulness", "Breathing Techniques"],
+
+// import type { Metadata } from "next";
+// import Link from "next/link";
+// import { ArrowRight, Leaf, ClipboardCheck } from "lucide-react";
+// import { services } from "@/lib/services-data";
+
+// const SITE_URL = "https://trymentel.com";
+
+// export const metadata: Metadata = {
+//     title: "Online Therapy Services in Nigeria | Mentel LTD",
+//     description:
+//         "Licensed therapists in Nigeria offering online therapy for anxiety, depression, couples, trauma, burnout and self-esteem. Confidential sessions. Book a free consultation.",
+//     keywords: [
+//         "online therapy Nigeria",
+//         "mental health services Lagos",
+//         "licensed therapist Nigeria",
+//         "counselling Nigeria",
+//     ],
+//     alternates: { canonical: `${SITE_URL}/services` },
+//     openGraph: {
+//         title: "Online Therapy Services in Nigeria | Mentel LTD",
+//         description:
+//             "Licensed therapists in Nigeria offering online therapy for anxiety, depression, couples, trauma, burnout and self-esteem.",
+//         url: `${SITE_URL}/services`,
+//         siteName: "Mentel",
+//         type: "website",
 //     },
-//     {
-//         icon: Heart,
-//         title: "Depression",
-//         desc: "Work through low mood, lack of motivation, and persistent sadness with a therapist who truly understands.",
-//         tags: ["Behavioural Activation", "Talk Therapy"],
-//     },
-//     {
-//         icon: Users,
-//         title: "Marriage & Couples",
-//         desc: "Strengthen communication, rebuild trust, and navigate conflict with skilled relationship therapy.",
-//         tags: ["Gottman Method", "EFT", "Conflict Resolution"],
-//     },
-//     {
-//         icon: Anchor,
-//         title: "Trauma & PTSD",
-//         desc: "Heal from past experiences in a safe, trauma-informed space using approaches proven to work.",
-//         tags: ["EMDR", "Somatic Therapy", "Narrative Therapy"],
-//     },
-//     {
-//         icon: Flame,
-//         title: "Burnout & Life Transitions",
-//         desc: "Reclaim your energy, identity, and direction when life feels overwhelming or in flux.",
-//         tags: ["Life Coaching", "Values Work", "Goal Setting"],
-//     },
-//     {
-//         icon: Sun,
-//         title: "Self-Esteem & Growth",
-//         desc: "Build a healthier relationship with yourself, challenge inner criticism, and grow into your full potential.",
-//         tags: ["Schema Therapy", "ACT", "Compassion Work"],
-//     },
-//     { icon: ClipboardCheck, title: "Free Assessment", desc: "Not sure where to start? Take our 2-minute mental health check.", tags: ["Free Mental Health Assessment", "Depression Assessment", "Check Anxiety"], }
-// ];
+// };
+
+// const itemListJsonLd = {
+//     "@context": "https://schema.org",
+//     "@type": "ItemList",
+//     itemListElement: services.map((s, i) => ({
+//         "@type": "ListItem",
+//         position: i + 1,
+//         url: `${SITE_URL}/services/${s.slug}`,
+//         name: s.title,
+//     })),
+// };
 
 // export default function ServicesPage() {
 //     return (
 //         <div className="relative">
-//             {/* <BgBlobs /> */}
+//             <script
+//                 type="application/ld+json"
+//                 dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+//             />
 //             <div className="relative z-10 max-w-5xl mx-auto px-6 pt-28 pb-20">
 
 //                 {/* Header */}
-//                 <div className="max-w-xl mb-16">
+//                 <div className="max-w-xl mb-10">
 //                     <div
 //                         className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium uppercase tracking-widest mb-6 border"
 //                         style={{ background: "rgba(123,169,139,0.10)", borderColor: "rgba(123,169,139,0.25)", color: "var(--sage-dark)" }}
@@ -67,11 +67,21 @@
 //                     </p>
 //                 </div>
 
+//                 {/* SEO intro paragraph */}
+//                 <p className="text-sm leading-relaxed mb-14" style={{ color: "var(--text-muted)" }}>
+//                     Mentel connects you with licensed therapists across Nigeria for confidential, online
+//                     mental health support. Whether you are managing anxiety, working through depression,
+//                     rebuilding a relationship, processing trauma, recovering from burnout, or building
+//                     self-esteem, our therapists use evidence-based approaches tailored to your situation.
+//                     Explore each service below to learn more about how we can help.
+//                 </p>
+
 //                 {/* Services Grid */}
 //                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
-//                     {services.map(({ icon: Icon, title, desc, tags }) => (
-//                         <div
-//                             key={title}
+//                     {services.map(({ slug, shortTitle, shortDesc, icon: Icon, tags }) => (
+//                         <Link
+//                             href={`/services/${slug}`}
+//                             key={slug}
 //                             className="p-6 rounded-2xl border group transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
 //                             style={{ background: "white", borderColor: "var(--border)" }}
 //                         >
@@ -81,11 +91,11 @@
 //                             >
 //                                 <Icon size={17} style={{ color: "var(--sage-dark)" }} />
 //                             </div>
-//                             <h3 className="font-cormorant text-xl font-semibold mb-2" style={{ color: "var(--deep)" }}>
-//                                 {title}
-//                             </h3>
-//                             <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>{desc}</p>
-//                             <div className="flex flex-wrap gap-2">
+//                             <h2 className="font-cormorant text-xl font-semibold mb-2" style={{ color: "var(--deep)" }}>
+//                                 {shortTitle}
+//                             </h2>
+//                             <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>{shortDesc}</p>
+//                             <div className="flex flex-wrap gap-2 mb-4">
 //                                 {tags.map((tag) => (
 //                                     <span
 //                                         key={tag}
@@ -96,8 +106,53 @@
 //                                     </span>
 //                                 ))}
 //                             </div>
-//                         </div>
+//                             <div
+//                                 className="inline-flex items-center gap-1.5 text-xs font-medium transition-transform group-hover:translate-x-0.5"
+//                                 style={{ color: "var(--sage-dark)" }}
+//                             >
+//                                 Learn more
+//                                 <ArrowRight size={12} />
+//                             </div>
+//                         </Link>
 //                     ))}
+
+//                     {/* Free Assessment card stays as-is, links to the assessment flow */}
+//                     <Link
+//                         href="/assessment"
+//                         className="p-6 rounded-2xl border group transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+//                         style={{ background: "white", borderColor: "var(--border)" }}
+//                     >
+//                         <div
+//                             className="w-9 h-9 rounded-full flex items-center justify-center mb-4"
+//                             style={{ background: "rgba(123,169,139,0.12)" }}
+//                         >
+//                             <ClipboardCheck size={17} style={{ color: "var(--sage-dark)" }} />
+//                         </div>
+//                         <h2 className="font-cormorant text-xl font-semibold mb-2" style={{ color: "var(--deep)" }}>
+//                             Free Assessment
+//                         </h2>
+//                         <p className="text-sm leading-relaxed mb-4" style={{ color: "var(--text-muted)" }}>
+//                             Not sure where to start? Take our 2-minute mental health check.
+//                         </p>
+//                         <div className="flex flex-wrap gap-2 mb-4">
+//                             {["Free Mental Health Assessment", "Depression Assessment", "Check Anxiety"].map((tag) => (
+//                                 <span
+//                                     key={tag}
+//                                     className="text-xs px-2.5 py-1 rounded-full"
+//                                     style={{ background: "var(--mist)", color: "var(--sage-dark)" }}
+//                                 >
+//                                     {tag}
+//                                 </span>
+//                             ))}
+//                         </div>
+//                         <div
+//                             className="inline-flex items-center gap-1.5 text-xs font-medium transition-transform group-hover:translate-x-0.5"
+//                             style={{ color: "var(--sage-dark)" }}
+//                         >
+//                             Take the assessment
+//                             <ArrowRight size={12} />
+//                         </div>
+//                     </Link>
 //                 </div>
 
 //                 {/* CTA */}
@@ -130,12 +185,13 @@
 // }
 
 
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Leaf, ClipboardCheck } from "lucide-react";
 import { services } from "@/lib/services-data";
 
-const SITE_URL = "https://trymentel.com";
+const SITE_URL = "https://www.trymentel.com"; // matches metadataBase in app/layout.tsx — was non-www, conflicting with the sitemap and canonicalization sitewide
 
 export const metadata: Metadata = {
     title: "Online Therapy Services in Nigeria | Mentel LTD",

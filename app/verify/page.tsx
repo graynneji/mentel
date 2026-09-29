@@ -56,8 +56,8 @@
 //     reference: string,
 //     attempts = 3,
 //     delayMs = 1200
-// ): Promise<{ success: boolean; payment?: Payment; error?: string; status?: string }> {
-//     let lastData: { success: boolean; payment?: Payment; error?: string; status?: string } = {
+// ): Promise<{ success: boolean; payment?: Payment; error?: string; status?: string; portalLoginUrl?: string }> {
+//     let lastData: { success: boolean; payment?: Payment; error?: string; status?: string; portalLoginUrl?: string } = {
 //         success: false,
 //         error: "Payment could not be verified.",
 //     };
@@ -105,6 +105,7 @@
 
 //     const [state, setState] = useState<State>("loading");
 //     const [payment, setPayment] = useState<Payment | null>(null);
+//     const [portalLoginUrl, setPortalLoginUrl] = useState<string>("https://app.trymentel.com/login");
 //     const [errorMsg, setErrorMsg] = useState("");
 
 //     useEffect(() => {
@@ -122,6 +123,7 @@
 
 //             if (data.success && data.payment) {
 //                 setPayment(data.payment);
+//                 if (data.portalLoginUrl) setPortalLoginUrl(data.portalLoginUrl);
 //                 setState("success");
 
 //                 // Personalization: the booking is now confirmed server-side —
@@ -134,10 +136,12 @@
 //                 // button, or React Strict Mode's double-invoke in dev never
 //                 // double-counts the same conversion.
 //                 fireConversion("Purchase", {
+//                     contentName: "booked",
 //                     value: data.payment.amount,
 //                     currency: "NGN",
 //                     transactionId: data.payment.reference,
 //                     dedupeKey: data.payment.reference,
+//                     eventId: data.payment.reference
 //                 });
 //             } else {
 //                 setErrorMsg(data.error ?? "Payment could not be verified.");
@@ -235,29 +239,18 @@
 //                             </div>
 //                         </div>
 
-//                         <div className="w-full">
-//                             {/* <div className="flex flex-col sm:flex-row gap-3"> */}
-//                             {/* <Link href="/"
-//                                 className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium text-white px-6 py-3.5 rounded-full transition-all hover:-translate-y-0.5 hover:shadow-lg duration-200"
-//                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}>
-//                                 Back to Home <ArrowRight size={15} />
-//                             </Link>
-//                             <Link href="/services"
-//                                 className="flex-1 inline-flex items-center justify-center gap-2 text-sm font-medium px-6 py-3.5 rounded-full border transition-all hover:-translate-y-0.5 hover:shadow-sm duration-200"
-//                                 style={{ borderColor: "var(--border)", color: "var(--sage-dark)" }}>
-//                                 View our services
-//                             </Link> */}
-//                             <Link
-//                                 // href={whatsappUrl}
-//                                 href="/book-call?from=verify"
-//                                 // target="_blank"
-//                                 rel="noopener noreferrer"
+//                         <div className="w-full flex flex-col gap-3">
+//                             <a
+//                                 href={portalLoginUrl}
 //                                 className="cta-btn flex items-center justify-center gap-2.5 py-[17px] px-7 rounded-full text-white text-[15px] font-medium font-['DM_Sans',sans-serif] no-underline"
 //                                 style={{ background: "linear-gradient(135deg, var(--sage-dark), var(--teal))" }}
 //                             >
-//                                 Schedule your session
+//                                 Go to Your Client Portal
 //                                 <ArrowRight size={15} strokeWidth={2} />
-//                             </Link>
+//                             </a>
+//                             <p className="text-xs text-center" style={{ color: "var(--text-muted)" }}>
+//                                 Schedule your session{payment.plan?.toLowerCase().includes("month") ? "s" : ""} and manage your plan there.
+//                             </p>
 //                         </div>
 
 //                     </div>
@@ -313,6 +306,7 @@
 
 
 
+
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -330,6 +324,7 @@ interface Payment {
     plan: string;
     reason: string;
     amount: number;
+    currency?: string; // "NGN" (Paystack) or "USD" (Flutterwave) — defaults to NGN below for older responses
     reference: string;
     paidAt: string;
 }
@@ -367,6 +362,7 @@ function LoadingScreen() {
 // few times with a short delay before treating it as a real failure.
 async function verifyWithRetry(
     reference: string,
+    provider: "paystack" | "flutterwave" = "paystack",
     attempts = 3,
     delayMs = 1200
 ): Promise<{ success: boolean; payment?: Payment; error?: string; status?: string; portalLoginUrl?: string }> {
@@ -375,9 +371,17 @@ async function verifyWithRetry(
         error: "Payment could not be verified.",
     };
 
+    // International (Flutterwave) bookings are verified/recorded via a
+    // separate endpoint — same idempotent recordPayment() underneath, see
+    // lib/payments/flutterwave-booking-verify.ts.
+    const endpoint =
+        provider === "flutterwave"
+            ? `/api/flutterwave/booking/verify?tx_ref=${encodeURIComponent(reference)}`
+            : `/api/paystack/verify?reference=${encodeURIComponent(reference)}`;
+
     for (let i = 0; i < attempts; i++) {
         try {
-            const res = await fetch(`/api/paystack/verify?reference=${encodeURIComponent(reference)}`, {
+            const res = await fetch(endpoint, {
                 cache: "no-store",
             });
             const data = await res.json();
@@ -414,7 +418,11 @@ async function verifyWithRetry(
 // The parent page export (below) provides the Suspense boundary.
 function VerifyContent() {
     const searchParams = useSearchParams();
-    const reference = searchParams.get("reference") ?? searchParams.get("trxref");
+    const reference = searchParams.get("reference") ?? searchParams.get("trxref") ?? searchParams.get("tx_ref");
+    // Flutterwave's redirect_url carries ?provider=flutterwave (set in
+    // BookingForm.tsx's international checkout); anything else verifies
+    // via Paystack, unchanged.
+    const provider = searchParams.get("provider") === "flutterwave" ? "flutterwave" : "paystack";
 
     const [state, setState] = useState<State>("loading");
     const [payment, setPayment] = useState<Payment | null>(null);
@@ -431,7 +439,7 @@ function VerifyContent() {
         let cancelled = false;
 
         const verify = async () => {
-            const data = await verifyWithRetry(reference);
+            const data = await verifyWithRetry(reference, provider);
             if (cancelled) return;
 
             if (data.success && data.payment) {
@@ -451,7 +459,7 @@ function VerifyContent() {
                 fireConversion("Purchase", {
                     contentName: "booked",
                     value: data.payment.amount,
-                    currency: "NGN",
+                    currency: data.payment.currency ?? "NGN",
                     transactionId: data.payment.reference,
                     dedupeKey: data.payment.reference,
                     eventId: data.payment.reference
@@ -467,14 +475,15 @@ function VerifyContent() {
         return () => {
             cancelled = true;
         };
-    }, [reference]);
+    }, [reference, provider]);
 
     if (state === "loading") return <LoadingScreen />;
 
     if (state === "success" && payment) {
         const firstName = payment.name?.split(" ")[0] || "there";
-        const formattedAmount = new Intl.NumberFormat("en-NG", {
-            style: "currency", currency: "NGN", minimumFractionDigits: 0,
+        const currency = payment.currency ?? "NGN";
+        const formattedAmount = new Intl.NumberFormat(currency === "USD" ? "en-US" : "en-NG", {
+            style: "currency", currency, minimumFractionDigits: 0,
         }).format(payment.amount);
         const formattedDate = payment.paidAt
             ? new Date(payment.paidAt).toLocaleDateString("en-GB", { dateStyle: "long" })

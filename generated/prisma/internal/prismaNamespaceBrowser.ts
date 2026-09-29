@@ -69,7 +69,13 @@ export const ModelName = {
   Package: 'Package',
   ScheduledSession: 'ScheduledSession',
   SmsMessage: 'SmsMessage',
-  AdhdAssessmentLead: 'AdhdAssessmentLead'
+  AdhdAssessmentLead: 'AdhdAssessmentLead',
+  Partner: 'Partner',
+  PartnerBeneficiary: 'PartnerBeneficiary',
+  PartnerAssessment: 'PartnerAssessment',
+  PartnerSession: 'PartnerSession',
+  PartnerWebhookEvent: 'PartnerWebhookEvent',
+  PartnerIdempotencyKey: 'PartnerIdempotencyKey'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -453,6 +459,118 @@ export const AdhdAssessmentLeadScalarFieldEnum = {
 } as const
 
 export type AdhdAssessmentLeadScalarFieldEnum = (typeof AdhdAssessmentLeadScalarFieldEnum)[keyof typeof AdhdAssessmentLeadScalarFieldEnum]
+
+
+export const PartnerScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  name: 'name',
+  slug: 'slug',
+  contactName: 'contactName',
+  contactEmail: 'contactEmail',
+  keyPrefix: 'keyPrefix',
+  keyHash: 'keyHash',
+  keyRevokedAt: 'keyRevokedAt',
+  webhookUrl: 'webhookUrl',
+  webhookSecret: 'webhookSecret',
+  sessionCap: 'sessionCap',
+  status: 'status'
+} as const
+
+export type PartnerScalarFieldEnum = (typeof PartnerScalarFieldEnum)[keyof typeof PartnerScalarFieldEnum]
+
+
+export const PartnerBeneficiaryScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  partnerId: 'partnerId',
+  externalRef: 'externalRef',
+  name: 'name',
+  email: 'email',
+  emailHash: 'emailHash',
+  phone: 'phone',
+  anonymous: 'anonymous',
+  status: 'status',
+  sessionsUsed: 'sessionsUsed',
+  riskBand: 'riskBand',
+  overallScore: 'overallScore',
+  baselineScore: 'baselineScore',
+  baselineAssessmentId: 'baselineAssessmentId',
+  lastAssessmentAt: 'lastAssessmentAt'
+} as const
+
+export type PartnerBeneficiaryScalarFieldEnum = (typeof PartnerBeneficiaryScalarFieldEnum)[keyof typeof PartnerBeneficiaryScalarFieldEnum]
+
+
+export const PartnerAssessmentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  beneficiaryId: 'beneficiaryId',
+  answers: 'answers',
+  stressScore: 'stressScore',
+  anxietyScore: 'anxietyScore',
+  depressionScore: 'depressionScore',
+  burnoutScore: 'burnoutScore',
+  sleepScore: 'sleepScore',
+  relationshipScore: 'relationshipScore',
+  selfEsteemScore: 'selfEsteemScore',
+  totalScore: 'totalScore',
+  riskBand: 'riskBand',
+  flags: 'flags',
+  recommendations: 'recommendations'
+} as const
+
+export type PartnerAssessmentScalarFieldEnum = (typeof PartnerAssessmentScalarFieldEnum)[keyof typeof PartnerAssessmentScalarFieldEnum]
+
+
+export const PartnerSessionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  partnerId: 'partnerId',
+  beneficiaryId: 'beneficiaryId',
+  scheduledAt: 'scheduledAt',
+  therapist: 'therapist',
+  type: 'type',
+  modality: 'modality',
+  status: 'status',
+  calBookingUid: 'calBookingUid',
+  notes: 'notes'
+} as const
+
+export type PartnerSessionScalarFieldEnum = (typeof PartnerSessionScalarFieldEnum)[keyof typeof PartnerSessionScalarFieldEnum]
+
+
+export const PartnerWebhookEventScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  partnerId: 'partnerId',
+  eventType: 'eventType',
+  payload: 'payload',
+  status: 'status',
+  attempts: 'attempts',
+  lastAttemptAt: 'lastAttemptAt',
+  deliveredAt: 'deliveredAt',
+  responseStatus: 'responseStatus',
+  lastError: 'lastError'
+} as const
+
+export type PartnerWebhookEventScalarFieldEnum = (typeof PartnerWebhookEventScalarFieldEnum)[keyof typeof PartnerWebhookEventScalarFieldEnum]
+
+
+export const PartnerIdempotencyKeyScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  partnerId: 'partnerId',
+  key: 'key',
+  requestHash: 'requestHash',
+  statusCode: 'statusCode',
+  responseBody: 'responseBody'
+} as const
+
+export type PartnerIdempotencyKeyScalarFieldEnum = (typeof PartnerIdempotencyKeyScalarFieldEnum)[keyof typeof PartnerIdempotencyKeyScalarFieldEnum]
 
 
 export const SortOrder = {

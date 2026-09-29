@@ -1465,10 +1465,15 @@ export default function AssessmentPage() {
                         </div>
 
                         {/* Headline */}
-                        <h1 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(48px,8.5vw,76px)] font-light leading-[1.06] tracking-[-0.03em] text-[#1c2820] mb-6 fade-up">
+                        {/* <h1 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(48px,8.5vw,76px)] font-light leading-[1.06] tracking-[-0.03em] text-[#1c2820] mb-6 fade-up">
                             How are you{" "}
                             <em className="text-[#2d7a5a] italic">really</em>{" "}
                             doing?
+                        </h1> */}
+                        <h1 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(48px,8.5vw,76px)] font-light leading-[1.06] tracking-[-0.03em] text-[#1c2820] mb-6 fade-up">
+                            Free{" "}
+                            <em className="text-[#2d7a5a] italic">mental health</em>{" "}
+                            assessment
                         </h1>
 
                         <p className="text-[clamp(16px,2.8vw,18px)] font-light leading-[1.75] text-[#5a6b5e] max-w-[500px] mb-[52px] fade-up fade-up-delay-1">
@@ -1585,6 +1590,45 @@ export default function AssessmentPage() {
                         </div>
                     </div>
                 </div>
+                {/* What is a mental health assessment? */}
+                <section className="bg-[#faf9f6] py-20 px-6">
+                    <div className="max-w-[760px] mx-auto">
+                        <div className="max-w-[680px]">
+                            <p className="text-[11px] tracking-[0.12em] uppercase text-[#2d7a5a] font-semibold mb-4">
+                                Understanding your mental health
+                            </p>
+
+                            <h2 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(34px,6vw,48px)] font-light leading-[1.15] tracking-[-0.025em] text-[#1c2820] mb-6">
+                                What is a mental health assessment?
+                            </h2>
+
+                            <p className="text-[16px] font-light leading-[1.85] text-[#5a6b5e]">
+                                A mental health assessment is a quick way to check in on how you have been feeling and identify areas that may deserve more attention. This free assessment looks at areas such as mood, anxiety, stress, sleep, relationships, energy, and self-worth. It is not a diagnosis, but it can help you better understand how you are doing and whether speaking with a mental health professional may be helpful.
+                            </p>
+                            <h3 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(24px,5vw,32px)] font-light leading-[1.25] tracking-[-0.02em] text-[#1c2820] mt-10 mb-4">
+                                What does a mental health test check?
+                            </h3>
+
+                            <p className="text-[16px] font-light leading-[1.85] text-[#5a6b5e]">
+                                A mental health test can help you reflect on common signs of anxiety,
+                                stress, low mood, emotional distress, and other changes in your
+                                wellbeing. This 1-minute mental health check is designed to give you
+                                a simple starting point for understanding how you are doing.
+                            </p>
+
+                            {/* <h3 className="font-['Cormorant_Garamond',Georgia,serif] text-[clamp(24px,5vw,32px)] font-light leading-[1.25] tracking-[-0.02em] text-[#1c2820] mt-10 mb-4">
+                                Is this mental health assessment a diagnosis?
+                            </h3>
+
+                            <p className="text-[16px] font-light leading-[1.85] text-[#5a6b5e]">
+                                No. This assessment is not a diagnosis or a replacement for professional
+                                care. It is a mental health screening tool that can help you understand
+                                whether you may benefit from speaking with a qualified mental health
+                                professional.
+                            </p> */}
+                        </div>
+                    </div>
+                </section>
             </PageWrapper>
         );
     }

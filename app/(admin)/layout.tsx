@@ -162,6 +162,7 @@ import {
     MessageSquareText,
     CalendarClock,
     Brain,
+    Network,
 } from "lucide-react";
 
 const NAV = [
@@ -181,6 +182,7 @@ const NAV = [
     { href: "/admin/contact", icon: Inbox, label: "Contact" },
     { href: "/admin/settings", icon: Settings, label: "Settings" },
     { href: "/admin/companies", icon: Building2, label: "EAP Companies" },
+    { href: "/admin/partners", icon: Network, label: "Partners (API)" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

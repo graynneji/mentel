@@ -495,6 +495,7 @@ const structuredData = {
         { "@type": "Country", name: "Nigeria" },
         { "@type": "Country", name: "United States" },
         { "@type": "Country", name: "United Kingdom" },
+        { "@type": "Country", name: "Australia" },
       ],
       sameAs: [
         "https://instagram.com/mentel_ltd",

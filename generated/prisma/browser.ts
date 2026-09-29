@@ -145,3 +145,33 @@ export type SmsMessage = Prisma.SmsMessageModel
  * 
  */
 export type AdhdAssessmentLead = Prisma.AdhdAssessmentLeadModel
+/**
+ * Model Partner
+ * 
+ */
+export type Partner = Prisma.PartnerModel
+/**
+ * Model PartnerBeneficiary
+ * 
+ */
+export type PartnerBeneficiary = Prisma.PartnerBeneficiaryModel
+/**
+ * Model PartnerAssessment
+ * 
+ */
+export type PartnerAssessment = Prisma.PartnerAssessmentModel
+/**
+ * Model PartnerSession
+ * 
+ */
+export type PartnerSession = Prisma.PartnerSessionModel
+/**
+ * Model PartnerWebhookEvent
+ * 
+ */
+export type PartnerWebhookEvent = Prisma.PartnerWebhookEventModel
+/**
+ * Model PartnerIdempotencyKey
+ * 
+ */
+export type PartnerIdempotencyKey = Prisma.PartnerIdempotencyKeyModel

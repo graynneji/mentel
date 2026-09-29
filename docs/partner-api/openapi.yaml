@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info:
+  title: Mentel Partner API
+  version: "1.0.0"
+  description: >
+    Phase 1: beneficiary enrolment, assessments, session-cap tracking, and
+    crisis-escalation webhooks. See README.md for webhook signature
+    verification and the roadmap.
+servers:
+  - url: https://trymentel.com/api/partner/v1
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "mtl_live_..."
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+    Beneficiary:
+      type: object
+      properties:
+        externalRef: { type: string }
+        status: { type: string, enum: [active, inactive] }
+        anonymous: { type: boolean }
+        name: { type: string, nullable: true }
+        email: { type: string, nullable: true }
+        phone: { type: string, nullable: true }
+        sessionsUsed: { type: integer }
+        sessionsRemaining: { type: integer }
+        sessionCap: { type: integer }
+        riskBand: { type: string, nullable: true, enum: [Low, Mild, Moderate, High, Critical] }
+        overallScore: { type: integer, nullable: true }
+        lastAssessmentAt: { type: string, format: date-time, nullable: true }
+        enrolledAt: { type: string, format: date-time }
+    Session:
+      type: object
+      properties:
+        id: { type: string }
+        scheduledAt: { type: string, format: date-time, nullable: true }
+        therapist: { type: string, nullable: true }
+        type: { type: string, enum: [individual, couples, group, coaching, crisis] }
+        modality: { type: string, enum: [video, phone, in-person] }
+        status: { type: string, enum: [logged, scheduled, completed, cancelled, no-show] }
+        notes: { type: string, nullable: true }
+        booked: { type: boolean }
+paths:
+  /beneficiaries:
+    post:
+      summary: Enrol (or update) a beneficiary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [externalRef]
+              properties:
+                externalRef: { type: string, maxLength: 200 }
+                name: { type: string }
+                email: { type: string }
+                phone: { type: string }
+                anonymous: { type: boolean, default: false }
+      responses:
+        "201":
+          description: Enrolled
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  beneficiary: { $ref: "#/components/schemas/Beneficiary" }
+        "400": { description: Bad request, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "401": { description: Unauthorized, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    get:
+      summary: List beneficiaries
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, default: 25, maximum: 100 }
+        - name: cursor
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  beneficiaries:
+                    type: array
+                    items: { $ref: "#/components/schemas/Beneficiary" }
+                  nextCursor: { type: string, nullable: true }
+  /beneficiaries/{externalRef}:
+    get:
+      summary: Get a beneficiary
+      parameters:
+        - name: externalRef
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  beneficiary: { $ref: "#/components/schemas/Beneficiary" }
+        "404": { description: Not found, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+  /beneficiaries/{externalRef}/assessments:
+    post:
+      summary: Submit an assessment
+      parameters:
+        - name: externalRef
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [answers]
+              properties:
+                answers:
+                  type: object
+                  additionalProperties: { type: number }
+                relationshipStatus: { type: string }
+                hasChildren: { type: boolean }
+      responses:
+        "200":
+          description: Scored
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  assessmentId: { type: string }
+                  scores: { type: object }
+                  recommendations: { type: array, items: { type: object } }
+                  improvementPct: { type: integer }
+                  isFirstAssessment: { type: boolean }
+                  crisisEscalated: { type: boolean }
+        "404": { description: Beneficiary not found, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    get:
+      summary: Assessment history for a beneficiary
+      parameters:
+        - name: externalRef
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+  /sessions:
+    post:
+      summary: Create a session (booked via Cal.com, or logged only) against a beneficiary's cap
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema: { type: string, maxLength: 200 }
+          description: Recommended. Safely retry this call without double-booking or double-counting.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [externalRef]
+              properties:
+                externalRef: { type: string }
+                book: { type: boolean, default: false, description: "If true, actually books the Cal.com slot; requires slotStart and a non-anonymous beneficiary with an email." }
+                slotStart: { type: string, format: date-time, description: "Required when book is true." }
+                scheduledAt: { type: string, format: date-time, description: "Used when book is false/omitted (log-only)." }
+                type: { type: string, enum: [individual, couples, group, coaching, crisis] }
+                modality: { type: string, enum: [video, phone, in-person] }
+                therapist: { type: string }
+                notes: { type: string }
+      responses:
+        "201":
+          description: Logged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  session: { $ref: "#/components/schemas/Session" }
+                  sessionsUsed: { type: integer }
+                  sessionsRemaining: { type: integer }
+        "409": { description: Session cap reached, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+    get:
+      summary: List a beneficiary's sessions
+      parameters:
+        - name: externalRef
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+  /availability:
+    get:
+      summary: Open therapist slots
+      parameters:
+        - name: start
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: end
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: timeZone
+          in: query
+          required: false
+          schema: { type: string, default: Africa/Lagos }
+      responses:
+        "200":
+          description: OK
+        "502": { description: Cal.com unavailable, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+  /health:
+    get:
+      summary: Unauthenticated status check
+      security: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string }
+                  time: { type: string, format: date-time }
+  /sessions/{id}:
+    patch:
+      summary: Update a session's status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [scheduled, completed, cancelled, no-show] }
+                notes: { type: string }
+      responses:
+        "200":
+          description: Updated
+        "404": { description: Session not found, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
