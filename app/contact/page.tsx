@@ -71,3 +71,9 @@ export const metadata: Metadata = {
         images: ["/og-image.png"],
     },
 };
+
+export default function ContactPage() {
+    return (
+        <Contact />
+    )
+}
