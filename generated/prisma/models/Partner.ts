@@ -292,6 +292,7 @@ export type PartnerWhereInput = {
   sessions?: Prisma.PartnerSessionListRelationFilter
   webhookEvents?: Prisma.PartnerWebhookEventListRelationFilter
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyListRelationFilter
+  users?: Prisma.PartnerUserListRelationFilter
 }
 
 export type PartnerOrderByWithRelationInput = {
@@ -313,6 +314,7 @@ export type PartnerOrderByWithRelationInput = {
   sessions?: Prisma.PartnerSessionOrderByRelationAggregateInput
   webhookEvents?: Prisma.PartnerWebhookEventOrderByRelationAggregateInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyOrderByRelationAggregateInput
+  users?: Prisma.PartnerUserOrderByRelationAggregateInput
 }
 
 export type PartnerWhereUniqueInput = Prisma.AtLeast<{
@@ -337,6 +339,7 @@ export type PartnerWhereUniqueInput = Prisma.AtLeast<{
   sessions?: Prisma.PartnerSessionListRelationFilter
   webhookEvents?: Prisma.PartnerWebhookEventListRelationFilter
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyListRelationFilter
+  users?: Prisma.PartnerUserListRelationFilter
 }, "id" | "slug" | "keyPrefix">
 
 export type PartnerOrderByWithAggregationInput = {
@@ -400,6 +403,7 @@ export type PartnerCreateInput = {
   sessions?: Prisma.PartnerSessionCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerUncheckedCreateInput = {
@@ -421,6 +425,7 @@ export type PartnerUncheckedCreateInput = {
   sessions?: Prisma.PartnerSessionUncheckedCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserUncheckedCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerUpdateInput = {
@@ -442,6 +447,7 @@ export type PartnerUpdateInput = {
   sessions?: Prisma.PartnerSessionUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerUncheckedUpdateInput = {
@@ -463,6 +469,7 @@ export type PartnerUncheckedUpdateInput = {
   sessions?: Prisma.PartnerSessionUncheckedUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUncheckedUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerCreateManyInput = {
@@ -636,6 +643,20 @@ export type PartnerUpdateOneRequiredWithoutIdempotencyKeysNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PartnerUpdateToOneWithWhereWithoutIdempotencyKeysInput, Prisma.PartnerUpdateWithoutIdempotencyKeysInput>, Prisma.PartnerUncheckedUpdateWithoutIdempotencyKeysInput>
 }
 
+export type PartnerCreateNestedOneWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.PartnerCreateWithoutUsersInput, Prisma.PartnerUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.PartnerCreateOrConnectWithoutUsersInput
+  connect?: Prisma.PartnerWhereUniqueInput
+}
+
+export type PartnerUpdateOneRequiredWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.PartnerCreateWithoutUsersInput, Prisma.PartnerUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.PartnerCreateOrConnectWithoutUsersInput
+  upsert?: Prisma.PartnerUpsertWithoutUsersInput
+  connect?: Prisma.PartnerWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PartnerUpdateToOneWithWhereWithoutUsersInput, Prisma.PartnerUpdateWithoutUsersInput>, Prisma.PartnerUncheckedUpdateWithoutUsersInput>
+}
+
 export type PartnerCreateWithoutBeneficiariesInput = {
   id?: string
   createdAt?: Date | string
@@ -654,6 +675,7 @@ export type PartnerCreateWithoutBeneficiariesInput = {
   sessions?: Prisma.PartnerSessionCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerUncheckedCreateWithoutBeneficiariesInput = {
@@ -674,6 +696,7 @@ export type PartnerUncheckedCreateWithoutBeneficiariesInput = {
   sessions?: Prisma.PartnerSessionUncheckedCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserUncheckedCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerCreateOrConnectWithoutBeneficiariesInput = {
@@ -710,6 +733,7 @@ export type PartnerUpdateWithoutBeneficiariesInput = {
   sessions?: Prisma.PartnerSessionUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerUncheckedUpdateWithoutBeneficiariesInput = {
@@ -730,6 +754,7 @@ export type PartnerUncheckedUpdateWithoutBeneficiariesInput = {
   sessions?: Prisma.PartnerSessionUncheckedUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUncheckedUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerCreateWithoutSessionsInput = {
@@ -750,6 +775,7 @@ export type PartnerCreateWithoutSessionsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerUncheckedCreateWithoutSessionsInput = {
@@ -770,6 +796,7 @@ export type PartnerUncheckedCreateWithoutSessionsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUncheckedCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserUncheckedCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerCreateOrConnectWithoutSessionsInput = {
@@ -806,6 +833,7 @@ export type PartnerUpdateWithoutSessionsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerUncheckedUpdateWithoutSessionsInput = {
@@ -826,6 +854,7 @@ export type PartnerUncheckedUpdateWithoutSessionsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUncheckedUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUncheckedUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerCreateWithoutWebhookEventsInput = {
@@ -846,6 +875,7 @@ export type PartnerCreateWithoutWebhookEventsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryCreateNestedManyWithoutPartnerInput
   sessions?: Prisma.PartnerSessionCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerUncheckedCreateWithoutWebhookEventsInput = {
@@ -866,6 +896,7 @@ export type PartnerUncheckedCreateWithoutWebhookEventsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUncheckedCreateNestedManyWithoutPartnerInput
   sessions?: Prisma.PartnerSessionUncheckedCreateNestedManyWithoutPartnerInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserUncheckedCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerCreateOrConnectWithoutWebhookEventsInput = {
@@ -902,6 +933,7 @@ export type PartnerUpdateWithoutWebhookEventsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUpdateManyWithoutPartnerNestedInput
   sessions?: Prisma.PartnerSessionUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerUncheckedUpdateWithoutWebhookEventsInput = {
@@ -922,6 +954,7 @@ export type PartnerUncheckedUpdateWithoutWebhookEventsInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUncheckedUpdateManyWithoutPartnerNestedInput
   sessions?: Prisma.PartnerSessionUncheckedUpdateManyWithoutPartnerNestedInput
   idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUncheckedUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerCreateWithoutIdempotencyKeysInput = {
@@ -942,6 +975,7 @@ export type PartnerCreateWithoutIdempotencyKeysInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryCreateNestedManyWithoutPartnerInput
   sessions?: Prisma.PartnerSessionCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerUncheckedCreateWithoutIdempotencyKeysInput = {
@@ -962,6 +996,7 @@ export type PartnerUncheckedCreateWithoutIdempotencyKeysInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUncheckedCreateNestedManyWithoutPartnerInput
   sessions?: Prisma.PartnerSessionUncheckedCreateNestedManyWithoutPartnerInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedCreateNestedManyWithoutPartnerInput
+  users?: Prisma.PartnerUserUncheckedCreateNestedManyWithoutPartnerInput
 }
 
 export type PartnerCreateOrConnectWithoutIdempotencyKeysInput = {
@@ -998,6 +1033,7 @@ export type PartnerUpdateWithoutIdempotencyKeysInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUpdateManyWithoutPartnerNestedInput
   sessions?: Prisma.PartnerSessionUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUpdateManyWithoutPartnerNestedInput
 }
 
 export type PartnerUncheckedUpdateWithoutIdempotencyKeysInput = {
@@ -1018,6 +1054,107 @@ export type PartnerUncheckedUpdateWithoutIdempotencyKeysInput = {
   beneficiaries?: Prisma.PartnerBeneficiaryUncheckedUpdateManyWithoutPartnerNestedInput
   sessions?: Prisma.PartnerSessionUncheckedUpdateManyWithoutPartnerNestedInput
   webhookEvents?: Prisma.PartnerWebhookEventUncheckedUpdateManyWithoutPartnerNestedInput
+  users?: Prisma.PartnerUserUncheckedUpdateManyWithoutPartnerNestedInput
+}
+
+export type PartnerCreateWithoutUsersInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  slug: string
+  contactName: string
+  contactEmail: string
+  keyPrefix: string
+  keyHash: string
+  keyRevokedAt?: Date | string | null
+  webhookUrl?: string | null
+  webhookSecret?: string | null
+  sessionCap?: number
+  status?: string
+  beneficiaries?: Prisma.PartnerBeneficiaryCreateNestedManyWithoutPartnerInput
+  sessions?: Prisma.PartnerSessionCreateNestedManyWithoutPartnerInput
+  webhookEvents?: Prisma.PartnerWebhookEventCreateNestedManyWithoutPartnerInput
+  idempotencyKeys?: Prisma.PartnerIdempotencyKeyCreateNestedManyWithoutPartnerInput
+}
+
+export type PartnerUncheckedCreateWithoutUsersInput = {
+  id?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  name: string
+  slug: string
+  contactName: string
+  contactEmail: string
+  keyPrefix: string
+  keyHash: string
+  keyRevokedAt?: Date | string | null
+  webhookUrl?: string | null
+  webhookSecret?: string | null
+  sessionCap?: number
+  status?: string
+  beneficiaries?: Prisma.PartnerBeneficiaryUncheckedCreateNestedManyWithoutPartnerInput
+  sessions?: Prisma.PartnerSessionUncheckedCreateNestedManyWithoutPartnerInput
+  webhookEvents?: Prisma.PartnerWebhookEventUncheckedCreateNestedManyWithoutPartnerInput
+  idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedCreateNestedManyWithoutPartnerInput
+}
+
+export type PartnerCreateOrConnectWithoutUsersInput = {
+  where: Prisma.PartnerWhereUniqueInput
+  create: Prisma.XOR<Prisma.PartnerCreateWithoutUsersInput, Prisma.PartnerUncheckedCreateWithoutUsersInput>
+}
+
+export type PartnerUpsertWithoutUsersInput = {
+  update: Prisma.XOR<Prisma.PartnerUpdateWithoutUsersInput, Prisma.PartnerUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.PartnerCreateWithoutUsersInput, Prisma.PartnerUncheckedCreateWithoutUsersInput>
+  where?: Prisma.PartnerWhereInput
+}
+
+export type PartnerUpdateToOneWithWhereWithoutUsersInput = {
+  where?: Prisma.PartnerWhereInput
+  data: Prisma.XOR<Prisma.PartnerUpdateWithoutUsersInput, Prisma.PartnerUncheckedUpdateWithoutUsersInput>
+}
+
+export type PartnerUpdateWithoutUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  contactName?: Prisma.StringFieldUpdateOperationsInput | string
+  contactEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyRevokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionCap?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  beneficiaries?: Prisma.PartnerBeneficiaryUpdateManyWithoutPartnerNestedInput
+  sessions?: Prisma.PartnerSessionUpdateManyWithoutPartnerNestedInput
+  webhookEvents?: Prisma.PartnerWebhookEventUpdateManyWithoutPartnerNestedInput
+  idempotencyKeys?: Prisma.PartnerIdempotencyKeyUpdateManyWithoutPartnerNestedInput
+}
+
+export type PartnerUncheckedUpdateWithoutUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  contactName?: Prisma.StringFieldUpdateOperationsInput | string
+  contactEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  keyPrefix?: Prisma.StringFieldUpdateOperationsInput | string
+  keyHash?: Prisma.StringFieldUpdateOperationsInput | string
+  keyRevokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookSecret?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sessionCap?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  beneficiaries?: Prisma.PartnerBeneficiaryUncheckedUpdateManyWithoutPartnerNestedInput
+  sessions?: Prisma.PartnerSessionUncheckedUpdateManyWithoutPartnerNestedInput
+  webhookEvents?: Prisma.PartnerWebhookEventUncheckedUpdateManyWithoutPartnerNestedInput
+  idempotencyKeys?: Prisma.PartnerIdempotencyKeyUncheckedUpdateManyWithoutPartnerNestedInput
 }
 
 
@@ -1030,6 +1167,7 @@ export type PartnerCountOutputType = {
   sessions: number
   webhookEvents: number
   idempotencyKeys: number
+  users: number
 }
 
 export type PartnerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1037,6 +1175,7 @@ export type PartnerCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   sessions?: boolean | PartnerCountOutputTypeCountSessionsArgs
   webhookEvents?: boolean | PartnerCountOutputTypeCountWebhookEventsArgs
   idempotencyKeys?: boolean | PartnerCountOutputTypeCountIdempotencyKeysArgs
+  users?: boolean | PartnerCountOutputTypeCountUsersArgs
 }
 
 /**
@@ -1077,6 +1216,13 @@ export type PartnerCountOutputTypeCountIdempotencyKeysArgs<ExtArgs extends runti
   where?: Prisma.PartnerIdempotencyKeyWhereInput
 }
 
+/**
+ * PartnerCountOutputType without action
+ */
+export type PartnerCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PartnerUserWhereInput
+}
+
 
 export type PartnerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1097,6 +1243,7 @@ export type PartnerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   sessions?: boolean | Prisma.Partner$sessionsArgs<ExtArgs>
   webhookEvents?: boolean | Prisma.Partner$webhookEventsArgs<ExtArgs>
   idempotencyKeys?: boolean | Prisma.Partner$idempotencyKeysArgs<ExtArgs>
+  users?: boolean | Prisma.Partner$usersArgs<ExtArgs>
   _count?: boolean | Prisma.PartnerCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["partner"]>
 
@@ -1157,6 +1304,7 @@ export type PartnerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   sessions?: boolean | Prisma.Partner$sessionsArgs<ExtArgs>
   webhookEvents?: boolean | Prisma.Partner$webhookEventsArgs<ExtArgs>
   idempotencyKeys?: boolean | Prisma.Partner$idempotencyKeysArgs<ExtArgs>
+  users?: boolean | Prisma.Partner$usersArgs<ExtArgs>
   _count?: boolean | Prisma.PartnerCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PartnerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1169,6 +1317,7 @@ export type $PartnerPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     sessions: Prisma.$PartnerSessionPayload<ExtArgs>[]
     webhookEvents: Prisma.$PartnerWebhookEventPayload<ExtArgs>[]
     idempotencyKeys: Prisma.$PartnerIdempotencyKeyPayload<ExtArgs>[]
+    users: Prisma.$PartnerUserPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1583,6 +1732,7 @@ export interface Prisma__PartnerClient<T, Null = never, ExtArgs extends runtime.
   sessions<T extends Prisma.Partner$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Partner$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PartnerSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   webhookEvents<T extends Prisma.Partner$webhookEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Partner$webhookEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PartnerWebhookEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   idempotencyKeys<T extends Prisma.Partner$idempotencyKeysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Partner$idempotencyKeysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PartnerIdempotencyKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.Partner$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Partner$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PartnerUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2112,6 +2262,30 @@ export type Partner$idempotencyKeysArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.PartnerIdempotencyKeyScalarFieldEnum | Prisma.PartnerIdempotencyKeyScalarFieldEnum[]
+}
+
+/**
+ * Partner.users
+ */
+export type Partner$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PartnerUser
+   */
+  select?: Prisma.PartnerUserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PartnerUser
+   */
+  omit?: Prisma.PartnerUserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PartnerUserInclude<ExtArgs> | null
+  where?: Prisma.PartnerUserWhereInput
+  orderBy?: Prisma.PartnerUserOrderByWithRelationInput | Prisma.PartnerUserOrderByWithRelationInput[]
+  cursor?: Prisma.PartnerUserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PartnerUserScalarFieldEnum | Prisma.PartnerUserScalarFieldEnum[]
 }
 
 /**

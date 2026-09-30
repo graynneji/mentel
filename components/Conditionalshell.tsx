@@ -70,8 +70,9 @@ export default function ConditionalShell({
     const isMarketing = pathname.startsWith("/marketing");
     const isVolunteerVerification = pathname.startsWith("/volunteer/verification");
     const isADHD = pathname.startsWith("/adhd-assessment");
+    const isPartnerPortal = pathname.startsWith("/partner-portal");
 
-    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator || isMarketing || isVolunteerVerification || isADHD) {
+    if (isAdmin || isHr || isEAP || isassessment || isLogin || isResult || isBookCall || isBurnoutCalculator || isMarketing || isVolunteerVerification || isADHD || isPartnerPortal) {
         return <>{children}</>;
     }
 

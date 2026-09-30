@@ -175,3 +175,8 @@ export type PartnerWebhookEvent = Prisma.PartnerWebhookEventModel
  * 
  */
 export type PartnerIdempotencyKey = Prisma.PartnerIdempotencyKeyModel
+/**
+ * Model PartnerUser
+ * 
+ */
+export type PartnerUser = Prisma.PartnerUserModel

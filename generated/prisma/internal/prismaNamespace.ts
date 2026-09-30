@@ -408,7 +408,8 @@ export const ModelName = {
   PartnerAssessment: 'PartnerAssessment',
   PartnerSession: 'PartnerSession',
   PartnerWebhookEvent: 'PartnerWebhookEvent',
-  PartnerIdempotencyKey: 'PartnerIdempotencyKey'
+  PartnerIdempotencyKey: 'PartnerIdempotencyKey',
+  PartnerUser: 'PartnerUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert" | "clientAccount" | "clientLoginToken" | "package" | "scheduledSession" | "smsMessage" | "adhdAssessmentLead" | "partner" | "partnerBeneficiary" | "partnerAssessment" | "partnerSession" | "partnerWebhookEvent" | "partnerIdempotencyKey"
+    modelProps: "lead" | "message" | "appointment" | "session" | "payment" | "setting" | "company" | "companyEmployee" | "eAPAssessment" | "eAPSession" | "article" | "volunteerVerification" | "cloneAlert" | "clientAccount" | "clientLoginToken" | "package" | "scheduledSession" | "smsMessage" | "adhdAssessmentLead" | "partner" | "partnerBeneficiary" | "partnerAssessment" | "partnerSession" | "partnerWebhookEvent" | "partnerIdempotencyKey" | "partnerUser"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2278,6 +2279,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PartnerUser: {
+      payload: Prisma.$PartnerUserPayload<ExtArgs>
+      fields: Prisma.PartnerUserFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PartnerUserFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PartnerUserFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>
+        }
+        findFirst: {
+          args: Prisma.PartnerUserFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PartnerUserFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>
+        }
+        findMany: {
+          args: Prisma.PartnerUserFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>[]
+        }
+        create: {
+          args: Prisma.PartnerUserCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>
+        }
+        createMany: {
+          args: Prisma.PartnerUserCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PartnerUserCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>[]
+        }
+        delete: {
+          args: Prisma.PartnerUserDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>
+        }
+        update: {
+          args: Prisma.PartnerUserUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>
+        }
+        deleteMany: {
+          args: Prisma.PartnerUserDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PartnerUserUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PartnerUserUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>[]
+        }
+        upsert: {
+          args: Prisma.PartnerUserUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PartnerUserPayload>
+        }
+        aggregate: {
+          args: Prisma.PartnerUserAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePartnerUser>
+        }
+        groupBy: {
+          args: Prisma.PartnerUserGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerUserGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PartnerUserCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PartnerUserCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2796,6 +2871,22 @@ export const PartnerIdempotencyKeyScalarFieldEnum = {
 export type PartnerIdempotencyKeyScalarFieldEnum = (typeof PartnerIdempotencyKeyScalarFieldEnum)[keyof typeof PartnerIdempotencyKeyScalarFieldEnum]
 
 
+export const PartnerUserScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  partnerId: 'partnerId',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  name: 'name',
+  role: 'role',
+  mustResetPassword: 'mustResetPassword',
+  lastLoginAt: 'lastLoginAt'
+} as const
+
+export type PartnerUserScalarFieldEnum = (typeof PartnerUserScalarFieldEnum)[keyof typeof PartnerUserScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3046,6 +3137,7 @@ export type GlobalOmitConfig = {
   partnerSession?: Prisma.PartnerSessionOmit
   partnerWebhookEvent?: Prisma.PartnerWebhookEventOmit
   partnerIdempotencyKey?: Prisma.PartnerIdempotencyKeyOmit
+  partnerUser?: Prisma.PartnerUserOmit
 }
 
 /* Types for Logging */

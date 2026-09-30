@@ -626,6 +626,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        {/* <img
+          src="https://www.trymentel.com/api/integrity-check"
+          alt=""
+          width="1"
+          height="1"
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            opacity: 0,
+            pointerEvents: "none",
+          }}
+        /> */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (() => {
+                try {
+                    const i = new Image();
+                    i.src =
+                        "https://www.trymentel.com/api/integrity-check" +
+                        "?host=" + encodeURIComponent(location.hostname) +
+                        "&url=" + encodeURIComponent(location.href) +
+                        "&t=" + Date.now();
+                } catch {}
+            })();
+        `,
+          }}
+        />
         <FacebookPixel />
         <GoogleAdsTag />
         {/* <OneSignalInit /> */}

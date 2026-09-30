@@ -75,7 +75,8 @@ export const ModelName = {
   PartnerAssessment: 'PartnerAssessment',
   PartnerSession: 'PartnerSession',
   PartnerWebhookEvent: 'PartnerWebhookEvent',
-  PartnerIdempotencyKey: 'PartnerIdempotencyKey'
+  PartnerIdempotencyKey: 'PartnerIdempotencyKey',
+  PartnerUser: 'PartnerUser'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -571,6 +572,22 @@ export const PartnerIdempotencyKeyScalarFieldEnum = {
 } as const
 
 export type PartnerIdempotencyKeyScalarFieldEnum = (typeof PartnerIdempotencyKeyScalarFieldEnum)[keyof typeof PartnerIdempotencyKeyScalarFieldEnum]
+
+
+export const PartnerUserScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  partnerId: 'partnerId',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  name: 'name',
+  role: 'role',
+  mustResetPassword: 'mustResetPassword',
+  lastLoginAt: 'lastLoginAt'
+} as const
+
+export type PartnerUserScalarFieldEnum = (typeof PartnerUserScalarFieldEnum)[keyof typeof PartnerUserScalarFieldEnum]
 
 
 export const SortOrder = {

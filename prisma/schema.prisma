@@ -687,6 +687,7 @@ model Partner {
   sessions       PartnerSession[]
   webhookEvents  PartnerWebhookEvent[]
   idempotencyKeys PartnerIdempotencyKey[]
+  users           PartnerUser[]
 
   @@index([status])
   @@index([keyPrefix])
@@ -829,4 +830,29 @@ model PartnerIdempotencyKey {
   @@unique([partnerId, key])
   @@index([partnerId])
   @@map("partner_idempotency_keys")
+}
+
+model PartnerUser {
+  // A login for a partner's OWN staff (e.g. someone at WellaHealth checking
+  // their beneficiary/session stats) — distinct from both the beneficiary's
+  // hosted-session token (single person, single short session) and the
+  // partner's API key (their backend, machine-to-machine). This is a
+  // person, with a password, who can log into /partner-portal.
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt      @map("updated_at")
+
+  partnerId String  @map("partner_id")
+  partner   Partner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+
+  email        String  @unique
+  passwordHash String  @map("password_hash")
+  name         String
+  role         String  @default("staff") // owner | staff — reserved for future permission splits
+  mustResetPassword Boolean @default(true) @map("must_reset_password")
+
+  lastLoginAt DateTime? @map("last_login_at")
+
+  @@index([partnerId])
+  @@map("partner_users")
 }

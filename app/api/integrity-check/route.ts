@@ -41,8 +41,13 @@ const ALLOWED_HOSTS = [
   "127.0.0.1",
 ];
 
+function normalizeHost(host: string): string {
+  return host.toLowerCase().trim().replace(/:\d+$/, "");
+}
+
 function isAllowedHost(host: string): boolean {
-  const clean = host.toLowerCase().replace(/:\d+$/, ""); // strip port for localhost:3000 etc.
+  // const clean = host.toLowerCase().replace(/:\d+$/, ""); // strip port for localhost:3000 etc.
+  const clean = normalizeHost(host); // strip port for localhost:3000 etc.
   if (ALLOWED_HOSTS.includes(clean)) return true;
   // Allow Vercel's own preview deployment domains for this project so
   // every preview/staging build doesn't fire a false alarm.
@@ -54,6 +59,102 @@ function getIp(req: Request): string {
   const fwd = req.headers.get("x-forwarded-for");
   if (fwd) return fwd.split(",")[0].trim();
   return req.headers.get("x-real-ip") ?? "unknown";
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    // const referer = req.headers.get("referer") ?? "";
+
+    // let host = "";
+
+    // try {
+    //   if (referer) {
+    //     host = normalizeHost(new URL(referer).hostname);
+    //   }
+    // } catch {
+    //   host = "";
+    // }
+
+    // // If there is no referer, we cannot identify the page
+    // // that loaded the beacon.
+    // if (!host || isAllowedHost(host)) {
+    //   return new NextResponse(null, {
+    //     status: 204,
+    //   });
+    // }
+
+    // const pageUrl = referer.slice(0, 500);
+    // const ip = getIp(req);
+    // const userAgent = req.headers.get("user-agent") ?? "unknown";
+
+    const requestUrl = new URL(req.url);
+
+    const host = normalizeHost(requestUrl.searchParams.get("host") ?? "");
+
+    const pageUrl = (requestUrl.searchParams.get("url") ?? "").slice(0, 500);
+
+    if (!host || isAllowedHost(host)) {
+      return new NextResponse(null, { status: 204 });
+    }
+
+    const ip = getIp(req);
+    const userAgent = req.headers.get("user-agent") ?? "unknown";
+
+    try {
+      await db.cloneAlert.create({
+        data: {
+          detectedHost: host,
+          pageUrl,
+          ip,
+          userAgent,
+        },
+      });
+    } catch (err) {
+      console.error("[integrity-check] failed to log image beacon", err);
+    }
+
+    const shouldEmail = await shouldNotifyForHost(host).catch(() => true);
+
+    if (shouldEmail) {
+      try {
+        await resend.emails.send({
+          from: FROM,
+          to: [TO],
+          subject: `⚠️ Your site's code appears to be running on ${host}`,
+          html: `
+            <div style="font-family:sans-serif;font-size:14px;color:#1c3a3a;max-width:520px;">
+              <h2 style="font-size:16px;">Possible site clone detected</h2>
+              <p>Your front-end code just phoned home from a domain that isn't yours.</p>
+              <table style="border-collapse:collapse;">
+                <tr><td style="padding:4px 12px 4px 0;color:#7a9088;">Detected on</td><td><strong>${host}</strong></td></tr>
+                <tr><td style="padding:4px 12px 4px 0;color:#7a9088;">Page</td><td>${pageUrl}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;color:#7a9088;">Visitor IP</td><td>${ip}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;color:#7a9088;">Browser</td><td>${userAgent}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0;color:#7a9088;">Time</td><td>${new Date().toUTCString()}</td></tr>
+              </table>
+              <p style="color:#a0b8ac;font-size:12px;margin-top:16px;">
+                This is the IP of whoever is currently viewing that page, not necessarily
+                whoever copied the code. You won't get another email for this same domain
+                for 24 hours — check /admin/security for the full history.
+              </p>
+            </div>
+          `,
+        });
+      } catch (err) {
+        console.error("[integrity-check] notification email failed", err);
+      }
+    }
+
+    return new NextResponse(null, {
+      status: 204,
+    });
+  } catch (err) {
+    console.error("[integrity-check GET]", err);
+
+    return new NextResponse(null, {
+      status: 204,
+    });
+  }
 }
 
 export async function POST(req: Request) {
