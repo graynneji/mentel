@@ -185,7 +185,7 @@ const SITE_URL = "https://www.trymentel.com";
 const ASSESSMENT_URL = `${SITE_URL}/assessment`;
 
 export const metadata: Metadata = {
-    title: "Free Mental Health Assessment | 1-Minute Mental Health Test | Mentel",
+    title: "Free Mental Health Assessment",
 
     description:
         "Take a free 1-minute mental health assessment online. Check your mood, anxiety, stress, sleep, and emotional well-being. No sign-up required. Confidential and easy to complete.",
@@ -212,7 +212,7 @@ export const metadata: Metadata = {
     },
 
     openGraph: {
-        title: "Free Mental Health Assessment | 1-Minute Test | Mentel",
+        title: "Free Mental Health Assessment",
         description:
             "Take a free online mental health assessment in about 1 minute. Check your mood, anxiety, stress, sleep, and emotional well-being. Free and confidential.",
         url: ASSESSMENT_URL,
@@ -229,7 +229,7 @@ export const metadata: Metadata = {
 
     twitter: {
         card: "summary_large_image",
-        title: "Free Mental Health Assessment | 1-Minute Test",
+        title: "Free Mental Health Assessment",
         description:
             "Take a free online mental health assessment in about 1 minute. Check your mood, anxiety, stress, and emotional well-being.",
         images: [`${SITE_URL}/assessment-og.png`],
@@ -242,7 +242,7 @@ export default function Assessment() {
         "@type": "WebPage",
         "@id": `${ASSESSMENT_URL}#webpage`,
         url: ASSESSMENT_URL,
-        name: "Free Mental Health Assessment | 1-Minute Mental Health Test | Mentel",
+        name: "Free Mental Health Assessment",
         description:
             "A free online mental health assessment that helps you check your mood, anxiety, stress, sleep, relationships, energy, and emotional well-being.",
 

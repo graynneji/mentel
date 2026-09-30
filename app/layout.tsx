@@ -320,8 +320,8 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mentel | Online Professional Therapy & Mental Health Support",
-    template: "%s - Mentel",
+    default: "Online Professional Therapy & Mental Health Support | Mentel",
+    template: "%s | Mentel",
   },
   applicationName: "Mentel",
   description:

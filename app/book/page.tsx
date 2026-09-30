@@ -112,7 +112,7 @@ import { getAudience } from "@/lib/location/geolocation";
 
 
 export const metadata: Metadata = {
-    title: "Book Online Therapy with a Licensed Therapist | Mentel",
+    title: "Book Online Therapy with a Licensed Therapist",
     description:
         "Book a 50-minute session with a licensed therapist. Matched to your needs within 24 hours. Confidential, evidence-based care. No commitment required.",
     keywords: [
@@ -142,7 +142,7 @@ export const metadata: Metadata = {
         canonical: "/book",
     },
     openGraph: {
-        title: "Book a Therapy Session - Mentel",
+        title: "Book a Therapy Session",
         description:
             "Connect with a licensed therapist, Response within 24 hours.",
         url: "https://www.trymentel.com/book",
@@ -157,7 +157,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Book a Therapy Session - Mentel",
+        title: "Book a Therapy Session",
         description:
             "Licensed therapists, Confidential and evidence-based.",
         images: ["/book-og.jpg"],
@@ -177,7 +177,7 @@ export default async function Book() {
         "@context": "https://schema.org",
         "@type": "Service",
         "@id": `${bookUrl}#service`,
-        name: "Online Therapy Session - Mentel",
+        name: "Online Therapy Session",
         url: bookUrl,
         description:
             "Book a 50-minute online therapy session with a licensed therapist. Get matched to your needs within 24 hours with confidential, evidence-based online care.",
@@ -211,7 +211,7 @@ export default async function Book() {
         "@type": "WebPage",
         "@id": `${bookUrl}#webpage`,
         url: bookUrl,
-        name: "Book a Therapy Session - Mentel",
+        name: "Book a Therapy Session",
         description:
             "Book a 50-minute session with a licensed therapist. Matched to your needs within 24 hours. Confidential, evidence-based care. No commitment required.",
         isPartOf: {

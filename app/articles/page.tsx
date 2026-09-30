@@ -200,14 +200,15 @@ import { FeaturedCard } from "@/components/ArticleCard";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-    title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
+    title: "Explore Mentel's Mental Health Articles.",
+    // title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
     description:
         "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
     alternates: {
         canonical: "/articles",
     },
     openGraph: {
-        title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
+        title: "Explore Mentel's Mental Health Articles.",
         description:
             "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
         url: "https://www.trymentel.com/articles",
@@ -222,7 +223,7 @@ export const metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Explore Mentel's Mental Health Articles, Guides, and Resources for Better Understanding and Managing Your Well-Being.",
+        title: "Explore Mentel's Mental Health Articles.",
         description:
             "Read practical mental health articles, guides, and resources covering anxiety, depression, stress, relationships, ADHD, therapy, and emotional well-being.",
         images: ["/og-image.png"],

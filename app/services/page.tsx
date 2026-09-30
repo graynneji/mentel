@@ -43,14 +43,14 @@ import Services from "@/components/ServicesPage";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Mental Health Services | Mentel",
+    title: "Mental Health Services",
     description:
         "Licensed therapists in Nigeria for anxiety, depression, couples, trauma, grief, ADHD and more. Confidential online sessions. Book a free consultation.",
     alternates: {
         canonical: "/services",
     },
     openGraph: {
-        title: "Mental Health Services | Mentel",
+        title: "Mental Health Services",
         description:
             "Licensed therapists in Nigeria for anxiety, depression, couples, trauma, grief, ADHD and more. Confidential online sessions. Book a free consultation.",
         url: "https://www.trymentel.com/services",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Mental Health Services | Mentel",
+        title: "Mental Health Services",
         description:
             "Licensed therapists in Nigeria for anxiety, depression, couples, trauma, grief, ADHD and more. Confidential online sessions. Book a free consultation.",
         images: ["/og-image.png"],

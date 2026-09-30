@@ -6,7 +6,7 @@ import { Heart, Award, Users, Leaf, ShieldCheck, Globe2, ArrowRight } from "luci
 const SITE_URL = "https://www.trymentel.com"; // matches metadataBase in app/layout.tsx — was non-www, conflicting with the sitemap and canonicalization sitewide
 
 export const metadata: Metadata = {
-    title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
+    title: "Making Mental Health Accessible",
     description:
         "Mentel mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy. Learn our story, mission and approach.",
     // keywords: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     ],
     alternates: { canonical: `${SITE_URL}/about` },
     openGraph: {
-        title: "About Mentel and Our Mission to Make Mental Health Care More Accessible, Convenient, and Affordable",
+        title: "Making Mental Health Accessible",
         description:
             "Mentel mental wellness company connecting people with licensed therapists for confidential, evidence-based online therapy.",
         url: `${SITE_URL}/about`,

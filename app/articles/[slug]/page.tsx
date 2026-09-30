@@ -548,12 +548,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         const dbArticle = await getPublishedDbArticleBySlug(param.slug);
         if (!dbArticle) return {};
         return {
-            title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
+            title: dbArticle.metaTitle || `${dbArticle.title}`,
             description: dbArticle.metaDescription || dbArticle.excerpt,
             keywords: dbArticle.keywords?.join(", "),
             alternates: { canonical: `/articles/${dbArticle.slug}` },
             openGraph: {
-                title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
+                title: dbArticle.metaTitle || `${dbArticle.title}`,
                 description: dbArticle.metaDescription || dbArticle.excerpt,
                 url: `https://www.trymentel.com/articles/${dbArticle.slug}`,
                 type: "article",
@@ -566,7 +566,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
             },
             twitter: {
                 card: "summary_large_image",
-                title: dbArticle.metaTitle || `${dbArticle.title} - Mentel`,
+                title: dbArticle.metaTitle || `${dbArticle.title}`,
                 description: dbArticle.metaDescription || dbArticle.excerpt,
                 images: dbArticle.image ? [dbArticle.image] : undefined,
             },
@@ -574,14 +574,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     }
 
     return {
-        title: `${article.title} - Mentel`,
+        title: `${article.title}`,
         description: article.excerpt,
         keywords: article.keywords?.join(", "),
         alternates: {
             canonical: `/articles/${article.slug}`,
         },
         openGraph: {
-            title: `${article.title} - Mentel`,
+            title: `${article.title}`,
             description: article.excerpt,
             url: `https://www.trymentel.com/articles/${article.slug}`,
             type: "article",
@@ -599,7 +599,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
         },
         twitter: {
             card: "summary_large_image",
-            title: `${article.title} - Mentel`,
+            title: `${article.title}`,
             description: article.excerpt,
             images: [article.image],
         },

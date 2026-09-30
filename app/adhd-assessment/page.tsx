@@ -7,7 +7,7 @@ const CANONICAL_URL = `${BASE_URL}${PAGE_PATH}`;
 const OG_IMAGE = `${BASE_URL}/assessmentadhd.jpg`; // Replace with your actual Open Graph image URL
 
 // High-volume, intent-focused Title & Description for CTR
-const TITLE = "Free Adult ADHD Test Online | 3-Minute Symptom Assessment";
+const TITLE = "Free Adult ADHD Test Online";
 const DESCRIPTION =
     "Take a free, confidential Adult ADHD self-assessment based on WHO ASRS v1.1 criteria. Screen for executive dysfunction, focus, and memory patterns in 3 minutes.";
 
